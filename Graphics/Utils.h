@@ -1,7 +1,7 @@
 #pragma once
 #include "Ogre.h"
-#include <WowLib\Utils.h>
-#include <WowDataLib\Utils.h>
+#include <WowInteraction\Utils.h>
+#include <WowWorldsData\Utils.h>
 using namespace Utils;
 namespace Utils
 {

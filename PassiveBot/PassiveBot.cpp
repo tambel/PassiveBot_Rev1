@@ -8,11 +8,11 @@ using namespace std;
 using namespace Wow;
 using namespace Utils;
 
-void workerFunc()  
+void workerFunc(MapFrame * frame,Position pos)  
 {  
 	
-	Window * win=new Window();
-	win->go();
+	frame->go();
+	frame->SetCamera(pos);
 
 }
 
@@ -21,9 +21,7 @@ int main(int argc, wchar_t * argv[])
 	setlocale( LC_ALL,"Russian" );
 
 
-	boost::thread thread(workerFunc);
-	thread.detach();
-	thread.join();
+	
 
 	
 	Sleep(5000);
@@ -40,13 +38,27 @@ int main(int argc, wchar_t * argv[])
 	Player * player = ObjectManager::GetPlayer();
 	Vector3 pos=player->GetPosition().coords;
 	player->DumpPosition();
-	
+	if (!Game::LocationBase::IsInitialized())
+		Game::LocationBase::Init();
+
+	MapFrame * frame=new MapFrame();
+	SquareArea * area=new SquareArea(Game::LocationBase::Get("Kalimdor"),Utils::WorldPositionToBlockCoords(player->GetPosition().coords),Utils::WorldPositionToChunkCoords(player->GetPosition().coords),5);//Point2D<int>(0,1),10);
+	area->AddWowObjectAvatar(player);
+	frame->SetArea(area);
+
+	boost::thread thread(workerFunc,frame,player->GetPosition());
+	thread.detach();
+	thread.join();
 	while (1)
 	{
-		player->DumpPosition();
-		Sleep(100);
-	}
+
+		area->Move(Game::LocationBase::Get("Kalimdor"),Utils::WorldPositionToBlockCoords(player->GetPosition().coords),Utils::WorldPositionToChunkCoords(player->GetPosition().coords));
+
+		// area=new SquareArea(Game::LocationBase::Get("Kalimdor"),Utils::WorldPositionToBlockCoords(player->GetPosition().coords),Utils::WorldPositionToChunkCoords(player->GetPosition().coords),10);//Point2D<int>(0,1),10);
 	
+		Sleep(500);
+	}
+	return 0;
 
 }
 

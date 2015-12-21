@@ -1,6 +1,4 @@
-/*
-#include "Utils.h"
-
+#include "stdafx.h"
 
 Ogre::Vector3 Vector3ToOgreVector(WowTypes::Vector3 vector)
 {
@@ -10,4 +8,4 @@ Ogre::ColourValue ColorToOgreColor(Graphics::Color color)
 {
 	return Ogre::ColourValue(color.r,color.g,color.b,color.a);
 }
-*/
+

@@ -1,8 +1,7 @@
-/*
 #pragma once
 #include "OgreSceneManager.h"
 #include "Utils.h"
-#include "WowDataLib\Model.h"
+#include "WowWorldsData\Model.h"
 class Renderable
 {
 	Model * model;
@@ -19,5 +18,5 @@ public:
 	Model * GetModel() {return model;}
 
 };
-*/
+
 
