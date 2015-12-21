@@ -22,6 +22,7 @@ class SquareArea: public MapArea
 	//Chunk ***chunks;
 	Chunk * chunks2[21][21];
 	int radius;
+	int area_size;
 	Location * location;
 	Point2D<int> block_coordinates;
 	Point2D<int> coordinates;
@@ -44,6 +45,6 @@ public:
 	vector<Doodad*> * GetActiveDoodas() {return &active_doodads;}
 	vector<WowObjectAvatar*> * GetWowAvatars() {return &wow_object_avatars;}
 	void AddWowObjectAvatar(Wow::WowObject* object);
-	void UpdateWowObjects();
+	inline void InitActiveDoodads();
 };
 

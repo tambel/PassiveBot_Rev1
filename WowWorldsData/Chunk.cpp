@@ -79,17 +79,14 @@ void Chunk::LoadMcvt()
 			else
 			{
 				vertices[counter].color=Graphics::Color(0.0f,0.0f,0.0f,0.0f);
-				/*
-				if (i==0)
+				
+				
+			}
+			if (header.IndexX==0 ||  header.IndexY==0 ||  header.IndexX==15 ||  header.IndexY==15)
 				{
-					if (j<3)
-					vertices[counter].color=Graphics::Color(0.0f,0.0f,1.0f,0.0f);
-					if (j>4)
+					
 					vertices[counter].color=Graphics::Color(0.0f,1.0f,1.0f,0.0f);
 				}
-				*/
-			}
-			
 			++counter;
 		}
 	}
