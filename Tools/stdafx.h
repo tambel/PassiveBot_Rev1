@@ -4,9 +4,10 @@
 //
 
 #pragma once
+#include "Memory.h"
 
-#include "Graphics\stdafx.h"
-#include "WowInteraction\stdafx.h"
+
+#define WIN32_LEAN_AND_MEAN             // Исключите редко используемые компоненты из заголовков Windows
 
 
 

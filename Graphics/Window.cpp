@@ -207,7 +207,7 @@ void Window::createCamera()
 
 void Window::createScene()
 {
-	mSceneMgr->setAmbientLight(Ogre::ColourValue(0.7, 0.7, 0.7));
+	mSceneMgr->setAmbientLight(Ogre::ColourValue(0.7f, 0.7f, 0.7f));
 
 }
 
