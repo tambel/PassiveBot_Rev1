@@ -5,7 +5,8 @@
 
 #pragma once
 #include "Memory.h"
-
+#include "BinaryReader.h"
+#include "Configuration.h"
 
 #define WIN32_LEAN_AND_MEAN             // Исключите редко используемые компоненты из заголовков Windows
 

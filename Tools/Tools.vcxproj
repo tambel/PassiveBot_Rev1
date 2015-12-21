@@ -72,11 +72,15 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BinaryReader.h" />
+    <ClInclude Include="Configuration.h" />
     <ClInclude Include="Memory.h" />
     <ClInclude Include="MemoryWindows.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BinaryReader.cpp" />
+    <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="Memory.cpp" />
     <ClCompile Include="MemoryWindows.cpp" />
     <ClCompile Include="stdafx.cpp">

@@ -5,6 +5,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Graphics", "Graphics\Graphi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PassiveBot", "PassiveBot\PassiveBot.vcxproj", "{945517CC-D19D-4232-88B0-E32156ED0336}"
 	ProjectSection(ProjectDependencies) = postProject
+		{A8E79958-0EAE-46DC-8161-143F33F1DB40} = {A8E79958-0EAE-46DC-8161-143F33F1DB40}
 		{8B062A9B-8100-4E76-A62F-CC274EA1753D} = {8B062A9B-8100-4E76-A62F-CC274EA1753D}
 		{4D037CF2-6076-483C-A28A-96A958158213} = {4D037CF2-6076-483C-A28A-96A958158213}
 	EndProjectSection
@@ -14,6 +15,12 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WowInteraction", "WowInteraction\WowInteraction.vcxproj", "{4D037CF2-6076-483C-A28A-96A958158213}"
 	ProjectSection(ProjectDependencies) = postProject
 		{FBA856A2-A371-492C-97D8-60133EF2E782} = {FBA856A2-A371-492C-97D8-60133EF2E782}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WowWorldsData", "WowWorldsData\WowWorldsData.vcxproj", "{A8E79958-0EAE-46DC-8161-143F33F1DB40}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FBA856A2-A371-492C-97D8-60133EF2E782} = {FBA856A2-A371-492C-97D8-60133EF2E782}
+		{4D037CF2-6076-483C-A28A-96A958158213} = {4D037CF2-6076-483C-A28A-96A958158213}
 	EndProjectSection
 EndProject
 Global
@@ -38,6 +45,10 @@ Global
 		{4D037CF2-6076-483C-A28A-96A958158213}.Debug|Win32.Build.0 = Debug|Win32
 		{4D037CF2-6076-483C-A28A-96A958158213}.Release|Win32.ActiveCfg = Release|Win32
 		{4D037CF2-6076-483C-A28A-96A958158213}.Release|Win32.Build.0 = Release|Win32
+		{A8E79958-0EAE-46DC-8161-143F33F1DB40}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A8E79958-0EAE-46DC-8161-143F33F1DB40}.Debug|Win32.Build.0 = Debug|Win32
+		{A8E79958-0EAE-46DC-8161-143F33F1DB40}.Release|Win32.ActiveCfg = Release|Win32
+		{A8E79958-0EAE-46DC-8161-143F33F1DB40}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
