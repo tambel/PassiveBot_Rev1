@@ -3,6 +3,10 @@
 #include <math.h>
 #include <string>
 #include <vector>
+#include "boost\geometry\geometry.hpp"
+//using namespace boost::geometry;
+
+using Vector3F = boost::geometry::model::point<float, 3, boost::geometry::cs::cartesian>();
 using namespace std;
 using namespace Utils::WowTypes;
 namespace Utils

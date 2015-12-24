@@ -12,7 +12,8 @@ ADT::ADT(Location * location,Point2D<int> coordinates)
 	for (int i=0;i<256;i++)
 	{
 		SeekChunk(root_reader,ChunkSignatures::ADTSignature::Mcnk);
-		chunk_stream_infos[i/16][i%16]=ChunkStreamInfo(root_reader->GetPosition(),root_reader->ReadUInt(),root_reader);
+		unsigned chunk_size = root_reader->ReadUInt();
+		chunk_stream_infos[i/16][i%16]=ChunkStreamInfo(root_reader->GetPosition(),chunk_size,root_reader);
 		root_reader->MoveForward(chunk_stream_infos[i/16][i%16].size);
 	}
 	ReadObjects();

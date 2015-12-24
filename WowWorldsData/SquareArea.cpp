@@ -20,6 +20,7 @@ SquareArea::SquareArea(Location * location, Point2D<int> block_coordinates,Point
 	}
 	Fill(location,block_coordinates,coordinates);
 	InitObjects();
+	InitActiveDoodads();
 	/*
 	Chunk *** tmp_chunks;
 	int area_size=radius*2+1;
