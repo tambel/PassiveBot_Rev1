@@ -2,6 +2,7 @@
 using namespace std;
 M2::M2(string filename):filename(filename)
 {
+	this->filename = filename;
 	BinaryReader * reader=new  BinaryReader(filename);
 	header=reader->Read<M2Header>();
 	vertex_count=header.NVertices;

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 unsigned long Renderable::counter=0;
-Renderable::Renderable(Model * model):model(model)
+Renderable::Renderable(Model<unsigned short> * model):model(model)
 {
 	to_kill=false;
 	id=counter;
@@ -12,8 +12,12 @@ Renderable::~Renderable(void)
 {
 	scene->detachAllObjects();
 }
-void Renderable::CreateScene(Ogre::SceneNode * parent)
+bool Renderable::CreateScene(Ogre::SceneNode * parent)
 {
+	if (model->GetVertexCount() == 0)
+	{
+		return false;
+	}
 	string name=to_string(GetID());
 	scene=parent->createChildSceneNode();
 	//Ogre::SceneNode * scene =parent_scene->createChildSceneNode();
@@ -34,4 +38,5 @@ void Renderable::CreateScene(Ogre::SceneNode * parent)
 	Ogre::Entity* entity = scene->getCreator()->createEntity(name+"_entity", mesh->getName());
 	scene->attachObject(entity);
 	scene->getCreator()->destroyManualObject(manual);
+	return true;
 }

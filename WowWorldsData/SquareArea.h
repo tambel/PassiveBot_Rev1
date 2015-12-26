@@ -4,6 +4,7 @@
 #include "MapArea.h"
 #include "WowInteraction\WowObject.h"
 #include "WowObjectAvatar.h"
+#include "WMO.h"
 using namespace Utils;
 using namespace Utils::Game;
 struct ChunkInfo
@@ -29,9 +30,13 @@ class SquareArea: public MapArea
 	vector<Doodad*> doodads;
 	vector<Doodad*> old_doodads;
 	vector<Doodad*> active_doodads;
-	vector<Model*> additional_objects;
 	vector<WowObjectAvatar*> wow_object_avatars;
+	vector<WMO*> wmos;
+	vector<WMO*> old_wmos;
+	vector<WMO*> active_wmos;
 	Utils::Graphics::BoundingBox bounding_box;
+	void InitWMOs();
+	void InitDoodads();
 
 public:
 	bool to_update;
@@ -43,8 +48,11 @@ public:
 	void InitObjects();
 	vector<Doodad*> * GetDoodads() {return &doodads;}
 	vector<Doodad*> * GetActiveDoodas() {return &active_doodads;}
+	const vector<WMO*> & GetWMOs(){ return wmos; }
 	vector<WowObjectAvatar*> * GetWowAvatars() {return &wow_object_avatars;}
 	void AddWowObjectAvatar(Wow::WowObject* object);
-	inline void InitActiveDoodads();
+	void InitActiveDoodads();
+
+
 };
 

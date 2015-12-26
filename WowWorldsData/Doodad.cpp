@@ -3,7 +3,9 @@ using namespace Utils;
 using namespace std;
 Doodad::Doodad(M2 * m2,unsigned uuid, Position position, short scale):uuid(uuid),scale(scale/1024.0f)
 {
+	name = m2->filename;
 	this->position.coords=Vector3(position.coords.x,-position.coords.z,position.coords.y);
+	this->position.rotation = position.rotation;
 	this->game_position=Vector3(Metrics::MapMidPoint-this->position.coords.x,Metrics::MapMidPoint-this->position.coords.z,position.coords.y);
 	vertex_count=m2->GetVertexCount();
 	vertices=new Utils::Graphics::Vertex[vertex_count];
@@ -17,13 +19,18 @@ Doodad::Doodad(M2 * m2,unsigned uuid, Position position, short scale):uuid(uuid)
 			
 	}
 	index_count=m2->GetIndexCount();
-	indices=new unsigned[index_count];
+	indices = m2->indices;
+	m2->indices = 0;
+	//indices=new unsigned[index_count];
+
+	/*
 	for (unsigned long i=0;i<index_count;i++)
 	{
 		indices[i]=m2->GetIndices()[i];
 	}
+	*/
 
-
+	Rotate();
 }
 
 
@@ -31,3 +38,6 @@ Doodad::~Doodad(void)
 {
 
 }
+namespace bg = boost::geometry;
+	namespace trans = bg::strategy::transform;
+

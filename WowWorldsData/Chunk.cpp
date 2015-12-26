@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-unsigned * ChunkModel::indices=ChunkModel::Init();
+unsigned short* ChunkModel::indices=ChunkModel::Init();
 
 Chunk::Chunk(void)
 {
@@ -26,7 +26,7 @@ Chunk::Chunk(ChunkStreamInfo info, Location * location, Point2D<int> block_coord
 		size=root_reader->ReadUInt();
 		switch (sig)
 		{
-		case ChunkSignatures::ADTSignature::MCNKSignatures::Mcvt:
+		case Utils::ChunkSignatures::ADTSignature::MCNKSignatures::Mcvt:
 			{
 				LoadMcvt();
 				break;

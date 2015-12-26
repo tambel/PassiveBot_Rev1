@@ -120,7 +120,8 @@ void MapFrame::InitDoodads()
 		if (!exist)
 		{
 			Renderable * rend = new Renderable(doodad);
-			rend->CreateScene(mSceneMgr->getRootSceneNode());
+			if (!rend->CreateScene(mSceneMgr->getRootSceneNode()))
+				continue;
 			rend->GetScene()->setPosition(Vector3ToOgreVector(doodad->GetPosition().coords));
 			//rend->GetScene()->setPosition(Ogre::Vector3(0,0,0));
 			doodads.push_back(rend);

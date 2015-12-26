@@ -7,7 +7,7 @@
 using namespace std;
 using namespace Wow;
 using namespace Utils;
-
+using namespace Utils;
 void workerFunc(MapFrame * frame,Position pos)  
 {  
 	
@@ -15,11 +15,20 @@ void workerFunc(MapFrame * frame,Position pos)
 	frame->SetCamera(pos);
 
 }
+void init_static()
+{
+	Utils::Geometry::Transformer3D::Transformer3D();
+	Game::LocationBase::Init();
+}
 
 int main(int argc, wchar_t * argv[])
 {
+	init_static();
 	setlocale( LC_ALL,"Russian" );
-
+	MapFrame * frame2 = new MapFrame();
+	SquareArea * area2 = new SquareArea(Game::LocationBase::Get("Kalimdor"), Point2D<int>(36, 36), Point2D<int>(10, 7),23);
+	frame2->SetArea(area2);
+	frame2->go();
 
 	
 
@@ -38,8 +47,8 @@ int main(int argc, wchar_t * argv[])
 	Player * player = ObjectManager::GetPlayer();
 	Vector3 pos=player->GetPosition().coords;
 	player->DumpPosition();
-	if (!Game::LocationBase::IsInitialized())
-		Game::LocationBase::Init();
+	/*if (!Game::LocationBase::IsInitialized())
+		Game::LocationBase::Init();*/
 
 	MapFrame * frame=new MapFrame();
 	SquareArea * area=new SquareArea(Game::LocationBase::Get("Kalimdor"),Utils::WorldPositionToBlockCoords(player->GetPosition().coords),Utils::WorldPositionToChunkCoords(player->GetPosition().coords),5);//Point2D<int>(0,1),10);

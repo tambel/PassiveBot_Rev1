@@ -3,6 +3,7 @@
 #include "ChunkedData.h"
 #include "Chunk.h"
 #include "ADTStructs.h"
+#include "WMORoot.h"
 //#include <string>
 using namespace Utils;
 using namespace std;
@@ -26,7 +27,9 @@ private:
 	BinaryReader * obj_reader;
 	ChunkStreamInfo chunk_stream_infos[16][16];
 	vector<M2Info> m2_infos;
+	vector<WMOInfo> wmo_infos;
 	void ReadM2Models(bool hight_detalization=false);
+	void ReadWMOModels();
 public:
 	ADT(Location * location,  Point2D<int> coordinates);
 	~ADT(void);
@@ -37,6 +40,7 @@ public:
 	bool operator==(const ADT & right);
 	void ReadObjects(bool hight_detalization=false);
 	vector<M2Info> * GetM2Infos() {return &m2_infos;}
+	const vector<WMOInfo> & GetWMOInfos() { return wmo_infos; }
 
 
 };

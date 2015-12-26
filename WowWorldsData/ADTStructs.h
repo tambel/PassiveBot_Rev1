@@ -10,6 +10,19 @@ struct MDDF
 	unsigned short Scale;
 	unsigned short Flags;
 };
+struct MODF
+{
+	unsigned  Mwid;
+	unsigned  UniqueId;
+	Utils::WowTypes::Vector3 Position;
+	Utils::WowTypes::Vector3 Rotation;
+	Utils::WowTypes::Vector3 BboxMax;
+	Utils::WowTypes::Vector3 BboxMin;
+	unsigned short Flags;
+	short DoodadSet;
+	short NameSet;
+	short padding;
+};
 
 struct MCNK
 {

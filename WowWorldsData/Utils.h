@@ -3,14 +3,47 @@
 #include <math.h>
 #include <string>
 #include <vector>
-#include "boost\geometry\geometry.hpp"
 //using namespace boost::geometry;
-
-using Vector3F = boost::geometry::model::point<float, 3, boost::geometry::cs::cartesian>();
+#include "boost\geometry\geometry.hpp"
+#include "boost\numeric\ublas\matrix.hpp"
+#include "boost\numeric\ublas\vector.hpp"
+using Vector3F = boost::geometry::model::point<float, 3, boost::geometry::cs::cartesian>;
 using namespace std;
 using namespace Utils::WowTypes;
 namespace Utils
 {
+	namespace Geometry
+	{
+		
+		
+		
+
+
+		enum class  Axis
+		{
+			X,
+			Y,
+			Z
+		};
+		enum class AngleValueType
+		{
+			degree,
+			radian
+		};
+		class Transformer3D
+		{
+			
+
+		public:
+			static boost::numeric::ublas::matrix<float> rotation_matrix_X;
+			static boost::numeric::ublas::matrix<float> rotation_matrix_Y;
+			static boost::numeric::ublas::matrix<float> rotation_matrix_Z;
+			Transformer3D();
+			static Vector3F Rotate(float angle, AngleValueType value, Axis axis);
+			static void SetRotationAngle(Axis axis, float angle);
+
+		};
+	};
 	namespace Game
 	{
 		struct Location
@@ -36,25 +69,35 @@ namespace Utils
 	{
 		namespace ADTSignature
 		{
-			static const unsigned int Mver = 0x4D564552;
-			static const unsigned int Mhdr = 0x4D484452;
-			static const unsigned int Mcin = 0x4D43494E;
-			static const unsigned int Mtex = 0x4D544558;
-			static const unsigned int Mmdx = 0x4D4D4458;
-			static const unsigned int Mmid = 0x4D4D4944;
-			static const unsigned int Mwmo = 0x4D574D4F;
-			static const unsigned int Mwid = 0x4D574944;
-			static const unsigned int Mddf = 0x4D444446;
-			static const unsigned int Modf = 0x4D4F4446;
+			static const unsigned Mver = 0x4D564552;
+			static const unsigned Mhdr = 0x4D484452;
+			static const unsigned Mcin = 0x4D43494E;
+			static const unsigned Mtex = 0x4D544558;
+			static const unsigned Mmdx = 0x4D4D4458;
+			static const unsigned Mmid = 0x4D4D4944;
+			static const unsigned Mwmo = 0x4D574D4F;
+			static const unsigned Mwid = 0x4D574944;
+			static const unsigned Mddf = 0x4D444446;
+			static const unsigned Modf = 0x4D4F4446;
 			// ReSharper disable once InconsistentNaming
-			static const unsigned int Mh2o = 0x4D48324F;
-			static const unsigned int Mfbo = 0x4D46414F;
-			static const unsigned int Mtxf = 0x4D545846;
-			static const unsigned int Mtxp = 0x4D545850;
-			static const unsigned int Mcnk = 0x4D434E4B;
+			static const unsigned Mh2o = 0x4D48324F;
+			static const unsigned Mfbo = 0x4D46414F;
+			static const unsigned Mtxf = 0x4D545846;
+			static const unsigned Mtxp = 0x4D545850;
+			static const unsigned Mcnk = 0x4D434E4B;
 			namespace MCNKSignatures
 			{
-				static const unsigned int Mcvt = 0x4D435654;
+				static const unsigned Mcvt = 0x4D435654;
+			};
+		};
+		namespace WMOSignature
+		{
+			static const unsigned Mohd = 0x4D4F4844;
+			namespace GroupSignatures
+			{
+				static const unsigned Mogp = 0x4D4F4750;
+				static const unsigned Movt = 0x4D4F5654;
+				static const unsigned Movi = 0x4D4F5649;
 			};
 		};
 	};

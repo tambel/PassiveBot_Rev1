@@ -92,6 +92,11 @@
     <ClInclude Include="SquareArea.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Utils.h" />
+    <ClInclude Include="WMO.h" />
+    <ClInclude Include="WMOGroup.h" />
+    <ClInclude Include="WMOPart.h" />
+    <ClInclude Include="WMORoot.h" />
+    <ClInclude Include="WMOStructs.h" />
     <ClInclude Include="WowObjectAvatar.h" />
   </ItemGroup>
   <ItemGroup>
@@ -113,6 +118,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="WMO.cpp" />
+    <ClCompile Include="WMOGroup.cpp" />
+    <ClCompile Include="WMOPart.cpp" />
+    <ClCompile Include="WMORoot.cpp" />
     <ClCompile Include="WowObjectAvatar.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
