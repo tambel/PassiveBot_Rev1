@@ -50,3 +50,14 @@ void ModelVertBase::Rotate()
 	}
 }
 
+void ModelVertBase::Rescale(float scale)
+{
+	for (unsigned long i = 0; i < vertex_count; i++)
+	{
+		//vertices[i].position = Vector3(vertices[i].position.x + scale, vertices[i].position.y + scale, vertices[i].position.z + scale);
+		vertices[i].position.x *= scale;
+		vertices[i].position.y *= scale;
+		vertices[i].position.z *= scale;
+	}
+}
+

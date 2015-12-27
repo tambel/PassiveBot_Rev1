@@ -18,6 +18,7 @@ public:
 	virtual Position GetPosition() { return position; }
 	void SetPosition(Position position) { this->position = position; }
 	virtual void Rotate();
+	virtual void Rescale(float scale);
 };
 template<typename T>
 class ModelIndBase

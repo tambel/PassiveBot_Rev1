@@ -26,7 +26,9 @@ int main(int argc, wchar_t * argv[])
 	init_static();
 	setlocale( LC_ALL,"Russian" );
 	MapFrame * frame2 = new MapFrame();
-	SquareArea * area2 = new SquareArea(Game::LocationBase::Get("Kalimdor"), Point2D<int>(36, 36), Point2D<int>(10, 7),23);
+	//trool vilage 33,41
+	//orgrimmar 28 40
+	SquareArea * area2 = new SquareArea(Game::LocationBase::Get("Kalimdor"), Point2D<int>(33, 41), Point2D<int>(10, 3),9);
 	frame2->SetArea(area2);
 	frame2->go();
 
@@ -63,8 +65,8 @@ int main(int argc, wchar_t * argv[])
 
 		area->Move(Game::LocationBase::Get("Kalimdor"),Utils::WorldPositionToBlockCoords(player->GetPosition().coords),Utils::WorldPositionToChunkCoords(player->GetPosition().coords));
 
-		// area=new SquareArea(Game::LocationBase::Get("Kalimdor"),Utils::WorldPositionToBlockCoords(player->GetPosition().coords),Utils::WorldPositionToChunkCoords(player->GetPosition().coords),10);//Point2D<int>(0,1),10);
-	
+		//area=new SquareArea(Game::LocationBase::Get("Kalimdor"),Utils::WorldPositionToBlockCoords(player->GetPosition().coords),Utils::WorldPositionToChunkCoords(player->GetPosition().coords),10);//Point2D<int>(0,1),10);
+		cout << "UPDATED" << endl;
 		Sleep(500);
 	}
 	return 0;

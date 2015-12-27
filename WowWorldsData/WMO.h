@@ -2,12 +2,17 @@
 #include "WMOPart.h"
 class WMO
 {
-	vector<WMOPart> parts;
+	vector<WMOPart*> parts;
 	unsigned long uuid;
+	Position position;
 public:
-	unsigned long GetUUID() { return uuid; }
 	WMO(WMORoot & root, unsigned uuid, Position position);
-
+	WMO(WMO && right);
 	~WMO();
+	unsigned long GetUUID() { return uuid; }
+	
+	Position & GetPosition() { return position; }
+	vector<WMOPart*> & GetParts() { return parts; }
+
 };
 

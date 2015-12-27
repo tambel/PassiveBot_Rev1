@@ -29,7 +29,7 @@ Doodad::Doodad(M2 * m2,unsigned uuid, Position position, short scale):uuid(uuid)
 		indices[i]=m2->GetIndices()[i];
 	}
 	*/
-
+	Rescale(this->scale);
 	Rotate();
 }
 

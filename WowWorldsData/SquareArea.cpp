@@ -8,6 +8,9 @@ SquareArea::SquareArea(Location * location, Point2D<int> block_coordinates, Poin
 	to_update = true;
 	old_doodads = vector<Doodad*>();
 	active_doodads = vector<Doodad*>();
+	wmos = vector<WMO*>();
+	old_wmos = vector<WMO*>();
+	active_wmos = vector<WMO*>();
 	wow_object_avatars = vector<WowObjectAvatar*>();
 	for (int i = 0; i < area_size; i++)
 	{
@@ -19,58 +22,7 @@ SquareArea::SquareArea(Location * location, Point2D<int> block_coordinates, Poin
 	}
 	Fill(location, block_coordinates, coordinates);
 	InitObjects();
-	InitActiveDoodads();
-	/*
-	Chunk *** tmp_chunks;
-	int area_size=radius*2+1;
-	tmp_chunks=new Chunk**[area_size];
-	//chunks=new Chunk * [area_size*area_size];
-	//chunks=vector<Chunk*>();
-	for (int i=0;i<area_size;i++)
-	{
-	tmp_chunks[i]=new Chunk * [area_size];
-	chunks[i]=new Chunk * [area_size];
-	}
-	for (int i=0;i<area_size;i++)
-	{
-	for (int j=0;j<area_size;j++)
-	{
-	chunks[i][j]=0;
-	tmp_chunks[i][j]=0;
-	}
-	}
-	//Point2D<int> abs_center_pos=Point2D<int>(coordinates+Point2D<int>(16,16));
-	//Point2D<int> abs_center_pos=coordinates+Point2D<int>(16,16);
-	Point2D<int> area_position=(coordinates+Point2D<int>(16,16))-Point2D<int>(radius,radius);
-	unsigned counter=0;
-	for (int i=0;i<area_size;i++)
-	{
-	for (int j=0;j<area_size;j++)
-	{
-	Point2D<int> abs_pos=area_position+Point2D<int>(i,j);
-	tmp_chunks[i][j]=ADTWorker::GetChunk(location,block_coordinates+=(Point2D<int>(abs_pos.X/16,abs_pos.Y/16)-Point2D<int>(1,1)),Point2D<int>(abs_pos.X%16,abs_pos.Y%16));
-
-	//chunks[chunk_number]=tmp_chunks[i][j];
-	if (tmp_chunks[i][j])
-	{
-	tmp_chunks[i][j]->SetRelativePosition(Vector3(j*Metrics::ChunkSize,-i*Metrics::ChunkSize,tmp_chunks[i][j]->GetGamePosition().z));
-	//chunks.push_back(tmp_chunks[i][j]);
-
-	}
-	if (i==0)
-	{
-	for (int v=0;v<145;v++)
-	{
-	if (j<10)
-	tmp_chunks[i][j]->GetVertices()[v].color=Utils::Graphics::Color(1.0f,0.0f,1.0f,0.0f);
-	if (j>10)
-	tmp_chunks[i][j]->GetVertices()[v].color=Utils::Graphics::Color(0.0f,1.0f,1.0f,0.0f);
-	}
-	}
-	counter++;
-	}
-	}
-	*/
+	InitActiveObjects();
 }
 
 
@@ -114,7 +66,7 @@ void SquareArea::Move(Location * location, Point2D<int> block_coordinates, Point
 			Fill(location, block_coordinates, coordinates);
 			if (block_changed)
 				InitObjects();
-			InitActiveDoodads();
+			InitActiveObjects();
 			to_update = true;
 			busy = false;
 		}
@@ -124,7 +76,7 @@ void SquareArea::Move(Location * location, Point2D<int> block_coordinates, Point
 }
 void SquareArea::InitObjects()
 {
-	//InitWMOs();
+	InitWMOs();
 	InitDoodads();
 
 }
@@ -149,7 +101,7 @@ void SquareArea::AddWowObjectAvatar(Wow::WowObject * object)
 	*/
 	wow_object_avatars.push_back(avatar);
 }
-void SquareArea::InitActiveDoodads()
+void SquareArea::InitActiveObjects()
 {
 
 	bounding_box.up.x = 99999.0f;
@@ -173,15 +125,24 @@ void SquareArea::InitActiveDoodads()
 	active_doodads.clear();
 	for (auto doodad : doodads)
 	{
-		if (bounding_box.IsInside2D(doodad->GetPosition().coords))
+		//if (bounding_box.IsInside2D(doodad->GetPosition().coords))
 		{
 			active_doodads.push_back(doodad);
+		}
+	}
+	active_wmos.clear();
+	for (auto &wmo : wmos)
+	{
+		if (bounding_box.IsInside2D(wmo->GetPosition().coords))
+		{
+			active_wmos.push_back(wmo);
 		}
 	}
 }
 
 void SquareArea::InitWMOs()
 {
+	wmos.clear();
 	for (int i = block_coordinates.X - 1; i <= block_coordinates.X + 1; i++)
 	{
 		for (int j = block_coordinates.Y - 1; j <= block_coordinates.Y + 1; j++)
@@ -201,21 +162,47 @@ void SquareArea::InitWMOs()
 							exist = true;
 							wmos.push_back(old_wmo);
 							old_wmo = 0;
-
 							break;
 						}
 					}
 				}
 				if (exist)
 				{
-					continue;
+					//continue;
 				}
 
 				WMORoot  wmo_root = WMORoot(wmo_info.filename);
-				WMO * wmo = new WMO(wmo_root, wmo_info.modf.UniqueId, Position(wmo_info.modf.Position, wmo_info.modf.Rotation));
+				WMO * wmo =new  WMO(wmo_root, wmo_info.modf.UniqueId, Position(wmo_info.modf.Position, wmo_info.modf.Rotation));
 				wmos.push_back(wmo);
 			}
 		}
+	}
+	int count = 0;
+	for (auto &wmo : wmos)
+	{
+		for (auto &wmo2 : wmos)
+		{
+			if (wmo && wmo2)
+			{
+				if (wmo->GetUUID() == wmo2->GetUUID() && wmo != wmo2)
+				{
+					count++;
+					wmo = 0;
+				}
+			}
+		}
+	}
+	wmos.erase(remove(wmos.begin(), wmos.end(), (WMO*)0), wmos.end());
+	for (auto old_wmo : old_wmos)
+	{
+		cout << " Init Old" << endl;
+		delete old_wmo;
+		
+	}
+	old_wmos.clear();
+	for (auto wmo : wmos)
+	{
+		old_wmos.push_back(wmo);
 	}
 }
 

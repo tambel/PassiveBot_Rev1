@@ -9,8 +9,9 @@ class MapFrame: public Window
 {
 	SquareArea * area;
 	Ogre::SceneNode * area_scene;
-	vector<Renderable*> renderables;
+	vector<Renderable*> chunks;
 	vector<Renderable*> doodads;
+	vector<Renderable*> wmos;
 	vector<Renderable*> additional_objects;
 public:
 	MapFrame(void);
@@ -22,6 +23,7 @@ public:
 	void SetArea(SquareArea * area) {this->area=area;}
 	void OnUpdate();
 	void InitDoodads();
+	void InitWMOs();
 	void InitAdditionalObjects();
 };
 

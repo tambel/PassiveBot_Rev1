@@ -48,7 +48,7 @@ void WMORoot::LoadGroups(MOHD & header)
 		grop_path += "_"+number + ".wmo";
 		try
 		{
-			wmo_groups.emplace_back(grop_path);
+			wmo_groups.push_back(WMOGroup(grop_path));
 
 		}
 		catch (exception e)

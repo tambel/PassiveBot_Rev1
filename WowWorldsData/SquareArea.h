@@ -34,6 +34,9 @@ class SquareArea: public MapArea
 	vector<WMO*> wmos;
 	vector<WMO*> old_wmos;
 	vector<WMO*> active_wmos;
+	vector<WMO*> wmosp;
+	vector<WMO*> old_wmosp;
+	vector<WMO*> active_wmosp;
 	Utils::Graphics::BoundingBox bounding_box;
 	void InitWMOs();
 	void InitDoodads();
@@ -49,9 +52,10 @@ public:
 	vector<Doodad*> * GetDoodads() {return &doodads;}
 	vector<Doodad*> * GetActiveDoodas() {return &active_doodads;}
 	const vector<WMO*> & GetWMOs(){ return wmos; }
+	vector<WMO*> & GetActiveWMOs() { return active_wmos; }
 	vector<WowObjectAvatar*> * GetWowAvatars() {return &wow_object_avatars;}
 	void AddWowObjectAvatar(Wow::WowObject* object);
-	void InitActiveDoodads();
+	void InitActiveObjects();
 
 
 };

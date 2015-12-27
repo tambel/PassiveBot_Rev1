@@ -10,6 +10,7 @@ BinaryReader::BinaryReader(string path)
 
 BinaryReader::~BinaryReader(void)
 {
+	this->stream->close();
 	delete this->stream;
 }
 unsigned int BinaryReader::ReadUInt()

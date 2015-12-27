@@ -9,6 +9,7 @@ struct WMOInfo
 	WMOInfo(string filename, MODF modf) : filename(filename), modf(modf) {}
 	
 };
+
 class WMORoot
 {
 	string filename;
