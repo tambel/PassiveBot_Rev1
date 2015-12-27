@@ -78,6 +78,7 @@
     <ClInclude Include="ADTCache.h" />
     <ClInclude Include="ADTStructs.h" />
     <ClInclude Include="ADTWorker.h" />
+    <ClInclude Include="AsyncLoader.h" />
     <ClInclude Include="Cache.h" />
     <ClInclude Include="Chunk.h" />
     <ClInclude Include="ChunkCache.h" />
@@ -103,6 +104,7 @@
     <ClCompile Include="Adt.cpp" />
     <ClCompile Include="ADTCache.cpp" />
     <ClCompile Include="ADTWorker.cpp" />
+    <ClCompile Include="AsyncLoader.cpp" />
     <ClCompile Include="Cache.cpp" />
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="ChunkCache.cpp" />

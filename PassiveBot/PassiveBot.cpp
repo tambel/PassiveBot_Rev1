@@ -28,9 +28,9 @@ int main(int argc, wchar_t * argv[])
 	MapFrame * frame2 = new MapFrame();
 	//trool vilage 33,41
 	//orgrimmar 28 40
-	SquareArea * area2 = new SquareArea(Game::LocationBase::Get("Kalimdor"), Point2D<int>(33, 41), Point2D<int>(10, 3),9);
-	frame2->SetArea(area2);
-	frame2->go();
+	//SquareArea * area2 = new SquareArea(Game::LocationBase::Get("Kalimdor"), Point2D<int>(33, 41), Point2D<int>(10, 3),9);
+	//frame2->SetArea(area2);
+	//frame2->go();
 
 	
 
@@ -53,7 +53,7 @@ int main(int argc, wchar_t * argv[])
 		Game::LocationBase::Init();*/
 
 	MapFrame * frame=new MapFrame();
-	SquareArea * area=new SquareArea(Game::LocationBase::Get("Kalimdor"),Utils::WorldPositionToBlockCoords(player->GetPosition().coords),Utils::WorldPositionToChunkCoords(player->GetPosition().coords),5);//Point2D<int>(0,1),10);
+	SquareArea * area=new SquareArea(Game::LocationBase::Get("Kalimdor"),Utils::WorldPositionToBlockCoords(player->GetPosition().coords),Utils::WorldPositionToChunkCoords(player->GetPosition().coords),9);//Point2D<int>(0,1),10);
 	area->AddWowObjectAvatar(player);
 	frame->SetArea(area);
 

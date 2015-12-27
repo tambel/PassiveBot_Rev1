@@ -4,6 +4,11 @@
 //
 
 #pragma once
+#include "boost\thread\thread.hpp"
+#include <thread>
+#include <vector>
+#include <mutex>
+
 #include "Tools\Configuration.h"
 #include "Tools\BinaryReader.h"
 #include "Adt.h"
@@ -22,8 +27,8 @@
 #include "WMO.h"
 #include "WMOStructs.h"
 #include "WowObjectAvatar.h"
+#include "AsyncLoader.h"
 
-#include <vector>
 
 
 #define WIN32_LEAN_AND_MEAN             // Исключите редко используемые компоненты из заголовков Windows

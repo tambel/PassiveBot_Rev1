@@ -2,7 +2,7 @@
 #include "WMOPart.h"
 class WMO
 {
-	vector<WMOPart*> parts;
+	vector<WMOPart> parts;
 	unsigned long uuid;
 	Position position;
 public:
@@ -12,7 +12,7 @@ public:
 	unsigned long GetUUID() { return uuid; }
 	
 	Position & GetPosition() { return position; }
-	vector<WMOPart*> & GetParts() { return parts; }
+	vector<WMOPart> & GetParts() { return parts; }
 
 };
 

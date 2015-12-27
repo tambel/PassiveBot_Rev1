@@ -157,13 +157,13 @@ void MapFrame::InitWMOs()
 			continue;
 		for (auto &part : wmo->GetParts())
 		{
-			if (part)
+			//if (part)
 			{
 				bool exist = false;
 				for (auto rend : wmos)
 				{
 
-					if (rend->GetModel() == part)
+					if (rend->GetModel() == &part)
 					{
 						exist = true;
 						rend->to_kill = false;
@@ -173,7 +173,7 @@ void MapFrame::InitWMOs()
 				if (!exist)
 				{
 
-					Renderable * rend = new Renderable(part);
+					Renderable * rend = new Renderable(&part);
 					if (!rend->CreateScene(mSceneMgr->getRootSceneNode()))
 						continue;
 					rend->GetScene()->setPosition(Vector3ToOgreVector(wmo->GetPosition().coords));
