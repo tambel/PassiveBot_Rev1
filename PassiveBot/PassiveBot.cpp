@@ -28,9 +28,9 @@ int main(int argc, wchar_t * argv[])
 	MapFrame * frame2 = new MapFrame();
 	//trool vilage 33,41
 	//orgrimmar 28 40
-	//SquareArea * area2 = new SquareArea(Game::LocationBase::Get("Kalimdor"), Point2D<int>(33, 41), Point2D<int>(10, 3),9);
-	//frame2->SetArea(area2);
-	//frame2->go();
+	SquareArea * area2 = new SquareArea(Game::LocationBase::Get("Kalimdor"), Point2D<int>(33, 41), Point2D<int>(10, 3),9);
+	frame2->SetArea(area2);
+	frame2->go();
 
 	
 

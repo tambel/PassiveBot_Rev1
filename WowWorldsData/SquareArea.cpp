@@ -76,8 +76,9 @@ void SquareArea::Move(Location * location, Point2D<int> block_coordinates, Point
 }
 void SquareArea::InitObjects()
 {
-	InitWMOs();
+	
 	InitDoodads();
+	InitWMOs();
 
 }
 void SquareArea::AddWowObjectAvatar(Wow::WowObject * object)
@@ -125,7 +126,7 @@ void SquareArea::InitActiveObjects()
 	active_doodads.clear();
 	for (auto doodad : doodads)
 	{
-		//if (bounding_box.IsInside2D(doodad->GetPosition().coords))
+		if (bounding_box.IsInside2D(doodad->GetPosition().coords))
 		{
 			active_doodads.push_back(doodad);
 		}
@@ -239,14 +240,16 @@ void SquareArea::InitDoodads()
 					continue;
 				}
 
-				M2 * m2 = new M2(m2_info.file);
-				Doodad * doodad = new Doodad(m2, m2_info.mddf.UniqueId, Position(m2_info.mddf.Position, m2_info.mddf.Rotation), m2_info.mddf.Scale);
-				unsigned long d = doodad->GetUUID();
+				//M2 * m2 = new M2(m2_info.file);
+				//Doodad * doodad = new Doodad;
+				Doodad * doodad = new Doodad(m2_info.file, m2_info.mddf.UniqueId, Position(m2_info.mddf.Position, m2_info.mddf.Rotation), m2_info.mddf.Scale);
+				//AsyncLoader::Load<Doodad>(doodad, m2_info.file, m2_info.mddf.UniqueId, Position(m2_info.mddf.Position, m2_info.mddf.Rotation), m2_info.mddf.Scale);
 				doodads.push_back(doodad);
-				delete m2;
+				//delete m2;
 			}
 		}
 	}
+	AsyncLoader::WaitForAllStop();
 	int count = 0;
 	for (auto doodad : doodads)
 	{

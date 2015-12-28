@@ -4,10 +4,10 @@
 //
 
 #pragma once
-#include "boost\thread\thread.hpp"
-#include <thread>
+
 #include <vector>
 #include <mutex>
+
 
 #include "Tools\Configuration.h"
 #include "Tools\BinaryReader.h"

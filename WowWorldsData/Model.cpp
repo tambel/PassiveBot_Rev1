@@ -6,6 +6,14 @@ using namespace std;
 
 
 
+ModelVertBase::ModelVertBase(ModelVertBase && right)
+{
+	vertices = right.vertices;
+	vertex_count = right.vertex_count;
+	right.vertices = nullptr;
+	right.vertex_count = 0;
+}
+
 ModelVertBase::ModelVertBase(void)
 {
 	vertices = 0;
@@ -17,6 +25,16 @@ ModelVertBase::~ModelVertBase(void)
 	delete[] vertices;
 	vertices = 0;
 	vertex_count = 0;
+}
+
+ModelVertBase & ModelVertBase::operator=(ModelVertBase && right)
+{
+	position = right.position;
+	vertices = right.vertices;
+	vertex_count = right.vertex_count;
+	right.vertices = nullptr;
+	right.vertex_count = 0;
+	return *this;
 }
 
 void ModelVertBase::Rotate()

@@ -6,8 +6,8 @@ WowObjectAvatar::WowObjectAvatar(Wow::WowObject * wow_object): wow_object(wow_ob
 
 	Position pos=wow_object->GetPosition();
 	pos.coords=Vector3(Metrics::MapMidPoint - pos.coords.y,-(Metrics::MapMidPoint - pos.coords.x),pos.coords.z);
-	M2 * m2 = new M2("E:\\Extracted\\Character\\Tauren\\Male\\TaurenMale.M2");
-	doodad=new Doodad(m2,0,pos,1024);
+	//M2 * m2 = new M2();
+	doodad=new Doodad("E:\\Extracted\\Character\\Tauren\\Male\\TaurenMale.M2",0,pos,1024);
 	//Doodad * doodad=new Doodad(m2,0,object->GetPosition(),1024);
 	//real_position=Vector3(Metrics::MapMidPoint - header.position.y,-(Metrics::MapMidPoint - header.position.x),header.position.z);
 	doodad->SetPosition(pos);
@@ -17,7 +17,7 @@ WowObjectAvatar::WowObjectAvatar(Wow::WowObject * wow_object): wow_object(wow_ob
 		//doodad->GetVertices()[i].position.y*=100;
 		//doodad->GetVertices()[i].position.z*=100;
 	}
-	delete m2;
+	//delete m2;
 }
 
 
