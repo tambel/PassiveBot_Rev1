@@ -141,7 +141,7 @@ void SquareArea::ToMesh()
 			for (int vi = 0; vi < chunks[i][j]->GetVertexCount(); vi++)
 			{
 				vect = chunks[i][j]->GetRealPosition() - this->bounding_box.up + chunks[i][j]->GetVertices()[vi].position;
-				myfile << "v " << vect.x << " " << vect.y << " " << vect.z << endl;
+				myfile << "v " << vect.x << " " << vect.z << " " << vect.y << endl;
 				vert_offset++;
 
 			}
@@ -154,7 +154,7 @@ void SquareArea::ToMesh()
 		for (int vi = 0; vi < doodad->GetVertexCount(); vi++)
 		{
 			vect = doodad->GetPosition().coords - this->bounding_box.up + doodad->GetVertices()[vi].position;
-			myfile << "v " << vect.x << " " << vect.y << " " << vect.z << endl;
+			myfile << "v " << vect.x << " " << vect.z << " " << vect.y << endl;
 			//vert_offset++;
 
 		}
@@ -167,7 +167,7 @@ void SquareArea::ToMesh()
 			for (int vi = 0; vi < part.GetVertexCount(); vi++)
 			{
 				vect = wmo->GetPosition().coords - this->bounding_box.up + part.GetVertices()[vi].position;
-				myfile << "v " << vect.x << " " << vect.y << " " << vect.z << endl;
+				myfile << "v " << vect.x << " " << vect.z << " " << vect.y << endl;
 				//vert_offset++;
 
 			}
@@ -181,7 +181,7 @@ void SquareArea::ToMesh()
 		{
 			for (unsigned long ii = 0; ii < chunks[i][j]->GetIndexCount(); ii += 3)
 			{
-				myfile << "f " << chunks[i][j]->GetIndices()[ii] + vert_offset + 1 << " " << chunks[i][j]->GetIndices()[ii + 1] + vert_offset + 1 << " " << chunks[i][j]->GetIndices()[ii + 2] + vert_offset + 1 << endl;
+				myfile << "f " << chunks[i][j]->GetIndices()[ii+2] + vert_offset + 1 << " " << chunks[i][j]->GetIndices()[ii + 1] + vert_offset + 1 << " " << chunks[i][j]->GetIndices()[ii] + vert_offset + 1 << endl;
 			}
 			vert_offset += chunks[i][j]->GetVertexCount();
 		}
@@ -191,7 +191,7 @@ void SquareArea::ToMesh()
 	{
 		for (unsigned long ii = 0; ii < doodad->GetIndexCount(); ii+=3)
 		{
-			myfile << "f " << doodad->GetIndices()[ii] + vert_offset + 1 << " " << doodad->GetIndices()[ii + 1] + vert_offset + 1 << " " << doodad->GetIndices()[ii + 2] + vert_offset + 1 << endl;
+			myfile << "f " << doodad->GetIndices()[ii+2] + vert_offset + 1 << " " << doodad->GetIndices()[ii + 1] + vert_offset + 1 << " " << doodad->GetIndices()[ii] + vert_offset + 1 << endl;
 		}
 		vert_offset += doodad->GetVertexCount();
 	}
@@ -201,7 +201,7 @@ void SquareArea::ToMesh()
 		{
 			for (unsigned long ii = 0; ii < part.GetIndexCount(); ii += 3)
 			{
-				myfile << "f " << part.GetIndices()[ii] + vert_offset + 1 << " " << part.GetIndices()[ii + 1] + vert_offset + 1 << " " << part.GetIndices()[ii + 2] + vert_offset + 1 << endl;
+				myfile << "f " << part.GetIndices()[ii+2] + vert_offset + 1 << " " << part.GetIndices()[ii + 1] + vert_offset + 1 << " " << part.GetIndices()[ii] + vert_offset + 1 << endl;
 			}
 			vert_offset += part.GetVertexCount();
 		}
