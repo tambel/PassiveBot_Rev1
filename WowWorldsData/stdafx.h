@@ -27,7 +27,6 @@
 #include "WMO.h"
 #include "WMOStructs.h"
 #include "WowObjectAvatar.h"
-#include "AsyncLoader.h"
 
 
 

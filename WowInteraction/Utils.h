@@ -19,6 +19,10 @@ namespace Utils
 			{
 				return Vector3(this->x+ right.x,this->y+right.y,this->z+right.z);
 			}
+			Vector3 operator-(const Vector3 &right)
+			{
+				return Vector3(this->x - right.x, this->y - right.y, this->z - right.z);
+			}
 
 			Vector3 operator*(const float  &right)
 			{

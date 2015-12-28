@@ -48,7 +48,7 @@ void SquareArea::Fill(Location * location, Point2D<int> block_coordinates, Point
 		}
 
 	}
-
+	InitBoundingBox();
 
 }
 
@@ -76,7 +76,7 @@ void SquareArea::Move(Location * location, Point2D<int> block_coordinates, Point
 }
 void SquareArea::InitObjects()
 {
-	
+
 	InitDoodads();
 	InitWMOs();
 
@@ -105,6 +105,114 @@ void SquareArea::AddWowObjectAvatar(Wow::WowObject * object)
 void SquareArea::InitActiveObjects()
 {
 
+
+	active_doodads.clear();
+	for (auto doodad : doodads)
+	{
+		if (bounding_box.IsInside2D(doodad->GetPosition().coords))
+		{
+			active_doodads.push_back(doodad);
+		}
+	}
+	active_wmos.clear();
+	for (auto &wmo : wmos)
+	{
+		if (bounding_box.IsInside2D(wmo->GetPosition().coords))
+		{
+			active_wmos.push_back(wmo);
+		}
+	}
+}
+
+void SquareArea::ToMesh()
+{
+
+	unsigned long vert_offset = 0;
+	unsigned long ind_offset = 0;
+	ofstream myfile;
+	myfile.open("example.obj");
+	Vector3 vect;
+	vector<unsigned long> vert_offsets = vector<unsigned long>();
+	for (int i = 0; i < area_size; i++)
+	{
+		for (int j = 0; j < area_size; j++)
+		{
+			vert_offset = 0;
+			for (int vi = 0; vi < chunks[i][j]->GetVertexCount(); vi++)
+			{
+				vect = chunks[i][j]->GetRealPosition() - this->bounding_box.up + chunks[i][j]->GetVertices()[vi].position;
+				myfile << "v " << vect.x << " " << vect.y << " " << vect.z << endl;
+				vert_offset++;
+
+			}
+			vert_offsets.push_back(chunks[i][j]->GetVertexCount());
+
+		}
+	}
+	for (auto doodad : active_doodads)
+	{
+		for (int vi = 0; vi < doodad->GetVertexCount(); vi++)
+		{
+			vect = doodad->GetPosition().coords - this->bounding_box.up + doodad->GetVertices()[vi].position;
+			myfile << "v " << vect.x << " " << vect.y << " " << vect.z << endl;
+			//vert_offset++;
+
+		}
+	}
+	for (auto wmo : active_wmos)
+	{
+		for (auto &part : wmo->GetParts())
+		{
+
+			for (int vi = 0; vi < part.GetVertexCount(); vi++)
+			{
+				vect = wmo->GetPosition().coords - this->bounding_box.up + part.GetVertices()[vi].position;
+				myfile << "v " << vect.x << " " << vect.y << " " << vect.z << endl;
+				//vert_offset++;
+
+			}
+		}
+	}
+	vert_offset = 0;
+	ind_offset = 0;
+	for (int i = 0; i < area_size; i++)
+	{
+		for (int j = 0; j < area_size; j++)
+		{
+			for (unsigned long ii = 0; ii < chunks[i][j]->GetIndexCount(); ii += 3)
+			{
+				myfile << "f " << chunks[i][j]->GetIndices()[ii] + vert_offset + 1 << " " << chunks[i][j]->GetIndices()[ii + 1] + vert_offset + 1 << " " << chunks[i][j]->GetIndices()[ii + 2] + vert_offset + 1 << endl;
+			}
+			vert_offset += chunks[i][j]->GetVertexCount();
+		}
+	}
+	
+	for (auto doodad : active_doodads)
+	{
+		for (unsigned long ii = 0; ii < doodad->GetIndexCount(); ii+=3)
+		{
+			myfile << "f " << doodad->GetIndices()[ii] + vert_offset + 1 << " " << doodad->GetIndices()[ii + 1] + vert_offset + 1 << " " << doodad->GetIndices()[ii + 2] + vert_offset + 1 << endl;
+		}
+		vert_offset += doodad->GetVertexCount();
+	}
+	for (auto wmo : active_wmos)
+	{
+		for (auto &part : wmo->GetParts())
+		{
+			for (unsigned long ii = 0; ii < part.GetIndexCount(); ii += 3)
+			{
+				myfile << "f " << part.GetIndices()[ii] + vert_offset + 1 << " " << part.GetIndices()[ii + 1] + vert_offset + 1 << " " << part.GetIndices()[ii + 2] + vert_offset + 1 << endl;
+			}
+			vert_offset += part.GetVertexCount();
+		}
+	}
+
+	myfile.close();
+
+}
+
+void SquareArea::InitBoundingBox()
+{
 	bounding_box.up.x = 99999.0f;
 	bounding_box.up.y = 99999.0f;
 	for (int i = 0; i < area_size; i++)
@@ -123,22 +231,6 @@ void SquareArea::InitActiveObjects()
 		}
 	}
 	bounding_box.down = bounding_box.up + Vector3(area_size*Metrics::ChunkSize, area_size*Metrics::ChunkSize, 0);
-	active_doodads.clear();
-	for (auto doodad : doodads)
-	{
-		if (bounding_box.IsInside2D(doodad->GetPosition().coords))
-		{
-			active_doodads.push_back(doodad);
-		}
-	}
-	active_wmos.clear();
-	for (auto &wmo : wmos)
-	{
-		if (bounding_box.IsInside2D(wmo->GetPosition().coords))
-		{
-			active_wmos.push_back(wmo);
-		}
-	}
 }
 
 void SquareArea::InitWMOs()
@@ -173,7 +265,7 @@ void SquareArea::InitWMOs()
 				}
 
 				WMORoot  wmo_root = WMORoot(wmo_info.filename);
-				WMO * wmo =new  WMO(wmo_root, wmo_info.modf.UniqueId, Position(wmo_info.modf.Position, wmo_info.modf.Rotation));
+				WMO * wmo = new  WMO(wmo_root, wmo_info.modf.UniqueId, Position(wmo_info.modf.Position, wmo_info.modf.Rotation));
 				wmos.push_back(wmo);
 			}
 		}
@@ -198,7 +290,7 @@ void SquareArea::InitWMOs()
 	{
 		cout << " Init Old" << endl;
 		delete old_wmo;
-		
+
 	}
 	old_wmos.clear();
 	for (auto wmo : wmos)
@@ -243,13 +335,11 @@ void SquareArea::InitDoodads()
 				//M2 * m2 = new M2(m2_info.file);
 				//Doodad * doodad = new Doodad;
 				Doodad * doodad = new Doodad(m2_info.file, m2_info.mddf.UniqueId, Position(m2_info.mddf.Position, m2_info.mddf.Rotation), m2_info.mddf.Scale);
-				//AsyncLoader::Load<Doodad>(doodad, m2_info.file, m2_info.mddf.UniqueId, Position(m2_info.mddf.Position, m2_info.mddf.Rotation), m2_info.mddf.Scale);
 				doodads.push_back(doodad);
 				//delete m2;
 			}
 		}
 	}
-	AsyncLoader::WaitForAllStop();
 	int count = 0;
 	for (auto doodad : doodads)
 	{

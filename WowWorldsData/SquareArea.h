@@ -56,6 +56,8 @@ public:
 	vector<WowObjectAvatar*> * GetWowAvatars() {return &wow_object_avatars;}
 	void AddWowObjectAvatar(Wow::WowObject* object);
 	void InitActiveObjects();
+	void ToMesh();
+	void InitBoundingBox();
 
 
 };
