@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "WMO.h"
+
 
 
 WMO::WMO(WMORoot & root, unsigned uuid, Position position):uuid(uuid),position(std::move(position))

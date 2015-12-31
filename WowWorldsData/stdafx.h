@@ -23,8 +23,9 @@
 #include "Model.h"
 #include "WMORoot.h"
 #include "WMOGroup.h"
-#include "WMOPart.h"
 #include "WMO.h"
+#include "WMOPart.h"
+
 #include "WMOStructs.h"
 #include "WowObjectAvatar.h"
 

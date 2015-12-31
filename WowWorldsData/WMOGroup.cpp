@@ -1,13 +1,13 @@
 #include "WMOGroup.h"
 #include "stdafx.h"
 
-WMOGroup::WMOGroup(string filename) :filename(filename)
+WMOGroup::WMOGroup(string filename) :filename(std::move(filename))
 {
 	indices = 0;
 	vertices = 0;
-	BinaryReader reader = BinaryReader(filename);
+	BinaryReader reader = BinaryReader(this->filename);
 	if (!reader.IsFileExist())
-		throw exception((filename + "\nWMO file not exist").c_str());
+		throw exception((this->filename + "\nWMO file not exist").c_str());
 	MOGP header;
 	if (!ChunkedData::SeekChunk(reader, ChunkSignatures::WMOSignature::GroupSignatures::Mogp))
 		return;

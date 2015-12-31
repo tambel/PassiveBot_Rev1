@@ -16,7 +16,7 @@ WMOPart::WMOPart(WMOGroup & group, WMO & wmo)
 			vertices[i].color = Utils::Graphics::Color(1.0f, 0.0f, 1.0f, 1.0f);
 	}
 	indices = group.indices;
-	group.indices = 0;
+	group.indices = nullptr;
 }
 
 WMOPart::WMOPart(WMOPart && right):filename(std::move(right.filename))
