@@ -211,6 +211,126 @@ void SquareArea::ToMesh()
 
 }
 
+//Model<unsigned> SquareArea::ToSoloModel()
+//{
+//	Model<unsigned> model = Model<unsigned>();
+//	float * vert;
+//	unsigned * ind;
+//	unsigned long v_count = 0;
+//	unsigned long i_count = 0;
+//	for (int i = 0; i < area_size; i++)
+//	{
+//		for (int j = 0; j < area_size; j++)
+//		{
+//			v_count += chunks[i][j]->GetVertexCount();
+//			i_count += chunks[i][j]->GetIndexCount();
+//		}
+//	}
+//	for (auto doodad : active_doodads)
+//	{
+//		v_count += doodad->GetVertexCount();
+//		i_count += doodad->GetIndexCount();
+//
+//	}
+//	for (auto wmo : active_wmos)
+//	{
+//		for (auto &part : wmo->GetParts())
+//		{
+//			v_count += part.GetVertexCount();
+//			i_count += part.GetIndexCount();
+//		}
+//	}
+//	vert = new float[v_count * 3];
+//	ind = new unsigned[i_count];
+//	unsigned long vert_offset = 0;
+//	Vector3 vect;
+//	for (int i = 0; i < area_size; i++)
+//	{
+//		for (int j = 0; j < area_size; j++)
+//		{
+//
+//			for (int vi = 0; vi < chunks[i][j]->GetVertexCount(); vi++)
+//			{
+//				vect = chunks[i][j]->GetRealPosition() - this->bounding_box.up + chunks[i][j]->GetVertices()[vi].position;
+//				vert[vert_offset] = vect.x;
+//				vert[vert_offset+1] = vect.y;
+//				vert[vert_offset+2] = vect.z;
+//				vert_offset += 3;
+//			}
+//
+//		}
+//	}
+//	for (auto doodad : active_doodads)
+//	{
+//		for (int vi = 0; vi < doodad->GetVertexCount(); vi++)
+//		{
+//			vect = doodad->GetPosition().coords - this->bounding_box.up + doodad->GetVertices()[vi].position;
+//			vert[vert_offset] = vect.x;
+//			vert[vert_offset + 1] = vect.y;
+//			vert[vert_offset + 2] = vect.z;
+//			vert_offset += 3;
+//		}
+//	}
+//	for (auto wmo : active_wmos)
+//	{
+//		for (auto &part : wmo->GetParts())
+//		{
+//
+//			for (int vi = 0; vi < part.GetVertexCount(); vi++)
+//			{
+//				vect = wmo->GetPosition().coords - this->bounding_box.up + part.GetVertices()[vi].position;
+//				vert[vert_offset] = vect.x;
+//				vert[vert_offset + 1] = vect.y;
+//				vert[vert_offset + 2] = vect.z;
+//				vert_offset += 3;
+//
+//			}
+//		}
+//	}
+//	unsigned long ind_offset=0;
+//	vert_offset = 0;
+//	for (int i = 0; i < area_size; i++)
+//	{
+//		for (int j = 0; j < area_size; j++)
+//		{
+//			for (unsigned long ii = 0; ii < chunks[i][j]->GetIndexCount(); ii += 3)
+//			{
+//				ind[ind_offset] = chunks[i][j]->GetIndices()[ii + 2] + 1+vert_offset;
+//				ind[ind_offset+1] = chunks[i][j]->GetIndices()[ii + 2] + 1 + vert_offset;
+//				ind[ind_offset+2] = chunks[i][j]->GetIndices()[ii + 2] + 1 + vert_offset;
+//				ind_offset += 3;
+//			}
+//			vert_offset += chunks[i][j]->GetVertexCount();
+//		}
+//	}
+//	for (auto doodad : active_doodads)
+//	{
+//		for (unsigned long ii = 0; ii < doodad->GetIndexCount(); ii += 3)
+//		{
+//			ind[ind_offset] = doodad->GetIndices()[ii + 2] + 1 + vert_offset;
+//			ind[ind_offset + 1] = doodad->GetIndices()[ii + 2] + 1 + vert_offset;
+//			ind[ind_offset + 2] = doodad->GetIndices()[ii + 2] + 1 + vert_offset;
+//			ind_offset += 3;
+//		}
+//		vert_offset += doodad->GetVertexCount();
+//	}
+//	for (auto wmo : active_wmos)
+//	{
+//		for (auto &part : wmo->GetParts())
+//		{
+//			for (unsigned long ii = 0; ii < part.GetIndexCount(); ii += 3)
+//			{
+//				ind[ind_offset] = part.GetIndices()[ii + 2] + 1 + vert_offset;
+//				ind[ind_offset + 1] = part.GetIndices()[ii + 2] + 1 + vert_offset;
+//				ind[ind_offset + 2] = part.GetIndices()[ii + 2] + 1 + vert_offset;
+//				ind_offset += 3;
+//			}
+//			vert_offset += part.GetVertexCount();
+//		}
+//	}
+//	return model;
+//}
+
 void SquareArea::InitBoundingBox()
 {
 	bounding_box.up.x = 99999.0f;

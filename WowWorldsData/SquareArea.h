@@ -57,7 +57,9 @@ public:
 	void AddWowObjectAvatar(Wow::WowObject* object);
 	void InitActiveObjects();
 	void ToMesh();
+	Model<unsigned> ToSoloModel();
 	void InitBoundingBox();
+	Utils::Graphics::BoundingBox & GetBoundingBox() { return bounding_box; }
 
 
 };

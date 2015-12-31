@@ -13,7 +13,11 @@ class MapFrame: public Window
 	vector<Renderable*> doodads;
 	vector<Renderable*> wmos;
 	vector<Renderable*> additional_objects;
+	Ogre::SceneNode * navmesh;
+	rcPolyMesh  mesh;
+	
 public:
+	PATHDATA * m_PathStore;
 	MapFrame(void);
 	~MapFrame(void);
 	void createScene();
@@ -25,5 +29,8 @@ public:
 	void InitDoodads();
 	void InitWMOs();
 	void InitAdditionalObjects();
+	void SetNavMesh(const struct rcPolyMesh& mesh);
+	void createNavMesh();
+	void createRecastPathLine(int nPathSlot/*, PATHDATA * m_PathStore*/);
 };
 

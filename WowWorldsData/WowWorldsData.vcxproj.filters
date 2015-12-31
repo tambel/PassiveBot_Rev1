@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Navigation">
+      <UniqueIdentifier>{5655f2ec-5a68-4d0b-ac07-44e00827d68a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -90,8 +93,8 @@
     <ClInclude Include="WMOPart.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="AsyncLoader.h">
-      <Filter>Заголовочные файлы</Filter>
+    <ClInclude Include="Navigation.h">
+      <Filter>Navigation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -155,8 +158,8 @@
     <ClCompile Include="Model.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="AsyncLoader.cpp">
-      <Filter>Файлы исходного кода</Filter>
+    <ClCompile Include="Navigation.cpp">
+      <Filter>Navigation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

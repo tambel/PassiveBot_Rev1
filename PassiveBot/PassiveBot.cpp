@@ -28,9 +28,18 @@ int main(int argc, wchar_t * argv[])
 	MapFrame * frame2 = new MapFrame();
 	//trool vilage 33,41
 	//orgrimmar 28 40
-	SquareArea * area2 = new SquareArea(Game::LocationBase::Get("Kalimdor"), Point2D<int>(28, 40), Point2D<int>(10, 3),9);
+	SquareArea * area2 = new SquareArea(Game::LocationBase::Get("Kalimdor"), Point2D<int>(34, 32), Point2D<int>(10, 3),9);
 	area2->ToMesh();
+	Navigation nav = Navigation();
+	nav.SetArea(*area2);
+	nav.BuildNavMesh();
+	int k=nav.FindPath(Vector3(5.0f, 5.0f, -33.34f), Vector3(80.0f, 15.0f, 70.34f), 0, 0);
+	cout << k << endl;
+	frame2->m_PathStore = nav.m_PathStore;
 	frame2->SetArea(area2);
+	frame2->SetNavMesh(*nav.result_mesh);
+	
+	
 	frame2->go();
 
 	

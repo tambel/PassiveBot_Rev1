@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include <algorithm>
-
+#include "Recast.h"
+#include "Sample.h"
+#include "DetourNavMesh.h" 
+#include "DetourNavMeshQuery.h" 
 MapFrame::MapFrame(void)
 {
 	chunks = vector<Renderable*>();
@@ -16,7 +19,10 @@ MapFrame::~MapFrame(void)
 }
 void MapFrame::createScene()
 {
+	
+
 	area_scene = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+	
 	area_scene->setPosition(Ogre::Vector3(0, 0, 0));
 	//area_scene->rotate(Ogre::Vector3(0,0,1),Ogre::Radian(Ogre::Degree(90)),Ogre::Node::TS_LOCAL);
 	if (!area->busy)
@@ -30,8 +36,13 @@ void MapFrame::createScene()
 			InitWMOs();
 		}
 		mCamera->setPosition(Vector3ToOgreVector(area->GetChunks()[0][0]->GetRealPosition()));
+		//mCamera->setPosition(0,0,0);
 		area->busy = false;
+		createNavMesh();
+		createRecastPathLine(0);
 	}
+
+	
 }
 
 void MapFrame::InitTerrain()
@@ -238,4 +249,184 @@ void MapFrame::InitAdditionalObjects()
 	}
 	if (has_killed)
 		additional_objects.erase(remove(additional_objects.begin(), additional_objects.end(), (Renderable*)0), additional_objects.end());
+}
+
+void MapFrame::SetNavMesh(const struct rcPolyMesh& mesh)
+{
+	this->mesh = mesh;
+
+}
+
+void MapFrame::createNavMesh()
+{
+	const int nvp = mesh.nvp;
+	const float cs = mesh.cs;
+	const float ch = mesh.ch;
+	const float* orig = mesh.bmin;
+
+	int m_flDataX = mesh.npolys;
+	int m_flDataY = mesh.nverts;
+
+	// create scenenodes
+	Ogre::SceneNode * m_pRecastSN = mSceneMgr->getRootSceneNode()->createChildSceneNode("RecastSN");
+
+	int nIndex = 0;
+	int m_nAreaCount = mesh.npolys;
+
+
+	if (m_nAreaCount)
+	{
+
+		// start defining the manualObject
+		Ogre::ManualObject *m_pRecastMOWalk = mSceneMgr->createManualObject("RecastMOWalk");
+		m_pRecastMOWalk->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_LIST);
+		for (int i = 0; i < mesh.npolys; ++i) // go through all polygons
+			if (mesh.areas[i] == 0)
+			{
+				const unsigned short* p = &mesh.polys[i*nvp * 2];
+
+				unsigned short vi[3];
+				for (int j = 2; j < nvp; ++j) // go through all verts in the polygon
+				{
+					if (p[j] == RC_MESH_NULL_IDX) break;
+					vi[0] = p[0];
+					vi[1] = p[j - 1];
+					vi[2] = p[j];
+					for (int k = 0; k < 3; ++k) // create a 3-vert triangle for each 3 verts in the polygon.
+					{
+						const unsigned short* v = &mesh.verts[vi[k] * 3];
+						const float x = orig[0] + v[0] * cs;
+						const float y = orig[1] + (v[1] + 1)*ch;
+						const float z = orig[2] + v[2] * cs;
+
+						m_pRecastMOWalk->position(x, z, y);
+						if (mesh.areas[i] == 0)
+							m_pRecastMOWalk->colour(0, 1, 0, 1);
+						else
+							m_pRecastMOWalk->colour(0, 1, 1,1);
+
+					}
+					//m_pRecastMOWalk->triangle(nIndex, nIndex + 1, nIndex + 2);
+					m_pRecastMOWalk->index(nIndex+2);
+					m_pRecastMOWalk->index(nIndex+1);
+					m_pRecastMOWalk->index(nIndex);
+					nIndex += 3;
+				}
+			}
+		m_pRecastMOWalk->end();
+		
+		m_pRecastSN = area_scene->createChildSceneNode();
+		m_pRecastSN->attachObject(m_pRecastMOWalk);
+		m_pRecastSN->setPosition(Vector3ToOgreVector( area->GetBoundingBox().up));
+		m_pRecastSN->setPosition(m_pRecastSN->getPosition().x, m_pRecastSN->getPosition().y, m_pRecastSN->getPosition().z);
+
+
+
+		Ogre::ManualObject*  m_pRecastMONeighbour = mSceneMgr->createManualObject("RecastMONeighbour");
+		m_pRecastMONeighbour->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_LIST);
+
+		for (int i = 0; i < mesh.npolys; ++i)
+		{
+			const unsigned short* p = &mesh.polys[i*nvp * 2];
+			for (int j = 0; j < nvp; ++j)
+			{
+				if (p[j] == RC_MESH_NULL_IDX) break;
+				if (p[nvp + j] == RC_MESH_NULL_IDX) continue;
+				int vi[2];
+				vi[0] = p[j];
+				if (j + 1 >= nvp || p[j + 1] == RC_MESH_NULL_IDX)
+					vi[1] = p[0];
+				else
+					vi[1] = p[j + 1];
+				for (int k = 0; k < 2; ++k)
+				{
+					const unsigned short* v = &mesh.verts[vi[k] * 3];
+					const float x = orig[0] + v[0] * cs;
+					const float y = orig[1] + (v[1] + 1)*ch + 0.1f;
+					const float z = orig[2] + v[2] * cs;
+					//dd->vertex(x, y, z, coln);
+					m_pRecastMONeighbour->position(x, z, y);
+					m_pRecastMONeighbour->colour(1, 1, 1);
+
+				}
+			}
+		}
+
+		m_pRecastMONeighbour->end();
+	//	m_pRecastSN->attachObject(m_pRecastMONeighbour);
+		/*Ogre::SceneNode * */m_pRecastSN = area_scene->createChildSceneNode();
+		m_pRecastSN->attachObject(m_pRecastMONeighbour);
+		//m_pRecastSN->setPosition(Vector3ToOgreVector(area->GetBoundingBox().up));
+
+		Ogre::ManualObject * m_pRecastMOBoundary = mSceneMgr->createManualObject("RecastMOBoundary");
+		m_pRecastMOBoundary->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_LIST);
+
+		for (int i = 0; i < mesh.npolys; ++i)
+		{
+			const unsigned short* p = &mesh.polys[i*nvp * 2];
+			for (int j = 0; j < nvp; ++j)
+			{
+				if (p[j] == RC_MESH_NULL_IDX) break;
+				if (p[nvp + j] != RC_MESH_NULL_IDX) continue;
+				int vi[2];
+				vi[0] = p[j];
+				if (j + 1 >= nvp || p[j + 1] == RC_MESH_NULL_IDX)
+					vi[1] = p[0];
+				else
+					vi[1] = p[j + 1];
+				for (int k = 0; k < 2; ++k)
+				{
+					const unsigned short* v = &mesh.verts[vi[k] * 3];
+					const float x = orig[0] + v[0] * cs;
+					const float y = orig[1] + (v[1] + 1)*ch + 0.1f;
+					const float z = orig[2] + v[2] * cs;
+					//dd->vertex(x, y, z, colb);
+
+					m_pRecastMOBoundary->position(x, z +0.25, y);
+					m_pRecastMOBoundary->colour(0, 0, 0);
+				}
+			}
+		}
+
+		m_pRecastMOBoundary->end();
+		//m_pRecastSN->attachObject(m_pRecastMOBoundary);
+		//Ogre::SceneNode * s2 = area_scene->createChildSceneNode();
+		m_pRecastSN->attachObject(m_pRecastMOBoundary);
+		m_pRecastSN->setPosition(Vector3ToOgreVector(area->GetBoundingBox().up));
+
+	}
+}
+
+void MapFrame::createRecastPathLine(int nPathSlot/*, PATHDATA *m_PathStore*/)
+{
+	Ogre::ManualObject* m_pRecastMOPath;
+	Ogre::SceneNode*      m_pRecastSN = area_scene->createChildSceneNode();
+	/*if (m_pRecastMOPath)
+	{
+		m_pRecastSN->detachObject("RecastMOPath");
+		mSceneMgr->destroyManualObject(m_pRecastMOPath);
+		m_pRecastMOPath = NULL;
+	}*/
+
+
+	m_pRecastMOPath = mSceneMgr->createManualObject("RecastMOPath");
+	m_pRecastMOPath->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_STRIP);
+
+
+	int nVertCount = m_PathStore[nPathSlot].MaxVertex;
+	for (int nVert = 0; nVert<nVertCount; nVert++)
+	{
+		m_pRecastMOPath->position(m_PathStore[nPathSlot].PosX[nVert], m_PathStore[nPathSlot].PosZ[nVert] + 8.0f, m_PathStore[nPathSlot].PosY[nVert]+5);
+		m_pRecastMOPath->colour(1, 1, 0);
+
+		//sprintf(m_chBug, "Line Vert %i, %f %f %f", nVert, m_PathStore[nPathSlot].PosX[nVert], m_PathStore[nPathSlot].PosY[nVert], m_PathStore[nPathSlot].PosZ[nVert]) ;
+		//m_pLog->logMessage(m_chBug);
+	}
+
+
+
+
+	m_pRecastMOPath->end();
+	m_pRecastSN->attachObject(m_pRecastMOPath);
+	m_pRecastSN->setPosition(Vector3ToOgreVector(area->GetBoundingBox().up));
 }

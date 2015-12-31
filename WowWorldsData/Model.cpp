@@ -37,6 +37,7 @@ ModelVertBase & ModelVertBase::operator=(ModelVertBase && right)
 	return *this;
 }
 
+
 void ModelVertBase::Rotate()
 {
 		

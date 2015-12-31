@@ -2,6 +2,8 @@
 #include "Utils.h"
 
 using namespace Utils;
+
+
 class ModelVertBase
 {
 	
@@ -71,7 +73,13 @@ public:
 	{
 
 	}
+	Model(Model&) = delete;
+	Model & operator=(Model &) = delete;
 	~Model(void)
+	{
+
+	}
+	Model(Model && right)
 	{
 
 	}
