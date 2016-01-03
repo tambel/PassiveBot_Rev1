@@ -15,6 +15,7 @@
 #include "ADTCache.h"
 #include "ADTStructs.h"
 #include "ADTWorker.h"
+#include "Navigation.h"
 #include "Chunk.h"
 #include "ChunkCache.h"
 #include "ChunkedData.h"
@@ -29,7 +30,6 @@
 #include "WMOStructs.h"
 #include "WowObjectAvatar.h"
 
-#include "Navigation.h"
 
 #define WIN32_LEAN_AND_MEAN             // Исключите редко используемые компоненты из заголовков Windows
 

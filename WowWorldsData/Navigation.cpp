@@ -134,25 +134,22 @@ void Navigation::SetArea(SquareArea & area)
 			vert_offset += part.GetVertexCount();
 		}
 	}
-	ofstream myfile;
-	myfile.open("example.obj");
-
-	for (unsigned i = 0; i < vert_count * 3; i += 3)
-	{
-		myfile << "v " << vertices[i] << " " << vertices[i + 1] << " " << vertices[i + 2] << endl;
-
-	}
-	for (unsigned i = 0; i < ind_count; i += 3)
-	{
-		myfile << "f " << indices[i] << " " << indices[i + 1] << " " << indices[i + 2] << endl;
-
-	}
-	myfile.close();
+	BuildNavMesh();
+	delete[] vertices;
+	delete[] indices;
+	vertices = 0;
+	indices = 0;
+	vert_count = 0;
+	ind_count = 0;
 }
 
 void Navigation::BuildNavMesh()
 {
-	delete result_mesh;
+
+
+
+
+	//delete result_mesh;
 	rcConfig m_cfg;
 	rcCompactHeightfield * m_chf;
 	rcContourSet * m_cset;
@@ -178,6 +175,11 @@ void Navigation::BuildNavMesh()
 	float m_detailSampleDist = 6.00000000;
 	float m_detailSampleMaxError = 1.00000000;
 	int m_partitionType = 0;
+	if (m_navQuery)
+	{
+		dtFreeNavMeshQuery(m_navQuery);
+		m_navQuery = 0;
+	}
 
 	m_cfg.cs = m_cellSize;
 	m_cfg.ch = m_cellHeight;
@@ -195,12 +197,8 @@ void Navigation::BuildNavMesh()
 
 
 
-
-
-
-
 	rcCalcBounds(vertices, vert_count, bmin, bmax);
-
+	
 	rcVcopy(m_cfg.bmin, bmin);
 	rcVcopy(m_cfg.bmax, bmax);
 	rcCalcGridSize(m_cfg.bmin, m_cfg.bmax, m_cfg.cs, &m_cfg.width, &m_cfg.height);
@@ -219,7 +217,13 @@ void Navigation::BuildNavMesh()
 	{
 		throw exception("buildNavigation: Could not create solid heightfield.");
 	}
-	m_triareas = new unsigned char[ntris];
+	try {
+		m_triareas = new unsigned char[ntris];
+	}
+	catch (std::exception e)
+	{
+
+	}
 	if (!m_triareas)
 	{
 		throw exception("buildNavigation: Out of memory 'm_triareas' (%d).", ntris);
@@ -404,6 +408,7 @@ void Navigation::BuildNavMesh()
 	}
 
 	m_ctx->stopTimer(RC_TIMER_TOTAL);
+	if (m_ctx) delete m_ctx;
 	result_mesh = m_pmesh;
 
 
@@ -458,22 +463,13 @@ int Navigation::FindPath(Vector3 & pStartPos, Vector3 & pEndPos, int nPathSlot, 
 	}
 	m_PathStore[nPathSlot].MaxVertex = nVertCount;
 	m_PathStore[nPathSlot].Target = nTarget;
-
 	return nVertCount;
 }
 
 
-
-
-
-
-Navigation::Navigation(float * vert, unsigned long vert_count, unsigned * ind, unsigned long ind_count)
-{
-	result_mesh = 0;
-}
-
 Navigation::Navigation()
 {
+	m_navQuery = 0;
 	result_mesh = 0;
 	vert_count = 0;
 	ind_count = 0;
@@ -481,7 +477,15 @@ Navigation::Navigation()
 
 Navigation::~Navigation()
 {
+	dtFreeNavMeshQuery(m_navQuery);
+	m_navQuery = 0;
+	delete result_mesh;
+	delete[] vertices;
+	delete[] indices;
+
 }
+
+
 
 Model<unsigned>* Navigation::GetModel()
 {

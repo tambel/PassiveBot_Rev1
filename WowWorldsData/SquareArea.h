@@ -14,6 +14,7 @@ struct ChunkInfo
 	Point2D<int> coordinates;
 	Vector3 position;
 	ChunkInfo();
+	
 	ChunkInfo(	Location * location, Point2D<int> block_coordinates,Point2D<int> coordinates,int radius);//:location(location),block_coordinates(block_coordinates),coordinates(coordinates){}
 };
 class SquareArea: public MapArea
@@ -21,6 +22,7 @@ class SquareArea: public MapArea
 	
 	//Chunk *** chunks;
 	//Chunk ***chunks;
+	Navigation navigation;
 	Chunk * chunks2[21][21];
 	int radius;
 	int area_size;
@@ -34,9 +36,7 @@ class SquareArea: public MapArea
 	vector<WMO*> wmos;
 	vector<WMO*> old_wmos;
 	vector<WMO*> active_wmos;
-	vector<WMO*> wmosp;
-	vector<WMO*> old_wmosp;
-	vector<WMO*> active_wmosp;
+
 	Utils::Graphics::BoundingBox bounding_box;
 	void InitWMOs();
 	void InitDoodads();
@@ -60,6 +60,7 @@ public:
 	Model<unsigned> ToSoloModel();
 	void InitBoundingBox();
 	Utils::Graphics::BoundingBox & GetBoundingBox() { return bounding_box; }
+	Navigation & Navigation() {	return navigation;}
 
 
 };

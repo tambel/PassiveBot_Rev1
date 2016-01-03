@@ -105,7 +105,11 @@ void MapFrame::OnUpdate()
 			area->to_update = false;
 			InitDoodads();
 			InitWMOs();
+			createNavMesh();
+			createRecastPathLine(0);
+
 		}
+
 		area->busy = false;
 	}
 	InitAdditionalObjects();
@@ -259,6 +263,8 @@ void MapFrame::SetNavMesh(const struct rcPolyMesh& mesh)
 
 void MapFrame::createNavMesh()
 {
+	Ogre::SceneNode * m_pRecastSN;
+	rcPolyMesh & mesh=*area->Navigation().result_mesh;
 	const int nvp = mesh.nvp;
 	const float cs = mesh.cs;
 	const float ch = mesh.ch;
@@ -268,7 +274,16 @@ void MapFrame::createNavMesh()
 	int m_flDataY = mesh.nverts;
 
 	// create scenenodes
-	Ogre::SceneNode * m_pRecastSN = mSceneMgr->getRootSceneNode()->createChildSceneNode("RecastSN");
+	try
+	{
+		m_pRecastSN = mSceneMgr->getSceneNode("RecastSN");
+		Ogre::SceneNode::ObjectIterator iter = m_pRecastSN->getAttachedObjectIterator();
+		mSceneMgr->destroyAllManualObjects();
+	}
+	catch (Ogre::Exception e)
+	{
+		m_pRecastSN = mSceneMgr->getRootSceneNode()->createChildSceneNode("RecastSN");
+	}
 
 	int nIndex = 0;
 	int m_nAreaCount = mesh.npolys;
@@ -399,6 +414,7 @@ void MapFrame::createNavMesh()
 
 void MapFrame::createRecastPathLine(int nPathSlot/*, PATHDATA *m_PathStore*/)
 {
+	PATHDATA * m_PathStore = area->Navigation().m_PathStore;
 	Ogre::ManualObject* m_pRecastMOPath;
 	Ogre::SceneNode*      m_pRecastSN = area_scene->createChildSceneNode();
 	/*if (m_pRecastMOPath)
@@ -416,8 +432,8 @@ void MapFrame::createRecastPathLine(int nPathSlot/*, PATHDATA *m_PathStore*/)
 	int nVertCount = m_PathStore[nPathSlot].MaxVertex;
 	for (int nVert = 0; nVert<nVertCount; nVert++)
 	{
-		m_pRecastMOPath->position(m_PathStore[nPathSlot].PosX[nVert], m_PathStore[nPathSlot].PosZ[nVert] + 8.0f, m_PathStore[nPathSlot].PosY[nVert]+5);
-		m_pRecastMOPath->colour(1, 1, 0);
+		m_pRecastMOPath->position(m_PathStore[nPathSlot].PosX[nVert], m_PathStore[nPathSlot].PosZ[nVert], m_PathStore[nPathSlot].PosY[nVert]);
+		m_pRecastMOPath->colour(1, 0, 0);
 
 		//sprintf(m_chBug, "Line Vert %i, %f %f %f", nVert, m_PathStore[nPathSlot].PosX[nVert], m_PathStore[nPathSlot].PosY[nVert], m_PathStore[nPathSlot].PosZ[nVert]) ;
 		//m_pLog->logMessage(m_chBug);
@@ -428,5 +444,6 @@ void MapFrame::createRecastPathLine(int nPathSlot/*, PATHDATA *m_PathStore*/)
 
 	m_pRecastMOPath->end();
 	m_pRecastSN->attachObject(m_pRecastMOPath);
-	m_pRecastSN->setPosition(Vector3ToOgreVector(area->GetBoundingBox().up));
+	//m_pRecastSN->setPosition(Vector3ToOgreVector(area->GetBoundingBox().up));
+	//m_pRecastSN->setPosition(m_pRecastSN->getPosition().x, m_pRecastSN->getPosition().z, m_pRecastSN->getPosition().y);
 }

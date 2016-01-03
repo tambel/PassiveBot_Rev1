@@ -2,6 +2,7 @@
 #include <algorithm>
 SquareArea::SquareArea(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius) :location(location), block_coordinates(block_coordinates), coordinates(coordinates), radius(radius)
 {
+	navigation = Navigation();
 	area_size = radius * 2 + 1;
 	chunks = new Chunk**[area_size];
 	doodads = vector<Doodad*>();
@@ -23,11 +24,14 @@ SquareArea::SquareArea(Location * location, Point2D<int> block_coordinates, Poin
 	Fill(location, block_coordinates, coordinates);
 	InitObjects();
 	InitActiveObjects();
+	InitBoundingBox();
+	navigation.SetArea(*this);
 }
 
 
 SquareArea::~SquareArea(void)
 {
+
 }
 
 void SquareArea::Fill(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
@@ -50,6 +54,7 @@ void SquareArea::Fill(Location * location, Point2D<int> block_coordinates, Point
 	}
 	InitBoundingBox();
 
+
 }
 
 void SquareArea::Move(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
@@ -67,6 +72,7 @@ void SquareArea::Move(Location * location, Point2D<int> block_coordinates, Point
 			if (block_changed)
 				InitObjects();
 			InitActiveObjects();
+			navigation.SetArea(*this);
 			to_update = true;
 			busy = false;
 		}
@@ -335,10 +341,13 @@ void SquareArea::InitBoundingBox()
 {
 	bounding_box.up.x = 99999.0f;
 	bounding_box.up.y = 99999.0f;
+	bounding_box.down.x = -99999.0f;
+	bounding_box.down.y = -99999.0f;
 	for (int i = 0; i < area_size; i++)
 	{
 		for (int j = 0; j < area_size; j++)
 		{
+			/*
 			if (bounding_box.up.x > chunks[i][j]->GetRealPosition().x)
 			{
 				bounding_box.up.x = chunks[i][j]->GetRealPosition().x;
@@ -348,9 +357,52 @@ void SquareArea::InitBoundingBox()
 
 				bounding_box.up.y = chunks[i][j]->GetRealPosition().y;
 			}
+			*/
+			for (unsigned long vi = 0; vi < chunks[i][j]->GetVertexCount();vi++)
+			{
+				if (chunks[i][j]->GetVertices()[vi].position.x + chunks[i][j]->GetRealPosition().x< bounding_box.up.x)
+					bounding_box.up.x = chunks[i][j]->GetVertices()[vi].position.x + chunks[i][j]->GetRealPosition().x;
+				if (chunks[i][j]->GetVertices()[vi].position.y + chunks[i][j]->GetRealPosition().y < bounding_box.up.y)
+					bounding_box.up.y = chunks[i][j]->GetVertices()[vi].position.y + chunks[i][j]->GetRealPosition().y;
+				if (chunks[i][j]->GetVertices()[vi].position.x + chunks[i][j]->GetRealPosition().x > bounding_box.down.x)
+					bounding_box.down.x = chunks[i][j]->GetVertices()[vi].position.x + chunks[i][j]->GetRealPosition().x;
+				if (chunks[i][j]->GetVertices()[vi].position.y + chunks[i][j]->GetRealPosition().y> bounding_box.down.y)
+					bounding_box.down.y = chunks[i][j]->GetVertices()[vi].position.y + chunks[i][j]->GetRealPosition().y;
+			}
+
 		}
 	}
-	bounding_box.down = bounding_box.up + Vector3(area_size*Metrics::ChunkSize, area_size*Metrics::ChunkSize, 0);
+	for (auto doodad : active_doodads)
+	{
+		for (unsigned long vi = 0; vi < doodad->GetVertexCount(); vi++)
+		{
+			if (doodad->GetVertices()[vi].position.x+doodad->GetPosition().coords.x < bounding_box.up.x)
+				bounding_box.up.x = doodad->GetVertices()[vi].position.x+doodad->GetPosition().coords.x;
+			if (doodad->GetVertices()[vi].position.y+ doodad->GetPosition().coords.y < bounding_box.up.y)
+				bounding_box.up.y = doodad->GetVertices()[vi].position.y + doodad->GetPosition().coords.y;
+			if (doodad->GetVertices()[vi].position.x + doodad->GetPosition().coords.x > bounding_box.down.x)
+				bounding_box.down.x = doodad->GetVertices()[vi].position.x + doodad->GetPosition().coords.x;
+			if (doodad->GetVertices()[vi].position.y + doodad->GetPosition().coords.y> bounding_box.down.y)
+				bounding_box.down.y = doodad->GetVertices()[vi].position.y + doodad->GetPosition().coords.y;
+		}
+	}
+	for (auto wmo : active_wmos)
+	{
+		for (auto &part:wmo->GetParts())
+			for (unsigned long vi = 0; vi < part.GetVertexCount(); vi++)
+			{
+				if (part.GetVertices()[vi].position.x + wmo->GetPosition().coords.x< bounding_box.up.x)
+					bounding_box.up.x = part.GetVertices()[vi].position.x + wmo->GetPosition().coords.x;
+				if (part.GetVertices()[vi].position.y + wmo->GetPosition().coords.y< bounding_box.up.y)
+					bounding_box.up.y = part.GetVertices()[vi].position.y + wmo->GetPosition().coords.y;
+				if (part.GetVertices()[vi].position.x + wmo->GetPosition().coords.x> bounding_box.down.x)
+					bounding_box.down.x = part.GetVertices()[vi].position.x + wmo->GetPosition().coords.x;
+				if (part.GetVertices()[vi].position.y + wmo->GetPosition().coords.y> bounding_box.down.y)
+					bounding_box.down.y = part.GetVertices()[vi].position.y + wmo->GetPosition().coords.y;
+			}
+	}
+	///bounding_box.down = bounding_box.up + Vector3(area_size*Metrics::ChunkSize, area_size*Metrics::ChunkSize, 0);
+
 }
 
 void SquareArea::InitWMOs()
@@ -417,6 +469,7 @@ void SquareArea::InitWMOs()
 	{
 		old_wmos.push_back(wmo);
 	}
+	
 }
 
 void SquareArea::InitDoodads()

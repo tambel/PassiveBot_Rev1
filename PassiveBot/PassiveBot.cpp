@@ -3,7 +3,8 @@
 
 #include "stdafx.h"
 #include <iostream>
-#include "boost\thread\thread.hpp"
+//#include "boost\thread\thread.hpp"
+#include <thread>
 using namespace std;
 using namespace Wow;
 using namespace Utils;
@@ -25,9 +26,11 @@ int main(int argc, wchar_t * argv[])
 {
 	init_static();
 	setlocale( LC_ALL,"Russian" );
-	MapFrame * frame2 = new MapFrame();
+	
 	//trool vilage 33,41
 	//orgrimmar 28 40
+	
+	/*MapFrame * frame2 = new MapFrame();
 	SquareArea * area2 = new SquareArea(Game::LocationBase::Get("Kalimdor"), Point2D<int>(34, 32), Point2D<int>(10, 3),9);
 	area2->ToMesh();
 	Navigation nav = Navigation();
@@ -40,7 +43,7 @@ int main(int argc, wchar_t * argv[])
 	frame2->SetNavMesh(*nav.result_mesh);
 	
 	
-	frame2->go();
+	frame2->go();*/
 
 	
 
@@ -61,22 +64,43 @@ int main(int argc, wchar_t * argv[])
 	player->DumpPosition();
 	/*if (!Game::LocationBase::IsInitialized())
 		Game::LocationBase::Init();*/
-
+	Unit * unit = ObjectManager::FindUnitByName(L"Мишики");
 	MapFrame * frame=new MapFrame();
-	SquareArea * area=new SquareArea(Game::LocationBase::Get("Kalimdor"),Utils::WorldPositionToBlockCoords(player->GetPosition().coords),Utils::WorldPositionToChunkCoords(player->GetPosition().coords),9);//Point2D<int>(0,1),10);
+	SquareArea * area=new SquareArea(Game::LocationBase::Get("Kalimdor"),Utils::WorldPositionToBlockCoords(player->GetPosition().coords),Utils::WorldPositionToChunkCoords(player->GetPosition().coords),2);//Point2D<int>(0,1),10);
 	area->AddWowObjectAvatar(player);
-	frame->SetArea(area);
+	area->AddWowObjectAvatar(unit);
+	Vector3 coords = player->GetPosition().coords;
+	coords = Vector3(Metrics::MapMidPoint - coords.y, -(Metrics::MapMidPoint - coords.x), coords.z);
+	coords = coords - area->GetBoundingBox().up;
+	Vector3 ucoords = unit->GetPosition().coords;
+	ucoords = Vector3(Metrics::MapMidPoint - ucoords.y, -(Metrics::MapMidPoint - ucoords.x), ucoords.z);
+	ucoords = ucoords - area->GetBoundingBox().up;
+	int k;
+	k=area->Navigation().FindPath(Vector3(coords.x, coords.z, coords.y), Vector3(ucoords.x, ucoords.z, ucoords.y), 0, 0);
+	int nVertCount = area->Navigation().m_PathStore[0].MaxVertex;
+	for (int nVert = 0; nVert < nVertCount; nVert++)
+	{
+		area->Navigation().m_PathStore[0].PosX[nVert]+= area->GetBoundingBox().up.x;
+		area->Navigation().m_PathStore[0].PosY[nVert] += area->GetBoundingBox().up.z;
+		area->Navigation().m_PathStore[0].PosZ[nVert] += area->GetBoundingBox().up.y;
+			
 
-	boost::thread thread(workerFunc,frame,player->GetPosition());
-	thread.detach();
-	thread.join();
+	}
+	cout << k << endl;
+	//area->Navigation().FindPath(Vector3(5, 5, 30), Vector3(15, 15, 30), 0, 0);
+	frame->SetArea(area);
+	thread thread(workerFunc,frame,player->GetPosition());
+	thread.detach(); 
+
+
 	while (1)
 	{
 
 		area->Move(Game::LocationBase::Get("Kalimdor"),Utils::WorldPositionToBlockCoords(player->GetPosition().coords),Utils::WorldPositionToChunkCoords(player->GetPosition().coords));
 
+
 		//area=new SquareArea(Game::LocationBase::Get("Kalimdor"),Utils::WorldPositionToBlockCoords(player->GetPosition().coords),Utils::WorldPositionToChunkCoords(player->GetPosition().coords),10);//Point2D<int>(0,1),10);
-		cout << "UPDATED" << endl;
+		cout << "UPDATED " <<k<< endl;
 		Sleep(500);
 	}
 	return 0;
