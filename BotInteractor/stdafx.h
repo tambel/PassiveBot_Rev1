@@ -4,10 +4,10 @@
 //
 
 #pragma once
-#include "Memory.h"
-#include "BinaryReader.h"
-#include "Configuration.h"
-#include "Exceptions.h"
+#include "WowInteraction\stdafx.h"
+#include "WowWorldsData\stdafx.h"
+
+#include "BotInteractor.h"
 #include <string>
 #define WIN32_LEAN_AND_MEAN             // Исключите редко используемые компоненты из заголовков Windows
 

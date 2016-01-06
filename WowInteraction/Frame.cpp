@@ -7,8 +7,6 @@ namespace Wow
 	{
 		this->base=base;
 		parent=0;
-		name=0;
-		label_text=0;
 		bottom=-0xFFFF;
 		top=-0xFFFF;
 		left=-0xFFFF;
@@ -18,46 +16,29 @@ namespace Wow
 
 	Frame::~Frame(void)
 	{
-		if (name)
-		{
-			delete [] name;
-		}
-		if (label_text)
-		{
-			delete [] label_text;
-		}
 	}
-	char * Frame::GetName(bool refresh)
+	string & Frame::GetName(bool refresh)
 	{
-		if (!name || refresh)
+		if (name.length()==0|| refresh)
 		{
-			delete [] name;
-			name=Process::ReadASCII(Process::ReadUInt(base+WowOffsets::FrameManager::Name),0);
+			try
+			{
+				name = Process::ReadASCII(Process::Read<unsigned>(base + WowOffsets::FrameManager::Name), 0);
+			}
+			catch (MemoryReadException e)
+			{
+				name = "";
+			}
 		}
-		if (name)
-		{
-			return name;
-		}
-		else
-		{
-			return "NONE";
-		}
+		return name;
 	}
-	char * Frame::GetLabelText(bool refresh)
+	string & Frame::GetLabelText(bool refresh)
 	{
-		if (!label_text || refresh)
+		if ( refresh)
 		{
-			delete [] label_text;
-			label_text=Process::ReadASCII(Process::ReadUInt(base+WowOffsets::FrameManager::LabelText),0);
+			label_text=Process::ReadASCII(Process::Read<unsigned>(base+WowOffsets::FrameManager::LabelText),0);
 		}
-		if (label_text)
-		{
-			return label_text;
-		}
-		else
-		{
-			return "NONE";
-		}
+		return label_text;
 	}
 	unsigned Frame::GetBase()
 	{
@@ -71,7 +52,7 @@ namespace Wow
 	{
 		if (bottom==-0xFFFF || refresh)
 		{
-			bottom=Process::ReadFloat(base+WowOffsets::FrameManager::FrameBottom);
+			bottom=Process::Read<float>(base+WowOffsets::FrameManager::FrameBottom);
 		}
 		return bottom;
 	}
@@ -79,7 +60,7 @@ namespace Wow
 	{
 		if (top==-0xFFFF || refresh)
 		{
-			top=Process::ReadFloat(base+WowOffsets::FrameManager::FrameTop);
+			top=Process::Read<float>(base+WowOffsets::FrameManager::FrameTop);
 		}
 		return top;
 	}
@@ -87,7 +68,7 @@ namespace Wow
 	{
 		if (left==-0xFFFF || refresh)
 		{
-			left=Process::ReadFloat(base+WowOffsets::FrameManager::FrameLeft);
+			left=Process::Read<float>(base+WowOffsets::FrameManager::FrameLeft);
 		}
 		return left;
 	}
@@ -95,7 +76,7 @@ namespace Wow
 	{
 		if (right==-0xFFFF || refresh)
 		{
-			right=Process::ReadFloat(base+WowOffsets::FrameManager::FrameRight);
+			right=Process::Read<float>(base+WowOffsets::FrameManager::FrameRight);
 		}
 		return right;
 	}
@@ -103,7 +84,7 @@ namespace Wow
 	{
 		if (!parent)
 		{
-			unsigned parent_ptr=Process::ReadUInt(base+WowOffsets::FrameManager::ParentFrame);
+			unsigned parent_ptr=Process::Read<unsigned>(base+WowOffsets::FrameManager::ParentFrame);
 			parent= FrameManager::FindFrameByAddress(parent_ptr);
 		}
 		return parent;
@@ -124,7 +105,7 @@ namespace Wow
 	}
 	bool Frame::IsVisible()
 	{
-		char result=Process::ReadByte(base+WowOffsets::FrameManager::Visible);
+		char result=Process::Read<char>(base+WowOffsets::FrameManager::Visible);
 		if (result==1)
 		{
 			return true;

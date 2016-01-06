@@ -1,8 +1,12 @@
 #include "stdafx.h"
 #include <algorithm>
+SquareArea::SquareArea()
+{
+}
 SquareArea::SquareArea(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius) :location(location), block_coordinates(block_coordinates), coordinates(coordinates), radius(radius)
 {
-	navigation = Navigation();
+	busy = false;
+	navigation = move(Navigation());
 	area_size = radius * 2 + 1;
 	chunks = new Chunk**[area_size];
 	doodads = vector<Doodad*>();
@@ -32,6 +36,27 @@ SquareArea::SquareArea(Location * location, Point2D<int> block_coordinates, Poin
 SquareArea::~SquareArea(void)
 {
 
+}
+
+SquareArea & SquareArea::operator=(SquareArea && right)
+{
+	navigation = move(right.navigation);
+	wmos = move(right.wmos);
+	chunks = right.chunks;
+	radius = right.radius;
+	doodads = move(right.doodads);
+	old_wmos = move(right.old_wmos);
+	old_doodads = move(right.old_doodads);
+	active_wmos = move(right.active_wmos);
+	active_doodads = move(right.active_doodads);
+	area_size = right.area_size;
+	location = right.location;
+	block_coordinates = right.block_coordinates;
+	coordinates = right.coordinates;
+	bounding_box = right.bounding_box;
+	to_update = right.to_update;
+	busy = right.busy;
+	return *this;
 }
 
 void SquareArea::Fill(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)

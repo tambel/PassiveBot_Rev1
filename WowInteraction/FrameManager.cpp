@@ -20,14 +20,29 @@ namespace Wow
 	}
 	void FrameManager::EnumAllFrames()
 	{
+		unsigned base_frame;
+		unsigned current;
 		ClearFrames();
-		unsigned base_frame=Process::ReadRelUInt(WowOffsets::FrameManager::FrameBase);
-		unsigned current=Process::ReadUInt(base_frame+WowOffsets::FrameManager::FirstFrame);
+		try
+		{
+			 base_frame = Process::ReadRel<unsigned>(WowOffsets::FrameManager::FrameBase);
+			 current = Process::Read<unsigned>(base_frame + WowOffsets::FrameManager::FirstFrame);
+		}
+		catch (MemoryReadException e)
+		{
+			throw FrameEnumerationException();
+		}
 		while (current)
 		{
-			frames->push_back(new Frame(current));
-			current=Process::ReadUInt(current+Process::ReadUInt(base_frame+WowOffsets::FrameManager::NextFrame)+4);
-		
+			try
+			{
+				frames->push_back(new Frame(current));
+				current = Process::Read<unsigned>(current + Process::Read<unsigned>(base_frame + WowOffsets::FrameManager::NextFrame) + 4);
+			}
+			catch (MemoryReadException e)
+			{
+				break;
+			}
 		}
 	}
 	void FrameManager::DumpAllFramesNames()
@@ -54,7 +69,7 @@ namespace Wow
 		{
 			for (auto frame2:*frames)
 			{
-				parent_ptr=Process::ReadUInt(frame->GetBase()+WowOffsets::FrameManager::ParentFrame);
+				parent_ptr=Process::Read<unsigned>(frame->GetBase()+WowOffsets::FrameManager::ParentFrame);
 				if (parent_ptr==frame2->GetBase())
 				{
 					frame->SetParent(frame2);
@@ -67,7 +82,7 @@ namespace Wow
 	{
 		if (!screen_width || refresh)
 		{
-			screen_width=Process::ReadRelFloat(WowOffsets::FrameManager::ScrWidth);
+			screen_width=Process::ReadRel<float>(WowOffsets::FrameManager::ScrWidth);
 		}
 		return screen_width;
 	}
@@ -75,16 +90,16 @@ namespace Wow
 	{
 		if (!screen_heigth || refresh)
 		{
-			screen_heigth=Process::ReadRelFloat(WowOffsets::FrameManager::ScrHeight);
+			screen_heigth=Process::ReadRel<float>(WowOffsets::FrameManager::ScrHeight);
 		}
 		return screen_heigth;
 	}
-	Frame * FrameManager::FindFrameByName(const char * name)
+	Frame * FrameManager::FindFrameByName(const string &  name)
 	{
 		EnumAllFrames();
 		for (auto frame:*frames)
 		{
-			if (strcmp(frame->GetName(),name)==0)
+			if (frame->GetName()==name)
 			{
 				
 				return frame;

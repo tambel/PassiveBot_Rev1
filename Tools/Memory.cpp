@@ -35,8 +35,10 @@ namespace Tools
 			PressKeyboardButton(button,interval);
 		}
 	}
-	void Process::TypeByKeyboard(char * string)
+	void Process::TypeByKeyboard(string & str)
 	{
+		char * string = new char[str.length()+1];
+		strcpy(string, str.c_str());
 		unsigned additional_key=0;
 		unsigned short key;
 		while(*string)

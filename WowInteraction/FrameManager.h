@@ -18,7 +18,7 @@ namespace Wow
 		static void ClearFrames();
 		static float GetScreenWidth(bool refresh=false);
 		static float GetScreenHeigth(bool refresh=false);
-		static Frame * FindFrameByName(const char * name);
+		static Frame * FindFrameByName(const string & name);
 		static Frame * FindFrameByAddress(unsigned address);
 	};
 }

@@ -17,13 +17,11 @@ struct ChunkInfo
 	
 	ChunkInfo(	Location * location, Point2D<int> block_coordinates,Point2D<int> coordinates,int radius);//:location(location),block_coordinates(block_coordinates),coordinates(coordinates){}
 };
-class SquareArea: public MapArea
+class SquareArea
 {
-	
-	//Chunk *** chunks;
-	//Chunk ***chunks;
+
 	Navigation navigation;
-	Chunk * chunks2[21][21];
+	Chunk *** chunks;
 	int radius;
 	int area_size;
 	Location * location;
@@ -40,14 +38,19 @@ class SquareArea: public MapArea
 	Utils::Graphics::BoundingBox bounding_box;
 	void InitWMOs();
 	void InitDoodads();
+	bool nav_mesh_ready;
 
 public:
 	bool to_update;
+	bool busy;
+	SquareArea();
 	SquareArea(Location * location, Point2D<int> block_coordinates,Point2D<int> coordinates,int radius);
 	~SquareArea(void);
+	SquareArea & operator=(SquareArea && right);
 	void Fill(Location * location, Point2D<int> block_coordinates,Point2D<int> coordinates);
 	void Move(Location * location, Point2D<int> block_coordinates,Point2D<int> coordinates);
 	int GetRadius() {return radius;}
+	Chunk *** GetChunks() { return chunks; }
 	void InitObjects();
 	vector<Doodad*> * GetDoodads() {return &doodads;}
 	vector<Doodad*> * GetActiveDoodas() {return &active_doodads;}
@@ -57,7 +60,6 @@ public:
 	void AddWowObjectAvatar(Wow::WowObject* object);
 	void InitActiveObjects();
 	void ToMesh();
-	Model<unsigned> ToSoloModel();
 	void InitBoundingBox();
 	Utils::Graphics::BoundingBox & GetBoundingBox() { return bounding_box; }
 	Navigation & Navigation() {	return navigation;}

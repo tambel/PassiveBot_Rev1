@@ -9,7 +9,7 @@ namespace Wow
 	GameInteractor::~GameInteractor(void)
 	{
 	}
-	bool GameInteractor::Login(char * login, char * password)
+	bool GameInteractor::Login(string & login, string  & password)
 	{
 		cout<<"Logging in"<<endl;
 		FrameManager::EnumAllFrames();
@@ -71,7 +71,7 @@ namespace Wow
 	}
 	bool GameInteractor::IsLoaded()
 	{
-		return Process::ReadRelBool(WowOffsets::Client::Loaded); 
+		return Process::ReadRel<char>(WowOffsets::Client::Loaded); 
 	}
 	bool GameInteractor::IsCharacterSelecting()
 	{
@@ -91,6 +91,8 @@ namespace Wow
 	}
 	bool GameInteractor::IsLoggingIn()
 	{
+		if (isWorldLoading())
+			return false;
 		FrameManager::EnumAllFrames();
 		Frame * email_frame= FrameManager::FindFrameByName("AccountLoginAccountEdit");
 		if (!email_frame)
@@ -132,13 +134,13 @@ namespace Wow
 	{
 		cout<<"Waiting for client authentification..."<<endl;
 		unsigned attempts=0;
-		while(Process::ReadRelBool(WowOffsets::Client::Unavalible) && attempts<6000 )
+		while(Process::ReadRel<char>(WowOffsets::Client::Unavalible) && attempts<6000 )
 		{
 			Sleep(10);
 			attempts++;
 		}
 		Sleep(10000);
-		if (!Process::ReadRelBool(WowOffsets::Client::Unavalible))
+		if (!Process::ReadRel<char>(WowOffsets::Client::Unavalible))
 		{
 			cout<<"Done"<<endl;
 			return true;
@@ -187,12 +189,12 @@ namespace Wow
 		vector<unsigned> u2=vector<unsigned>();
 		for (unsigned i=0;i<1000;i+=4)
 		{
-			u.push_back(Process::ReadUInt(frame1->GetBase()+i));
+			u.push_back(Process::Read<unsigned>(frame1->GetBase()+i));
 		}
 		Sleep(7000);
 		for (unsigned i=0;i<1000;i+=4)
 		{
-			u2.push_back(Process::ReadUInt(frame1->GetBase()+i));
+			u2.push_back(Process::Read<unsigned>(frame1->GetBase()+i));
 		}
 		Frame *frame2=FrameManager::FindFrameByName("CharSelectAccountUpgradePanelFeature3");
 		Frame *frame3=FrameManager::FindFrameByName("StarterEditionPopUpFeature2");
@@ -203,27 +205,25 @@ namespace Wow
 		bool y=frame5->IsVisible();
 
 	}
-	bool GameInteractor::SelectCharacter(wchar_t * name)
+	bool GameInteractor::SelectCharacter(wstring & name)
 	{
 		CheckForPromoFrames();
 		FrameManager::EnumAllFrames();
 		cout<<"Selecting character"<<endl;
 		__int64 v1=0;
-		unsigned long characters_number=Process::ReadRelUInt(WowOffsets::Client::CharactersNumber);
+		unsigned long characters_number=Process::ReadRel<unsigned>(WowOffsets::Client::CharactersNumber);
 		for (int i=0;i<characters_number;i++)
 		{
-			*((int*)&v1+1)=Process::ReadRelUInt(WowOffsets::Client::CharactersOffset)+464*i;
-			wchar_t * nm=Process::ReadString_UTF8((v1 + 0x1000000000i64) >> 32,0);
-			if (wcscmp(name,nm)==0)
+			*((int*)&v1+1)=Process::ReadRel<unsigned>(WowOffsets::Client::CharactersOffset)+464*i;
+			wstring nm=Process::ReadString_UTF8((v1 + 0x1000000000i64) >> 32,0);
+			if (name==nm)
 			{
 				string frame_name="CharSelectCharacterButton"+to_string(i+1);
 				Frame * frame =FrameManager::FindFrameByName(frame_name.c_str());
 				frame->MoveMoseToFrame();
 				Process::DoubleClick(MouseButton::LEFT);
-				delete [] nm;
 				return true;
 			}
-			delete [] nm;
 
 		}
 		cout<<"Character selecting failed"<<endl;
@@ -234,7 +234,7 @@ namespace Wow
 	bool GameInteractor::IsInWorld()
 	{
 		unsigned result;
-		result= Process::ReadRelUInt(WowOffsets::Client::InWorld);
+		result= Process::ReadRel<unsigned>(WowOffsets::Client::InWorld);
 		if (result==1)
 		{
 			return true;
@@ -243,7 +243,7 @@ namespace Wow
 	}
 	bool GameInteractor::isWorldLoading()
 	{
-		unsigned result=Process::ReadRelUInt(WowOffsets::Client::InWorld);
+		unsigned result=Process::ReadRel<unsigned>(WowOffsets::Client::InWorld);
 		if (result==256)
 		{
 			return true;
@@ -252,6 +252,7 @@ namespace Wow
 	}
 	bool GameInteractor::Start(GameStartParam * param)
 	{
+		bool loading_world = false;
 		cout<<"Starting game"<<endl;
 		StartClient();
 		int c=0;
@@ -263,25 +264,29 @@ namespace Wow
 				{
 					Sleep(10);
 				}
-				cout<<"Already in world"<<endl;
+				loading_world = false;
+				cout << "Already in world" << endl;
 				return true;
 			}
-			if (IsCharacterSelecting())
-			{
-				if (!SelectCharacter(param->char_name))
+			if (!loading_world)
+				if (IsCharacterSelecting())
 				{
-					return false;
+					if (!SelectCharacter(param->char_name))
+					{
+						return false;
+					}
+					loading_world = true;
+					continue;
 				}
-				continue;
-			}
-			if (IsLoggingIn())
-			{
-				if (!Login(param->login,param->password))
+			if (!loading_world)
+				if (IsLoggingIn())
 				{
-					return false;
+					if (!Login(param->login, param->password))
+					{
+						return false;
+					}
+					continue;
 				}
-				continue;
-			}
 			Sleep(100);
 		}
 	}

@@ -9,7 +9,7 @@ namespace Wow
 	public:
 		GameObject(unsigned base);
 		~GameObject(void);
-		wchar_t *GetName(bool refresh=false);
+		wstring & GetName(bool refresh=false);
 		
 	};
 }

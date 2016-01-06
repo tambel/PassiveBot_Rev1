@@ -26,7 +26,7 @@ namespace Wow
 		static vector<Player*> *GetPlayersList();
 		static void DumpAllObjectNames();
 		static Player * GetPlayer();
-		static Unit * FindUnitByName(wchar_t * name);
+		static Unit * FindUnitByName(const wstring & name);
 		static void ClearAllLists();
 	};
 }

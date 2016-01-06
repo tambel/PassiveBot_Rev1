@@ -12,12 +12,11 @@ namespace Wow
 	Unit::~Unit(void)
 	{
 	}
-	wchar_t * Unit::GetName(bool refresh)
+	wstring & Unit::GetName(bool refresh)
 	{
-		if (!name || refresh)
+		if (name.length()==0 || refresh)
 		{
-			delete [] name;
-			name= Process::ReadString_UTF8(Process::ReadUInt(Process::ReadUInt(base+WowOffsets::Unit::UnitNameCache)+WowOffsets::Unit::UnitNameOffset),0);
+			name= Process::ReadString_UTF8(Process::Read<unsigned>(Process::Read<unsigned>(base+WowOffsets::Unit::UnitNameCache)+WowOffsets::Unit::UnitNameOffset),0);
 		}
 		return name;
 	}
@@ -25,7 +24,7 @@ namespace Wow
 	{
 		Position pos=Position();
 		Process::ReadRaw(base+WowOffsets::Unit::UnitPosition,&pos,12);
-		pos.rotation.z=Process::ReadFloat(base+WowOffsets::Unit::UnitRotation);
+		pos.rotation.z=Process::Read<float>(base+WowOffsets::Unit::UnitRotation);
 		return pos;
 	}
 	void Unit::DumpPosition()

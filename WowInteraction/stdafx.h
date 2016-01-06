@@ -5,7 +5,8 @@
 
 #pragma once
 
-#include "Tools\Memory.h"
+#include "Tools\stdafx.h"
+#include "AutoItX3_DLL.h"
 #include "WowObject.h"
 #include "Item.h"
 #include "GameObject.h"
@@ -20,10 +21,14 @@
 #include "GameInteractor.h"
 #include "GameManager.h"
 
+#include "Exceptions.h"
+
 #include "Offsets.h"
 #include "Utils.h"
 #include <iostream>
 #include <vector>
+#include <string>
+using namespace std;
 
 
 #define WIN32_LEAN_AND_MEAN             // Исключите редко используемые компоненты из заголовков Windows

@@ -1,6 +1,7 @@
 
 #include "stdafx.h"
 using namespace Tools;
+using namespace std;
 namespace Wow
 {
 
@@ -13,12 +14,11 @@ namespace Wow
 	{
 
 	}
-	wchar_t * GameObject::GetName(bool refresh)
+	wstring &  GameObject::GetName(bool refresh)
 	{
-		if (!name || refresh)
+		if (refresh)
 		{
-			delete [] name;
-			name= Process::ReadString_UTF8(Process::ReadUInt(Process::ReadUInt(base+WowOffsets::GameObject::GameObjectNameCache)+WowOffsets::GameObject::GameObjectNameOffset),0);
+			name= Process::ReadString_UTF8(Process::Read<unsigned>(Process::Read<unsigned>(base+WowOffsets::GameObject::GameObjectNameCache)+WowOffsets::GameObject::GameObjectNameOffset),0);
 		}
 		return name;
 	}

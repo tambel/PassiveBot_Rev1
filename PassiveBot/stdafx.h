@@ -8,6 +8,6 @@
 #include "Graphics\stdafx.h"
 #include "WowInteraction\stdafx.h"
 #include "WowWorldsData\stdafx.h"
-
+#include "BotInteractor\stdafx.h"
 
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы

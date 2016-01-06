@@ -96,6 +96,9 @@
     <ClInclude Include="Navigation.h">
       <Filter>Navigation</Filter>
     </ClInclude>
+    <ClInclude Include="Exceptions.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -160,6 +163,9 @@
     </ClCompile>
     <ClCompile Include="Navigation.cpp">
       <Filter>Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="Exceptions.cpp">
+      <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -38,7 +38,7 @@ namespace Wow
 	{
 		if (refresh)
 		{
-			FOV=Process::ReadFloat(base+WowOffsets::Camera::CameraFOV);
+			FOV=Process::Read<float>(base+WowOffsets::Camera::CameraFOV);
 		}
 		return FOV;
 	}
@@ -46,7 +46,7 @@ namespace Wow
 	{
 		if (refresh)
 		{
-			near_clip=Process::ReadRelFloat(WowOffsets::Camera::NearClip);
+			near_clip=Process::ReadRel<float>(WowOffsets::Camera::NearClip);
 		}
 		return near_clip;
 	}
@@ -54,7 +54,7 @@ namespace Wow
 	{
 		if (refresh)
 		{
-			far_clip=Process::ReadRelFloat(WowOffsets::Camera::FarClip);
+			far_clip=Process::ReadRel<float>(WowOffsets::Camera::FarClip);
 		}
 		return far_clip;
 	}
@@ -62,7 +62,7 @@ namespace Wow
 	{
 		if (refresh)
 		{
-			aspect=Process::ReadRelFloat(WowOffsets::Camera::FarClip);
+			aspect=Process::ReadRel<float>(WowOffsets::Camera::FarClip);
 		}
 		return far_clip;
 	}

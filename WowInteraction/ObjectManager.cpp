@@ -11,43 +11,53 @@ namespace Wow
 	void ObjectManager::EnumAllVisibleObjects()
 	{
 		ClearAllLists();
-		unsigned curobject=Process::ReadUInt(base+WowOffsets::ObjectManager::FirstObject);
-		int count=0;
-		while (curobject!=0)
+		unsigned curobject = Process::Read<unsigned>(base + WowOffsets::ObjectManager::FirstObject);
+		int count = 0;
+		while (curobject != 0)
 		{
-			switch (WowObject::GetType_Static(curobject))
+			try
 			{
-			case ObjectType::GAMEOBJECT:
+				switch (WowObject::GetType_Static(curobject))
+				{
+
+				case ObjectType::GAMEOBJECT:
 				{
 					game_objects->push_back(new GameObject(curobject));
 					break;
 				}
-			case ObjectType::ITEM:
+				case ObjectType::ITEM:
 				{
 					items->push_back(new Item(curobject));
 					break;
 				}
-			case ObjectType::UNIT:
+				case ObjectType::UNIT:
 				{
 					units->push_back(new Unit(curobject));
 					break;
 
 				}
-			case ObjectType::PLAYER:
+				case ObjectType::PLAYER:
 				{
 					players->push_back(new Player(curobject));
 					break;
 				}
+
+				}
+			}
+			catch (MemoryReadException e)
+			{
+				break;
 			}
 
-			curobject=Process::ReadUInt(curobject+WowOffsets::ObjectManager::NextObject);
-
+			curobject = Process::Read<unsigned>(curobject + WowOffsets::ObjectManager::NextObject);
+			count++;
 		}
+
 	}
 	void ObjectManager::Initialize()
 	{
 
-		base=Process::ReadUInt(Process::ReadRelUInt(WowOffsets::ObjectManager::ObjectPanagerPtr)+WowOffsets::ObjectManager::ObjectManagerOffset);
+		base=Process::Read<unsigned>(Process::ReadRel<unsigned>(WowOffsets::ObjectManager::ObjectPanagerPtr)+WowOffsets::ObjectManager::ObjectManagerOffset);
 	}
 
 	vector<GameObject*> *ObjectManager::GetGameObjectsList()
@@ -120,18 +130,18 @@ namespace Wow
 		{
 			Guid128 tmp;
 			Guid128 pl=*player->GetGuid();
-			if(player->GetBase()==Process::ReadRelUInt(WowOffsets::ObjectManager::LocalPlayer))
+			if(player->GetBase()==Process::ReadRel<unsigned>(WowOffsets::ObjectManager::LocalPlayer))
 			{
 				return player;
 			}
 		}
 		return 0;
 	}
-	Unit * ObjectManager::FindUnitByName(wchar_t * name)
+	Unit * ObjectManager::FindUnitByName(const wstring & name)
 	{
 		for (auto unit:*units)
 		{
-			if (wcscmp(name,unit->GetName())==0)
+			if (unit->GetName()==name)
 			{
 				return unit;
 			}

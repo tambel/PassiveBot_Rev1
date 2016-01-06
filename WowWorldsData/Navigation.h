@@ -48,6 +48,7 @@ public:
 	int FindPath(Vector3 & pStartPos, Vector3 & pEndPos, int nPathSlot, int nTarget);
 	Navigation();
 	~Navigation();
+	Navigation & operator=(Navigation && right);
 	Model<unsigned> * GetModel();
 };
 

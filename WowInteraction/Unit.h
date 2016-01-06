@@ -1,6 +1,8 @@
 #pragma once
 #include "WowObject.h"
 #include "Utils.h"
+#include <string>
+using namespace std;
 using namespace Utils::WowTypes; 
 namespace Wow
 {
@@ -9,7 +11,7 @@ namespace Wow
 	public:
 		Unit(unsigned base);
 		~Unit(void);
-		wchar_t * GetName(bool refresh=false);
+		wstring & GetName(bool refresh=false);
 		Position GetPosition();
 		void DumpPosition();
 	};

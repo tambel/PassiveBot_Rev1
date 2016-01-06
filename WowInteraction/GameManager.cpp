@@ -1,15 +1,94 @@
-#pragma once
+#include <d3dx11.h>
+		
+#include <math.h>
 #include "stdafx.h"
 #include <d3d11.h>
-#include <d3dx11.h>
+#pragma once
 #include <DirectXMath.h>
 #include <D3dx9math.h>
 
-#include <math.h>
+#define _USE_MATH_DEFINES
+using namespace std;
 using namespace DirectX;
 using namespace Tools;
 namespace Wow
 {
+	float GameManager::GetOrientationToTarget(Vector3 & position)
+	{
+		Vector3 ppos = ObjectManager::GetPlayer()->GetPosition().coords;
+		//float hyp = sqrt((position.x - ppos.x)*(position.x - ppos.x) + (position.y - ppos.y)*(position.y - ppos.y));
+		float disatnce=GetDistanceToPoint(ppos, position);
+		//float orientation = acos((position.x - ppos.x) / disatnce);
+		float orientation = atan2((position.y - ppos.y),(position.x - ppos.x));
+		//orientation -= Utils::PI/2;
+		while (orientation <0) orientation += Utils::PI*2;
+		while (orientation > Utils::PI * 2) orientation -= Utils::PI * 2;
+		return orientation;
+	}
+	float GameManager::GoStraighToPoint(Vector3 & point)
+	{
+		
+		//AU3_Send(L"UP down");
+		RECT rect = RECT();
+		AU3_WinGetClientSize(L"World of Warcraft", L"", &rect);
+		AU3_MouseMove(rect.right / 2, rect.bottom / 2);
+		AU3_MouseDown(L"Right");
+		AU3_MouseDown(L"Left");
+		while (GetDistanceToPoint(ObjectManager::GetPlayer()->GetPosition().coords, point) > 0.5)
+		{
+			Sleep(10);
+		}
+		AU3_MouseUp(L"Right");
+		AU3_MouseUp(L"Left");
+		return 0;
+	}
+	float GameManager::GetDistanceToPoint(Vector3 & start, Vector3 & end)
+	{
+		
+		float hyp = sqrt((end.x - start.x)*(end.x - start.x) + (end.y - start.y)*(end.y - start.y));
+		return hyp;
+
+	}
+	void GameManager::RotatePlayer(Vector3 & point)
+	{
+		Player * player = ObjectManager::GetPlayer();
+		float goal_orientation = GetOrientationToTarget(point);
+		RECT rect = RECT();
+		AU3_WinGetClientSize(L"World of Warcraft", L"", &rect);
+		AU3_MouseMove(rect.right / 2, rect.bottom / 2);
+		AU3_MouseDown(L"Right");
+		int i = 0;
+
+		while (abs(player->GetPosition().rotation.z - goal_orientation)> 0.1)
+		{
+
+			AU3_MouseMove(rect.right / 2 + 6, rect.bottom / 2, 0);
+			AU3_MouseMove(rect.right / 2 - 6, rect.bottom / 2, 0);
+			//AU3_MouseClickDrag(L"Right", rect.right / 2, rect.bottom / 2, rect.right / 2+ 6, rect.bottom / 2,0);
+			Sleep(5);
+			//player->DumpPosition();
+
+		}
+		while (abs(player->GetPosition().rotation.z - goal_orientation) > 0.01)
+		{
+			AU3_MouseMove(rect.right / 2 + 1, rect.bottom / 2, 0);
+			AU3_MouseMove(rect.right / 2 - 1, rect.bottom / 2, 0);
+			//AU3_MouseClickDrag(L"Right", rect.right / 2, rect.bottom / 2, rect.right / 2+ 6, rect.bottom / 2,0);
+
+			//player->DumpPosition();
+			//cout << "1111 " << player->GetPosition().rotation.z << endl << goal_orientation << endl;
+			Sleep(5);
+		}
+
+		Sleep(100);
+		AU3_MouseUp(L"Right");
+
+	}
+	void GameManager::GoToPoint(Vector3 & point)
+	{
+		RotatePlayer(point);
+		GoStraighToPoint(point);
+	}
 	GameManager::GameManager(void)
 	{
 	}
@@ -20,7 +99,7 @@ namespace Wow
 	}
 	Camera * GameManager::GetCamera()
 	{
-		return new Camera(Process::ReadUInt(Process::ReadRelUInt(WowOffsets::Camera::CameraPointer)+WowOffsets::Camera::CameraOffset));
+		return new Camera(Process::Read<unsigned>(Process::ReadRel<unsigned>(WowOffsets::Camera::CameraPointer)+WowOffsets::Camera::CameraOffset));
 	}
 	bool GameManager::WorldToScreen(Position pos)
 	{
@@ -51,5 +130,9 @@ namespace Wow
 		WorldToScreen(pos);
 		Process::MouseClick(MouseButton::RIGHT);
 
+	}
+	void GameManager::RotatePlayer(WowObject * object)
+	{
+		RotatePlayer(object->GetPosition().coords);
 	}
 }

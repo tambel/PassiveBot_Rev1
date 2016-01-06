@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include <TlHelp32.h>
 #include <iostream>
+#include <memory>
 using namespace std;
 using namespace std;
 namespace Tools
@@ -86,9 +87,8 @@ namespace Tools
 			}
 			while (Thread32Next(hModuleSnap, &te));
 		}
-		//thread=me32.th32ModuleID;
 		CloseHandle( hModuleSnap );
-		return 1;
+		return true;
 	}
 	bool Process::FindExistingProcess()
 	{
@@ -124,11 +124,11 @@ namespace Tools
 		}
 		return true;
 	}
-	WCHAR * Process::ReadString_UTF8(unsigned address, unsigned long length)
+	wstring Process::ReadString_UTF8(unsigned address, unsigned long length)
 	{
-		wchar_t * tmpWCResult;
-		wchar_t * tmpResult;
-		wchar_t *result;
+		unique_ptr<wchar_t> tmpWCResult;
+		unique_ptr<wchar_t> tmpResult;
+		unique_ptr<wchar_t> result;
 		MEMORY_BASIC_INFORMATION bi={0};
 		VirtualQueryEx(process,(void*)address,&bi,sizeof(bi));
 		DWORD real_length=0;
@@ -146,52 +146,28 @@ namespace Tools
 		{
 			real_length=(bi.RegionSize-((DWORD)address-(DWORD)bi.BaseAddress))/2;
 		}
-		tmpWCResult=new wchar_t[length];
-		tmpResult=new wchar_t[length];
-		if(!ReadProcessMemory(process,(void*)address,tmpWCResult,real_length*2,NULL))
+		tmpWCResult = unique_ptr<wchar_t>(new wchar_t[length]);
+		tmpResult = unique_ptr<wchar_t>(new wchar_t[length]);
+		bool r_res = ReadProcessMemory(process, (void*)address, tmpWCResult.get(), real_length * 2, NULL);
+		MultiByteToWideChar(65001,0,(LPCCH)tmpWCResult.get(),-1,tmpResult.get(),real_length);
+		resLength=wcslen(tmpResult.get())+1;
+		result = unique_ptr<wchar_t>(new wchar_t[resLength]);
+		memcpy(result.get(),tmpResult.get(),resLength*2);
+		if (!r_res || !result.get())
 		{
-			delete [] tmpWCResult;
-			delete [] tmpResult;
-			return NULL;
+			throw MemoryReadException(address);
 		}
-		MultiByteToWideChar(65001,0,(LPCCH)tmpWCResult,-1,tmpResult,real_length);
-		resLength=wcslen(tmpResult)+1;
-		result=new wchar_t[resLength];
-		memcpy(result,tmpResult,resLength*2);
-		delete [] tmpWCResult;
-		delete [] tmpResult;
-		return result;
+		wstring res = wstring(result.get());
+		return res;
 
-	}
-	unsigned Process::ReadUInt(unsigned address)
-	{
-		unsigned result;
-		DWORD byte_read; 
-
-		if (!ReadProcessMemory(process,(void*)address,&result,4,&byte_read))
-		{
-			return 0;
-		}
-
-		return result;
-	}
-	char Process::ReadByte(unsigned address)
-	{
-		char result;
-		DWORD byte_read; 
-
-		if (!ReadProcessMemory(process,(void*)address,&result,1,&byte_read))
-		{
-			return 0;
-		}
-		return result;
-	}
+	}	
 	bool Process::ReadRaw(unsigned address, void * buffer,unsigned long length)
 	{
 		DWORD byte_read;
-		if (!ReadProcessMemory(process,(void*)address,buffer,length,&byte_read))
+		bool r_res = ReadProcessMemory(process, (void*)address, buffer, length, &byte_read);
+		if (!r_res || byte_read != length)
 		{
-			return false;
+			throw MemoryReadException(address);
 		}
 		return true;
 	}
@@ -199,14 +175,10 @@ namespace Tools
 	{
 		return ReadRaw(Process::GetProcessBase()+offest,buffer,length);
 	}
-	unsigned Process::ReadRelUInt(unsigned offset)
+	string Process::ReadASCII(unsigned address, unsigned long length)
 	{
-		return ReadUInt(base_address+offset);
-	}
-	char * Process::ReadASCII(unsigned address, unsigned long length)
-	{
-		char * tmp_result;
-		char * result;
+		unique_ptr<char> tmp_result;
+		unique_ptr<char> result;
 		MEMORY_BASIC_INFORMATION bi={0};
 		VirtualQueryEx(process,(void*)address,&bi,sizeof(bi));
 		DWORD real_length=0;
@@ -225,63 +197,35 @@ namespace Tools
 		{
 			real_length=(bi.RegionSize-((DWORD)address-(DWORD)bi.BaseAddress));
 		}
-		tmp_result=new char[real_length];
-		if (!ReadProcessMemory(process,(void*)address,tmp_result,real_length,&byte_read))
+		tmp_result = unique_ptr<char>(new char[real_length]);
+		bool r_res=ReadProcessMemory(process, (void*)address, tmp_result.get(), real_length, &byte_read);
+		res_length=strlen(tmp_result.get());
+		result = unique_ptr<char>(new char[res_length + 1]);
+		strcpy(result.get(),tmp_result.get());
+		if (!r_res || !result.get())
 		{
-			delete [] tmp_result;
-			return 0;
+			throw MemoryReadException(address);
 		}
-		res_length=strlen(tmp_result);
-		result=new char[res_length+1];
-		strcpy(result,tmp_result);
-		delete [] tmp_result;
-
-		return result;
+		string res = string(result.get());
+		return res;
 
 	}
-	float Process::ReadFloat(unsigned address)
-	{
-		float result=0;
-		DWORD byte_read=0;
-		if (!ReadProcessMemory(process,(void*)address,&result,4,&byte_read))
-		{
-			return 0;
-		}
-		return result;
-	}
-	void Process::MoveMouse(unsigned x, unsigned y,unsigned long time)
+	void Process::MoveMouse(unsigned x, unsigned y,bool b,unsigned long time)
 	{
 		INPUT input={0};
 		input.mi.dx=x;
 		input.mi.dy=y;
 		input.mi.mouseData=0;
-		input.mi.dwFlags= MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
+		if (b)
+			
+		input.mi.dwFlags= MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | MOUSEEVENTF_RIGHTDOWN;
+		else
+			input.mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
 		input.type=INPUT_MOUSE;
 		Sleep(time);
 		SendInput(1,&input,sizeof(input));
 		mouse_x=x;
 		mouse_y=y;
-	}
-	float Process::ReadRelFloat(unsigned offset)
-	{
-		return ReadFloat(base_address+offset);
-	}
-	Language Process::GetCurrentLanguage()
-	{
-		HKL l=GetKeyboardLayout(thread_id);
-		Language lang;
-		WORD low=(WORD)l>>0;
-		char low2=low>>0;
-		switch (low2>>0)
-		{
-		case LANG_RUSSIAN:
-			lang=Language::RUSSIAN;
-			break;
-		case LANG_ENGLISH:
-			lang=Language::ENGLISH;
-			break;
-		}
-		return lang;
 	}
 	void Process::MouseUp(MouseButton button)
 	{
@@ -413,29 +357,11 @@ namespace Tools
 		else
 		{
 			SendInput(1,&input,sizeof(input));
+			delay ? Sleep(delay) : delay;
 			input.ki.dwFlags=KEYEVENTF_KEYUP;
 			SendInput(1,&input,sizeof(input));
 		}
-		delay?Sleep(delay):delay;
-	}
-	char Process::ReadRelByte(unsigned offset)	
-	{
-		return ReadByte(base_address+offset);
-	}
-	bool Process::ReadBool(unsigned address)
-	{
-		if (Process::ReadByte(address))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	bool Process::ReadRelBool(unsigned offset)
-	{
-		return ReadBool(base_address+offset);
+		
 	}
 	HWND Process::GetWindow()
 	{
@@ -450,6 +376,23 @@ namespace Tools
 		result.heigth=rc.bottom-rc.top;
 		result.width=rc.right-rc.left;
 		return result;
+	}
+	Language Process::GetCurrentLanguage()
+	{
+		HKL l = GetKeyboardLayout(thread_id);
+		Language lang;
+		WORD low = (WORD)l >> 0;
+		char low2 = low >> 0;
+		switch (low2 >> 0)
+		{
+		case LANG_RUSSIAN:
+			lang = Language::RUSSIAN;
+			break;
+		case LANG_ENGLISH:
+			lang = Language::ENGLISH;
+			break;
+		}
+		return lang;
 	}
 #endif
 

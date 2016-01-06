@@ -4,8 +4,8 @@ namespace Wow
 	class Frame
 	{
 		unsigned base;
-		char * name;
-		char * label_text;
+		string name;
+		string label_text;
 		Frame * parent;
 		float bottom;
 		float top;
@@ -14,8 +14,8 @@ namespace Wow
 	public:
 		Frame(unsigned base);
 		~Frame(void);
-		char * GetName(bool refresh=false);
-		char * GetLabelText(bool refresh=false);
+		string & GetName(bool refresh=false);
+		string & GetLabelText(bool refresh=false);
 		void SetParent(Frame * parent);
 		unsigned GetBase();
 		float GetBottom(bool refresh=false);

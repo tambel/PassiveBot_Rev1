@@ -485,6 +485,15 @@ Navigation::~Navigation()
 
 }
 
+Navigation & Navigation::operator=(Navigation && right)
+{
+	m_navQuery = right.m_navQuery;
+	right.m_navQuery = nullptr;
+	result_mesh = right.result_mesh;
+	right.result_mesh = nullptr;
+	return *this;
+}
+
 
 
 Model<unsigned>* Navigation::GetModel()

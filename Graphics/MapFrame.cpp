@@ -263,6 +263,7 @@ void MapFrame::SetNavMesh(const struct rcPolyMesh& mesh)
 
 void MapFrame::createNavMesh()
 {
+	
 	Ogre::SceneNode * m_pRecastSN;
 	rcPolyMesh & mesh=*area->Navigation().result_mesh;
 	const int nvp = mesh.nvp;
