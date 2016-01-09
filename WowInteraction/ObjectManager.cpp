@@ -128,8 +128,6 @@ namespace Wow
 	{
 		for (auto player:*players)
 		{
-			Guid128 tmp;
-			Guid128 pl=*player->GetGuid();
 			if(player->GetBase()==Process::ReadRel<unsigned>(WowOffsets::ObjectManager::LocalPlayer))
 			{
 				return player;

@@ -3,10 +3,23 @@
 #include "Utils.h"
 #include "Model.h"
 #include "Doodad.h"
+#include "WMO.h"
 #include "ADTStructs.h"
+
+#include "Recast.h"
+
+#include "Sample.h"
+#include "DetourNavMesh.h"
+#include "DetourNavMeshBuilder.h"
+#include "DetourNavMeshQuery.h"
 using namespace Utils;
 using namespace Game;
 
+struct ChunkAdditionalData
+{
+	MDDF * mddfs;
+	unsigned mddfs_count;
+};
 class ChunkModel
 {
 public:
@@ -41,31 +54,41 @@ public:
 		return indices;
 	}
 };
+class ADT;
 class Chunk:public Model<unsigned short>
 {
 private:
 
+	ADT * adt;
 	Location * location;
 	Point2D<int> block_coordinates;
 	Point2D<int> coordinates;
 	Vector3 game_position;
 	//Vector3 position;
 	Vector3 real_position;
-	vector<Doodad*> doodads;
-
+	vector<Doodad> doodads;
+	vector<WMO> wmos;
 	BinaryReader * root_reader;
+	BinaryReader * obj_reader;
+	
 	ChunkStreamInfo root_info;
 	MCNK header;
 	//Utils::Graphics::Vertice * vertices;
 	//static unsigned * indices;
 	void LoadMcvt();
+	void LoadMcrd(unsigned long size);
+	void LoadMcrw(unsigned long size);
+	void InitNavigation();
+
+
 
 public:
 	bool is_active;
 	bool is_new;
 	Chunk(void);
 	~Chunk(void);
-	Chunk(ChunkStreamInfo info, Location * loc,Point2D<int> block_coordinates,Point2D<int> coordinates);
+	Chunk(ChunkStreamInfo info, ChunkStreamInfo obj_info, ADT * adt, Location * loc,Point2D<int> block_coordinates,Point2D<int> coordinates);
+
 	Location * GetLocation() {return location;}
 	Point2D<int> GetBlockCoordinates() {return block_coordinates;}
 	Point2D<int> GetCoordinates() {return coordinates;}
@@ -77,6 +100,9 @@ public:
 	Vector3 GetRealPosition() {return real_position;}
 	void  SetRealPosition(Vector3 pos) {real_position=pos;}
 	void SearchForObjects();
+	vector<Doodad> & GetDoodads() { return doodads; }
+	vector<WMO> & GetWMOs() { return wmos; }
+
 
 };
 

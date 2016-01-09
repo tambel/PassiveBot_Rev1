@@ -88,6 +88,8 @@ namespace Utils
 			namespace MCNKSignatures
 			{
 				static const unsigned Mcvt = 0x4D435654;
+				static const unsigned Mcrd = 0x4D435244;
+				static const unsigned Mcrw = 0x4D435257;
 			};
 		};
 		namespace WMOSignature

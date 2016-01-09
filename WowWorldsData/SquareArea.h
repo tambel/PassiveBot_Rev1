@@ -48,7 +48,7 @@ public:
 	~SquareArea(void);
 	SquareArea & operator=(SquareArea && right);
 	void Fill(Location * location, Point2D<int> block_coordinates,Point2D<int> coordinates);
-	void Move(Location * location, Point2D<int> block_coordinates,Point2D<int> coordinates);
+	void CheckAndMove(Location * location, Point2D<int> block_coordinates,Point2D<int> coordinates);
 	int GetRadius() {return radius;}
 	Chunk *** GetChunks() { return chunks; }
 	void InitObjects();

@@ -4,9 +4,13 @@ using namespace Utils;
 using namespace std;
 Doodad::Doodad(Doodad && right):
 	uuid(right.uuid),
-	game_position(game_position),
+	game_position(right.game_position),
 	scale(right.scale)
 {
+	Model::operator=(std::move(right));
+	//uuid = right.uuid;
+	//game_position = right.game_position;
+	//scale = right.scale;
 }
 Doodad::Doodad(string filename,unsigned uuid, Position position, short scale):uuid(uuid),scale(scale/1024.0f)
 {

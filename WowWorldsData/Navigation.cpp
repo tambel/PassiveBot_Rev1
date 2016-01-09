@@ -134,6 +134,7 @@ void Navigation::SetArea(SquareArea & area)
 			vert_offset += part.GetVertexCount();
 		}
 	}
+	ToFile();
 	BuildNavMesh();
 	delete[] vertices;
 	delete[] indices;
@@ -164,7 +165,7 @@ void Navigation::BuildNavMesh()
 	float m_cellSize = 0.300000012;
 	float m_cellHeight = 0.200000003;
 	float m_agentHeight = 2.0;
-	float m_agentRadius = 0.600000024;
+	float m_agentRadius = 1.0f; //0.600000024;
 	float m_agentMaxClimb = 0.899999976;
 	float m_agentMaxSlope = 45.0000000;
 	float m_regionMinSize = 8.00000000;
@@ -446,7 +447,7 @@ int Navigation::FindPath(Vector3 & pStartPos, Vector3 & pEndPos, int nPathSlot, 
 	if ((status&DT_FAILURE) || (status&DT_STATUS_DETAIL_MASK)) return -3; // couldn't create a path
 	if (nPathCount == 0) return -4; // couldn't find a path
 
-	status = m_navQuery->findStraightPath(StartNearest, EndNearest, PolyPath, nPathCount, StraightPath, NULL, NULL, &nVertCount, MAX_PATHVERT);
+	status = m_navQuery->findStraightPath(StartNearest, EndNearest, PolyPath, nPathCount, StraightPath, NULL, NULL, &nVertCount, MAX_PATHVERT+100);
 	if ((status&DT_FAILURE) || (status&DT_STATUS_DETAIL_MASK)) return -5; // couldn't create a path
 	if (nVertCount == 0) return -6; // couldn't find a path
 
@@ -473,6 +474,8 @@ Navigation::Navigation()
 	result_mesh = 0;
 	vert_count = 0;
 	ind_count = 0;
+	vertices=0;
+	indices=0;
 }
 
 Navigation::~Navigation()
@@ -566,5 +569,20 @@ Model<unsigned>* Navigation::GetModel()
 
 		return nullptr;
 	}
+}
+
+void Navigation::ToFile()
+{
+	ofstream file;
+	file.open("area_mesh.obj");
+	for (unsigned long i= 0; i < vert_count*3; i += 3)
+	{
+		file << "v " << vertices[i] << " " << vertices[i + 1] << " " << vertices[i + 2] << endl;
+	}
+	for (unsigned long i = 0; i < ind_count; i += 3)
+	{
+		file << "f " << indices[i]+1 << " " << indices[i + 1]+1 << " " << indices[i + 2]+1 << endl;
+	}
+	file.close();
 }
 

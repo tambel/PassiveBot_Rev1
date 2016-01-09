@@ -3,6 +3,7 @@
 #include "WMO.h"
 
 class WMO;
+class WMOGroup;
 class WMOPart:public Model<unsigned short>
 {
 	string filename;

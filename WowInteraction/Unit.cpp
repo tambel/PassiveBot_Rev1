@@ -30,6 +30,6 @@ namespace Wow
 	void Unit::DumpPosition()
 	{
 		Position position = GetPosition();
-		cout<<"X- "<<position.coords.x<<" Y- "<<position.coords.y<<" Z- "<<position.coords.z<<endl<<"Rotation "<<position.rotation.z<<endl;
+		wcout<<name<<":"<<endl<<"X- "<<position.coords.x<<" Y- "<<position.coords.y<<" Z- "<<position.coords.z<<endl<<"Rotation "<<position.rotation.z<<endl;
 	}
 }

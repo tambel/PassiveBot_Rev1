@@ -18,9 +18,9 @@ public:
 };
 typedef struct
 {
-	float PosX[MAX_PATHVERT];
-	float PosY[MAX_PATHVERT];
-	float PosZ[MAX_PATHVERT];
+	float PosX[MAX_PATHVERT+100];
+	float PosY[MAX_PATHVERT + 100];
+	float PosZ[MAX_PATHVERT + 100];
 	int MaxVertex;
 	int Target;
 }
@@ -50,5 +50,6 @@ public:
 	~Navigation();
 	Navigation & operator=(Navigation && right);
 	Model<unsigned> * GetModel();
+	void ToFile();
 };
 

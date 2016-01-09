@@ -6,7 +6,8 @@ class WMO
 	unsigned long uuid;
 	Position position;
 public:
-	WMO(WMORoot & root, unsigned uuid, Position position);
+	//WMO(WMORoot & root, unsigned uuid, Position position);
+	WMO(string filename, unsigned uuid, Position position);
 	WMO(WMO && right);
 	~WMO();
 	unsigned long GetUUID() { return uuid; }

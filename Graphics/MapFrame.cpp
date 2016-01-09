@@ -187,7 +187,7 @@ void MapFrame::InitWMOs()
 				}
 				if (!exist)
 				{
-
+					
 					Renderable * rend = new Renderable(&part);
 					if (!rend->CreateScene(mSceneMgr->getRootSceneNode()))
 						continue;
@@ -350,7 +350,7 @@ void MapFrame::createNavMesh()
 				if (p[nvp + j] == RC_MESH_NULL_IDX) continue;
 				int vi[2];
 				vi[0] = p[j];
-				if (j + 1 >= nvp || p[j + 1] == RC_MESH_NULL_IDX)
+				if (j + 1 >= nvp || p[j + 1] == RC_MESH_NULL_IDX)http://lurkmore.to/%D0%A4%D0%93%D0%9C#
 					vi[1] = p[0];
 				else
 					vi[1] = p[j + 1];
@@ -369,9 +369,9 @@ void MapFrame::createNavMesh()
 		}
 
 		m_pRecastMONeighbour->end();
-	//	m_pRecastSN->attachObject(m_pRecastMONeighbour);
-		/*Ogre::SceneNode * */m_pRecastSN = area_scene->createChildSceneNode();
 		m_pRecastSN->attachObject(m_pRecastMONeighbour);
+		/*Ogre::SceneNode * */m_pRecastSN = area_scene->createChildSceneNode();
+		//m_pRecastSN->attachObject(m_pRecastMONeighbour);
 		//m_pRecastSN->setPosition(Vector3ToOgreVector(area->GetBoundingBox().up));
 
 		Ogre::ManualObject * m_pRecastMOBoundary = mSceneMgr->createManualObject("RecastMOBoundary");
@@ -405,9 +405,9 @@ void MapFrame::createNavMesh()
 		}
 
 		m_pRecastMOBoundary->end();
-		//m_pRecastSN->attachObject(m_pRecastMOBoundary);
-		//Ogre::SceneNode * s2 = area_scene->createChildSceneNode();
 		m_pRecastSN->attachObject(m_pRecastMOBoundary);
+		//Ogre::SceneNode * s2 = area_scene->createChildSceneNode();
+		//m_pRecastSN->attachObject(m_pRecastMOBoundary);
 		m_pRecastSN->setPosition(Vector3ToOgreVector(area->GetBoundingBox().up));
 
 	}
@@ -433,7 +433,7 @@ void MapFrame::createRecastPathLine(int nPathSlot/*, PATHDATA *m_PathStore*/)
 	int nVertCount = m_PathStore[nPathSlot].MaxVertex;
 	for (int nVert = 0; nVert<nVertCount; nVert++)
 	{
-		m_pRecastMOPath->position(m_PathStore[nPathSlot].PosX[nVert], m_PathStore[nPathSlot].PosZ[nVert], m_PathStore[nPathSlot].PosY[nVert]);
+		m_pRecastMOPath->position(m_PathStore[nPathSlot].PosX[nVert], m_PathStore[nPathSlot].PosZ[nVert], m_PathStore[nPathSlot].PosY[nVert]+2);
 		m_pRecastMOPath->colour(1, 0, 0);
 
 		//sprintf(m_chBug, "Line Vert %i, %f %f %f", nVert, m_PathStore[nPathSlot].PosX[nVert], m_PathStore[nPathSlot].PosY[nVert], m_PathStore[nPathSlot].PosZ[nVert]) ;

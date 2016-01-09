@@ -2,8 +2,9 @@
 
 
 
-WMO::WMO(WMORoot & root, unsigned uuid, Position position):uuid(uuid),position(std::move(position))
+WMO::WMO(string filename, unsigned uuid, Position position):uuid(uuid),position(std::move(position))
 {
+	WMORoot root = WMORoot(filename);
 	this->position.coords = Vector3(position.coords.x, -position.coords.z, position.coords.y);
 	parts = vector<WMOPart>();
 	for (auto &group : root.GetWMOGroups())
@@ -19,17 +20,13 @@ WMO::WMO(WMORoot & root, unsigned uuid, Position position):uuid(uuid),position(s
 
 WMO::WMO(WMO && right):parts(std::move(right.parts))
 {
-
+	//parts = move(right.parts);
+	position = right.position;
+	uuid = right.uuid;
 }
 
 
 WMO::~WMO()
 {
-	cout << "WMO " << this << " deleted" << endl;
-	//for (auto part : parts)
-	{
-		//delete part;
-		//part = 0;
-	}
 	parts.clear();
 }

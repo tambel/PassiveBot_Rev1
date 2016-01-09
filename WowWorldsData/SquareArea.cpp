@@ -82,7 +82,7 @@ void SquareArea::Fill(Location * location, Point2D<int> block_coordinates, Point
 
 }
 
-void SquareArea::Move(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
+void SquareArea::CheckAndMove(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {
 
 	if (this->location->id != location->id || this->block_coordinates != block_coordinates || this->coordinates != coordinates)
@@ -94,10 +94,11 @@ void SquareArea::Move(Location * location, Point2D<int> block_coordinates, Point
 			if (this->location->id != location->id || this->block_coordinates != block_coordinates)
 				block_changed = true;
 			Fill(location, block_coordinates, coordinates);
-			if (block_changed)
+			//if (block_changed)
 				InitObjects();
 			InitActiveObjects();
-			navigation.SetArea(*this);
+			InitBoundingBox();
+			//navigation.SetArea(*this);
 			to_update = true;
 			busy = false;
 		}
@@ -136,7 +137,7 @@ void SquareArea::AddWowObjectAvatar(Wow::WowObject * object)
 void SquareArea::InitActiveObjects()
 {
 
-
+	
 	active_doodads.clear();
 	for (auto doodad : doodads)
 	{
@@ -145,6 +146,7 @@ void SquareArea::InitActiveObjects()
 			active_doodads.push_back(doodad);
 		}
 	}
+	
 	active_wmos.clear();
 	for (auto &wmo : wmos)
 	{
@@ -242,126 +244,6 @@ void SquareArea::ToMesh()
 
 }
 
-//Model<unsigned> SquareArea::ToSoloModel()
-//{
-//	Model<unsigned> model = Model<unsigned>();
-//	float * vert;
-//	unsigned * ind;
-//	unsigned long v_count = 0;
-//	unsigned long i_count = 0;
-//	for (int i = 0; i < area_size; i++)
-//	{
-//		for (int j = 0; j < area_size; j++)
-//		{
-//			v_count += chunks[i][j]->GetVertexCount();
-//			i_count += chunks[i][j]->GetIndexCount();
-//		}
-//	}
-//	for (auto doodad : active_doodads)
-//	{
-//		v_count += doodad->GetVertexCount();
-//		i_count += doodad->GetIndexCount();
-//
-//	}
-//	for (auto wmo : active_wmos)
-//	{
-//		for (auto &part : wmo->GetParts())
-//		{
-//			v_count += part.GetVertexCount();
-//			i_count += part.GetIndexCount();
-//		}
-//	}
-//	vert = new float[v_count * 3];
-//	ind = new unsigned[i_count];
-//	unsigned long vert_offset = 0;
-//	Vector3 vect;
-//	for (int i = 0; i < area_size; i++)
-//	{
-//		for (int j = 0; j < area_size; j++)
-//		{
-//
-//			for (int vi = 0; vi < chunks[i][j]->GetVertexCount(); vi++)
-//			{
-//				vect = chunks[i][j]->GetRealPosition() - this->bounding_box.up + chunks[i][j]->GetVertices()[vi].position;
-//				vert[vert_offset] = vect.x;
-//				vert[vert_offset+1] = vect.y;
-//				vert[vert_offset+2] = vect.z;
-//				vert_offset += 3;
-//			}
-//
-//		}
-//	}
-//	for (auto doodad : active_doodads)
-//	{
-//		for (int vi = 0; vi < doodad->GetVertexCount(); vi++)
-//		{
-//			vect = doodad->GetPosition().coords - this->bounding_box.up + doodad->GetVertices()[vi].position;
-//			vert[vert_offset] = vect.x;
-//			vert[vert_offset + 1] = vect.y;
-//			vert[vert_offset + 2] = vect.z;
-//			vert_offset += 3;
-//		}
-//	}
-//	for (auto wmo : active_wmos)
-//	{
-//		for (auto &part : wmo->GetParts())
-//		{
-//
-//			for (int vi = 0; vi < part.GetVertexCount(); vi++)
-//			{
-//				vect = wmo->GetPosition().coords - this->bounding_box.up + part.GetVertices()[vi].position;
-//				vert[vert_offset] = vect.x;
-//				vert[vert_offset + 1] = vect.y;
-//				vert[vert_offset + 2] = vect.z;
-//				vert_offset += 3;
-//
-//			}
-//		}
-//	}
-//	unsigned long ind_offset=0;
-//	vert_offset = 0;
-//	for (int i = 0; i < area_size; i++)
-//	{
-//		for (int j = 0; j < area_size; j++)
-//		{
-//			for (unsigned long ii = 0; ii < chunks[i][j]->GetIndexCount(); ii += 3)
-//			{
-//				ind[ind_offset] = chunks[i][j]->GetIndices()[ii + 2] + 1+vert_offset;
-//				ind[ind_offset+1] = chunks[i][j]->GetIndices()[ii + 2] + 1 + vert_offset;
-//				ind[ind_offset+2] = chunks[i][j]->GetIndices()[ii + 2] + 1 + vert_offset;
-//				ind_offset += 3;
-//			}
-//			vert_offset += chunks[i][j]->GetVertexCount();
-//		}
-//	}
-//	for (auto doodad : active_doodads)
-//	{
-//		for (unsigned long ii = 0; ii < doodad->GetIndexCount(); ii += 3)
-//		{
-//			ind[ind_offset] = doodad->GetIndices()[ii + 2] + 1 + vert_offset;
-//			ind[ind_offset + 1] = doodad->GetIndices()[ii + 2] + 1 + vert_offset;
-//			ind[ind_offset + 2] = doodad->GetIndices()[ii + 2] + 1 + vert_offset;
-//			ind_offset += 3;
-//		}
-//		vert_offset += doodad->GetVertexCount();
-//	}
-//	for (auto wmo : active_wmos)
-//	{
-//		for (auto &part : wmo->GetParts())
-//		{
-//			for (unsigned long ii = 0; ii < part.GetIndexCount(); ii += 3)
-//			{
-//				ind[ind_offset] = part.GetIndices()[ii + 2] + 1 + vert_offset;
-//				ind[ind_offset + 1] = part.GetIndices()[ii + 2] + 1 + vert_offset;
-//				ind[ind_offset + 2] = part.GetIndices()[ii + 2] + 1 + vert_offset;
-//				ind_offset += 3;
-//			}
-//			vert_offset += part.GetVertexCount();
-//		}
-//	}
-//	return model;
-//}
-
 void SquareArea::InitBoundingBox()
 {
 	bounding_box.up.x = 99999.0f;
@@ -372,17 +254,6 @@ void SquareArea::InitBoundingBox()
 	{
 		for (int j = 0; j < area_size; j++)
 		{
-			/*
-			if (bounding_box.up.x > chunks[i][j]->GetRealPosition().x)
-			{
-				bounding_box.up.x = chunks[i][j]->GetRealPosition().x;
-			}
-			if (bounding_box.up.y > chunks[i][j]->GetRealPosition().y)
-			{
-
-				bounding_box.up.y = chunks[i][j]->GetRealPosition().y;
-			}
-			*/
 			for (unsigned long vi = 0; vi < chunks[i][j]->GetVertexCount();vi++)
 			{
 				if (chunks[i][j]->GetVertices()[vi].position.x + chunks[i][j]->GetRealPosition().x< bounding_box.up.x)
@@ -426,141 +297,53 @@ void SquareArea::InitBoundingBox()
 					bounding_box.down.y = part.GetVertices()[vi].position.y + wmo->GetPosition().coords.y;
 			}
 	}
-	///bounding_box.down = bounding_box.up + Vector3(area_size*Metrics::ChunkSize, area_size*Metrics::ChunkSize, 0);
 
 }
 
 void SquareArea::InitWMOs()
 {
 	wmos.clear();
-	for (int i = block_coordinates.X - 1; i <= block_coordinates.X + 1; i++)
+	active_wmos.clear();
+	int c = 0;
+	bool exist = false;
+	for (int i = 0; i < area_size; i++)
 	{
-		for (int j = block_coordinates.Y - 1; j <= block_coordinates.Y + 1; j++)
+		for (int j = 0; j < area_size; j++)
 		{
-			ADT * adt = ADTWorker::GetADT(location, Point2D<int>(i, j));
-			if (!adt)
-				continue;
-			for (auto wmo_info : adt->GetWMOInfos())
-			{
-				bool exist = false;
-				for (auto &old_wmo : old_wmos)
+			if (chunks[i][j])
+				for (auto & wmo : chunks[i][j]->GetWMOs())
 				{
-					if (old_wmo)
+					exist = false;
+					for (auto & check_wmo : wmos)
 					{
-						if (old_wmo->GetUUID() == wmo_info.modf.UniqueId)
+						if (wmo.GetUUID() == check_wmo->GetUUID() && &wmo != check_wmo)
 						{
 							exist = true;
-							wmos.push_back(old_wmo);
-							old_wmo = 0;
 							break;
 						}
 					}
+					if (!exist)
+						wmos.push_back(&wmo);	
+					
 				}
-				if (exist)
-				{
-					//continue;
-				}
-
-				WMORoot  wmo_root = WMORoot(wmo_info.filename);
-				WMO * wmo = new  WMO(wmo_root, wmo_info.modf.UniqueId, Position(wmo_info.modf.Position, wmo_info.modf.Rotation));
-				wmos.push_back(wmo);
-			}
 		}
 	}
-	int count = 0;
-	for (auto &wmo : wmos)
-	{
-		for (auto &wmo2 : wmos)
-		{
-			if (wmo && wmo2)
-			{
-				if (wmo->GetUUID() == wmo2->GetUUID() && wmo != wmo2)
-				{
-					count++;
-					wmo = 0;
-				}
-			}
-		}
-	}
-	wmos.erase(remove(wmos.begin(), wmos.end(), (WMO*)0), wmos.end());
-	for (auto old_wmo : old_wmos)
-	{
-		cout << " Init Old" << endl;
-		delete old_wmo;
-
-	}
-	old_wmos.clear();
-	for (auto wmo : wmos)
-	{
-		old_wmos.push_back(wmo);
-	}
-	
 }
 
 void SquareArea::InitDoodads()
 {
 	doodads.clear();
-	for (int i = block_coordinates.X - 1; i <= block_coordinates.X + 1; i++)
+	active_doodads.clear();
+	int c = 0;
+	for (int i = 0; i < area_size; i++)
 	{
-		for (int j = block_coordinates.Y - 1; j <= block_coordinates.Y + 1; j++)
+		for (int j = 0; j < area_size; j++)
 		{
-			ADT * adt = ADTWorker::GetADT(location, Point2D<int>(i, j));
-			if (!adt)
-				continue;
-			for (auto m2_info : *adt->GetM2Infos())
-			{
-				bool exist = false;
-				bool duplicate = false;
-				for (auto &old_doodad : old_doodads)
+			if (chunks[i][j])
+				for (auto & doodad : chunks[i][j]->GetDoodads())
 				{
-					if (old_doodad)
-					{
-						if (old_doodad->GetUUID() == m2_info.mddf.UniqueId)
-						{
-							exist = true;
-							doodads.push_back(old_doodad);
-							old_doodad = 0;
-
-							break;
-						}
-					}
+					doodads.push_back(&doodad);
 				}
-				if (exist)
-				{
-					continue;
-				}
-
-				//M2 * m2 = new M2(m2_info.file);
-				//Doodad * doodad = new Doodad;
-				Doodad * doodad = new Doodad(m2_info.file, m2_info.mddf.UniqueId, Position(m2_info.mddf.Position, m2_info.mddf.Rotation), m2_info.mddf.Scale);
-				doodads.push_back(doodad);
-				//delete m2;
-			}
 		}
-	}
-	int count = 0;
-	for (auto doodad : doodads)
-	{
-		for (auto &doodad2 : doodads)
-		{
-			if (doodad && doodad2)
-			{
-				if (doodad->GetUUID() == doodad2->GetUUID() && doodad != doodad2)
-				{
-					count++;
-					doodad2 = 0;
-				}
-			}
-		}
-	}
-	doodads.erase(remove(doodads.begin(), doodads.end(), (Doodad*)0), doodads.end());
-	for (auto old_doodad : old_doodads)
-	{
-		delete old_doodad;
-	}
-	old_doodads.clear();
-	for (auto doodad : doodads)
-	{
-		old_doodads.push_back(doodad);
 	}
 }

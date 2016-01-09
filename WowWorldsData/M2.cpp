@@ -8,6 +8,10 @@ M2::M2(string filename):filename(filename)
 	vertex_count=header.NVertices;
 	vertices=new M2Vertex[vertex_count];
 	reader->ReadArrayAbs<M2Vertex>(vertices,header.OfsVertices,vertex_count);
+	if (vertex_count == 0)
+	{
+		vertex_count = vertex_count;
+	}
 	LoadSkinFile(0);
 	delete reader;
 
@@ -40,6 +44,10 @@ void M2::LoadSkinFile(int index)
 		skin_reader->ReadArrayAbs<unsigned short>(triangles,m2_skin.ofsTriangles,m2_skin.nTriangles);
 		index_count=m2_skin.nTriangles;
 		indices=new unsigned short[index_count];
+		if (m2_skin.nIndices==0)
+		{
+			index_count = index_count;
+		}
 		for (unsigned long i=0;i<m2_skin.nTriangles;i++)
 		{
 			indices[i]=indexLookup[triangles[i]];

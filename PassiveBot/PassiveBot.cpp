@@ -6,6 +6,7 @@
 #include "AutoItX3_DLL.h"
 //#include "boost\thread\thread.hpp"
 #include <thread>
+#include <random>
 using namespace std;
 using namespace Wow;
 using namespace Utils;
@@ -33,45 +34,35 @@ int main(int argc, wchar_t * argv[])
 	
 
 	BotInteractor::StartGame("lissek7@ya.ru", "lebmat2762066", L"Тестируем");
+	MapFrame frame = MapFrame();
+	frame.SetArea(BotInteractor::GetArea());
+	thread thr = thread(workerFunc, &frame, ObjectManager::GetPlayer()->GetPosition());
+	thr.detach();
+
+	//GameManager::RotatePlayer(ObjectManager::FindUnitByName(L"Паква")->GetPosition().coords);
+	//BotInteractor::GoToPoint(*ObjectManager::FindUnitByName(L"Шоюй"));
 
 	
-	Unit * unit = ObjectManager::FindUnitByName(L"Каут");
-	BotInteractor::GetArea()->AddWowObjectAvatar(unit);
-	//MapFrame * frame = new MapFrame();
-	///frame->SetArea(BotInteractor::GetArea());
-	//thread thread(workerFunc, frame, ObjectManager::GetPlayer()->GetPosition());
-	//thread.detach();
-
-
-	
-	BotInteractor::FindPlayerPath(unit->GetPosition().coords);
-	Player * player = ObjectManager::GetPlayer();
-	//BotInteractor::GoThroughPath();
-	//GameManager::RotatePlayer(0);
-	float pos=0;
-	float pos2 = 0;
-	float old_pos=0;
-	int sec = 0;
-	int counter = 0;
-	cout << "GO" << endl;
-	vector<float> r = vector<float>();
-	RECT rect = RECT();
-	BotInteractor::FindPlayerPath(unit->GetPosition().coords);
-	BotInteractor::GoThroughPath();
-	//GameManager::GoToPoint(unit->GetPosition().coords);
-	cin >> pos;
+	default_random_engine generator;
+	uniform_int_distribution<int> distribution(0, ObjectManager::GetUnitsList()->size()-1);
 	while (1)
 	{
-		cout << GameManager::GetDistanceToPoint(player->GetPosition().coords, unit->GetPosition().coords)<<endl;
-		float or = GameManager::GetOrientationToTarget(unit->GetPosition().coords);
+		/*int random_variable = distribution(generator);
+		Unit * unit = (*ObjectManager::GetUnitsList())[random_variable];
+		wcout << unit->GetName() << endl;;
+		BotInteractor::GoToPoint(*unit);*/
+		BotInteractor::PulseCheck();
+		Sleep(50);
+	}
+
+
+	while (1)
+	{
 		Sleep(100);
 	}
 	
 	
 	//cin >> pos;
-	GameManager::RotatePlayer(unit);
-	GameManager::GoToPoint(unit->GetPosition().coords);
-	cin >> pos;
 
 	return 0;
 

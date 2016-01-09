@@ -26,7 +26,14 @@ private:
 	//BinaryReader * tex;
 	BinaryReader * obj_reader;
 	ChunkStreamInfo chunk_stream_infos[16][16];
+	ChunkStreamInfo obj_chunk_stream_infos[16][16];
 	vector<M2Info> m2_infos;
+	char * doodads_filenames;
+	unsigned * doodads_ids;
+	MDDF * mddfs;
+	MODF * modfs;
+	char * wmos_filenames;
+	unsigned * wmos_ids;
 	vector<WMOInfo> wmo_infos;
 	void ReadM2Models(bool hight_detalization=false);
 	void ReadWMOModels();
@@ -41,8 +48,12 @@ public:
 	void ReadObjects(bool hight_detalization=false);
 	vector<M2Info> * GetM2Infos() {return &m2_infos;}
 	const vector<WMOInfo> & GetWMOInfos() { return wmo_infos; }
-
-
+	const char * GetDoodadsFilenames() { return doodads_filenames; }
+	const unsigned * GetDoodadsIds() { return doodads_ids; }
+	const MDDF * GetMDDFs() { return mddfs; }
+	const char * GetWMOFilenames() { return wmos_filenames; }
+	const unsigned * GetWMOsIds() { return wmos_ids; }
+	const MODF * GetMODFs() { return modfs; }
 };
 
 

@@ -27,8 +27,6 @@ namespace Wow
 	}
 	float GameManager::GoStraighToPoint(Vector3 & point)
 	{
-		
-		//AU3_Send(L"UP down");
 		RECT rect = RECT();
 		AU3_WinGetClientSize(L"World of Warcraft", L"", &rect);
 		AU3_MouseMove(rect.right / 2, rect.bottom / 2);
@@ -52,35 +50,39 @@ namespace Wow
 	void GameManager::RotatePlayer(Vector3 & point)
 	{
 		Player * player = ObjectManager::GetPlayer();
+		float player_orientation= player->GetPosition().rotation.z;
 		float goal_orientation = GetOrientationToTarget(point);
+		float goal_deg = (goal_orientation * 180.0f) / Utils::PI;
+		float player_deg = (player_orientation * 180.0f) / Utils::PI;
+		float prov = goal_deg - player_deg;
+		int direction=0;
+		if (prov > 0)
+			prov -= 360;
+		else
+			prov += 360;
+		if (prov > 0)
+			direction = -1;
+		if (prov < 0)
+			direction = 1;
 		RECT rect = RECT();
+		//float turn=goal_orientation-
 		AU3_WinGetClientSize(L"World of Warcraft", L"", &rect);
 		AU3_MouseMove(rect.right / 2, rect.bottom / 2);
 		AU3_MouseDown(L"Right");
-		int i = 0;
-
 		while (abs(player->GetPosition().rotation.z - goal_orientation)> 0.1)
 		{
 
-			AU3_MouseMove(rect.right / 2 + 6, rect.bottom / 2, 0);
-			AU3_MouseMove(rect.right / 2 - 6, rect.bottom / 2, 0);
-			//AU3_MouseClickDrag(L"Right", rect.right / 2, rect.bottom / 2, rect.right / 2+ 6, rect.bottom / 2,0);
+			AU3_MouseMove(rect.right / 2 + 6*direction, rect.bottom / 2, 0);
+			AU3_MouseMove(rect.right / 2 - 6 * direction, rect.bottom / 2, 0);
 			Sleep(5);
-			//player->DumpPosition();
 
 		}
 		while (abs(player->GetPosition().rotation.z - goal_orientation) > 0.01)
 		{
-			AU3_MouseMove(rect.right / 2 + 1, rect.bottom / 2, 0);
-			AU3_MouseMove(rect.right / 2 - 1, rect.bottom / 2, 0);
-			//AU3_MouseClickDrag(L"Right", rect.right / 2, rect.bottom / 2, rect.right / 2+ 6, rect.bottom / 2,0);
-
-			//player->DumpPosition();
-			//cout << "1111 " << player->GetPosition().rotation.z << endl << goal_orientation << endl;
+			AU3_MouseMove(rect.right / 2 + direction, rect.bottom / 2, 0);
+			AU3_MouseMove(rect.right / 2 - direction, rect.bottom / 2, 0);
 			Sleep(5);
 		}
-
-		Sleep(100);
 		AU3_MouseUp(L"Right");
 
 	}
@@ -88,14 +90,6 @@ namespace Wow
 	{
 		RotatePlayer(point);
 		GoStraighToPoint(point);
-	}
-	GameManager::GameManager(void)
-	{
-	}
-
-
-	GameManager::~GameManager(void)
-	{
 	}
 	Camera * GameManager::GetCamera()
 	{
