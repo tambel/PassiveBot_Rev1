@@ -74,6 +74,22 @@ void SquareArea::Fill(Location * location, Point2D<int> block_coordinates, Point
 			Point2D<int> abs_pos = area_position + Point2D<int>(i, j);
 
 			chunks[i][j] = ADTWorker::GetChunk(location, block_coordinates += (Point2D<int>(abs_pos.X / 16, abs_pos.Y / 16) - Point2D<int>(1, 1)), Point2D<int>(abs_pos.X % 16, abs_pos.Y % 16), true);
+			if (i == radius  && (j == radius))
+			{
+				chunks[i][j]->InitNavigation();
+				for (int ii = 0; ii < 145; ii++)
+				{
+					//chunks[i][j]->GetVertices()[ii].color = Utils::Graphics::Color(1, 1, 1, 1);
+					for (auto &doodad : chunks[i][j]->GetDoodads())
+					{
+						for (int ii = 0; ii < doodad.GetVertexCount(); ii++)
+						{
+						//	doodad.GetVertices()[ii].color = Utils::Graphics::Color(1, 1, 1, 1);
+						}
+					}
+				}
+			}
+			
 		}
 
 	}

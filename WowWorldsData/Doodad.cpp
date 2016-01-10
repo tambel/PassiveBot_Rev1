@@ -16,6 +16,7 @@ Doodad::Doodad(string filename,unsigned uuid, Position position, short scale):uu
 {
 	M2 m2 = M2(filename);
 	name = m2.filename;
+	this->scale = scale/1024.0f;
 	this->position.coords=Vector3(position.coords.x,-position.coords.z,position.coords.y);
 	this->position.rotation = position.rotation;
 	this->game_position=Vector3(Metrics::MapMidPoint-this->position.coords.x,Metrics::MapMidPoint-this->position.coords.z,position.coords.y);

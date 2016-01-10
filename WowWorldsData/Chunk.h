@@ -59,6 +59,9 @@ class Chunk:public Model<unsigned short>
 {
 private:
 
+
+
+
 	ADT * adt;
 	Location * location;
 	Point2D<int> block_coordinates;
@@ -78,11 +81,18 @@ private:
 	void LoadMcvt();
 	void LoadMcrd(unsigned long size);
 	void LoadMcrw(unsigned long size);
-	void InitNavigation();
+	
 
 
 
 public:
+	void InitNavigation();
+	dtNavMeshQuery * m_navQuery = 0;;
+	float bmin[3];
+	float bmax[3];
+	rcPolyMesh * result_mesh;
+
+
 	bool is_active;
 	bool is_new;
 	Chunk(void);

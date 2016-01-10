@@ -38,8 +38,8 @@ void MapFrame::createScene()
 		mCamera->setPosition(Vector3ToOgreVector(area->GetChunks()[0][0]->GetRealPosition()));
 		//mCamera->setPosition(0,0,0);
 		area->busy = false;
-		createNavMesh();
-		createRecastPathLine(0);
+		//createNavMesh();
+		//createRecastPathLine(0);
 	}
 
 	
@@ -47,6 +47,7 @@ void MapFrame::createScene()
 
 void MapFrame::InitTerrain()
 {
+
 	for (auto rend : chunks) rend->to_kill = true;
 	for (int i = 0; i < area->GetRadius() * 2 + 1; i++)
 	{
@@ -69,11 +70,76 @@ void MapFrame::InitTerrain()
 				{
 					Renderable * rend = new Renderable(chunk);
 					rend->CreateScene(mSceneMgr->getRootSceneNode());
-					//rend->GetScene()->setPosition(Vector3ToOgreVector(chunk->GetPosition()));
+					//rend->GetScene()->setPosition(Vector3ToOgreVector(chunk->GetGamePosition()));
 					rend->GetScene()->setPosition(Vector3ToOgreVector(chunk->GetRealPosition()));
 					chunks.push_back(rend);
 				}
+				Ogre::SceneNode * m_pRecastSN;
+				if (chunk->result_mesh)
+				{
+					rcPolyMesh & mesh = *chunk->result_mesh;
+					const int nvp = mesh.nvp;
+					const float cs = mesh.cs;
+					const float ch = mesh.ch;
+					const float* orig = mesh.bmin;
 
+					int m_flDataX = mesh.npolys;
+					int m_flDataY = mesh.nverts;
+
+					// create scenenodes
+
+					int nIndex = 0;
+					int m_nAreaCount = mesh.npolys;
+
+
+					if (m_nAreaCount)
+					{
+
+						// start defining the manualObject
+						Ogre::ManualObject *m_pRecastMOWalk = mSceneMgr->createManualObject("RecastMOWalk"+to_string(chunk->GetCoordinates().X)+to_string(chunk->GetCoordinates().Y));
+						m_pRecastMOWalk->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_LIST);
+						for (int i = 0; i < mesh.npolys; ++i) // go through all polygons
+							if (mesh.areas[i] == 0)
+							{
+								const unsigned short* p = &mesh.polys[i*nvp * 2];
+
+								unsigned short vi[3];
+								for (int j = 2; j < nvp; ++j) // go through all verts in the polygon
+								{
+									if (p[j] == RC_MESH_NULL_IDX) break;
+									vi[0] = p[0];
+									vi[1] = p[j - 1];
+									vi[2] = p[j];
+									for (int k = 0; k < 3; ++k) // create a 3-vert triangle for each 3 verts in the polygon.
+									{
+										const unsigned short* v = &mesh.verts[vi[k] * 3];
+										const float x = orig[0] + v[0] * cs;
+										const float y = orig[1] + (v[1] + 1)*ch;
+										const float z = orig[2] + v[2] * cs;
+
+										m_pRecastMOWalk->position(x, z, y);
+										if (mesh.areas[i] == 0)
+											m_pRecastMOWalk->colour(0, 1, 0, 1);
+										else
+											m_pRecastMOWalk->colour(0, 1, 1, 1);
+
+									}
+									//m_pRecastMOWalk->triangle(nIndex, nIndex + 1, nIndex + 2);
+									m_pRecastMOWalk->index(nIndex + 2);
+									m_pRecastMOWalk->index(nIndex + 1);
+									m_pRecastMOWalk->index(nIndex);
+									nIndex += 3;
+								}
+							}
+						m_pRecastMOWalk->end();
+
+						m_pRecastSN = area_scene->createChildSceneNode();
+						m_pRecastSN->attachObject(m_pRecastMOWalk);
+						m_pRecastSN->setPosition(Vector3ToOgreVector(chunk->GetRealPosition()));
+						//m_pRecastSN->setPosition(Vector3ToOgreVector(area->GetBoundingBox().up));
+						//m_pRecastSN->setPosition(m_pRecastSN->getPosition().x, m_pRecastSN->getPosition().y, m_pRecastSN->getPosition().z);
+					}
+				}
 			}
 		}
 	}
@@ -99,14 +165,15 @@ void MapFrame::OnUpdate()
 	if (!area->busy)
 	{
 		area->busy = true;
-		InitTerrain();
+		
 		if (area->to_update)
 		{
+			InitTerrain();
 			area->to_update = false;
 			InitDoodads();
 			InitWMOs();
-			createNavMesh();
-			createRecastPathLine(0);
+			//createNavMesh();
+			//createRecastPathLine(0);
 
 		}
 
@@ -433,7 +500,7 @@ void MapFrame::createRecastPathLine(int nPathSlot/*, PATHDATA *m_PathStore*/)
 	int nVertCount = m_PathStore[nPathSlot].MaxVertex;
 	for (int nVert = 0; nVert<nVertCount; nVert++)
 	{
-		m_pRecastMOPath->position(m_PathStore[nPathSlot].PosX[nVert], m_PathStore[nPathSlot].PosZ[nVert], m_PathStore[nPathSlot].PosY[nVert]+2);
+		m_pRecastMOPath->position(m_PathStore[nPathSlot].PosX[nVert], m_PathStore[nPathSlot].PosZ[nVert], m_PathStore[nPathSlot].PosY[nVert]);
 		m_pRecastMOPath->colour(1, 0, 0);
 
 		//sprintf(m_chBug, "Line Vert %i, %f %f %f", nVert, m_PathStore[nPathSlot].PosX[nVert], m_PathStore[nPathSlot].PosY[nVert], m_PathStore[nPathSlot].PosZ[nVert]) ;

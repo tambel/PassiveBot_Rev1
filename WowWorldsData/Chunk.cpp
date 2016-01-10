@@ -8,6 +8,7 @@ Chunk::Chunk(void)
 }
 Chunk::Chunk(ChunkStreamInfo info, ChunkStreamInfo obj_info, ADT * adt, Location * location, Point2D<int> block_coordinates,Point2D<int> coordinates):root_info(info),location(location),block_coordinates(block_coordinates),coordinates(coordinates)
 {
+	result_mesh = 0;
 	this->adt = adt;
 	doodads = vector<Doodad>();
 	wmos = vector<WMO>();
@@ -61,7 +62,7 @@ Chunk::Chunk(ChunkStreamInfo info, ChunkStreamInfo obj_info, ADT * adt, Location
 			break;
 		}
 	}
-	InitNavigation();
+	//InitNavigation();
 
 	//root_reader->ReadBytes((char*)&height,
 
@@ -141,6 +142,10 @@ void Chunk::LoadMcrd(unsigned long size)
 		MDDF mddf = adt->GetMDDFs()[doodads_refs.get()[i]];
 		string filename= Configuration::GetGameDataPath()+(adt->GetDoodadsFilenames()+adt->GetDoodadsIds()[mddf.Mmid]);
 		Doodad doodad = Doodad(filename, mddf.UniqueId, Position(mddf.Position, mddf.Rotation), mddf.Scale);
+		for (unsigned long ii = 0; ii < doodad.GetVertexCount(); ii++)
+		{
+		//	doodad.GetVertices()[ii].position= doodad.GetVertices()[ii].position+ doodad.GetPosition().coords;
+		}
 		doodads.push_back(move(doodad));
 	}
 }
@@ -193,11 +198,25 @@ void Chunk::InitNavigation()
 	}
 	for (auto &doodad : doodads)
 	{
+		
+		//doodad.Rescale(doodad.scale);
+		//doodad.Rotate();
 		for (unsigned long i = 0; i < doodad.GetVertexCount(); i++)
 		{
+			Vector3 vert = doodad.GetVertices()[i].position + (doodad.GetPosition().coords - real_position);
+			if (vert.x < -10000)
+			{
+				int i;
+				i = 10;
+			}
+		//	vertices.get()[vert_offset] = (vert.x + doodad.GetVertices()[i].position.x)*doodad.scale;
+		//	vertices.get()[vert_offset + 1] = (vert.z + doodad.GetVertices()[i].position.z)*doodad.scale;
+		//	vertices.get()[vert_offset + 2] = (vert.y+doodad.GetVertices()[i].position.y)*doodad.scale;
+
 			vertices.get()[vert_offset] = doodad.GetVertices()[i].position.x;
-			vertices.get()[vert_offset + 1] = doodad.GetVertices()[i].position.z;
+			vertices.get()[vert_offset + 1] = doodad.GetVertices()[i].position.z ;
 			vertices.get()[vert_offset + 2] = doodad.GetVertices()[i].position.y;
+
 			vert_offset += 3;
 		}
 	}
@@ -207,16 +226,21 @@ void Chunk::InitNavigation()
 		{
 			for (unsigned long i = 0; i < part.GetVertexCount(); i++)
 			{
-				vertices.get()[vert_offset] = part.GetVertices()[i].position.x;
-				vertices.get()[vert_offset + 1] = part.GetVertices()[i].position.z;
-				vertices.get()[vert_offset + 2] = part.GetVertices()[i].position.y;
+				Vector3 vert = part.GetVertices()[i].position + (wmo.GetPosition().coords - real_position);
+
+				//vertices.get()[vert_offset] = part.GetVertices()[i].position.x;
+				//vertices.get()[vert_offset + 1] = part.GetVertices()[i].position.z;
+				//vertices.get()[vert_offset + 2] = part.GetVertices()[i].position.y;
+				vertices.get()[vert_offset] = vert.x+ part.GetVertices()[i].position.x;
+				vertices.get()[vert_offset + 1] = vert.y + part.GetVertices()[i].position.z;
+				vertices.get()[vert_offset + 2] = vert.z + part.GetVertices()[i].position.y;
 				vert_offset += 3;
 			}
 		}
 	}
 	vert_offset = 0;
 	unsigned long ind_offset = 0;
-	for (unsigned i = 0; i < 145; i+=3)
+	for (unsigned i = 0; i < 768; i+=3)
 	{
 		indices.get()[ind_offset] = this->indices[i + 2] + vert_offset;
 		indices.get()[ind_offset + 1] = this->indices[i + 1] + vert_offset;
@@ -249,15 +273,25 @@ void Chunk::InitNavigation()
 			vert_offset += part.GetVertexCount();
 		}
 	}
-
+	ofstream file;
+	file.open("test.obj");
+	for (unsigned vi = 0; vi < vert_count*3; vi+=3)
+	{
+		file << "v " << vertices.get()[vi] << " " << vertices.get()[vi + 1] << " " << vertices.get()[vi + 2] << endl;
+	}
+	for (unsigned ii = 0; ii < ind_count; ii += 3)
+	{
+		file << "f " << indices.get()[ii]+1 << " " << indices.get()[ii + 1]+1 << " " << indices.get()[ii + 2]+1 << endl;
+	}
+	file.close();
 	////
 
 
 
-	dtNavMeshQuery * m_navQuery = 0;;
-	float bmin[3];
-	float bmax[3];
-	rcPolyMesh * result_mesh;
+	//dtNavMeshQuery * m_navQuery = 0;;
+	//float bmin[3];
+	//float bmax[3];
+	//rcPolyMesh * result_mesh;
 
 
 	//delete result_mesh;
