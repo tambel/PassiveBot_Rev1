@@ -4,6 +4,7 @@
 
 WMO::WMO(string filename, unsigned uuid, Position position):uuid(uuid),position(std::move(position))
 {
+	skip = false;
 	WMORoot root = WMORoot(filename);
 	this->position.coords = Vector3(position.coords.x, -position.coords.z, position.coords.y);
 	parts = vector<WMOPart>();
@@ -23,6 +24,7 @@ WMO::WMO(WMO && right):parts(std::move(right.parts))
 	//parts = move(right.parts);
 	position = right.position;
 	uuid = right.uuid;
+	skip = right.skip;
 }
 
 

@@ -91,6 +91,10 @@ public:
 	float bmin[3];
 	float bmax[3];
 	rcPolyMesh * result_mesh;
+	unsigned char * navData;
+	int navDataSize = 0;
+	bool yey;
+
 
 
 	bool is_active;

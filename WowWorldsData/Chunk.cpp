@@ -8,6 +8,7 @@ Chunk::Chunk(void)
 }
 Chunk::Chunk(ChunkStreamInfo info, ChunkStreamInfo obj_info, ADT * adt, Location * location, Point2D<int> block_coordinates,Point2D<int> coordinates):root_info(info),location(location),block_coordinates(block_coordinates),coordinates(coordinates)
 {
+	yey=false;
 	result_mesh = 0;
 	this->adt = adt;
 	doodads = vector<Doodad>();
@@ -112,14 +113,10 @@ void Chunk::LoadMcvt()
 				
 				
 			}
-			if (coordinates.X == 3 && coordinates.Y == 15)
-			{
-				vertices[counter].color = Graphics::Color(0.0f, 0.0f, 0.0f, 0.0f);
-			}
-			if (header.IndexX==0 ||  header.IndexY==0 ||  header.IndexX==15 ||  header.IndexY==15)
+			if (i == 0 && (j == 0 || j == 1))
 				{
 					
-					//vertices[counter].color=Graphics::Color(0.0f,1.0f,1.0f,0.0f);
+					vertices[counter].color=Graphics::Color(0.0f,1.0f,1.0f,0.0f);
 				}
 			++counter;
 		}
@@ -140,8 +137,14 @@ void Chunk::LoadMcrd(unsigned long size)
 	{
 		
 		MDDF mddf = adt->GetMDDFs()[doodads_refs.get()[i]];
+		if (mddf.Scale != 1024)
+		{
+			mddf.Scale = mddf.Scale;
+		}
 		string filename= Configuration::GetGameDataPath()+(adt->GetDoodadsFilenames()+adt->GetDoodadsIds()[mddf.Mmid]);
 		Doodad doodad = Doodad(filename, mddf.UniqueId, Position(mddf.Position, mddf.Rotation), mddf.Scale);
+
+		float f = doodad.GetVertices()[10].position.x;
 		for (unsigned long ii = 0; ii < doodad.GetVertexCount(); ii++)
 		{
 		//	doodad.GetVertices()[ii].position= doodad.GetVertices()[ii].position+ doodad.GetPosition().coords;
@@ -191,9 +194,9 @@ void Chunk::InitNavigation()
 	unsigned long vert_offset = 0;
 	for (unsigned i = 0; i < 145; i++)
 	{
-		vertices.get()[vert_offset] = this->vertices[i].position.x;
-		vertices.get()[vert_offset+1] = this->vertices[i].position.z;
-		vertices.get()[vert_offset+2] = this->vertices[i].position.y;
+		vertices.get()[vert_offset] = this->vertices[i].position.x + position.coords.x;
+		vertices.get()[vert_offset+1] = this->vertices[i].position.z + position.coords.z;
+		vertices.get()[vert_offset+2] = this->vertices[i].position.y + position.coords.y;
 		vert_offset += 3;
 	}
 	for (auto &doodad : doodads)
@@ -203,19 +206,22 @@ void Chunk::InitNavigation()
 		//doodad.Rotate();
 		for (unsigned long i = 0; i < doodad.GetVertexCount(); i++)
 		{
-			Vector3 vert = doodad.GetVertices()[i].position + (doodad.GetPosition().coords - real_position);
-			if (vert.x < -10000)
-			{
-				int i;
-				i = 10;
-			}
-		//	vertices.get()[vert_offset] = (vert.x + doodad.GetVertices()[i].position.x)*doodad.scale;
-		//	vertices.get()[vert_offset + 1] = (vert.z + doodad.GetVertices()[i].position.z)*doodad.scale;
-		//	vertices.get()[vert_offset + 2] = (vert.y+doodad.GetVertices()[i].position.y)*doodad.scale;
+			//Vector3 real= Vector3(Metrics::MapMidPoint - doodad.GetGamePosition().y, -(Metrics::MapMidPoint - doodad.GetGamePosition().x), doodad.GetGamePosition().z);
 
-			vertices.get()[vert_offset] = doodad.GetVertices()[i].position.x;
+			Vector3 vert = doodad.GetVertices()[i].position + (doodad.GetPosition().coords - real_position);// +position.coords;
+			vertices.get()[vert_offset] = vert.x + position.coords.x;
+			vertices.get()[vert_offset + 1] = vert.z +position.coords.z;
+			vertices.get()[vert_offset + 2] = vert.y + position.coords.y;
+
+			/*vertices.get()[vert_offset] = doodad.GetVertices()[i].position.x;
 			vertices.get()[vert_offset + 1] = doodad.GetVertices()[i].position.z ;
-			vertices.get()[vert_offset + 2] = doodad.GetVertices()[i].position.y;
+			vertices.get()[vert_offset + 2] = doodad.GetVertices()[i].position.y ;*/
+			/*if (doodad.GetUUID() == 354884)
+			{
+				vertices.get()[vert_offset] = doodad.GetVertices()[i].position.x;
+				vertices.get()[vert_offset + 1] = doodad.GetVertices()[i].position.z;
+				vertices.get()[vert_offset + 2] = doodad.GetVertices()[i].position.y;
+			}*/
 
 			vert_offset += 3;
 		}
@@ -231,13 +237,18 @@ void Chunk::InitNavigation()
 				//vertices.get()[vert_offset] = part.GetVertices()[i].position.x;
 				//vertices.get()[vert_offset + 1] = part.GetVertices()[i].position.z;
 				//vertices.get()[vert_offset + 2] = part.GetVertices()[i].position.y;
-				vertices.get()[vert_offset] = vert.x+ part.GetVertices()[i].position.x;
-				vertices.get()[vert_offset + 1] = vert.y + part.GetVertices()[i].position.z;
-				vertices.get()[vert_offset + 2] = vert.z + part.GetVertices()[i].position.y;
+				vertices.get()[vert_offset] = vert.x+position.coords.x;
+				vertices.get()[vert_offset + 1] = vert.z + position.coords.z;
+				vertices.get()[vert_offset + 2] = vert.y + position.coords.y;
 				vert_offset += 3;
 			}
 		}
 	}
+	/*if (yey)
+	for (unsigned long vi = 0; vi < vert_count * 3; vi += 3)
+	{
+		vertices.get()[vi] += 34.0f;
+	}*/
 	vert_offset = 0;
 	unsigned long ind_offset = 0;
 	for (unsigned i = 0; i < 768; i+=3)
@@ -274,7 +285,7 @@ void Chunk::InitNavigation()
 		}
 	}
 	ofstream file;
-	file.open("test.obj");
+	file.open(to_string(coordinates.X)+" "+to_string(coordinates.Y)+" test.obj");
 	for (unsigned vi = 0; vi < vert_count*3; vi+=3)
 	{
 		file << "v " << vertices.get()[vi] << " " << vertices.get()[vi + 1] << " " << vertices.get()[vi + 2] << endl;
@@ -461,9 +472,9 @@ void Chunk::InitNavigation()
 
 	if (m_cfg.maxVertsPerPoly <= DT_VERTS_PER_POLYGON)
 	{
-		unsigned char* navData = 0;
-		int navDataSize = 0;
-
+		//unsigned char* navData = 0;
+		//int navDataSize = 0;
+		navDataSize = 0;
 		// Update poly flags from areas.
 		for (int i = 0; i < m_pmesh->npolys; ++i)
 		{
@@ -517,8 +528,24 @@ void Chunk::InitNavigation()
 		params.walkableHeight = m_agentHeight;
 		params.walkableRadius = m_agentRadius;
 		params.walkableClimb = m_agentMaxClimb;
+		params.tileX = 0;
+		params.tileY = 1;
+		
 		rcVcopy(params.bmin, m_pmesh->bmin);
 		rcVcopy(params.bmax, m_pmesh->bmax);
+		if (yey)
+		{
+			params.tileX = 0;
+			params.tileY = 1;
+			/*m_pmesh->bmin[0] -= 33;
+			m_pmesh->bmin[1] -= 33;
+			m_pmesh->bmin[2] -= 33;
+			m_pmesh->bmax[0] -= 33;
+			m_pmesh->bmax[1] -= 33;
+			m_pmesh->bmax[2] -= 33;
+			rcVcopy(params.bmin, m_pmesh->bmin);
+			rcVcopy(params.bmax, m_pmesh->bmax);*/
+		}
 		params.cs = m_cfg.cs;
 		params.ch = m_cfg.ch;
 		params.buildBvTree = true;

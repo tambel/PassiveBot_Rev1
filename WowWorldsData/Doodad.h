@@ -9,6 +9,7 @@ using namespace std;
 class Doodad:public Model<unsigned short>
 {
 	unsigned long uuid;
+	bool skip;
 public:
 	Vector3 game_position;
 	float scale;
@@ -22,4 +23,6 @@ public:
 	unsigned long GetUUID() {return uuid;}
 	Vector3 GetGamePosition() {return game_position;}
 	Doodad & operator=(Doodad && right);
+	inline void Skip() { skip = true; }
+	inline bool IsSkipped() { return skip; }
 };

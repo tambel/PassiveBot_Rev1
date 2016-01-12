@@ -65,5 +65,11 @@ public:
 	Navigation & Navigation() {	return navigation;}
 
 
+	void TestNav();
+	PATHDATA  * m_PathStore;
+	void InitNavigation();
+	void DeleteDuplicates();
+
+
 };
 

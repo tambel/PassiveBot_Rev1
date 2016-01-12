@@ -5,6 +5,7 @@ class WMO
 	vector<WMOPart> parts;
 	unsigned long uuid;
 	Position position;
+	bool skip;
 public:
 	//WMO(WMORoot & root, unsigned uuid, Position position);
 	WMO(string filename, unsigned uuid, Position position);
@@ -14,6 +15,8 @@ public:
 	
 	Position & GetPosition() { return position; }
 	vector<WMOPart> & GetParts() { return parts; }
+	void Skip() { skip = true; }
+	inline bool  IsSkipped() { return skip; }
 
 };
 

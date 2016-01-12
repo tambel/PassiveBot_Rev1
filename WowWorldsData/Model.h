@@ -21,6 +21,7 @@ public:
 	virtual unsigned long GetVertexCount() { return vertex_count; }
 	virtual Position GetPosition() { return position; }
 	void SetPosition(Position position) { this->position = position; }
+	inline void SetPosition(Vector3 & position) { this->position.coords = position; }
 	virtual void Rotate();
 	virtual void Rescale(float scale);
 };

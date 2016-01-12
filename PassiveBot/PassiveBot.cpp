@@ -33,9 +33,11 @@ int main(int argc, wchar_t * argv[])
 
 	
 
-	BotInteractor::StartGame("lissek7@ya.ru", "lebmat2762066", L"Тестируем");
+	//BotInteractor::StartGame("lissek7@ya.ru", "lebmat2762066", L"Тестируем");
+	SquareArea * area=new SquareArea(Game::LocationBase::Get("Kalimdor"), Point2D<int>(33, 41), Point2D<int>(10, 3), 3);
 	MapFrame frame = MapFrame();
-	frame.SetArea(BotInteractor::GetArea());
+	frame.SetArea(area);
+	frame.go();
 	thread thr = thread(workerFunc, &frame, ObjectManager::GetPlayer()->GetPosition());
 	thr.detach();
 

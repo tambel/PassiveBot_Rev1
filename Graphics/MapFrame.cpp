@@ -134,7 +134,7 @@ void MapFrame::InitTerrain()
 						m_pRecastMOWalk->end();
 
 						m_pRecastSN = area_scene->createChildSceneNode();
-						m_pRecastSN->attachObject(m_pRecastMOWalk);
+						//m_pRecastSN->attachObject(m_pRecastMOWalk);
 						m_pRecastSN->setPosition(Vector3ToOgreVector(chunk->GetRealPosition()));
 						//m_pRecastSN->setPosition(Vector3ToOgreVector(area->GetBoundingBox().up));
 						//m_pRecastSN->setPosition(m_pRecastSN->getPosition().x, m_pRecastSN->getPosition().y, m_pRecastSN->getPosition().z);
@@ -482,7 +482,7 @@ void MapFrame::createNavMesh()
 
 void MapFrame::createRecastPathLine(int nPathSlot/*, PATHDATA *m_PathStore*/)
 {
-	PATHDATA * m_PathStore = area->Navigation().m_PathStore;
+	PATHDATA * m_PathStore = area->m_PathStore;
 	Ogre::ManualObject* m_pRecastMOPath;
 	Ogre::SceneNode*      m_pRecastSN = area_scene->createChildSceneNode();
 	/*if (m_pRecastMOPath)
@@ -500,7 +500,7 @@ void MapFrame::createRecastPathLine(int nPathSlot/*, PATHDATA *m_PathStore*/)
 	int nVertCount = m_PathStore[nPathSlot].MaxVertex;
 	for (int nVert = 0; nVert<nVertCount; nVert++)
 	{
-		m_pRecastMOPath->position(m_PathStore[nPathSlot].PosX[nVert], m_PathStore[nPathSlot].PosZ[nVert], m_PathStore[nPathSlot].PosY[nVert]);
+		m_pRecastMOPath->position(m_PathStore[nPathSlot].PosX[nVert], m_PathStore[nPathSlot].PosZ[nVert], m_PathStore[nPathSlot].PosY[nVert]+2);
 		m_pRecastMOPath->colour(1, 0, 0);
 
 		//sprintf(m_chBug, "Line Vert %i, %f %f %f", nVert, m_PathStore[nPathSlot].PosX[nVert], m_PathStore[nPathSlot].PosY[nVert], m_PathStore[nPathSlot].PosZ[nVert]) ;

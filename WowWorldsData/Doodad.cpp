@@ -7,6 +7,7 @@ Doodad::Doodad(Doodad && right):
 	game_position(right.game_position),
 	scale(right.scale)
 {
+	skip = right.skip;
 	Model::operator=(std::move(right));
 	//uuid = right.uuid;
 	//game_position = right.game_position;
@@ -14,6 +15,7 @@ Doodad::Doodad(Doodad && right):
 }
 Doodad::Doodad(string filename,unsigned uuid, Position position, short scale):uuid(uuid),scale(scale/1024.0f)
 {
+	skip = false;
 	M2 m2 = M2(filename);
 	name = m2.filename;
 	this->scale = scale/1024.0f;
@@ -58,6 +60,7 @@ Doodad & Doodad::operator=(Doodad && right)
 	uuid = right.uuid;
 	game_position = right.game_position;
 	scale = right.scale;
+	skip = right.skip;
 	return *this;
 }
 
