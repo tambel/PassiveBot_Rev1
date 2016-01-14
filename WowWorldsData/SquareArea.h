@@ -88,7 +88,7 @@ public:
 	dtNavMeshQuery* m_navQuery;
 	dtNavMesh * m_navMesh;
 	void TestNav();
-	PATHDATA  m_PathStore;
+	unique_ptr<PATHDATA>  m_PathStore;
 	void InitNavigation();
 	void DeleteDuplicates();
 	void InitNavigation2();

@@ -5,6 +5,7 @@ SquareArea::SquareArea()
 }
 SquareArea::SquareArea(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius) :location(location), block_coordinates(block_coordinates), coordinates(coordinates), radius(radius)
 {
+	m_PathStore = unique_ptr<PATHDATA>(new PATHDATA);
 	polys = vector<rcPolyMesh*>();
 	m_navMesh = 0;
 	busy = false;
@@ -58,7 +59,7 @@ SquareArea & SquareArea::operator=(SquareArea && right)
 	bounding_box = right.bounding_box;
 	to_update = right.to_update;
 	busy = right.busy;
-	m_PathStore = right.m_PathStore;
+	m_PathStore = move(m_PathStore);
 	right.m_PathStore = 0;
 	return *this;
 }
@@ -425,17 +426,16 @@ void SquareArea::TestNav()
 	if ((status&DT_FAILURE) || (status&DT_STATUS_DETAIL_MASK)) return ; // couldn't create a path
 	if (nVertCount == 0) return; // couldn't find a path
 	int nIndex = 0;
-	m_PathStore = new PATHDATA;
 	for (int nVert = 0; nVert<nVertCount; nVert++)
 	{
-		m_PathStore[0].PosX[nVert] = StraightPath[nIndex++]+chunks[3][3]->GetRealPosition().x;
-		m_PathStore[0].PosY[nVert] = StraightPath[nIndex++]+chunks[3][3]->GetRealPosition().z;
-		m_PathStore[0].PosZ[nVert] = StraightPath[nIndex++]+chunks[3][3]->GetRealPosition().y;
+		m_PathStore->PosX[nVert] = StraightPath[nIndex++]+chunks[3][3]->GetRealPosition().x;
+		m_PathStore->PosY[nVert] = StraightPath[nIndex++]+chunks[3][3]->GetRealPosition().z;
+		m_PathStore->PosZ[nVert] = StraightPath[nIndex++]+chunks[3][3]->GetRealPosition().y;
 
 		//sprintf(m_chBug, "Path Vert %i, %f %f %f", nVert, m_PathStore[nPathSlot].PosX[nVert], m_PathStore[nPathSlot].PosY[nVert], m_PathStore[nPathSlot].PosZ[nVert]) ;
 		//m_pLog->logMessage(m_chBug);
 	}
-	m_PathStore[0].MaxVertex = nVertCount;
+	m_PathStore->MaxVertex = nVertCount;
 	//m_PathStore[0].Target = nTarget;
 
 
@@ -1133,7 +1133,7 @@ int SquareArea::FindPath(Vector3 & start, Vector3 & end, int nPathSlot)
 	int nPathCount = 0;
 	float StraightPath[MAX_PATHVERT * 3];
 	int nVertCount = 0;
-
+	PATHDATA * path_store = m_PathStore.get();
 
 	// setup the filter
 	dtQueryFilter Filter;
@@ -1143,19 +1143,23 @@ int SquareArea::FindPath(Vector3 & start, Vector3 & end, int nPathSlot)
 
 	// find the start polygon
 	status = m_navQuery->findNearestPoly((float*)&start, pExtents, &Filter, &StartPoly, StartNearest);
-	if ((status&DT_FAILURE) || (status&DT_STATUS_DETAIL_MASK)) return -1; // couldn't find a polygon
+	if ((status&DT_FAILURE) || (status&DT_STATUS_DETAIL_MASK)) 
+		return -1; // couldn't find a polygon
 
 																		  // find the end polygon
 	status = m_navQuery->findNearestPoly((float*)&end, pExtents, &Filter, &EndPoly, EndNearest);
-	if ((status&DT_FAILURE) || (status&DT_STATUS_DETAIL_MASK)) return -2; // couldn't find a polygon
+	if ((status&DT_FAILURE) || (status&DT_STATUS_DETAIL_MASK)) 
+		return -2; // couldn't find a polygon
 
 	status = m_navQuery->findPath(StartPoly, EndPoly, StartNearest, EndNearest, &Filter, PolyPath, &nPathCount, MAX_PATHPOLY);
 	if ((status&DT_FAILURE) || (status&DT_STATUS_DETAIL_MASK)) return -3; // couldn't create a path
-	if (nPathCount == 0) return -4; // couldn't find a path
+	if (nPathCount == 0) 
+		return -4; // couldn't find a path
 
 	status = m_navQuery->findStraightPath(StartNearest, EndNearest, PolyPath, nPathCount, StraightPath, NULL, NULL, &nVertCount, MAX_PATHVERT + 100);
 	if ((status&DT_FAILURE) || (status&DT_STATUS_DETAIL_MASK)) return -5; // couldn't create a path
-	if (nVertCount == 0) return -6; // couldn't find a path
+	if (nVertCount == 0) 
+		return -6; // couldn't find a path
 
 									// At this point we have our path.  Copy it to the path store
 	int nIndex = 0;
@@ -1165,14 +1169,14 @@ int SquareArea::FindPath(Vector3 & start, Vector3 & end, int nPathSlot)
 		m_PathStore[nPathSlot].PosY[nVert] = StraightPath[nIndex++];
 		m_PathStore[nPathSlot].PosZ[nVert] = StraightPath[nIndex++];*/
 
-		m_PathStore.PosX[nVert] = StraightPath[nIndex++];
-		m_PathStore.PosY[nVert] = StraightPath[nIndex++];
-		m_PathStore.PosZ[nVert] = StraightPath[nIndex++]; 
+		path_store->PosX[nVert] = StraightPath[nIndex++];
+		path_store->PosY[nVert] = StraightPath[nIndex++];
+		path_store->PosZ[nVert] = StraightPath[nIndex++];
 
 		//sprintf(m_chBug, "Path Vert %i, %f %f %f", nVert, m_PathStore[nPathSlot].PosX[nVert], m_PathStore[nPathSlot].PosY[nVert], m_PathStore[nPathSlot].PosZ[nVert]) ;
 		//m_pLog->logMessage(m_chBug);
 	}
-	m_PathStore.MaxVertex = nVertCount;
+	path_store->MaxVertex = nVertCount;
 	//m_PathStore[nPathSlot].Target = nTarget;
 	return nVertCount;
 }
