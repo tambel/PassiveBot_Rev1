@@ -790,7 +790,7 @@ void SquareArea::InitAreaBoundingBox()
 void SquareArea::BuildAllTiles()
 {
 	polys.clear();
-	dtNavMeshQuery* m_navQuery = new dtNavMeshQuery();
+	m_navQuery = new dtNavMeshQuery();
 	WowBuildContext *m_ctx = new WowBuildContext();
 	m_tileSize = 32.0;
 	m_cellSize = 0.300000012;
@@ -863,6 +863,12 @@ void SquareArea::BuildAllTiles()
 					dtFree(data);
 			}
 		}
+	}
+	status = m_navQuery->init(m_navMesh, 2048);
+	if (dtStatusFailed(status))
+	{
+		m_ctx->log(RC_LOG_ERROR, "buildTiledNavigation: Could not init Detour navmesh query");
+		return;
 	}
 }
 
@@ -1113,6 +1119,62 @@ unsigned char * SquareArea::BuildTileMesh(int x, int y, const float* bmin, const
 	}
 	dataSize = navDataSize;
 	return navData;
+}
+
+int SquareArea::FindPath(Vector3 & start, Vector3 & end, int nPathSlot)
+{
+	dtStatus status;
+	float pExtents[3] = { 32.0f, 32.0f, 32.0f }; // size of box around start/end points to look for nav polygons
+	dtPolyRef StartPoly;
+	float StartNearest[3];
+	dtPolyRef EndPoly;
+	float EndNearest[3];
+	dtPolyRef PolyPath[MAX_PATHPOLY];
+	int nPathCount = 0;
+	float StraightPath[MAX_PATHVERT * 3];
+	int nVertCount = 0;
+
+
+	// setup the filter
+	dtQueryFilter Filter;
+	Filter.setIncludeFlags(0xFFFF);
+	Filter.setExcludeFlags(0);
+	Filter.setAreaCost(SAMPLE_POLYAREA_GROUND, 1.0f);
+
+	// find the start polygon
+	status = m_navQuery->findNearestPoly((float*)&start, pExtents, &Filter, &StartPoly, StartNearest);
+	if ((status&DT_FAILURE) || (status&DT_STATUS_DETAIL_MASK)) return -1; // couldn't find a polygon
+
+																		  // find the end polygon
+	status = m_navQuery->findNearestPoly((float*)&end, pExtents, &Filter, &EndPoly, EndNearest);
+	if ((status&DT_FAILURE) || (status&DT_STATUS_DETAIL_MASK)) return -2; // couldn't find a polygon
+
+	status = m_navQuery->findPath(StartPoly, EndPoly, StartNearest, EndNearest, &Filter, PolyPath, &nPathCount, MAX_PATHPOLY);
+	if ((status&DT_FAILURE) || (status&DT_STATUS_DETAIL_MASK)) return -3; // couldn't create a path
+	if (nPathCount == 0) return -4; // couldn't find a path
+
+	status = m_navQuery->findStraightPath(StartNearest, EndNearest, PolyPath, nPathCount, StraightPath, NULL, NULL, &nVertCount, MAX_PATHVERT + 100);
+	if ((status&DT_FAILURE) || (status&DT_STATUS_DETAIL_MASK)) return -5; // couldn't create a path
+	if (nVertCount == 0) return -6; // couldn't find a path
+
+									// At this point we have our path.  Copy it to the path store
+	int nIndex = 0;
+	for (int nVert = 0; nVert<nVertCount; nVert++)
+	{
+		/*m_PathStore[nPathSlot].PosX[nVert] = StraightPath[nIndex++];
+		m_PathStore[nPathSlot].PosY[nVert] = StraightPath[nIndex++];
+		m_PathStore[nPathSlot].PosZ[nVert] = StraightPath[nIndex++];*/
+
+		m_PathStore.PosX[nVert] = StraightPath[nIndex++];
+		m_PathStore.PosY[nVert] = StraightPath[nIndex++];
+		m_PathStore.PosZ[nVert] = StraightPath[nIndex++]; 
+
+		//sprintf(m_chBug, "Path Vert %i, %f %f %f", nVert, m_PathStore[nPathSlot].PosX[nVert], m_PathStore[nPathSlot].PosY[nVert], m_PathStore[nPathSlot].PosZ[nVert]) ;
+		//m_pLog->logMessage(m_chBug);
+	}
+	m_PathStore.MaxVertex = nVertCount;
+	//m_PathStore[nPathSlot].Target = nTarget;
+	return nVertCount;
 }
 
 void SquareArea::InitWMOs()

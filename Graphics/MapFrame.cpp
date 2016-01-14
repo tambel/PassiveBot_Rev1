@@ -30,6 +30,7 @@ void MapFrame::createScene()
 		area->busy = true;
 		CreateChunks();
 		CreateNavMesh();
+		createRecastPathLine(0);
 		//InitTerrain();
 		if (area->to_update)
 		{
@@ -432,7 +433,7 @@ void MapFrame::createNavMesh()
 				if (p[nvp + j] == RC_MESH_NULL_IDX) continue;
 				int vi[2];
 				vi[0] = p[j];
-				if (j + 1 >= nvp || p[j + 1] == RC_MESH_NULL_IDX)http://lurkmore.to/%D0%A4%D0%93%D0%9C#
+				if (j + 1 >= nvp || p[j + 1] == RC_MESH_NULL_IDX)
 					vi[1] = p[0];
 				else
 					vi[1] = p[j + 1];
@@ -497,29 +498,17 @@ void MapFrame::createNavMesh()
 
 void MapFrame::createRecastPathLine(int nPathSlot/*, PATHDATA *m_PathStore*/)
 {
-	PATHDATA * m_PathStore = area->m_PathStore;
-	Ogre::ManualObject* m_pRecastMOPath;
-	Ogre::SceneNode*      m_pRecastSN = area_scene->createChildSceneNode();
-	/*if (m_pRecastMOPath)
-	{
-		m_pRecastSN->detachObject("RecastMOPath");
-		mSceneMgr->destroyManualObject(m_pRecastMOPath);
-		m_pRecastMOPath = NULL;
-	}*/
-
-
-	m_pRecastMOPath = mSceneMgr->createManualObject("RecastMOPath");
+	PATHDATA * m_PathStore = &area->m_PathStore;
+	Ogre::SceneNode*      m_pRecastSN = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+	Ogre::ManualObject* m_pRecastMOPath = mSceneMgr->createManualObject("RecastMOPath");
 	m_pRecastMOPath->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_STRIP);
 
 
-	int nVertCount = m_PathStore[nPathSlot].MaxVertex;
+	int nVertCount = m_PathStore->MaxVertex;
 	for (int nVert = 0; nVert<nVertCount; nVert++)
 	{
-		m_pRecastMOPath->position(m_PathStore[nPathSlot].PosX[nVert], m_PathStore[nPathSlot].PosZ[nVert], m_PathStore[nPathSlot].PosY[nVert]+2);
+		m_pRecastMOPath->position(m_PathStore->PosX[nVert], m_PathStore->PosZ[nVert], m_PathStore->PosY[nVert]+2);
 		m_pRecastMOPath->colour(1, 0, 0);
-
-		//sprintf(m_chBug, "Line Vert %i, %f %f %f", nVert, m_PathStore[nPathSlot].PosX[nVert], m_PathStore[nPathSlot].PosY[nVert], m_PathStore[nPathSlot].PosZ[nVert]) ;
-		//m_pLog->logMessage(m_chBug);
 	}
 
 
@@ -527,8 +516,6 @@ void MapFrame::createRecastPathLine(int nPathSlot/*, PATHDATA *m_PathStore*/)
 
 	m_pRecastMOPath->end();
 	m_pRecastSN->attachObject(m_pRecastMOPath);
-	//m_pRecastSN->setPosition(Vector3ToOgreVector(area->GetBoundingBox().up));
-	//m_pRecastSN->setPosition(m_pRecastSN->getPosition().x, m_pRecastSN->getPosition().z, m_pRecastSN->getPosition().y);
 }
 
 void MapFrame::CreateChunks()
@@ -578,6 +565,7 @@ void MapFrame::CreateChunks()
 void MapFrame::CreateNavMesh()
 {
 	int count = 0;
+	Ogre::SceneNode * m_pRecastSN = mSceneMgr->getRootSceneNode()->createChildSceneNode();
 	for (auto mmesh : area->polys)
 	{
 		rcPolyMesh & mesh = *mmesh;
@@ -596,7 +584,7 @@ void MapFrame::CreateNavMesh()
 		{
 
 			// start defining the manualObject
-			Ogre::ManualObject *m_pRecastMOWalk = mSceneMgr->createManualObject("RecastMOWalk"+to_string(count));
+			Ogre::ManualObject *m_pRecastMOWalk = mSceneMgr->createManualObject("RecastMOWalk" + to_string(count));
 			m_pRecastMOWalk->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_LIST);
 			for (int i = 0; i < mesh.npolys; ++i) // go through all polygons
 				if (mesh.areas[i] == 0)
@@ -624,7 +612,6 @@ void MapFrame::CreateNavMesh()
 								m_pRecastMOWalk->colour(0, 1, 1, 1);
 
 						}
-						//m_pRecastMOWalk->triangle(nIndex, nIndex + 1, nIndex + 2);
 						m_pRecastMOWalk->index(nIndex + 2);
 						m_pRecastMOWalk->index(nIndex + 1);
 						m_pRecastMOWalk->index(nIndex);
@@ -633,12 +620,74 @@ void MapFrame::CreateNavMesh()
 				}
 			m_pRecastMOWalk->end();
 
-			Ogre::SceneNode * m_pRecastSN = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+
 			m_pRecastSN->attachObject(m_pRecastMOWalk);
-			//m_pRecastSN->setPosition(Vector3ToOgreVector(area->GetBoundingBox().up));
-			//m_pRecastSN->setPosition(m_pRecastSN->getPosition().x, m_pRecastSN->getPosition().y, m_pRecastSN->getPosition().z);
 
 
+			Ogre::ManualObject*  m_pRecastMONeighbour = mSceneMgr->createManualObject("RecastMONeighbour" + to_string(count));
+			m_pRecastMONeighbour->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_LIST);
+
+			for (int i = 0; i < mesh.npolys; ++i)
+			{
+				const unsigned short* p = &mesh.polys[i*nvp * 2];
+				for (int j = 0; j < nvp; ++j)
+				{
+					if (p[j] == RC_MESH_NULL_IDX) break;
+					if (p[nvp + j] == RC_MESH_NULL_IDX) continue;
+					int vi[2];
+					vi[0] = p[j];
+					if (j + 1 >= nvp || p[j + 1] == RC_MESH_NULL_IDX)
+						vi[1] = p[0];
+					else
+						vi[1] = p[j + 1];
+					for (int k = 0; k < 2; ++k)
+					{
+						const unsigned short* v = &mesh.verts[vi[k] * 3];
+						const float x = orig[0] + v[0] * cs;
+						const float y = orig[1] + (v[1] + 1)*ch + 0.1f;
+						const float z = orig[2] + v[2] * cs;
+						m_pRecastMONeighbour->position(x, z, y);
+						m_pRecastMONeighbour->colour(1, 1, 1);
+
+					}
+				}
+			}
+
+			m_pRecastMONeighbour->end();
+			m_pRecastSN->attachObject(m_pRecastMONeighbour);
+
+			Ogre::ManualObject * m_pRecastMOBoundary = mSceneMgr->createManualObject("RecastMOBoundary"+to_string(count));
+			m_pRecastMOBoundary->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_LIST);
+
+			for (int i = 0; i < mesh.npolys; ++i)
+			{
+				const unsigned short* p = &mesh.polys[i*nvp * 2];
+				for (int j = 0; j < nvp; ++j)
+				{
+					if (p[j] == RC_MESH_NULL_IDX) break;
+					if (p[nvp + j] != RC_MESH_NULL_IDX) continue;
+					int vi[2];
+					vi[0] = p[j];
+					if (j + 1 >= nvp || p[j + 1] == RC_MESH_NULL_IDX)
+						vi[1] = p[0];
+					else
+						vi[1] = p[j + 1];
+					for (int k = 0; k < 2; ++k)
+					{
+						const unsigned short* v = &mesh.verts[vi[k] * 3];
+						const float x = orig[0] + v[0] * cs;
+						const float y = orig[1] + (v[1] + 1)*ch + 0.1f;
+						const float z = orig[2] + v[2] * cs;
+						//dd->vertex(x, y, z, colb);
+
+						m_pRecastMOBoundary->position(x, z + 0.25, y);
+						m_pRecastMOBoundary->colour(0, 0, 0);
+					}
+				}
+			}
+
+			m_pRecastMOBoundary->end();
+			m_pRecastSN->attachObject(m_pRecastMOBoundary);
 		}
 		count++;
 	}

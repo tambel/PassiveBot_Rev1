@@ -85,10 +85,10 @@ public:
 	int m_partitionType = 0;
 
 	vector<rcPolyMesh*> polys;
-
+	dtNavMeshQuery* m_navQuery;
 	dtNavMesh * m_navMesh;
 	void TestNav();
-	PATHDATA  * m_PathStore;
+	PATHDATA  m_PathStore;
 	void InitNavigation();
 	void DeleteDuplicates();
 	void InitNavigation2();
@@ -97,6 +97,7 @@ public:
 	void InitAreaBoundingBox();
 	void BuildAllTiles();
 	unsigned char * BuildTileMesh(int x, int y, const float* bmin, const float* bmax, int dataSize);
+	int  FindPath(Vector3 & start,Vector3  & end, int nPathSlot);
 
 
 };

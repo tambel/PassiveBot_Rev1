@@ -18,9 +18,9 @@ public:
 };
 typedef struct
 {
-	float PosX[MAX_PATHVERT+100];
-	float PosY[MAX_PATHVERT + 100];
-	float PosZ[MAX_PATHVERT + 100];
+	float PosX[MAX_PATHVERT];
+	float PosY[MAX_PATHVERT];
+	float PosZ[MAX_PATHVERT];
 	int MaxVertex;
 	int Target;
 }
