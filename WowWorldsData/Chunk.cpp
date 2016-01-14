@@ -168,12 +168,13 @@ void Chunk::LoadMcrw(unsigned long size)
 }
 void Chunk::InitNavigation()
 {
-	unsigned long vert_count=0;
-	unsigned long ind_count = 0;;
-	//unsigned *  nav_indices;
-	unique_ptr<float> vertices;
-	unique_ptr<int> indices;
-	//float * nav_vertices;
+	//unsigned long vert_count=0;
+	//unsigned long ind_count = 0;;
+	//unique_ptr<float> vertices;
+	//unique_ptr<int> indices;
+	////float * nav_vertices;
+	vert_count = 0;
+	ind_count = 0;
 	vert_count += vertex_count;
 	ind_count += index_count;
 	for (auto &doodad : doodads)
@@ -189,16 +190,23 @@ void Chunk::InitNavigation()
 			ind_count += part.GetIndexCount();
 		}
 	}
-	vertices = unique_ptr<float>(new float[vert_count*3]);
-	indices = unique_ptr<int>(new int[ind_count]);
+	nav_vertices = unique_ptr<float>(new float[vert_count*3]);
+	nav_indices = unique_ptr<int>(new int[ind_count]);
 	unsigned long vert_offset = 0;
+	terrain_bounding_box.up;
 	for (unsigned i = 0; i < 145; i++)
 	{
-		vertices.get()[vert_offset] = this->vertices[i].position.x + position.coords.x;
+		/*vertices.get()[vert_offset] = this->vertices[i].position.x + position.coords.x;
 		vertices.get()[vert_offset+1] = this->vertices[i].position.z + position.coords.z;
-		vertices.get()[vert_offset+2] = this->vertices[i].position.y + position.coords.y;
+		vertices.get()[vert_offset+2] = this->vertices[i].position.y + position.coords.y;*/
+
+		nav_vertices.get()[vert_offset] = this->vertices[i].position.x + real_position.x;
+		nav_vertices.get()[vert_offset+1] = this->vertices[i].position.z + real_position.z;
+		nav_vertices.get()[vert_offset+2] = this->vertices[i].position.y + real_position.y;
 		vert_offset += 3;
 	}
+	rcCalcBounds(nav_vertices.get(), vertex_count, reinterpret_cast<float*>(&terrain_bounding_box.up), reinterpret_cast<float*>(&terrain_bounding_box.down));
+
 	for (auto &doodad : doodads)
 	{
 		
@@ -208,20 +216,19 @@ void Chunk::InitNavigation()
 		{
 			//Vector3 real= Vector3(Metrics::MapMidPoint - doodad.GetGamePosition().y, -(Metrics::MapMidPoint - doodad.GetGamePosition().x), doodad.GetGamePosition().z);
 
-			Vector3 vert = doodad.GetVertices()[i].position + (doodad.GetPosition().coords - real_position);// +position.coords;
-			vertices.get()[vert_offset] = vert.x + position.coords.x;
-			vertices.get()[vert_offset + 1] = vert.z +position.coords.z;
-			vertices.get()[vert_offset + 2] = vert.y + position.coords.y;
+			//Vector3 vert = doodad.GetVertices()[i].position + (doodad.GetPosition().coords - real_position);// +position.coords;
+			//vertices.get()[vert_offset] = vert.x + position.coords.x;
+			//vertices.get()[vert_offset + 1] = vert.z +position.coords.z;
+			//vertices.get()[vert_offset + 2] = vert.y + position.coords.y;
+
+			nav_vertices.get()[vert_offset] = doodad.GetVertices()[i].position.x + doodad.GetPosition().coords.x;
+			nav_vertices.get()[vert_offset + 1] = doodad.GetVertices()[i].position.z + doodad.GetPosition().coords.z;
+			nav_vertices.get()[vert_offset + 2] = doodad.GetVertices()[i].position.y + doodad.GetPosition().coords.y;
+
 
 			/*vertices.get()[vert_offset] = doodad.GetVertices()[i].position.x;
 			vertices.get()[vert_offset + 1] = doodad.GetVertices()[i].position.z ;
 			vertices.get()[vert_offset + 2] = doodad.GetVertices()[i].position.y ;*/
-			/*if (doodad.GetUUID() == 354884)
-			{
-				vertices.get()[vert_offset] = doodad.GetVertices()[i].position.x;
-				vertices.get()[vert_offset + 1] = doodad.GetVertices()[i].position.z;
-				vertices.get()[vert_offset + 2] = doodad.GetVertices()[i].position.y;
-			}*/
 
 			vert_offset += 3;
 		}
@@ -234,12 +241,18 @@ void Chunk::InitNavigation()
 			{
 				Vector3 vert = part.GetVertices()[i].position + (wmo.GetPosition().coords - real_position);
 
+				nav_vertices.get()[vert_offset] = part.GetVertices()[i].position.x+wmo.GetPosition().coords.x;
+				nav_vertices.get()[vert_offset + 1] = part.GetVertices()[i].position.z + wmo.GetPosition().coords.z;
+				nav_vertices.get()[vert_offset + 2] = part.GetVertices()[i].position.y + wmo.GetPosition().coords.y;
+
+
 				//vertices.get()[vert_offset] = part.GetVertices()[i].position.x;
 				//vertices.get()[vert_offset + 1] = part.GetVertices()[i].position.z;
 				//vertices.get()[vert_offset + 2] = part.GetVertices()[i].position.y;
-				vertices.get()[vert_offset] = vert.x+position.coords.x;
+				
+				/*vertices.get()[vert_offset] = vert.x+position.coords.x;
 				vertices.get()[vert_offset + 1] = vert.z + position.coords.z;
-				vertices.get()[vert_offset + 2] = vert.y + position.coords.y;
+				vertices.get()[vert_offset + 2] = vert.y + position.coords.y;*/
 				vert_offset += 3;
 			}
 		}
@@ -253,9 +266,9 @@ void Chunk::InitNavigation()
 	unsigned long ind_offset = 0;
 	for (unsigned i = 0; i < 768; i+=3)
 	{
-		indices.get()[ind_offset] = this->indices[i + 2] + vert_offset;
-		indices.get()[ind_offset + 1] = this->indices[i + 1] + vert_offset;
-		indices.get()[ind_offset + 2] = this->indices[i] + vert_offset;
+		nav_indices.get()[ind_offset] = this->indices[i + 2] + vert_offset;
+		nav_indices.get()[ind_offset + 1] = this->indices[i + 1] + vert_offset;
+		nav_indices.get()[ind_offset + 2] = this->indices[i] + vert_offset;
 		ind_offset += 3;
 	}
 	vert_offset += this->vertex_count;
@@ -263,9 +276,9 @@ void Chunk::InitNavigation()
 	{
 		for (unsigned long i = 0; i < doodad.GetIndexCount(); i+=3)
 		{
-			indices.get()[ind_offset] = doodad.GetIndices()[i + 2] + vert_offset;
-			indices.get()[ind_offset + 1] = doodad.GetIndices()[i + 1] + vert_offset;
-			indices.get()[ind_offset + 2] = doodad.GetIndices()[i] + vert_offset;
+			nav_indices.get()[ind_offset] = doodad.GetIndices()[i + 2] + vert_offset;
+			nav_indices.get()[ind_offset + 1] = doodad.GetIndices()[i + 1] + vert_offset;
+			nav_indices.get()[ind_offset + 2] = doodad.GetIndices()[i] + vert_offset;
 			ind_offset += 3;
 		}
 		vert_offset += doodad.GetVertexCount();
@@ -276,9 +289,9 @@ void Chunk::InitNavigation()
 		{
 			for (unsigned long i = 0; i < part.GetIndexCount(); i+=3)
 			{
-				indices.get()[ind_offset] = part.GetIndices()[i + 2] + vert_offset;
-				indices.get()[ind_offset + 1] = part.GetIndices()[i + 1] + vert_offset;
-				indices.get()[ind_offset + 2] = part.GetIndices()[i] + vert_offset;
+				nav_indices.get()[ind_offset] = part.GetIndices()[i + 2] + vert_offset;
+				nav_indices.get()[ind_offset + 1] = part.GetIndices()[i + 1] + vert_offset;
+				nav_indices.get()[ind_offset + 2] = part.GetIndices()[i] + vert_offset;
 				ind_offset += 3;
 			}
 			vert_offset += part.GetVertexCount();
@@ -288,15 +301,15 @@ void Chunk::InitNavigation()
 	file.open(to_string(coordinates.X)+" "+to_string(coordinates.Y)+" test.obj");
 	for (unsigned vi = 0; vi < vert_count*3; vi+=3)
 	{
-		file << "v " << vertices.get()[vi] << " " << vertices.get()[vi + 1] << " " << vertices.get()[vi + 2] << endl;
+		file << "v " << nav_vertices.get()[vi] << " " << nav_vertices.get()[vi + 1] << " " << nav_vertices.get()[vi + 2] << endl;
 	}
 	for (unsigned ii = 0; ii < ind_count; ii += 3)
 	{
-		file << "f " << indices.get()[ii]+1 << " " << indices.get()[ii + 1]+1 << " " << indices.get()[ii + 2]+1 << endl;
+		file << "f " << nav_indices.get()[ii]+1 << " " << nav_indices.get()[ii + 1]+1 << " " << nav_indices.get()[ii + 2]+1 << endl;
 	}
 	file.close();
 	////
-
+	return;
 
 
 	//dtNavMeshQuery * m_navQuery = 0;;
@@ -352,7 +365,7 @@ void Chunk::InitNavigation()
 	m_cfg.detailSampleMaxError = m_cellHeight * m_detailSampleMaxError;
 
 
-	rcCalcBounds(vertices.get(), vert_count, bmin, bmax);
+	rcCalcBounds(nav_vertices.get(), vert_count, bmin, bmax);
 
 	rcVcopy(m_cfg.bmin, bmin);
 	rcVcopy(m_cfg.bmax, bmax);
@@ -385,8 +398,8 @@ void Chunk::InitNavigation()
 	}
 
 	memset(m_triareas, 0, ntris*sizeof(unsigned char));
-	rcMarkWalkableTriangles(m_ctx, m_cfg.walkableSlopeAngle, vertices.get(), vert_count, indices.get(), ntris, m_triareas);
-	if (!rcRasterizeTriangles(m_ctx, vertices.get(), vert_count, indices.get(), m_triareas, ntris, *m_solid, m_cfg.walkableClimb))
+	rcMarkWalkableTriangles(m_ctx, m_cfg.walkableSlopeAngle, nav_vertices.get(), vert_count, nav_indices.get(), ntris, m_triareas);
+	if (!rcRasterizeTriangles(m_ctx, nav_vertices.get(), vert_count, nav_indices.get(), m_triareas, ntris, *m_solid, m_cfg.walkableClimb))
 	{
 		throw exception("buildNavigation: Could not rasterize triangles.");
 	}

@@ -32,5 +32,7 @@ public:
 	void SetNavMesh(const struct rcPolyMesh& mesh);
 	void createNavMesh();
 	void createRecastPathLine(int nPathSlot/*, PATHDATA * m_PathStore*/);
+	void CreateChunks();
+	void CreateNavMesh();
 };
 

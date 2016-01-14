@@ -50,6 +50,7 @@ public:
 	void Fill(Location * location, Point2D<int> block_coordinates,Point2D<int> coordinates);
 	void CheckAndMove(Location * location, Point2D<int> block_coordinates,Point2D<int> coordinates);
 	int GetRadius() {return radius;}
+	inline int GetSize() { return area_size; }
 	Chunk *** GetChunks() { return chunks; }
 	void InitObjects();
 	vector<Doodad*> * GetDoodads() {return &doodads;}
@@ -65,10 +66,37 @@ public:
 	Navigation & Navigation() {	return navigation;}
 
 
+	int m_maxTiles = 1024;
+	int m_maxPolysPerTile = 4096;
+	float m_tileSize = 32.0;
+	float m_cellSize = 0.3;
+	float m_cellHeight = 0.2;
+	float m_agentHeight = 2.0;
+	float m_agentRadius = 1.0f; //0.600000024;
+	float m_agentMaxClimb = 0.899999976;
+	float m_agentMaxSlope = 45.0000000;
+	float m_regionMinSize = 8.00000000;
+	float m_regionMergeSize = 20.0000000;
+	float m_edgeMaxLen = 12.0000000;
+	float m_edgeMaxError = 1.29999995;
+	float m_vertsPerPoly = 6.00000000;
+	float m_detailSampleDist = 6.00000000;
+	float m_detailSampleMaxError = 1.00000000;
+	int m_partitionType = 0;
+
+	vector<rcPolyMesh*> polys;
+
+	dtNavMesh * m_navMesh;
 	void TestNav();
 	PATHDATA  * m_PathStore;
 	void InitNavigation();
 	void DeleteDuplicates();
+	void InitNavigation2();
+	void InitChunkyMesh();
+	void InitNavigationR();
+	void InitAreaBoundingBox();
+	void BuildAllTiles();
+	unsigned char * BuildTileMesh(int x, int y, const float* bmin, const float* bmax, int dataSize);
 
 
 };

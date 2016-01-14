@@ -46,6 +46,7 @@ Doodad::Doodad(string filename,unsigned uuid, Position position, short scale):uu
 	*/
 	Rescale(this->scale);
 	Rotate();
+
 }
 
 

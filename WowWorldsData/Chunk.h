@@ -23,6 +23,7 @@ struct ChunkAdditionalData
 class ChunkModel
 {
 public:
+	
 	static const unsigned long index_count=768;
 	static unsigned short * indices;
 	static const unsigned long vertex_count=145;
@@ -81,12 +82,17 @@ private:
 	void LoadMcvt();
 	void LoadMcrd(unsigned long size);
 	void LoadMcrw(unsigned long size);
-	
+	Utils::Graphics::BoundingBox terrain_bounding_box;
 
 
 
 public:
+	unique_ptr<float> nav_vertices;
+	unique_ptr<int> nav_indices;
+	unsigned long vert_count;
+	unsigned long ind_count;;
 	void InitNavigation();
+	
 	dtNavMeshQuery * m_navQuery = 0;;
 	float bmin[3];
 	float bmax[3];
@@ -116,6 +122,7 @@ public:
 	void SearchForObjects();
 	vector<Doodad> & GetDoodads() { return doodads; }
 	vector<WMO> & GetWMOs() { return wmos; }
+	inline Utils::Graphics::BoundingBox & GetTerrainBoundingBox() { return terrain_bounding_box; }
 
 
 };

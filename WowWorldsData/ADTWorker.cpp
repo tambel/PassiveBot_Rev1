@@ -7,7 +7,7 @@ Chunk * ADTWorker::GetChunk(Location * location, Point2D<int> block_coordinates,
 		return chunk;
 	ADT * adt=0;
 	adt=GetADT(location, block_coordinates);
-	if (!adt->IsExist())
+	if (!adt)
 		return 0;
 	chunk= adt->GetChunk(coordinates);
 	if (chunk)
@@ -24,7 +24,15 @@ ADT * ADTWorker::GetADT(Location * location, Point2D<int> coordinates)
 	adt=ADTCache::Find(location,coordinates);
 	if (!adt)
 	{
-		adt=new ADT(location,coordinates);
+		try
+		{
+			adt = new ADT(location, coordinates);
+		}
+		catch (exception & e)
+		{
+			delete adt;
+			return 0;
+		}
 		ADTCache::Add(adt);
 	}
 	if (!adt->IsExist())

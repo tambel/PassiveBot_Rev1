@@ -194,6 +194,8 @@ namespace Utils
 			Vector3 up;
 			Vector3 down;
 			bool IsInside2D(Vector3 point);
+			inline float * GetArrayMin() { return reinterpret_cast<float*>(&up); }
+			inline float * GetArrayMax() { return reinterpret_cast<float*>(&down); }
 		};
 	}
 }
