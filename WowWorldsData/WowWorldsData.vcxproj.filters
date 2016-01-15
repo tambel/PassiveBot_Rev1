@@ -93,9 +93,6 @@
     <ClInclude Include="WMOPart.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="Navigation.h">
-      <Filter>Navigation</Filter>
-    </ClInclude>
     <ClInclude Include="Exceptions.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
@@ -160,9 +157,6 @@
     </ClCompile>
     <ClCompile Include="Model.cpp">
       <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="Navigation.cpp">
-      <Filter>Navigation</Filter>
     </ClCompile>
     <ClCompile Include="Exceptions.cpp">
       <Filter>Файлы исходного кода</Filter>

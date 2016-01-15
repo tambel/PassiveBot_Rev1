@@ -17,7 +17,10 @@ namespace Wow
 		static void RotatePlayer(WowObject * object);
 		static float GetOrientationToTarget(Vector3 & position);
 		static float GoStraighToPoint(Vector3 & point);
-		static float GetDistanceToPoint(Vector3 & start, Vector3 & end);
+		inline static float GetPointsDistance(WowObject & object1, WowObject & object2);
+		static float GetPointsDistance(Vector3 & start, Vector3 & end);
+		static float GetPlayerDistanceToPoint(Vector3 & end);
+		inline static float GetPlayerDistanceToPoint(WowObject & object);
 		static void RotatePlayer(Vector3 & point);
 		static void GoToPoint(Vector3 & point);
 	};

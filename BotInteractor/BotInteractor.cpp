@@ -9,23 +9,26 @@ bool BotInteractor::FindPath(Vector3 & start, Vector3 & end)
 {
 	Vector3 coords = start;
 	coords = Vector3(Metrics::MapMidPoint - start.y, -(Metrics::MapMidPoint - start.x), start.z);
-	coords = coords - area.GetBoundingBox().up;
+	//coords = coords - area.GetBoundingBox().up;
 	Vector3 ucoords = end;
 	ucoords = Vector3(Metrics::MapMidPoint - end.y, -(Metrics::MapMidPoint - end.x), end.z);
-	ucoords = ucoords - area.GetBoundingBox().up;
-	if (area.Navigation().FindPath(Vector3(coords.x, coords.z, coords.y), Vector3(ucoords.x, ucoords.z, ucoords.y), 0, 0) < 0)
+	//ucoords = ucoords - area.GetBoundingBox().up;
+	int r = area.FindPath(Vector3(coords.x, coords.z, coords.y), Vector3(ucoords.x, ucoords.z, ucoords.y), 0);
+	cout << r<<endl;
+	//if (area.FindPath(Vector3(coords.x, coords.z, coords.y), Vector3(ucoords.x, ucoords.z, ucoords.y), 0) < 0)
+	if (r<0)
 	{
 		return false;
 	}
-	int nVertCount = area.Navigation().m_PathStore[0].MaxVertex;
-	for (int nVert = 0; nVert < nVertCount; nVert++)
-	{
-		area.Navigation().m_PathStore[0].PosX[nVert] += area.GetBoundingBox().up.x;
-		area.Navigation().m_PathStore[0].PosY[nVert] += area.GetBoundingBox().up.z;
-		area.Navigation().m_PathStore[0].PosZ[nVert] += area.GetBoundingBox().up.y;
-
-
-	}
+	
+ //	PATHDATA * m_PathStore = area.m_PathStore.get();
+	//int nVertCount = m_PathStore->MaxVertex;
+	///*for (int nVert = 0; nVert < nVertCount; nVert++)
+	//{
+	//	m_PathStore->PosX[nVert] += area.GetBoundingBox().up.x;
+	//	m_PathStore->PosY[nVert] += area.GetBoundingBox().up.z;
+	//	m_PathStore->PosZ[nVert] += area.GetBoundingBox().up.y;
+	//}*/
 	area.to_update = true;
 }
 void BotInteractor::PulseCheck()
@@ -35,28 +38,42 @@ void BotInteractor::PulseCheck()
 }
 bool BotInteractor::FindPlayerPath(Vector3 & end)
 {
-	area.Navigation().SetArea(area);
+	//area.Navigation().SetArea(area);
 	return FindPath(ObjectManager::GetPlayer()->GetPosition().coords, end);
 }
 void BotInteractor::GoThroughPath()
 {
-	PATHDATA * abs_path = area.Navigation().m_PathStore;
-	PATHDATA path;
-
-	int nVertCount = abs_path[0].MaxVertex;
 	Player * player = ObjectManager::GetPlayer();
 	Position pos = player->GetPosition();
-	for (int nVert = 0; nVert < nVertCount; nVert++)
+	for (unsigned i = 0; i < area.m_nsmoothPath*3; i += 3)
 	{
-		path.PosX[nVert] = Metrics::MapMidPoint + abs_path[0].PosZ[nVert];
-		path.PosY[nVert] = Metrics::MapMidPoint-abs_path[0].PosX[nVert];
-		path.PosZ[nVert] = abs_path[0].PosY[nVert];
+		Vector3 point=Vector3(Metrics::MapMidPoint + area.m_smoothPath[i + 2], Metrics::MapMidPoint - area.m_smoothPath[i], area.m_smoothPath[i + 1]);
+		if (GameManager::GetPlayerDistanceToPoint(point) < 2 ) continue;
+		GameManager::GoToPoint(point);
 	}
-	for (int nVert = 0; nVert < nVertCount; nVert++)
+	for (unsigned i = 0; i < area.m_nsmoothPath*3; i += 3)
 	{
-		GameManager::GoToPoint(Vector3(path.PosX[nVert], path.PosY[nVert], path.PosZ[nVert]));
+		GameManager::GoToPoint(Vector3(area.m_smoothPath[i], area.m_smoothPath[i+1], area.m_smoothPath[i+2]));
 	}
+
+
+	//PATHDATA * abs_path= area.m_PathStore.get();
+	//PATHDATA path;
+
+	//int nVertCount = abs_path[0].MaxVertex;
+	//Player * player = ObjectManager::GetPlayer();
+	//Position pos = player->GetPosition();
+	//for (int nVert = 0; nVert < nVertCount; nVert++)
+	//{
+	//	path.PosX[nVert] = Metrics::MapMidPoint + abs_path[0].PosZ[nVert];
+	//	path.PosY[nVert] = Metrics::MapMidPoint-abs_path[0].PosX[nVert];
+	//	path.PosZ[nVert] = abs_path[0].PosY[nVert];
+	//}
+	//for (int nVert = 0; nVert < nVertCount; nVert++)
+	//{
 	//	GameManager::GoToPoint(Vector3(path.PosX[nVert], path.PosY[nVert], path.PosZ[nVert]));
+	//}
+	////	GameManager::GoToPoint(Vector3(path.PosX[nVert], path.PosY[nVert], path.PosZ[nVert]));
 }
 void BotInteractor::StartGame(string login, string password,wstring char_name)
 {
@@ -78,6 +95,8 @@ void BotInteractor::StartGame(string login, string password,wstring char_name)
 
 void BotInteractor::GoToPoint(Vector3 & point)
 {
+	bool r = FindPlayerPath(point);
+	cout << r << endl;
 	if (!FindPlayerPath(point))
 	{
 		AU3_Send(L"{SPACE down}");

@@ -48,7 +48,7 @@ void Window::go()
 		if(mWindow->isClosed()) break;
 		if (!mWindow->isActive())
 		{
-		//	mWindow->update();
+			mWindow->update();
 		}
 		if(!mRoot->renderOneFrame()) break;
 		Sleep(1);

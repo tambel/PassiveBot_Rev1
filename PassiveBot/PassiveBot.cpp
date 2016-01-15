@@ -23,6 +23,7 @@ void init_static()
 {
 	Utils::Geometry::Transformer3D::Transformer3D();
 	Game::LocationBase::Init();
+	SquareArea::InitNavConfig();
 }
 
 int main(int argc, wchar_t * argv[])
@@ -33,15 +34,18 @@ int main(int argc, wchar_t * argv[])
 
 	
 
-	//BotInteractor::StartGame("lissek7@ya.ru", "lebmat2762066", L"Тестируем");
-	SquareArea * area=new SquareArea(Game::LocationBase::Get("Kalimdor"), Point2D<int>(33, 41), Point2D<int>(10, 3), 3);
-	area->FindPath(Vector3(21882.5879, 22.1627789, -17879.6426), Vector3(22094.2168, 0.594630361, -17916.1914),0);
+	BotInteractor::StartGame("lissek7@ya.ru", "lebmat2762066", L"Тестируем");
+	/*SquareArea * area=new SquareArea(Game::LocationBase::Get("Kalimdor"), Point2D<int>(33, 41), Point2D<int>(10, 3), 3);
+	area->FindPath(Vector3(21882.5879, 22.1627789, -17879.6426), Vector3(22094.2168, 0.594630361, -17916.1914),0);*/
 	MapFrame frame = MapFrame();
-	frame.SetArea(area);
+	frame.SetArea(BotInteractor::GetArea());
+	
+	//thread thr = thread(workerFunc, &frame, ObjectManager::GetPlayer()->GetPosition());
+	//thr.detach();
+ 	Unit  * unit = ObjectManager::FindUnitByName(L"Так");
+	BotInteractor::GetArea()->AddWowObjectAvatar(unit);
+	BotInteractor::GoToPoint(*unit); 
 	frame.go();
-	thread thr = thread(workerFunc, &frame, ObjectManager::GetPlayer()->GetPosition());
-	thr.detach();
-
 	//GameManager::RotatePlayer(ObjectManager::FindUnitByName(L"Паква")->GetPosition().coords);
 	//BotInteractor::GoToPoint(*ObjectManager::FindUnitByName(L"Шоюй"));
 
@@ -54,7 +58,7 @@ int main(int argc, wchar_t * argv[])
 		Unit * unit = (*ObjectManager::GetUnitsList())[random_variable];
 		wcout << unit->GetName() << endl;;
 		BotInteractor::GoToPoint(*unit);*/
-		BotInteractor::PulseCheck();
+		///BotInteractor::PulseCheck();
 		Sleep(50);
 	}
 

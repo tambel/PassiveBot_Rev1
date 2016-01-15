@@ -12,6 +12,7 @@
 #include "DetourNavMesh.h"
 #include "DetourNavMeshBuilder.h"
 #include "DetourNavMeshQuery.h"
+#include "DetourCommon.h"
 using namespace Utils;
 using namespace Game;
 
@@ -83,6 +84,7 @@ private:
 	void LoadMcrd(unsigned long size);
 	void LoadMcrw(unsigned long size);
 	Utils::Graphics::BoundingBox terrain_bounding_box;
+	Utils::Graphics::BoundingBox full_bounding_box;
 
 
 
@@ -123,6 +125,7 @@ public:
 	vector<Doodad> & GetDoodads() { return doodads; }
 	vector<WMO> & GetWMOs() { return wmos; }
 	inline Utils::Graphics::BoundingBox & GetTerrainBoundingBox() { return terrain_bounding_box; }
+	inline Utils::Graphics::BoundingBox & GetFullBoundingBox() { return full_bounding_box; }
 
 
 };

@@ -17,7 +17,7 @@ namespace Wow
 	{
 		Vector3 ppos = ObjectManager::GetPlayer()->GetPosition().coords;
 		//float hyp = sqrt((position.x - ppos.x)*(position.x - ppos.x) + (position.y - ppos.y)*(position.y - ppos.y));
-		float disatnce=GetDistanceToPoint(ppos, position);
+		float disatnce=GetPointsDistance(ppos, position);
 		//float orientation = acos((position.x - ppos.x) / disatnce);
 		float orientation = atan2((position.y - ppos.y),(position.x - ppos.x));
 		//orientation -= Utils::PI/2;
@@ -29,23 +29,40 @@ namespace Wow
 	{
 		RECT rect = RECT();
 		AU3_WinGetClientSize(L"World of Warcraft", L"", &rect);
-		AU3_MouseMove(rect.right / 2, rect.bottom / 2);
-		AU3_MouseDown(L"Right");
-		AU3_MouseDown(L"Left");
-		while (GetDistanceToPoint(ObjectManager::GetPlayer()->GetPosition().coords, point) > 0.5)
+		//AU3_MouseMove(rect.right / 2, rect.bottom / 2);
+		//AU3_MouseDown(L"Left");
+		//AU3_MouseDown(L"Right");
+		AU3_Send(L"{Up down}");
+		
+		while (GetPointsDistance(ObjectManager::GetPlayer()->GetPosition().coords, point) > 0.5)
 		{
-			Sleep(10);
+			Sleep(50);
 		}
-		AU3_MouseUp(L"Right");
-		AU3_MouseUp(L"Left");
+		AU3_Send(L"{Up up}");
+		//AU3_MouseUp(L"Left");
+		//AU3_MouseUp(L"Right");
+		
 		return 0;
 	}
-	float GameManager::GetDistanceToPoint(Vector3 & start, Vector3 & end)
+	float GameManager::GetPointsDistance(WowObject & object1, WowObject & object2)
+	{
+		return GetPointsDistance(object1, object2);
+	}
+	float GameManager::GetPointsDistance(Vector3 & start, Vector3 & end)
 	{
 		
 		float hyp = sqrt((end.x - start.x)*(end.x - start.x) + (end.y - start.y)*(end.y - start.y));
 		return hyp;
 
+	}
+	float GameManager::GetPlayerDistanceToPoint(Vector3 & end)
+	{
+		
+		return GetPointsDistance(ObjectManager::GetPlayer()->GetPosition().coords, end);
+	}
+	float GameManager::GetPlayerDistanceToPoint(WowObject & object)
+	{
+		return GetPointsDistance(*ObjectManager::GetPlayer(), object);
 	}
 	void GameManager::RotatePlayer(Vector3 & point)
 	{
@@ -68,20 +85,22 @@ namespace Wow
 		//float turn=goal_orientation-
 		AU3_WinGetClientSize(L"World of Warcraft", L"", &rect);
 		AU3_MouseMove(rect.right / 2, rect.bottom / 2);
+		if (!abs(player->GetPosition().rotation.z - goal_orientation) > 0.01)
+			return;
 		AU3_MouseDown(L"Right");
 		while (abs(player->GetPosition().rotation.z - goal_orientation)> 0.1)
 		{
 
 			AU3_MouseMove(rect.right / 2 + 6*direction, rect.bottom / 2, 0);
 			AU3_MouseMove(rect.right / 2 - 6 * direction, rect.bottom / 2, 0);
-			Sleep(5);
+			Sleep(50);
 
 		}
 		while (abs(player->GetPosition().rotation.z - goal_orientation) > 0.01)
 		{
 			AU3_MouseMove(rect.right / 2 + direction, rect.bottom / 2, 0);
 			AU3_MouseMove(rect.right / 2 - direction, rect.bottom / 2, 0);
-			Sleep(5);
+			Sleep(50);
 		}
 		AU3_MouseUp(L"Right");
 

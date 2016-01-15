@@ -179,11 +179,13 @@ void Chunk::InitNavigation()
 	ind_count += index_count;
 	for (auto &doodad : doodads)
 	{
+		if (doodad.IsSkipped()) continue;
 		vert_count += doodad.GetVertexCount();
 		ind_count += doodad.GetIndexCount();
 	}
 	for (auto &wmo : wmos)
 	{
+		if (wmo.IsSkipped()) continue;
 		for (auto &part : wmo.GetParts())
 		{
 			vert_count += part.GetVertexCount();
@@ -193,7 +195,6 @@ void Chunk::InitNavigation()
 	nav_vertices = unique_ptr<float>(new float[vert_count*3]);
 	nav_indices = unique_ptr<int>(new int[ind_count]);
 	unsigned long vert_offset = 0;
-	terrain_bounding_box.up;
 	for (unsigned i = 0; i < 145; i++)
 	{
 		/*vertices.get()[vert_offset] = this->vertices[i].position.x + position.coords.x;
@@ -212,6 +213,7 @@ void Chunk::InitNavigation()
 		
 		//doodad.Rescale(doodad.scale);
 		//doodad.Rotate();
+		if (doodad.IsSkipped()) continue;
 		for (unsigned long i = 0; i < doodad.GetVertexCount(); i++)
 		{
 			//Vector3 real= Vector3(Metrics::MapMidPoint - doodad.GetGamePosition().y, -(Metrics::MapMidPoint - doodad.GetGamePosition().x), doodad.GetGamePosition().z);
@@ -235,6 +237,7 @@ void Chunk::InitNavigation()
 	}
 	for (auto &wmo : wmos)
 	{
+		if (wmo.IsSkipped()) continue;
 		for (auto &part : wmo.GetParts())
 		{
 			for (unsigned long i = 0; i < part.GetVertexCount(); i++)
@@ -257,6 +260,8 @@ void Chunk::InitNavigation()
 			}
 		}
 	}
+	rcCalcBounds(nav_vertices.get(), vert_count, reinterpret_cast<float*>(&full_bounding_box.up), reinterpret_cast<float*>(&full_bounding_box.down));
+
 	/*if (yey)
 	for (unsigned long vi = 0; vi < vert_count * 3; vi += 3)
 	{
@@ -274,6 +279,7 @@ void Chunk::InitNavigation()
 	vert_offset += this->vertex_count;
 	for (auto &doodad : doodads)
 	{
+		if (doodad.IsSkipped()) continue;
 		for (unsigned long i = 0; i < doodad.GetIndexCount(); i+=3)
 		{
 			nav_indices.get()[ind_offset] = doodad.GetIndices()[i + 2] + vert_offset;
@@ -285,6 +291,7 @@ void Chunk::InitNavigation()
 	}
 	for (auto &wmo : wmos)
 	{
+		if (wmo.IsSkipped()) continue;
 		for (auto &part : wmo.GetParts())
 		{
 			for (unsigned long i = 0; i < part.GetIndexCount(); i+=3)
@@ -310,293 +317,6 @@ void Chunk::InitNavigation()
 	file.close();
 	////
 	return;
-
-
-	//dtNavMeshQuery * m_navQuery = 0;;
-	//float bmin[3];
-	//float bmax[3];
-	//rcPolyMesh * result_mesh;
-
-
-	//delete result_mesh;
-	rcConfig m_cfg;
-	rcCompactHeightfield * m_chf;
-	rcContourSet * m_cset;
-	rcPolyMesh * m_pmesh;
-	rcPolyMeshDetail * m_dmesh;
-	//rcContext * m_ctx = new rcContext();
-	WowBuildContext * m_ctx = new WowBuildContext();
-	memset(&m_cfg, 0, sizeof(m_cfg));
-	rcHeightfield* m_solid;
-	unsigned char *m_triareas;
-	unsigned long ntris = ind_count / 3;
-	float m_cellSize = 0.300000012;
-	float m_cellHeight = 0.200000003;
-	float m_agentHeight = 2.0;
-	float m_agentRadius = 1.0f; //0.600000024;
-	float m_agentMaxClimb = 0.899999976;
-	float m_agentMaxSlope = 45.0000000;
-	float m_regionMinSize = 8.00000000;
-	float m_regionMergeSize = 20.0000000;
-	float m_edgeMaxLen = 12.0000000;
-	float m_edgeMaxError = 1.29999995;
-	float m_vertsPerPoly = 6.00000000;
-	float m_detailSampleDist = 6.00000000;
-	float m_detailSampleMaxError = 1.00000000;
-	int m_partitionType = 0;
-	if (m_navQuery)
-	{
-		dtFreeNavMeshQuery(m_navQuery);
-		m_navQuery = 0;
-	}
-
-	m_cfg.cs = m_cellSize;
-	m_cfg.ch = m_cellHeight;
-	m_cfg.walkableSlopeAngle = m_agentMaxSlope;
-	m_cfg.walkableHeight = (int)ceilf(m_agentHeight / m_cfg.ch);
-	m_cfg.walkableClimb = (int)floorf(m_agentMaxClimb / m_cfg.ch);
-	m_cfg.walkableRadius = (int)ceilf(m_agentRadius / m_cfg.cs);
-	m_cfg.maxEdgeLen = (int)(m_edgeMaxLen / m_cellSize);
-	m_cfg.maxSimplificationError = m_edgeMaxError;
-	m_cfg.minRegionArea = (int)rcSqr(m_regionMinSize);		// Note: area = size*size
-	m_cfg.mergeRegionArea = (int)rcSqr(m_regionMergeSize);	// Note: area = size*size
-	m_cfg.maxVertsPerPoly = (int)m_vertsPerPoly;
-	m_cfg.detailSampleDist = m_detailSampleDist < 0.9f ? 0 : m_cellSize * m_detailSampleDist;
-	m_cfg.detailSampleMaxError = m_cellHeight * m_detailSampleMaxError;
-
-
-	rcCalcBounds(nav_vertices.get(), vert_count, bmin, bmax);
-
-	rcVcopy(m_cfg.bmin, bmin);
-	rcVcopy(m_cfg.bmax, bmax);
-	rcCalcGridSize(m_cfg.bmin, m_cfg.bmax, m_cfg.cs, &m_cfg.width, &m_cfg.height);
-
-	m_ctx->resetTimers();
-
-	// Start the build process.	
-	m_ctx->startTimer(RC_TIMER_TOTAL);
-
-	m_solid = rcAllocHeightfield();
-	if (!m_solid)
-	{
-		throw exception("buildNavigation: Out of memory 'solid'");
-	}
-	if (!rcCreateHeightfield(m_ctx, *m_solid, m_cfg.width, m_cfg.height, m_cfg.bmin, m_cfg.bmax, m_cfg.cs, m_cfg.ch))
-	{
-		throw exception("buildNavigation: Could not create solid heightfield.");
-	}
-	try {
-		m_triareas = new unsigned char[ntris];
-	}
-	catch (std::exception e)
-	{
-
-	}
-	if (!m_triareas)
-	{
-		throw exception("buildNavigation: Out of memory 'm_triareas' (%d).", ntris);
-	}
-
-	memset(m_triareas, 0, ntris*sizeof(unsigned char));
-	rcMarkWalkableTriangles(m_ctx, m_cfg.walkableSlopeAngle, nav_vertices.get(), vert_count, nav_indices.get(), ntris, m_triareas);
-	if (!rcRasterizeTriangles(m_ctx, nav_vertices.get(), vert_count, nav_indices.get(), m_triareas, ntris, *m_solid, m_cfg.walkableClimb))
-	{
-		throw exception("buildNavigation: Could not rasterize triangles.");
-	}
-	delete[] m_triareas;
-	m_triareas = 0;
-
-
-	rcFilterLowHangingWalkableObstacles(m_ctx, m_cfg.walkableClimb, *m_solid);
-	rcFilterLedgeSpans(m_ctx, m_cfg.walkableHeight, m_cfg.walkableClimb, *m_solid);
-	rcFilterWalkableLowHeightSpans(m_ctx, m_cfg.walkableHeight, *m_solid);
-
-
-	m_chf = rcAllocCompactHeightfield();
-	if (!m_chf)
-	{
-		throw exception("buildNavigation: Out of memory 'chf'.");
-	}
-	if (!rcBuildCompactHeightfield(m_ctx, m_cfg.walkableHeight, m_cfg.walkableClimb, *m_solid, *m_chf))
-	{
-		throw exception("buildNavigation: Could not build compact data.");
-	}
-	rcFreeHeightField(m_solid);
-	m_solid = 0;
-
-	if (!rcErodeWalkableArea(m_ctx, m_cfg.walkableRadius, *m_chf))
-	{
-		throw exception("buildNavigation: Could not erode.");
-	}
-
-	if (m_partitionType == 0)
-	{
-		// Prepare for region partitioning, by calculating distance field along the walkable surface.
-		if (!rcBuildDistanceField(m_ctx, *m_chf))
-		{
-			throw exception("buildNavigation: Could not build distance field.");
-		}
-
-		// Partition the walkable surface into simple regions without holes.
-		if (!rcBuildRegions(m_ctx, *m_chf, 0, m_cfg.minRegionArea, m_cfg.mergeRegionArea))
-		{
-			throw exception("buildNavigation: Could not build watershed regions.");
-		}
-	}
-
-	m_cset = rcAllocContourSet();
-	if (!m_cset)
-	{
-		throw exception("buildNavigation: Out of memory 'cset'.");
-
-	}
-	if (!rcBuildContours(m_ctx, *m_chf, m_cfg.maxSimplificationError, m_cfg.maxEdgeLen, *m_cset))
-	{
-		throw exception("buildNavigation: Could not create contours.");
-	}
-
-
-	m_pmesh = rcAllocPolyMesh();
-	if (!m_pmesh)
-	{
-		throw exception("buildNavigation: Out of memory 'pmesh'.");
-	}
-	if (!rcBuildPolyMesh(m_ctx, *m_cset, m_cfg.maxVertsPerPoly, *m_pmesh))
-	{
-		throw exception("buildNavigation: Could not triangulate contours.");
-	}
-
-
-	m_dmesh = rcAllocPolyMeshDetail();
-	if (!m_dmesh)
-	{
-		throw exception("buildNavigation: Out of memory 'pmdtl'.");
-	}
-
-	if (!rcBuildPolyMeshDetail(m_ctx, *m_pmesh, *m_chf, m_cfg.detailSampleDist, m_cfg.detailSampleMaxError, *m_dmesh))
-	{
-		throw exception("buildNavigation: Could not build detail mesh.");
-	}
-
-	rcFreeCompactHeightfield(m_chf);
-	m_chf = 0;
-	rcFreeContourSet(m_cset);
-	m_cset = 0;
-
-	if (m_cfg.maxVertsPerPoly <= DT_VERTS_PER_POLYGON)
-	{
-		//unsigned char* navData = 0;
-		//int navDataSize = 0;
-		navDataSize = 0;
-		// Update poly flags from areas.
-		for (int i = 0; i < m_pmesh->npolys; ++i)
-		{
-			if (m_pmesh->areas[i] == RC_WALKABLE_AREA)
-				m_pmesh->areas[i] = SAMPLE_POLYAREA_GROUND;
-
-			if (m_pmesh->areas[i] == SAMPLE_POLYAREA_GROUND ||
-				m_pmesh->areas[i] == SAMPLE_POLYAREA_GRASS ||
-				m_pmesh->areas[i] == SAMPLE_POLYAREA_ROAD)
-			{
-				m_pmesh->flags[i] = SAMPLE_POLYFLAGS_WALK;
-			}
-			else if (m_pmesh->areas[i] == SAMPLE_POLYAREA_WATER)
-			{
-				m_pmesh->flags[i] = SAMPLE_POLYFLAGS_SWIM;
-			}
-			else if (m_pmesh->areas[i] == SAMPLE_POLYAREA_DOOR)
-			{
-				m_pmesh->flags[i] = SAMPLE_POLYFLAGS_WALK | SAMPLE_POLYFLAGS_DOOR;
-			}
-		}
-		dtNavMeshCreateParams params;
-		static const int MAX_OFFMESH_CONNECTIONS = 256;
-		float m_offMeshConVerts[MAX_OFFMESH_CONNECTIONS * 3 * 2];
-		float m_offMeshConRads[MAX_OFFMESH_CONNECTIONS];
-		unsigned char m_offMeshConDirs[MAX_OFFMESH_CONNECTIONS];
-		unsigned char m_offMeshConAreas[MAX_OFFMESH_CONNECTIONS];
-		unsigned short m_offMeshConFlags[MAX_OFFMESH_CONNECTIONS];
-		unsigned int m_offMeshConId[MAX_OFFMESH_CONNECTIONS];
-		int m_offMeshConCount;
-		memset(&params, 0, sizeof(params));
-		params.verts = m_pmesh->verts;
-		params.vertCount = m_pmesh->nverts;
-		params.polys = m_pmesh->polys;
-		params.polyAreas = m_pmesh->areas;
-		params.polyFlags = m_pmesh->flags;
-		params.polyCount = m_pmesh->npolys;
-		params.nvp = m_pmesh->nvp;
-		params.detailMeshes = m_dmesh->meshes;
-		params.detailVerts = m_dmesh->verts;
-		params.detailVertsCount = m_dmesh->nverts;
-		params.detailTris = m_dmesh->tris;
-		params.detailTriCount = m_dmesh->ntris;
-		params.offMeshConVerts = m_offMeshConVerts;
-		params.offMeshConRad = m_offMeshConRads;
-		params.offMeshConDir = m_offMeshConDirs;
-		params.offMeshConAreas = m_offMeshConAreas;
-		params.offMeshConFlags = m_offMeshConFlags;
-		params.offMeshConUserID = m_offMeshConId;
-		params.offMeshConCount = 0;// m_offMeshConCount;
-		params.walkableHeight = m_agentHeight;
-		params.walkableRadius = m_agentRadius;
-		params.walkableClimb = m_agentMaxClimb;
-		params.tileX = 0;
-		params.tileY = 1;
-		
-		rcVcopy(params.bmin, m_pmesh->bmin);
-		rcVcopy(params.bmax, m_pmesh->bmax);
-		if (yey)
-		{
-			params.tileX = 0;
-			params.tileY = 1;
-			/*m_pmesh->bmin[0] -= 33;
-			m_pmesh->bmin[1] -= 33;
-			m_pmesh->bmin[2] -= 33;
-			m_pmesh->bmax[0] -= 33;
-			m_pmesh->bmax[1] -= 33;
-			m_pmesh->bmax[2] -= 33;
-			rcVcopy(params.bmin, m_pmesh->bmin);
-			rcVcopy(params.bmax, m_pmesh->bmax);*/
-		}
-		params.cs = m_cfg.cs;
-		params.ch = m_cfg.ch;
-		params.buildBvTree = true;
-
-		if (!dtCreateNavMeshData(&params, &navData, &navDataSize))
-		{
-			m_ctx->log(RC_LOG_ERROR, "Could not build Detour navmesh.");
-		}
-
-		dtNavMesh * m_navMesh = dtAllocNavMesh();
-		if (!m_navMesh)
-		{
-			dtFree(navData);
-			m_ctx->log(RC_LOG_ERROR, "Could not create Detour navmesh");
-		}
-
-		dtStatus status;
-
-		status = m_navMesh->init(navData, navDataSize, DT_TILE_FREE_DATA);
-		if (dtStatusFailed(status))
-		{
-			dtFree(navData);
-			m_ctx->log(RC_LOG_ERROR, "Could not init Detour navmesh");
-		}
-		m_navQuery = new dtNavMeshQuery();
-		status = m_navQuery->init(m_navMesh, 2048);
-		if (dtStatusFailed(status))
-		{
-			m_ctx->log(RC_LOG_ERROR, "Could not init Detour navmesh query");
-		}
-	}
-
-	m_ctx->stopTimer(RC_TIMER_TOTAL);
-	if (m_ctx) delete m_ctx;
-	result_mesh = m_pmesh;
-
-
-
 }
 bool Chunk::operator==(const Chunk & right)
 {
