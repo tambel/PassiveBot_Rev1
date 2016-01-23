@@ -32,6 +32,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BotInteractor", "BotInterac
 		{4D037CF2-6076-483C-A28A-96A958158213} = {4D037CF2-6076-483C-A28A-96A958158213}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WorldViewer", "WorldViewer\WorldViewer.vcxproj", "{D90AFB37-0218-4F93-9945-2E49DBADB8D9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A8E79958-0EAE-46DC-8161-143F33F1DB40} = {A8E79958-0EAE-46DC-8161-143F33F1DB40}
+		{8B062A9B-8100-4E76-A62F-CC274EA1753D} = {8B062A9B-8100-4E76-A62F-CC274EA1753D}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -78,6 +84,14 @@ Global
 		{EEE21940-A07D-4D1F-84EA-66079CEAE25F}.Release|Win32.Build.0 = Release|Win32
 		{EEE21940-A07D-4D1F-84EA-66079CEAE25F}.Release|x64.ActiveCfg = Release|x64
 		{EEE21940-A07D-4D1F-84EA-66079CEAE25F}.Release|x64.Build.0 = Release|x64
+		{D90AFB37-0218-4F93-9945-2E49DBADB8D9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D90AFB37-0218-4F93-9945-2E49DBADB8D9}.Debug|Win32.Build.0 = Debug|Win32
+		{D90AFB37-0218-4F93-9945-2E49DBADB8D9}.Debug|x64.ActiveCfg = Debug|x64
+		{D90AFB37-0218-4F93-9945-2E49DBADB8D9}.Debug|x64.Build.0 = Debug|x64
+		{D90AFB37-0218-4F93-9945-2E49DBADB8D9}.Release|Win32.ActiveCfg = Release|Win32
+		{D90AFB37-0218-4F93-9945-2E49DBADB8D9}.Release|Win32.Build.0 = Release|Win32
+		{D90AFB37-0218-4F93-9945-2E49DBADB8D9}.Release|x64.ActiveCfg = Release|x64
+		{D90AFB37-0218-4F93-9945-2E49DBADB8D9}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

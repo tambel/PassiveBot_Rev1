@@ -85,13 +85,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MapFrame.h" />
+    <ClInclude Include="MutableArea.h" />
     <ClInclude Include="Renderable.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Window.h" />
+    <ClInclude Include="WorldViewer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MapFrame.cpp" />
+    <ClCompile Include="MutableArea.cpp" />
     <ClCompile Include="Renderable.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -99,6 +102,7 @@
     </ClCompile>
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Window.cpp" />
+    <ClCompile Include="WorldViewer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

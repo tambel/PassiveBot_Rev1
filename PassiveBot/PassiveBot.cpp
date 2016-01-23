@@ -7,23 +7,17 @@
 //#include "boost\thread\thread.hpp"
 #include <thread>
 #include <random>
+#include "Graphics\WorldViewer.h"
 using namespace std;
 using namespace Wow;
 using namespace Utils;
 using namespace Tools;
 
-void workerFunc(MapFrame * frame,Position pos)  
-{  
-	
-	frame->go();
-	frame->SetCamera(pos);
-
-}
 void init_static()
 {
 	Utils::Geometry::Transformer3D::Transformer3D();
 	Game::LocationBase::Init();
-	SquareArea::InitNavConfig();
+	NavArea::InitNavConfig();
 }
 
 
@@ -31,6 +25,7 @@ void init_static()
 
 int main(int argc, wchar_t * argv[])
 {
+
 	init_static();
 	setlocale(LC_ALL, "Russian");
 	Sleep(5000);
@@ -38,19 +33,26 @@ int main(int argc, wchar_t * argv[])
 
 
 	BotInteractor::StartGame("lissek7@ya.ru", "lebmat2762066", L"Тестируем");
-	/*SquareArea * area=new SquareArea(Game::LocationBase::Get("Kalimdor"), Point2D<int>(33, 41), Point2D<int>(10, 3), 3);
+	/*Area * area=new Area(Game::LocationBase::Get("Kalimdor"), Point2D<int>(33, 41), Point2D<int>(10, 3), 3);
 	area->FindPath(Vector3(21882.5879, 22.1627789, -17879.6426), Vector3(22094.2168, 0.594630361, -17916.1914),0);*/
 
 	
-
 	Player * player = ObjectManager::GetPlayer();
 	default_random_engine generator;
 	uniform_int_distribution<int> distribution(0, ObjectManager::GetUnitsList()->size() - 1);
+	
+	//BotInteractor::GoToPoint(*ObjectManager::FindUnitByName(L"Тал"));
+
+	WorldViewer viewer=WorldViewer(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords), 3);
+	viewer.ShowMap();
+	while (1)
+	{
+		viewer.Update(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords));
+		Sleep(1000);
+	}
 
 
-
-
-	while (10)
+	/*while (10)
 	{
 		player->DumpPosition();
 		int random_variable = distribution(generator);
@@ -60,7 +62,7 @@ int main(int argc, wchar_t * argv[])
 		///BotInteractor::PulseCheck();
 		Sleep(1000);
 	}
-
+*/
 
 	
 	return 0;

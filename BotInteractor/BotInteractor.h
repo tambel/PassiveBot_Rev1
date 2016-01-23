@@ -3,7 +3,7 @@
 using namespace Wow;
 class BotInteractor
 {
-	static SquareArea area;
+	static NavArea area;
 	static bool FindPath(Vector3 & start, Vector3 & end);
 
 	
@@ -14,7 +14,7 @@ public:
 	static void StartGame(string login,string password,wstring char_name);
 	static void GoToPoint(Vector3 & point);
 	static void GoToPoint(WowObject & object) { GoToPoint(object.GetPosition().coords); }
-	static SquareArea  * GetArea() { return &area; }
+	static Area  * GetArea() { return &area; }
 	static bool FindPlayerPath(Vector3 & end);
 	static void PulseCheck();
 

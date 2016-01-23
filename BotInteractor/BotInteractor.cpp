@@ -4,7 +4,7 @@
 using namespace std;
 using namespace Wow;
 
-SquareArea BotInteractor::area;
+NavArea BotInteractor::area;
 bool BotInteractor::FindPath(Vector3 & start, Vector3 & end)
 {
 	Vector3 coords = start;
@@ -175,9 +175,9 @@ void BotInteractor::GoThroughPathTest()
 	for (unsigned i = 0; i < area.m_nsmoothPath * 3; i += 3)
 	{
 		point = Vector3(Metrics::MapMidPoint + area.m_smoothPath[i + 2], Metrics::MapMidPoint - area.m_smoothPath[i], area.m_smoothPath[i + 1]);
-		if (GameManager::GetPlayerDistanceToPoint(point) < 2.0) continue;
+		if (GameManager::GetPlayerDistanceToPoint(point) < 2.5) continue;
 		GameManager::RotatePlayerTest(point);
-		while (GameManager::GetPlayerDistanceToPoint(point)>5.0f)
+		while (GameManager::GetPlayerDistanceToPoint(point)>3.0f)
 		{
 			Sleep(1);
 		}
@@ -200,9 +200,10 @@ void BotInteractor::StartGame(string login, string password,wstring char_name)
 	ObjectManager::Initialize();
 	ObjectManager::EnumAllVisibleObjects();
 	Player * player = ObjectManager::GetPlayer();
-	//SquareArea tmp_area=SquareArea(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords), 2);
+	//Area tmp_area=Area(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords), 2);
 	//area = move(tmp_area);
-	area=move(SquareArea(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords), 3));
+	area=move(NavArea(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords), 3));
+	
 	area.AddWowObjectAvatar(player);
 
 }

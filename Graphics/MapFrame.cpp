@@ -17,43 +17,30 @@ MapFrame::~MapFrame(void)
 }
 void MapFrame::createScene()
 {
-	
-
-	//area_scene = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-	
-	//area_scene->setPosition(Ogre::Vector3(0, 0, 0));
-	//area_scene->rotate(Ogre::Vector3(0,0,1),Ogre::Radian(Ogre::Degree(90)),Ogre::Node::TS_LOCAL);
-	if (!area->busy)
+	area->data_mutex.lock();
+	CreateChunks();
+	CreateNavMesh();
+	//createRecastPathLine(0);
+	for (int i = 0; i < area->GetRadius() * 2 + 1; i++)
 	{
-		area->busy = true;
-		CreateChunks();
-		CreateNavMesh();
-		createRecastPathLine(0);
-		if (area->to_update)
+		bool br = false;
+		for (int j = 0; j < area->GetRadius() * 2 + 1; j++)
 		{
-			area->to_update = false;
-		}
-		for (int i = 0; i < area->GetRadius() * 2 + 1; i++)
-		{
-			bool br = false;
-			for (int j = 0; j < area->GetRadius() * 2 + 1; j++)
+			if (area->GetChunks()[i][j])
 			{
-				if (area->GetChunks()[i][j])
-				{
-					mCamera->setPosition(Vector3ToOgreVector(area->GetChunks()[i][j]->GetRealPosition()));
-					break;
-				}
+				mCamera->setPosition(Vector3ToOgreVector(area->GetChunks()[i][j]->GetRealPosition()));
+				break;
 			}
-			if (br) break;
-
 		}
-		//mCamera->setPosition(0,0,0);
-		area->busy = false;
-		//createNavMesh();
-		//createRecastPathLine(0);
-	}
+		if (br) break;
 
-	
+	}
+	//mCamera->setPosition(0,0,0);
+	area->data_mutex.unlock();
+	//createNavMesh();
+	//createRecastPathLine(0);
+
+
 }
 
 void MapFrame::SetCamera(Utils::WowTypes::Position position)
@@ -62,23 +49,16 @@ void MapFrame::SetCamera(Utils::WowTypes::Position position)
 }
 void MapFrame::OnUpdate()
 {
-	if (!area->busy)
+	area->data_mutex.lock();
+	if (area->to_update)
 	{
-		area->busy = true;
-		
-		if (area->to_update)
-		{
-
-
-			mSceneMgr->destroyAllManualObjects();
-			CreateChunks();
-			CreateNavMesh();
-			area->to_update = false;
-		}
-
-		area->busy = false;
+		mSceneMgr->destroyAllManualObjects();
+		CreateChunks();
+		CreateNavMesh();
+		area->to_update = false;
 	}
-	InitAdditionalObjects();
+	area->data_mutex.unlock();
+	//InitAdditionalObjects();
 
 }
 
@@ -128,8 +108,8 @@ void MapFrame::InitAdditionalObjects()
 
 void MapFrame::createRecastPathLine(int nPathSlot/*, PATHDATA *m_PathStore*/)
 {
-	PATHDATA * m_PathStore = area->m_PathStore.get();
-	if (!m_PathStore) return;
+	//PATHDATA * m_PathStore = area->m_PathStore.get();
+	//if (!m_PathStore) return;
 	Ogre::SceneNode*      m_pRecastSN = mSceneMgr->getRootSceneNode()->createChildSceneNode();
 	Ogre::ManualObject* m_pRecastMOPath = mSceneMgr->createManualObject("RecastMOPath");
 	m_pRecastMOPath->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_STRIP);
