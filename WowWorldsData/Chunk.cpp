@@ -308,11 +308,11 @@ void Chunk::InitNavigation()
 	file.open(to_string(coordinates.X)+" "+to_string(coordinates.Y)+" test.obj");
 	for (unsigned vi = 0; vi < vert_count*3; vi+=3)
 	{
-		file << "v " << nav_vertices.get()[vi] << " " << nav_vertices.get()[vi + 1] << " " << nav_vertices.get()[vi + 2] << endl;
+		//file << "v " << nav_vertices.get()[vi] << " " << nav_vertices.get()[vi + 1] << " " << nav_vertices.get()[vi + 2] << endl;
 	}
 	for (unsigned ii = 0; ii < ind_count; ii += 3)
 	{
-		file << "f " << nav_indices.get()[ii]+1 << " " << nav_indices.get()[ii + 1]+1 << " " << nav_indices.get()[ii + 2]+1 << endl;
+		//file << "f " << nav_indices.get()[ii]+1 << " " << nav_indices.get()[ii + 1]+1 << " " << nav_indices.get()[ii + 2]+1 << endl;
 	}
 	file.close();
 	////

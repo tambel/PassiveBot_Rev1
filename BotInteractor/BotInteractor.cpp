@@ -36,6 +36,94 @@ void BotInteractor::PulseCheck()
 	Player * player = ObjectManager::GetPlayer();
 	area.CheckAndMove(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords));
 }
+void BotInteractor::__Test(int o)
+{
+	//AU3_Send(L"{NUMLOCK}");
+	//AU3_MouseDown(L"Right");
+	Sleep(100);
+	RECT rect = RECT();
+	
+	AU3_WinGetClientSize(L"World of Warcraft", L"", &rect);
+	for (int i = 0; i < 1; i++)
+	{
+		//cout << rect.right << endl;
+		//AU3_MouseMove(rect.right / 2+o, rect.bottom / 2,1);
+		AU3_MouseMove(rect.right/2 + o, rect.bottom / 2, 1);
+		
+		Sleep(1);
+	}
+	
+	Sleep(100);
+	
+	//AU3_MouseUp(L"Right");
+	//AU3_Send(L"{NUMLOCK}");
+}
+void BotInteractor::__Test2()
+{
+	Player * player = ObjectManager::GetPlayer();
+	string path = "C:\\Users\\laptop\\Desktop\\pathing test\\tests\\";
+	string test_name;
+	struct Info {
+		float srot;
+		float erot;
+		int offset;
+	};
+	ofstream file;
+	vector<Info> infos = vector<Info>();
+	int start = 600;
+	RECT rect = RECT();
+
+	AU3_WinGetClientSize(L"World of Warcraft", L"", &rect);
+	AU3_MouseMove(0, rect.bottom / 2, 1);
+	AU3_MouseDown(L"Right");
+	
+	for (int i = start; i <start + 83; i++)
+	{
+		Position pos = player->GetPosition();
+
+		//file.open(path + to_string(i) + ".txt");
+		///file << pos.rotation.z;
+		Info info;
+		info.srot = pos.rotation.z;
+		info.offset = i;
+		BotInteractor::__Test(i);
+		info.erot = player->GetPosition().rotation.z;
+		infos.push_back(info);
+		
+	}
+	Sleep(1000);
+	AU3_MouseUp(L"Right");
+	file.open("C:\\Users\\laptop\\Desktop\\pathing test\\zdstest" + to_string(start) + ".txt");
+	for (auto i : infos)
+	{
+		file << i.offset << " " << i.srot << " " << i.erot << endl;
+	}
+	file.close();
+}
+void BotInteractor::RotTest()
+{
+//	Player * player = ObjectManager::GetPlayer();
+//	for (auto u : *ObjectManager::GetUnitsList())
+//	{
+//		AU3_MouseDown(L"Right");
+//		GameManager::RotatePlayerTest(u->GetPosition().coords);
+//		Sleep(1000);
+//		AU3_MouseUp(L"Right");
+//		Sleep(1000);
+//		//GameManager::WorldToScreen(u->GetPosition().coords);
+//
+//	}
+	Unit * unit = ObjectManager::FindUnitByName(L"июўщ");
+	/*while (1)
+	{
+		cout << "Player " << player->GetPosition().rotation.z << " Targer: " << GameManager::GetOrientationToTarget(unit->GetPosition().coords)<<endl;
+	}*/
+	AU3_MouseDown(L"Right");
+	Sleep(1000);
+	GameManager::RotatePlayerTest(unit->GetPosition().coords);
+	Sleep(1000);
+	AU3_MouseUp(L"Right");
+}
 bool BotInteractor::FindPlayerPath(Vector3 & end)
 {
 	//area.Navigation().SetArea(area);
@@ -44,16 +132,16 @@ bool BotInteractor::FindPlayerPath(Vector3 & end)
 void BotInteractor::GoThroughPath()
 {
 	Player * player = ObjectManager::GetPlayer();
-	Position pos = player->GetPosition();
+	Vector3 pos = player->GetPosition().coords;
 	for (unsigned i = 0; i < area.m_nsmoothPath*3; i += 3)
 	{
 		Vector3 point=Vector3(Metrics::MapMidPoint + area.m_smoothPath[i + 2], Metrics::MapMidPoint - area.m_smoothPath[i], area.m_smoothPath[i + 1]);
-		if (GameManager::GetPlayerDistanceToPoint(point) < 2 ) continue;
+		if (GameManager::GetPlayerDistanceToPoint(point) < 0.5 ) continue;
 		GameManager::GoToPoint(point);
 	}
 	for (unsigned i = 0; i < area.m_nsmoothPath*3; i += 3)
 	{
-		GameManager::GoToPoint(Vector3(area.m_smoothPath[i], area.m_smoothPath[i+1], area.m_smoothPath[i+2]));
+		//GameManager::GoToPoint(Vector3(area.m_smoothPath[i], area.m_smoothPath[i+1], area.m_smoothPath[i+2]));
 	}
 
 
@@ -74,6 +162,32 @@ void BotInteractor::GoThroughPath()
 	//	GameManager::GoToPoint(Vector3(path.PosX[nVert], path.PosY[nVert], path.PosZ[nVert]));
 	//}
 	////	GameManager::GoToPoint(Vector3(path.PosX[nVert], path.PosY[nVert], path.PosZ[nVert]));
+}
+void BotInteractor::GoThroughPathTest()
+{
+	Vector3 point;
+	RECT rect = RECT();
+	AU3_WinGetClientSize(L"World of Warcraft", L"", &rect);
+	AU3_MouseMove(rect.right / 2, rect.bottom / 2);
+	AU3_Send(L"{NUMLOCK}");
+	AU3_MouseDown(L"Right");
+	Sleep(100);
+	for (unsigned i = 0; i < area.m_nsmoothPath * 3; i += 3)
+	{
+		point = Vector3(Metrics::MapMidPoint + area.m_smoothPath[i + 2], Metrics::MapMidPoint - area.m_smoothPath[i], area.m_smoothPath[i + 1]);
+		if (GameManager::GetPlayerDistanceToPoint(point) < 2.0) continue;
+		GameManager::RotatePlayerTest(point);
+		while (GameManager::GetPlayerDistanceToPoint(point)>5.0f)
+		{
+			Sleep(1);
+		}
+		cout << "111111"<<endl;
+	}
+	
+	//AU3_Send(L"{Up up}");
+	
+	AU3_MouseUp(L"Right");
+	AU3_Send(L"{NUMLOCK}");
 }
 void BotInteractor::StartGame(string login, string password,wstring char_name)
 {
@@ -102,8 +216,8 @@ void BotInteractor::GoToPoint(Vector3 & point)
 		AU3_Send(L"{SPACE down}");
 		return;
 	}
-	GoThroughPath();
-
+	//GoThroughPath();
+	GoThroughPathTest();
 
 }
 

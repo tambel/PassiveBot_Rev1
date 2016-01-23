@@ -29,8 +29,14 @@ namespace Utils
 			{
 				return Vector3(this->x*right,this->y*right,this->z*right);
 			}
-			
-
+			bool  operator==(const Vector3 &right)
+			{
+				return x==right.x && y==right.y;
+			}
+			bool  operator!=(const Vector3 &right)
+			{
+				return x != right.x ||  y != right.y;
+			}
 		};
 		/*
 		struct Vector3

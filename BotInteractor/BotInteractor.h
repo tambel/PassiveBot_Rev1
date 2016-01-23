@@ -9,12 +9,18 @@ class BotInteractor
 	
 	
 public:
-	static void GoThroughPath();
+	static void GoThroughPath(); 
+	static void GoThroughPathTest();
 	static void StartGame(string login,string password,wstring char_name);
 	static void GoToPoint(Vector3 & point);
 	static void GoToPoint(WowObject & object) { GoToPoint(object.GetPosition().coords); }
 	static SquareArea  * GetArea() { return &area; }
 	static bool FindPlayerPath(Vector3 & end);
 	static void PulseCheck();
+
+
+	static void __Test(int o);
+	static void __Test2();
+	static void RotTest();
 };
 
