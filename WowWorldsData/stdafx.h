@@ -7,7 +7,8 @@
 
 #include <vector>
 #include <mutex>
-
+#include <memory>
+#include <algorithm>
 
 #include "Tools\Configuration.h"
 #include "Tools\BinaryReader.h"

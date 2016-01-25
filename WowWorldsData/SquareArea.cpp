@@ -10,12 +10,47 @@ bool Area::IsMoved(Location * location, Point2D<int> block_coordinates, Point2D<
 	return false;
 }
 
+void Area::CheckAndClearOldObjects()
+{
+	WMO * wmo;
+	for (auto &wmo_ptr : wmos)
+	{
+		wmo = wmo_ptr.get();
+		wmo->HitUnuseed();
+		wmo->Free();
+
+	}
+	for (vector<unique_ptr<WMO>>::iterator it = wmos.begin(); it != wmos.end();)
+	{
+		if (it->get()->IsAlive())
+			++it;
+		else
+			it = wmos.erase(it);
+	}
+	Doodad * doodad;
+	{
+		for (auto &doodad_ptr : doodads)
+		{
+			doodad = doodad_ptr.get();
+			doodad->HitUnuseed();
+			doodad->Free();
+
+		}
+		for (vector<unique_ptr<Doodad>>::iterator it = doodads.begin(); it != doodads.end();)
+		{
+			if (it->get()->IsAlive())
+				++it;
+			else
+				it = doodads.erase(it);
+		}
+	}
+}
+
 Area::Area()
 {
 }
 Area::Area(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius) :location(location), block_coordinates(block_coordinates), coordinates(coordinates), radius(radius)
 {
-	
 	busy = false;
 	area_size = radius * 2 + 1;
 	chunks = new Chunk**[area_size];
@@ -43,7 +78,7 @@ Area::~Area(void)
 
 Area & Area::operator=(Area && right)
 {
-	
+	wmos = move(right.wmos);
 	chunks = right.chunks;
 	right.chunks = nullptr;
 	radius = right.radius;
@@ -72,27 +107,46 @@ void Area::Fill(Location * location, Point2D<int> block_coordinates, Point2D<int
 	Vector3 block_real_position = Vector3(block_coordinates.Y*Metrics::BlockSize, -block_coordinates.X*Metrics::BlockSize, 0.0f);
 	int color = 10;
 
+
+
 	for (int i = 0; i < area_size; i++)
 	{
 		for (int j = 0; j < area_size; j++)
 		{
 			Point2D<int> abs_pos = area_position + Point2D<int>(i, j);
 
-			chunks[i][j] = ADTWorker::GetChunk(location, block_coordinates += (Point2D<int>(abs_pos.X / 16, abs_pos.Y / 16) - Point2D<int>(1, 1)), Point2D<int>(abs_pos.X % 16, abs_pos.Y % 16), true);
-			if (!chunks[i][j]) continue;
-			chunks[i][j]->InitNavigation();
-			
+			chunks[i][j] = ADTWorker::GetChunk(this,location, block_coordinates += (Point2D<int>(abs_pos.X / 16, abs_pos.Y / 16) - Point2D<int>(1, 1)), Point2D<int>(abs_pos.X % 16, abs_pos.Y % 16));
+
 		}
 
 	}
 	//DeleteDuplicates();
-	InitAreaBoundingBox();
+	CheckAndClearOldObjects();
+	
+	for (int i = 0; i < area_size; i++)
+	{
+		for (int j = 0; j < area_size; j++)
+		{
+			//Point2D<int> abs_pos = area_position + Point2D<int>(i, j);
+
+			//chunks[i][j] = ADTWorker::GetChunk(location, block_coordinates += (Point2D<int>(abs_pos.X / 16, abs_pos.Y / 16) - Point2D<int>(1, 1)), Point2D<int>(abs_pos.X % 16, abs_pos.Y % 16));
+			if (!chunks[i][j]) continue;
+			chunks[i][j]->InitNavigation();
+		}
+
+	}
+
+
+	
 }
 
 void Area::CheckAndMove(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {
 	if (IsMoved(location, block_coordinates, coordinates))
+	{
 		Fill(location, block_coordinates, coordinates);
+	}
+
 }
 void Area::AddWowObjectAvatar(Wow::WowObject * object)
 {
@@ -130,15 +184,15 @@ void Area::DeleteDuplicates()
 				{
 					for (auto uuid : wmo_uuids)
 					{
-						if (uuid == wmo.GetUUID())
+						if (uuid == wmo->GetUUID())
 						{
-							wmo.Skip();
+							wmo->Skip();
 							break;
 						}
 					}
-					if (wmo.IsSkipped())
+					if (wmo->IsSkipped())
 						continue;
-					wmo_uuids.push_back(wmo.GetUUID());
+					wmo_uuids.push_back(wmo->GetUUID());
 
 				}
 			for (auto & doodad : chunks[i][j]->GetDoodads())
@@ -174,13 +228,18 @@ void Area::InitAreaBoundingBox()
 			chunk = chunks[i][j];
 			if (chunk)
 			{
-
-				points.push_back(chunk->GetTerrainBoundingBox().up.x);
+				points.push_back(chunk->GetFullBoundingBox().up.x);
+				points.push_back(chunk->GetFullBoundingBox().up.y);
+				points.push_back(chunk->GetFullBoundingBox().up.z);
+				points.push_back(chunk->GetFullBoundingBox().down.x);
+				points.push_back(chunk->GetFullBoundingBox().down.y);
+				points.push_back(chunk->GetFullBoundingBox().down.z);
+				/*points.push_back(chunk->GetTerrainBoundingBox().up.x);
 				points.push_back(chunk->GetFullBoundingBox().up.y);
 				points.push_back(chunk->GetTerrainBoundingBox().up.z);
 				points.push_back(chunk->GetTerrainBoundingBox().down.x);
 				points.push_back(chunk->GetFullBoundingBox().down.y);
-				points.push_back(chunk->GetTerrainBoundingBox().down.z);
+				points.push_back(chunk->GetTerrainBoundingBox().down.z);*/
 
 			}
 			

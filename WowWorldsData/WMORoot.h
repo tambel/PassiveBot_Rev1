@@ -6,7 +6,7 @@ struct WMOInfo
 {
 	string filename;
 	MODF modf;
-	WMOInfo(string filename, MODF modf) : filename(filename), modf(modf) {}
+	WMOInfo(string & filename, MODF modf) : filename(filename), modf(modf) {}
 	
 };
 
@@ -17,7 +17,7 @@ class WMORoot
 	void LoadGroups(MOHD  & header);
 public:
 	vector<WMOGroup> & GetWMOGroups() { return wmo_groups; }
-	WMORoot(string filename);
+	WMORoot(string  & filename);
 	~WMORoot();
 };
 

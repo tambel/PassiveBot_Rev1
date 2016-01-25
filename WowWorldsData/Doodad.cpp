@@ -3,6 +3,7 @@
 using namespace Utils;
 using namespace std;
 Doodad::Doodad(Doodad && right):
+	MapObject(),
 	uuid(right.uuid),
 	game_position(right.game_position),
 	scale(right.scale)
@@ -13,10 +14,13 @@ Doodad::Doodad(Doodad && right):
 	//game_position = right.game_position;
 	//scale = right.scale;
 }
-Doodad::Doodad(string filename,unsigned uuid, Position position, short scale):uuid(uuid),scale(scale/1024.0f)
+Doodad::Doodad(string filename,unsigned uuid, Position position, short scale):
+	MapObject(filename),
+	uuid(uuid),
+	scale(scale/1024.0f)
 {
 	skip = false;
-	M2 m2 = M2(filename);
+	M2 m2 = M2(this->filename);
 	name = m2.filename;
 	this->scale = scale/1024.0f;
 	this->position.coords=Vector3(position.coords.x,-position.coords.z,position.coords.y);

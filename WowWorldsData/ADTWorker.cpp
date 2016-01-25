@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-Chunk * ADTWorker::GetChunk(Location * location, Point2D<int> block_coordinates, Point2D<int>coordinates,bool save)
+Chunk * ADTWorker::GetChunk(Area * area,Location * location, Point2D<int> block_coordinates, Point2D<int>coordinates,bool save)
 {
 	Chunk * chunk=ChunkCache::Find(location,block_coordinates,coordinates);
 	if (chunk)
@@ -9,7 +9,7 @@ Chunk * ADTWorker::GetChunk(Location * location, Point2D<int> block_coordinates,
 	adt=GetADT(location, block_coordinates);
 	if (!adt)
 		return 0;
-	chunk= adt->GetChunk(coordinates);
+	chunk= adt->GetChunk(area,coordinates);
 	if (chunk)
 	{
 		if (save)

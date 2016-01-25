@@ -21,6 +21,10 @@ using namespace Utils::Game;
 class Area
 {
 protected:
+
+	vector<unique_ptr<Doodad>> doodads;
+	vector<unique_ptr<WMO>> wmos;
+
 	Chunk *** chunks;
 	int radius;
 	int area_size;
@@ -31,7 +35,12 @@ protected:
 
 	Utils::Graphics::BoundingBox bounding_box;
 	bool IsMoved(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
+
+	void CheckAndClearOldObjects();
+
+
 public:
+	
 	bool to_update;
 	bool busy;
 	Area();
@@ -47,6 +56,8 @@ public:
 	vector<WowObjectAvatar*> * GetWowAvatars() {return &wow_object_avatars;}
 	void AddWowObjectAvatar(Wow::WowObject* object);
 	Utils::Graphics::BoundingBox & GetBoundingBox() { return bounding_box; }
+	inline vector<unique_ptr<WMO>> & GetWMOs() { return wmos; }
+	inline vector<unique_ptr<Doodad>> & GetDoodads() { return doodads; }
 	void DeleteDuplicates();
 	void InitAreaBoundingBox();
 	void ToMesh();

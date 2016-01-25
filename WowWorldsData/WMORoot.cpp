@@ -3,7 +3,7 @@
 
 
 
-WMORoot::WMORoot(string filename):filename(filename)
+WMORoot::WMORoot(string & filename):filename(filename)
 {
 	wmo_groups = vector<WMOGroup>();
 	BinaryReader reader = BinaryReader(filename);

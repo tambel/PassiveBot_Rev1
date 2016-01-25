@@ -3,8 +3,9 @@
 class WMOGroup
 {
 
-	string filename;
+	
 public:
+	string filename;
 	Utils::WowTypes::Vector3 * vertices;
 	unsigned long vertex_count;
 	unsigned short * indices;

@@ -39,16 +39,22 @@ NavArea & NavArea::operator=(NavArea && right)
 void NavArea::Fill(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {
 	Area::Fill(location, block_coordinates, coordinates);
+	InitAreaBoundingBox();
 	InitNavigation();
 }
 void NavArea::CheckAndMove(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {
-	Area::CheckAndMove(location,block_coordinates,coordinates);
+	if (IsMoved(location, block_coordinates, coordinates))
+	{
+		Fill(location, block_coordinates, coordinates);
+		InitNavigation();
+	}
+
 }
 void NavArea::InitNavigation()
 {
 
-	InitAreaBoundingBox();
+	//InitAreaBoundingBox();
 	BuildAllTiles();
 }
 void NavArea::BuildAllTiles()
@@ -196,7 +202,8 @@ unsigned char * NavArea::BuildTileMesh(int x, int y, const float* bmin, const fl
 			Chunk * chunk = chunks[i][j];
 			if (!chunk)
 				continue;
-			Utils::Graphics::BoundingBox & bbox = chunk->GetTerrainBoundingBox();
+			//Utils::Graphics::BoundingBox & bbox = chunk->GetTerrainBoundingBox();
+			Utils::Graphics::BoundingBox & bbox = chunk->GetFullBoundingBox();
 			bool overlap = true;
 			overlap = (tbmin[0] > bbox.down.x || tbmax[0] < bbox.up.x) ? false : overlap;
 			overlap = (tbmin[1] > bbox.down.z || tbmax[1] < bbox.up.z) ? false : overlap;
@@ -742,7 +749,7 @@ void NavArea::InitNavConfig()
 	config.m_cellHeight = 0.2;
 	config.m_agentHeight = 2.0;
 	config.m_agentRadius = 1.0;//0.800000024;
-	config.m_agentMaxClimb = 1.0;// 0.899999976;
+	config.m_agentMaxClimb =  0.899999976;
 	config.m_agentMaxSlope = 45.0000000;
 	config.m_regionMinSize = 8.00000000;
 	config.m_regionMergeSize = 20.0000000;

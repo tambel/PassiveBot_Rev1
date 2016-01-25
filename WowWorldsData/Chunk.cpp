@@ -6,13 +6,15 @@ unsigned short* ChunkModel::indices=ChunkModel::Init();
 Chunk::Chunk(void)
 {
 }
-Chunk::Chunk(ChunkStreamInfo info, ChunkStreamInfo obj_info, ADT * adt, Location * location, Point2D<int> block_coordinates,Point2D<int> coordinates):root_info(info),location(location),block_coordinates(block_coordinates),coordinates(coordinates)
+Chunk::Chunk(Area * area,ChunkStreamInfo info, ChunkStreamInfo obj_info, ADT * adt_file/*, Location * location, Point2D<int> block_coordinates*/,Point2D<int> coordinates):root_info(info),adt(adt_file)/*,location(location),block_coordinates(block_coordinates)*/,coordinates(coordinates),area(area)
 {
+
 	yey=false;
 	result_mesh = 0;
-	this->adt = adt;
+	location = adt->GetLocation();
+	block_coordinates = adt->GetCoordinates();
 	doodads = vector<Doodad>();
-	wmos = vector<WMO>();
+	//wmos = vector<WMO*>();
 	header=MCNK();
 	root_info=info;
 	root_reader=root_info.reader;
@@ -129,40 +131,53 @@ void Chunk::LoadMcrd(unsigned long size)
 	unsigned count = size / 4;
 	unique_ptr<unsigned> doodads_refs = unique_ptr<unsigned>(new unsigned[count]);
 	obj_reader->ReadArray<unsigned>(doodads_refs.get(), count);
-	if (coordinates.X == 3 && coordinates.X == 15)
-	{
-		count = count;
-	}
 	for (unsigned i = 0; i < count; i++)
 	{
 		
 		MDDF mddf = adt->GetMDDFs()[doodads_refs.get()[i]];
-		if (mddf.Scale != 1024)
-		{
-			mddf.Scale = mddf.Scale;
-		}
 		string filename= Configuration::GetGameDataPath()+(adt->GetDoodadsFilenames()+adt->GetDoodadsIds()[mddf.Mmid]);
 		Doodad doodad = Doodad(filename, mddf.UniqueId, Position(mddf.Position, mddf.Rotation), mddf.Scale);
-
-		float f = doodad.GetVertices()[10].position.x;
-		for (unsigned long ii = 0; ii < doodad.GetVertexCount(); ii++)
-		{
-		//	doodad.GetVertices()[ii].position= doodad.GetVertices()[ii].position+ doodad.GetPosition().coords;
-		}
 		doodads.push_back(move(doodad));
 	}
 }
 void Chunk::LoadMcrw(unsigned long size)
 {
+	bool exist;
 	unsigned count = size / 4;
 	unique_ptr<unsigned> wmo_refs = unique_ptr<unsigned>(new unsigned[count]);
 	obj_reader->ReadArray<unsigned>(wmo_refs.get(), count);
 	for (unsigned i = 0; i < count; i++)
 	{
 		MODF modf = adt->GetMODFs()[wmo_refs.get()[i]];
-		string filename = Configuration::GetGameDataPath() + (adt->GetWMOFilenames() + adt->GetWMOsIds()[modf.Mwid]);
+		exist = false;
+		for (auto &wmo_ptr : area->GetWMOs())
+		{
+			WMO * wmo = wmo_ptr.get();
+			if (modf.UniqueId == wmo->GetUUID())
+			{
+				exist = true;
+				wmo->Refresh();
+				if (!wmo->IsOccupied())
+				{
+					wmos.push_back(wmo);
+					wmo->Occupie();
+				}
+				break;
+			}
+		}
+		if (!exist)
+		{
+			string filename = Configuration::GetGameDataPath() + (adt->GetWMOFilenames() + adt->GetWMOsIds()[modf.Mwid]);
+			WMO  * wmo = new WMO(filename, modf.UniqueId, Position(modf.Position, modf.Rotation));
+			wmo->Occupie();
+			//wmos.push_back(move(wmo));
+			area->GetWMOs().push_back(move(unique_ptr<WMO>(wmo)));
+			wmos.push_back(area->GetWMOs().back().get());
+			//wmos.push_back(&area->wmos.back());
+		}
+		/*string filename = Configuration::GetGameDataPath() + (adt->GetWMOFilenames() + adt->GetWMOsIds()[modf.Mwid]);
 		WMO wmo = WMO(filename, modf.UniqueId, Position(modf.Position, modf.Rotation));
-		wmos.push_back(move(wmo));
+		wmos.push_back(move(wmo));*/
 
 	}
 }
@@ -185,8 +200,8 @@ void Chunk::InitNavigation()
 	}
 	for (auto &wmo : wmos)
 	{
-		if (wmo.IsSkipped()) continue;
-		for (auto &part : wmo.GetParts())
+		//if (wmo->IsSkipped()) continue;
+		for (auto &part : wmo->GetParts())
 		{
 			vert_count += part.GetVertexCount();
 			ind_count += part.GetIndexCount();
@@ -237,16 +252,16 @@ void Chunk::InitNavigation()
 	}
 	for (auto &wmo : wmos)
 	{
-		if (wmo.IsSkipped()) continue;
-		for (auto &part : wmo.GetParts())
+		//if (wmo->IsSkipped()) continue;
+		for (auto &part : wmo->GetParts())
 		{
 			for (unsigned long i = 0; i < part.GetVertexCount(); i++)
 			{
-				Vector3 vert = part.GetVertices()[i].position + (wmo.GetPosition().coords - real_position);
+				Vector3 vert = part.GetVertices()[i].position + (wmo->GetPosition().coords - real_position);
 
-				nav_vertices.get()[vert_offset] = part.GetVertices()[i].position.x+wmo.GetPosition().coords.x;
-				nav_vertices.get()[vert_offset + 1] = part.GetVertices()[i].position.z + wmo.GetPosition().coords.z;
-				nav_vertices.get()[vert_offset + 2] = part.GetVertices()[i].position.y + wmo.GetPosition().coords.y;
+				nav_vertices.get()[vert_offset] = part.GetVertices()[i].position.x+wmo->GetPosition().coords.x;
+				nav_vertices.get()[vert_offset + 1] = part.GetVertices()[i].position.z + wmo->GetPosition().coords.z;
+				nav_vertices.get()[vert_offset + 2] = part.GetVertices()[i].position.y + wmo->GetPosition().coords.y;
 
 
 				//vertices.get()[vert_offset] = part.GetVertices()[i].position.x;
@@ -291,8 +306,8 @@ void Chunk::InitNavigation()
 	}
 	for (auto &wmo : wmos)
 	{
-		if (wmo.IsSkipped()) continue;
-		for (auto &part : wmo.GetParts())
+		//if (wmo->IsSkipped()) continue;
+		for (auto &part : wmo->GetParts())
 		{
 			for (unsigned long i = 0; i < part.GetIndexCount(); i+=3)
 			{
@@ -308,11 +323,11 @@ void Chunk::InitNavigation()
 	file.open(to_string(coordinates.X)+" "+to_string(coordinates.Y)+" test.obj");
 	for (unsigned vi = 0; vi < vert_count*3; vi+=3)
 	{
-		//file << "v " << nav_vertices.get()[vi] << " " << nav_vertices.get()[vi + 1] << " " << nav_vertices.get()[vi + 2] << endl;
+		file << "v " << nav_vertices.get()[vi] << " " << nav_vertices.get()[vi + 1] << " " << nav_vertices.get()[vi + 2] << endl;
 	}
 	for (unsigned ii = 0; ii < ind_count; ii += 3)
 	{
-		//file << "f " << nav_indices.get()[ii]+1 << " " << nav_indices.get()[ii + 1]+1 << " " << nav_indices.get()[ii + 2]+1 << endl;
+		file << "f " << nav_indices.get()[ii]+1 << " " << nav_indices.get()[ii + 1]+1 << " " << nav_indices.get()[ii + 2]+1 << endl;
 	}
 	file.close();
 	////

@@ -25,9 +25,9 @@ ADT::~ADT()
 	delete root_reader;
 	root_reader=0;
 }
-Chunk * ADT::GetChunk(Point2D<int> coordinates)
+Chunk * ADT::GetChunk(Area * area,Point2D<int> coordinates)
 {
-	return new Chunk(chunk_stream_infos[coordinates.X][coordinates.Y], obj_chunk_stream_infos[coordinates.X][coordinates.Y],this,location,this->coordinates,coordinates);
+	return new Chunk(area,chunk_stream_infos[coordinates.X][coordinates.Y], obj_chunk_stream_infos[coordinates.X][coordinates.Y],this,coordinates);
 }
 
 bool ADT::operator==(const ADT & right)

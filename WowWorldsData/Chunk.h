@@ -15,7 +15,7 @@
 #include "DetourCommon.h"
 using namespace Utils;
 using namespace Game;
-
+class Area;
 struct ChunkAdditionalData
 {
 	MDDF * mddfs;
@@ -60,11 +60,13 @@ class ADT;
 class Chunk:public Model<unsigned short>
 {
 private:
-
+	static vector<unsigned> doodad_uuids;
+	static vector <unsigned> wmo_uuids;
 
 
 
 	ADT * adt;
+	Area * area;
 	Location * location;
 	Point2D<int> block_coordinates;
 	Point2D<int> coordinates;
@@ -72,7 +74,9 @@ private:
 	//Vector3 position;
 	Vector3 real_position;
 	vector<Doodad> doodads;
-	vector<WMO> wmos;
+	//vector<WMO> wmos;
+	//vector<Doodad*> doodads;
+	vector<WMO*> wmos;
 	BinaryReader * root_reader;
 	BinaryReader * obj_reader;
 	
@@ -109,7 +113,7 @@ public:
 	bool is_new;
 	Chunk(void);
 	~Chunk(void);
-	Chunk(ChunkStreamInfo info, ChunkStreamInfo obj_info, ADT * adt, Location * loc,Point2D<int> block_coordinates,Point2D<int> coordinates);
+	Chunk(Area * area,ChunkStreamInfo info, ChunkStreamInfo obj_info, ADT * adt_file/*, Location * loc,Point2D<int> block_coordinates*/,Point2D<int> coordinates);
 
 	Location * GetLocation() {return location;}
 	Point2D<int> GetBlockCoordinates() {return block_coordinates;}
@@ -123,7 +127,7 @@ public:
 	void  SetRealPosition(Vector3 pos) {real_position=pos;}
 	void SearchForObjects();
 	vector<Doodad> & GetDoodads() { return doodads; }
-	vector<WMO> & GetWMOs() { return wmos; }
+	vector<WMO*> & GetWMOs() { return wmos; }
 	inline Utils::Graphics::BoundingBox & GetTerrainBoundingBox() { return terrain_bounding_box; }
 	inline Utils::Graphics::BoundingBox & GetFullBoundingBox() { return full_bounding_box; }
 

@@ -5,8 +5,9 @@
 #include "Utils.h"
 #include <boost/geometry/geometries/point_xy.hpp>
 #include <boost/geometry/strategies/transform/matrix_transformers.hpp>
+#include "MapObject.h"
 using namespace std;
-class Doodad:public Model<unsigned short>
+class Doodad:public Model<unsigned short>,public MapObject
 {
 	unsigned long uuid;
 	bool skip;

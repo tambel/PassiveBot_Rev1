@@ -14,7 +14,7 @@ void init_static()
 int main()
 {
 	init_static();
-	WorldViewer viewer = WorldViewer(Game::LocationBase::Get("Kalimdor"), Point2D<int>(33, 41), Point2D<int>(10, 3), 3);
+	WorldViewer viewer = WorldViewer(Game::LocationBase::Get("Kalimdor"), Point2D<int>(28, 40), Point2D<int>(10, 2), 3);
 	viewer.ShowMap();
 	while (1)
 	{

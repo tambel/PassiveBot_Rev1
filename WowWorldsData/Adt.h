@@ -40,7 +40,7 @@ private:
 public:
 	ADT(Location * location,  Point2D<int> coordinates);
 	~ADT(void);
-	Chunk * GetChunk(Point2D<int> coordinates);
+	Chunk * GetChunk(Area * area,Point2D<int> coordinates);
 	Location * GetLocation() {return location;}
 	Point2D<int> GetCoordinates(){return coordinates;}
 	bool IsExist() {return root_reader->IsFileExist();}

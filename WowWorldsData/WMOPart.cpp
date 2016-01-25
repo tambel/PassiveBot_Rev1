@@ -4,6 +4,7 @@
 
 WMOPart::WMOPart(WMOGroup & group, WMO & wmo)
 {
+	this->filename = move(group.filename);
 	this->position = wmo.GetPosition();
 	vertex_count = group.vertex_count;
 	index_count = group.index_count;
