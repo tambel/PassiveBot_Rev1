@@ -13,7 +13,6 @@ Chunk::Chunk(Area * area,ChunkStreamInfo info, ChunkStreamInfo obj_info, ADT * a
 	result_mesh = 0;
 	location = adt->GetLocation();
 	block_coordinates = adt->GetCoordinates();
-	doodads = vector<Doodad>();
 	//wmos = vector<WMO*>();
 	header=MCNK();
 	root_info=info;
@@ -128,6 +127,7 @@ void Chunk::LoadMcvt()
 }
 void Chunk::LoadMcrd(unsigned long size)
 {
+	bool exist;
 	unsigned count = size / 4;
 	unique_ptr<unsigned> doodads_refs = unique_ptr<unsigned>(new unsigned[count]);
 	obj_reader->ReadArray<unsigned>(doodads_refs.get(), count);
@@ -135,9 +135,30 @@ void Chunk::LoadMcrd(unsigned long size)
 	{
 		
 		MDDF mddf = adt->GetMDDFs()[doodads_refs.get()[i]];
+		exist = false;
+		for (auto &doodad_ptr : area->GetDoodads())
+		{
+			Doodad * doodad = doodad_ptr.get();
+			if (mddf.UniqueId == doodad->GetUUID())
+			{
+				exist = true;
+				doodad->Refresh();
+				if (!doodad->IsOccupied())
+				{
+					doodads.push_back(doodad);
+					doodad->Occupie();
+				}
+				break;
+			}
+		}
+
+
 		string filename= Configuration::GetGameDataPath()+(adt->GetDoodadsFilenames()+adt->GetDoodadsIds()[mddf.Mmid]);
-		Doodad doodad = Doodad(filename, mddf.UniqueId, Position(mddf.Position, mddf.Rotation), mddf.Scale);
-		doodads.push_back(move(doodad));
+		Doodad * doodad = new Doodad(filename, mddf.UniqueId, Position(mddf.Position, mddf.Rotation), mddf.Scale);
+		doodad->Occupie();
+		//wmos.push_back(move(wmo));
+		area->GetDoodads().push_back(move(unique_ptr<Doodad>(doodad)));
+		doodads.push_back(area->GetDoodads().back().get());
 	}
 }
 void Chunk::LoadMcrw(unsigned long size)
@@ -159,7 +180,7 @@ void Chunk::LoadMcrw(unsigned long size)
 				wmo->Refresh();
 				if (!wmo->IsOccupied())
 				{
-					wmos.push_back(wmo);
+					//wmos.push_back(wmo);
 					wmo->Occupie();
 				}
 				break;
@@ -170,10 +191,9 @@ void Chunk::LoadMcrw(unsigned long size)
 			string filename = Configuration::GetGameDataPath() + (adt->GetWMOFilenames() + adt->GetWMOsIds()[modf.Mwid]);
 			WMO  * wmo = new WMO(filename, modf.UniqueId, Position(modf.Position, modf.Rotation));
 			wmo->Occupie();
-			//wmos.push_back(move(wmo));
 			area->GetWMOs().push_back(move(unique_ptr<WMO>(wmo)));
-			wmos.push_back(area->GetWMOs().back().get());
-			//wmos.push_back(&area->wmos.back());
+			///wmos.push_back(area->GetWMOs().back().get());
+		
 		}
 		/*string filename = Configuration::GetGameDataPath() + (adt->GetWMOFilenames() + adt->GetWMOsIds()[modf.Mwid]);
 		WMO wmo = WMO(filename, modf.UniqueId, Position(modf.Position, modf.Rotation));
@@ -192,21 +212,25 @@ void Chunk::InitNavigation()
 	ind_count = 0;
 	vert_count += vertex_count;
 	ind_count += index_count;
-	for (auto &doodad : doodads)
+
+
+	/*for (auto &doodad : doodads)
 	{
-		if (doodad.IsSkipped()) continue;
-		vert_count += doodad.GetVertexCount();
-		ind_count += doodad.GetIndexCount();
-	}
-	for (auto &wmo : wmos)
-	{
-		//if (wmo->IsSkipped()) continue;
-		for (auto &part : wmo->GetParts())
-		{
-			vert_count += part.GetVertexCount();
-			ind_count += part.GetIndexCount();
-		}
-	}
+		vert_count += doodad->GetVertexCount();
+		ind_count += doodad->GetIndexCount();
+	}*/
+
+
+
+	//for (auto &wmo : wmos)
+	//{
+	//	//if (wmo->IsSkipped()) continue;
+	//	for (auto &part : wmo->GetParts())
+	//	{
+	//		vert_count += part.GetVertexCount();
+	//		ind_count += part.GetIndexCount();
+	//	}
+	//}
 	nav_vertices = unique_ptr<float>(new float[vert_count*3]);
 	nav_indices = unique_ptr<int>(new int[ind_count]);
 	unsigned long vert_offset = 0;
@@ -223,65 +247,34 @@ void Chunk::InitNavigation()
 	}
 	rcCalcBounds(nav_vertices.get(), vertex_count, reinterpret_cast<float*>(&terrain_bounding_box.up), reinterpret_cast<float*>(&terrain_bounding_box.down));
 
-	for (auto &doodad : doodads)
+	/*for (auto &doodad : doodads)
 	{
-		
-		//doodad.Rescale(doodad.scale);
-		//doodad.Rotate();
-		if (doodad.IsSkipped()) continue;
-		for (unsigned long i = 0; i < doodad.GetVertexCount(); i++)
+		for (unsigned long i = 0; i < doodad->GetVertexCount(); i++)
 		{
-			//Vector3 real= Vector3(Metrics::MapMidPoint - doodad.GetGamePosition().y, -(Metrics::MapMidPoint - doodad.GetGamePosition().x), doodad.GetGamePosition().z);
-
-			//Vector3 vert = doodad.GetVertices()[i].position + (doodad.GetPosition().coords - real_position);// +position.coords;
-			//vertices.get()[vert_offset] = vert.x + position.coords.x;
-			//vertices.get()[vert_offset + 1] = vert.z +position.coords.z;
-			//vertices.get()[vert_offset + 2] = vert.y + position.coords.y;
-
-			nav_vertices.get()[vert_offset] = doodad.GetVertices()[i].position.x + doodad.GetPosition().coords.x;
-			nav_vertices.get()[vert_offset + 1] = doodad.GetVertices()[i].position.z + doodad.GetPosition().coords.z;
-			nav_vertices.get()[vert_offset + 2] = doodad.GetVertices()[i].position.y + doodad.GetPosition().coords.y;
-
-
-			/*vertices.get()[vert_offset] = doodad.GetVertices()[i].position.x;
-			vertices.get()[vert_offset + 1] = doodad.GetVertices()[i].position.z ;
-			vertices.get()[vert_offset + 2] = doodad.GetVertices()[i].position.y ;*/
-
+			nav_vertices.get()[vert_offset] = doodad->GetVertices()[i].position.x + doodad->GetPosition().coords.x;
+			nav_vertices.get()[vert_offset + 1] = doodad->GetVertices()[i].position.z + doodad->GetPosition().coords.z;
+			nav_vertices.get()[vert_offset + 2] = doodad->GetVertices()[i].position.y + doodad->GetPosition().coords.y;
 			vert_offset += 3;
 		}
-	}
-	for (auto &wmo : wmos)
-	{
-		//if (wmo->IsSkipped()) continue;
-		for (auto &part : wmo->GetParts())
-		{
-			for (unsigned long i = 0; i < part.GetVertexCount(); i++)
-			{
-				Vector3 vert = part.GetVertices()[i].position + (wmo->GetPosition().coords - real_position);
+	}*/
 
-				nav_vertices.get()[vert_offset] = part.GetVertices()[i].position.x+wmo->GetPosition().coords.x;
-				nav_vertices.get()[vert_offset + 1] = part.GetVertices()[i].position.z + wmo->GetPosition().coords.z;
-				nav_vertices.get()[vert_offset + 2] = part.GetVertices()[i].position.y + wmo->GetPosition().coords.y;
+	//for (auto &wmo : wmos)
+	//{
+	//	for (auto &part : wmo->GetParts())
+	//	{
+	//		for (unsigned long i = 0; i < part.GetVertexCount(); i++)
+	//		{
+	//			Vector3 vert = part.GetVertices()[i].position + (wmo->GetPosition().coords - real_position);
 
-
-				//vertices.get()[vert_offset] = part.GetVertices()[i].position.x;
-				//vertices.get()[vert_offset + 1] = part.GetVertices()[i].position.z;
-				//vertices.get()[vert_offset + 2] = part.GetVertices()[i].position.y;
-				
-				/*vertices.get()[vert_offset] = vert.x+position.coords.x;
-				vertices.get()[vert_offset + 1] = vert.z + position.coords.z;
-				vertices.get()[vert_offset + 2] = vert.y + position.coords.y;*/
-				vert_offset += 3;
-			}
-		}
-	}
+	//			nav_vertices.get()[vert_offset] = part.GetVertices()[i].position.x+wmo->GetPosition().coords.x;
+	//			nav_vertices.get()[vert_offset + 1] = part.GetVertices()[i].position.z + wmo->GetPosition().coords.z;
+	//			nav_vertices.get()[vert_offset + 2] = part.GetVertices()[i].position.y + wmo->GetPosition().coords.y;
+	//			vert_offset += 3;
+	//		}
+	//	}
+	//}
 	rcCalcBounds(nav_vertices.get(), vert_count, reinterpret_cast<float*>(&full_bounding_box.up), reinterpret_cast<float*>(&full_bounding_box.down));
 
-	/*if (yey)
-	for (unsigned long vi = 0; vi < vert_count * 3; vi += 3)
-	{
-		vertices.get()[vi] += 34.0f;
-	}*/
 	vert_offset = 0;
 	unsigned long ind_offset = 0;
 	for (unsigned i = 0; i < 768; i+=3)
@@ -292,33 +285,34 @@ void Chunk::InitNavigation()
 		ind_offset += 3;
 	}
 	vert_offset += this->vertex_count;
-	for (auto &doodad : doodads)
+
+	/*for (auto &doodad : doodads)
 	{
-		if (doodad.IsSkipped()) continue;
-		for (unsigned long i = 0; i < doodad.GetIndexCount(); i+=3)
+		for (unsigned long i = 0; i < doodad->GetIndexCount(); i+=3)
 		{
-			nav_indices.get()[ind_offset] = doodad.GetIndices()[i + 2] + vert_offset;
-			nav_indices.get()[ind_offset + 1] = doodad.GetIndices()[i + 1] + vert_offset;
-			nav_indices.get()[ind_offset + 2] = doodad.GetIndices()[i] + vert_offset;
+			nav_indices.get()[ind_offset] = doodad->GetIndices()[i + 2] + vert_offset;
+			nav_indices.get()[ind_offset + 1] = doodad->GetIndices()[i + 1] + vert_offset;
+			nav_indices.get()[ind_offset + 2] = doodad->GetIndices()[i] + vert_offset;
 			ind_offset += 3;
 		}
-		vert_offset += doodad.GetVertexCount();
-	}
-	for (auto &wmo : wmos)
-	{
-		//if (wmo->IsSkipped()) continue;
-		for (auto &part : wmo->GetParts())
-		{
-			for (unsigned long i = 0; i < part.GetIndexCount(); i+=3)
-			{
-				nav_indices.get()[ind_offset] = part.GetIndices()[i + 2] + vert_offset;
-				nav_indices.get()[ind_offset + 1] = part.GetIndices()[i + 1] + vert_offset;
-				nav_indices.get()[ind_offset + 2] = part.GetIndices()[i] + vert_offset;
-				ind_offset += 3;
-			}
-			vert_offset += part.GetVertexCount();
-		}
-	}
+		vert_offset += doodad->GetVertexCount();
+	}*/
+
+	//for (auto &wmo : wmos)
+	//{
+	//	//if (wmo->IsSkipped()) continue;
+	//	for (auto &part : wmo->GetParts())
+	//	{
+	//		for (unsigned long i = 0; i < part.GetIndexCount(); i+=3)
+	//		{
+	//			nav_indices.get()[ind_offset] = part.GetIndices()[i + 2] + vert_offset;
+	//			nav_indices.get()[ind_offset + 1] = part.GetIndices()[i + 1] + vert_offset;
+	//			nav_indices.get()[ind_offset + 2] = part.GetIndices()[i] + vert_offset;
+	//			ind_offset += 3;
+	//		}
+	//		vert_offset += part.GetVertexCount();
+	//	}
+	//}
 	ofstream file;
 	file.open(to_string(coordinates.X)+" "+to_string(coordinates.Y)+" test.obj");
 	for (unsigned vi = 0; vi < vert_count*3; vi+=3)

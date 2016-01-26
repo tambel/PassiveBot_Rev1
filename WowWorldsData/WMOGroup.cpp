@@ -29,6 +29,7 @@ WMOGroup::WMOGroup(string filename) :filename(std::move(filename))
 		case ChunkSignatures::WMOSignature::GroupSignatures::Movi:
 			index_count = size / 2;
 			indices = new unsigned short[index_count];
+
 			reader.ReadArray<unsigned short>(indices, index_count);
 			break;
 		default:

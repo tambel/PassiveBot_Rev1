@@ -43,7 +43,7 @@ void M2::LoadSkinFile(int index)
 		unsigned short * triangles= new unsigned short[m2_skin.nTriangles];
 		skin_reader->ReadArrayAbs<unsigned short>(triangles,m2_skin.ofsTriangles,m2_skin.nTriangles);
 		index_count=m2_skin.nTriangles;
-		indices=new unsigned short[index_count];
+		indices=new int[index_count];
 		if (m2_skin.nIndices==0)
 		{
 			index_count = index_count;

@@ -14,7 +14,8 @@ Doodad::Doodad(Doodad && right):
 	//game_position = right.game_position;
 	//scale = right.scale;
 }
-Doodad::Doodad(string filename,unsigned uuid, Position position, short scale):
+Doodad::Doodad(string filename, unsigned uuid, Position position, short scale) :
+	Model(),
 	MapObject(filename),
 	uuid(uuid),
 	scale(scale/1024.0f)
@@ -28,6 +29,7 @@ Doodad::Doodad(string filename,unsigned uuid, Position position, short scale):
 	this->game_position=Vector3(Metrics::MapMidPoint-this->position.coords.x,Metrics::MapMidPoint-this->position.coords.z,position.coords.y);
 	vertex_count=m2.GetVertexCount();
 	vertices=new Utils::Graphics::Vertex[vertex_count];
+	
 	for (unsigned long i=0;i<vertex_count;i++)
 	{
 		vertices[i].position=m2.GetVertices()[i].position;
@@ -50,7 +52,16 @@ Doodad::Doodad(string filename,unsigned uuid, Position position, short scale):
 	*/
 	Rescale(this->scale);
 	Rotate();
-
+	unsigned vc = 0;
+	rvertices = new float[vertex_count * 3];
+	for (unsigned long i = 0; i < vertex_count; i++)
+	{
+		rvertices[vc] = vertices[i].position.x + this->position.coords.x;
+		rvertices[vc+1] = vertices[i].position.z + this->position.coords.z;
+		rvertices[vc+2] = vertices[i].position.y + this->position.coords.y;
+		vc += 3;
+	}
+	rcCalcBounds(rvertices, vertex_count, bounding_box.GetArrayMin(), bounding_box.GetArrayMax());
 }
 
 

@@ -18,7 +18,7 @@ MapFrame::~MapFrame(void)
 void MapFrame::createScene()
 {
 	area->data_mutex.lock();
-	CreateChunks();
+	CreateAreaScene();
 	CreateNavMesh();
 	//createRecastPathLine(0);
 	for (int i = 0; i < area->GetRadius() * 2 + 1; i++)
@@ -53,7 +53,7 @@ void MapFrame::OnUpdate()
 	if (area->to_update)
 	{
 		mSceneMgr->destroyAllManualObjects();
-		CreateChunks();
+		CreateAreaScene();
 		CreateNavMesh();
 		area->to_update = false;
 	}
@@ -134,42 +134,57 @@ void MapFrame::createRecastPathLine(int nPathSlot/*, PATHDATA *m_PathStore*/)
 	m_pRecastSN->attachObject(m_pRecastMOPath);
 }
 
-void MapFrame::CreateChunks()
+void MapFrame::CreateAreaScene()
 {
 
 	int area_size = area->GetSize();
 	Ogre::SceneNode * area_scene = mSceneMgr->getRootSceneNode()->createChildSceneNode();
 	Ogre::ManualObject * man = mSceneMgr->createManualObject();
 	man->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_LIST);
-	int vert_offset = 0;
+	unsigned vert_offset = 0;
 	for (int i = 0; i < area_size; i++)
 	{
 		for (int j = 0; j < area_size; j++)
 		{
+			auto createObject = [](Ogre::ManualObject * man, float * vertices, unsigned vert_count, int *indices, unsigned ind_count, unsigned  & vert_offset )
+			{ 
+				for (int vi = 0; vi < vert_count*3; vi += 3)
+				{
+					man->position(vertices[vi], vertices[vi + 2], vertices[vi + 1]);
+					if (vi % 9 == 0)
+						man->colour(1, 1, 1, 1);
+					else if (vi % 6 == 0)
+						man->colour(0, 0, 0, 0);
+					else
+						man->colour(1, 1, 0, 1);
+				}
+				for (int ii = 0; ii < ind_count; ii += 3)
+				{
+					man->index(indices[ii] + vert_offset);
+					man->index(indices[ii + 1] + vert_offset);
+					man->index(indices[ii+2] + vert_offset);
+				}
+				vert_offset += vert_count;
+			};
 			Chunk *chunk = area->GetChunks()[i][j];
 			if (!chunk)
 				continue;
-			float * vertices = chunk->nav_vertices.get();
+			for (auto doodad : chunk->GetDoodads())
+			{
+				createObject(man, doodad->rvertices, doodad->GetVertexCount(), doodad->GetIndices(), doodad->GetIndexCount(), vert_offset);
+			}
+			for (auto wmo : chunk->GetWMOs())
+			{
+				//for (auto &part : wmo->GetParts())
+				{
+					createObject(man, wmo->rvertices, wmo->GetVertexCount(), wmo->GetIndices(), wmo->GetIndexCount(), vert_offset);
+				}
+			}
+			/*float * vertices = chunk->nav_vertices.get();
 			int * indices = chunk->nav_indices.get();
-			int vert_count = chunk->vert_count * 3;
+			int vert_count = chunk->vert_count * 3;*/
 			
-			for (int vi = 0; vi < vert_count; vi += 3)
-			{
-				man->position(vertices[vi], vertices[vi + 2], vertices[vi + 1]);
-				if (vi%9==0)
-					man->colour(1, 1, 1, 1);
-				else if (vi%6==0)
-					man->colour(0, 0, 0, 0);
-				else 
-					man->colour(1, 1, 0, 1);
-			}
-			for (int ii = 0; ii < chunk->ind_count; ii+=3)
-			{
-				man->index(indices[ii+2]+ vert_offset);
-				man->index(indices[ii + 1] + vert_offset);
-				man->index(indices[ii ] + vert_offset);
-			}
-			vert_offset += chunk->vert_count;
+			
 
 		}
 	}

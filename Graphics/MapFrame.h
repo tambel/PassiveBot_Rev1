@@ -25,7 +25,7 @@ public:
 	void InitAdditionalObjects();
 	void createNavMesh();
 	void createRecastPathLine(int nPathSlot/*, PATHDATA * m_PathStore*/);
-	void CreateChunks();
+	void CreateAreaScene();
 	void CreateNavMesh();
 };
 

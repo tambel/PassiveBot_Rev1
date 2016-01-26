@@ -16,14 +16,14 @@ class M2
 public:
 	M2Vertex * vertices;
 	unsigned long vertex_count;
-	unsigned short * indices;
+	int * indices;
 	unsigned index_count;
 	string filename;
 	M2(string filename);
 	~M2();
 	M2Vertex * GetVertices() {return vertices;}
 	unsigned long GetVertexCount() {return vertex_count;}
-	inline unsigned short * GetIndices(){return indices;}
+	inline int * GetIndices(){return indices;}
 	unsigned GetIndexCount() {return index_count;}
 };
 

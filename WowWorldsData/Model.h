@@ -9,10 +9,12 @@ class ModelVertBase
 	
 protected:
 	Utils::Graphics::Vertex * vertices;
+	
 	unsigned long vertex_count;
 	Position position;
 	
 public:
+	float * rvertices = 0;
 	ModelVertBase(ModelVertBase && right);
 	ModelVertBase(void);
 	~ModelVertBase(void);
@@ -68,9 +70,12 @@ class Model:public ModelIndBase<T>, public ModelVertBase
 {
 public:
 	string name;
-	Model(void) :
+	Utils::Graphics::BoundingBox bounding_box;
+	Model() {}
+	Model(Utils::Graphics::BoundingBox bounding_box) :
 		ModelIndBase<T>(),
-		ModelVertBase()
+		ModelVertBase(),
+		bounding_box(bounding_box)
 	{
 
 	}
@@ -88,10 +93,13 @@ public:
 	{
 		ModelVertBase::operator=(std::move(right));
 		ModelIndBase::operator=(std::move(right));
+		bounding_box = right.bounding_box;
 		name = right.name;
 		return *this;
 	}
-
+	inline Utils::Graphics::BoundingBox & GetBoundingBox() {
+		return bounding_box;
+	}
 };
 
 

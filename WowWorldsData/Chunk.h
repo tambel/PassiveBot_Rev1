@@ -73,7 +73,7 @@ private:
 	Vector3 game_position;
 	//Vector3 position;
 	Vector3 real_position;
-	vector<Doodad> doodads;
+	vector<Doodad*> doodads;
 	//vector<WMO> wmos;
 	//vector<Doodad*> doodads;
 	vector<WMO*> wmos;
@@ -126,7 +126,7 @@ public:
 	Vector3 GetRealPosition() {return real_position;}
 	void  SetRealPosition(Vector3 pos) {real_position=pos;}
 	void SearchForObjects();
-	vector<Doodad> & GetDoodads() { return doodads; }
+	vector<Doodad*> & GetDoodads() { return doodads; }
 	vector<WMO*> & GetWMOs() { return wmos; }
 	inline Utils::Graphics::BoundingBox & GetTerrainBoundingBox() { return terrain_bounding_box; }
 	inline Utils::Graphics::BoundingBox & GetFullBoundingBox() { return full_bounding_box; }

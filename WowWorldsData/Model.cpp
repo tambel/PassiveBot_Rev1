@@ -8,6 +8,8 @@ using namespace std;
 
 ModelVertBase::ModelVertBase(ModelVertBase && right)
 {
+	rvertices = right.rvertices;
+	rvertices = nullptr;
 	vertices = right.vertices;
 	vertex_count = right.vertex_count;
 	right.vertices = nullptr;
@@ -22,13 +24,17 @@ ModelVertBase::ModelVertBase(void)
 
 ModelVertBase::~ModelVertBase(void)
 {
+	delete[] rvertices;
+	rvertices = nullptr;
 	delete[] vertices;
-	vertices = 0;
+	vertices = nullptr;
 	vertex_count = 0;
 }
 
 ModelVertBase & ModelVertBase::operator=(ModelVertBase && right)
 {
+	rvertices = right.rvertices;
+	right.rvertices = nullptr;
 	position = right.position;
 	vertices = right.vertices;
 	vertex_count = right.vertex_count;
