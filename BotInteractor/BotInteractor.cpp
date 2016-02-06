@@ -204,7 +204,7 @@ void BotInteractor::StartGame(string login, string password,wstring char_name)
 	//area = move(tmp_area);
 	area=move(NavArea(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords), 3));
 	
-	area.AddWowObjectAvatar(player);
+	///area.AddWowObjectAvatar(player);
 
 }
 

@@ -62,6 +62,21 @@ Doodad::Doodad(string filename, unsigned uuid, Position position, short scale) :
 		vc += 3;
 	}
 	rcCalcBounds(rvertices, vertex_count, bounding_box.GetArrayMin(), bounding_box.GetArrayMax());
+	for (unsigned long i = 0; i < index_count; i += 3)
+	{
+		int i1= indices[i + 2];
+		int i2= indices[i + 1];
+		int i3 = indices[i];
+		indices[i] = i1;
+		indices[i + 1] = i2;
+		indices[i + 2] = i3;
+
+
+		/*indices[i] = indices[i + 2];
+		indices[i + 1] = indices[i + 1];
+		indices[i + 2] = indices[i];*/
+		//i += 3;
+	}
 }
 
 

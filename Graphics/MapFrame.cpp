@@ -160,15 +160,16 @@ void MapFrame::CreateAreaScene()
 				}
 				for (int ii = 0; ii < ind_count; ii += 3)
 				{
-					man->index(indices[ii] + vert_offset);
-					man->index(indices[ii + 1] + vert_offset);
 					man->index(indices[ii+2] + vert_offset);
+					man->index(indices[ii + 1] + vert_offset);
+					man->index(indices[ii] + vert_offset);
 				}
 				vert_offset += vert_count;
 			};
 			Chunk *chunk = area->GetChunks()[i][j];
 			if (!chunk)
 				continue;
+			createObject(man,chunk->rvertices, chunk->GetVertexCount(), chunk->GetIndices(), chunk->GetIndexCount(), vert_offset);
 			for (auto doodad : chunk->GetDoodads())
 			{
 				createObject(man, doodad->rvertices, doodad->GetVertexCount(), doodad->GetIndices(), doodad->GetIndexCount(), vert_offset);

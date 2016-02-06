@@ -18,7 +18,7 @@ WMO::WMO(string filename, unsigned uuid, Position position) :
 {
 	skip = false;
 	WMORoot root = WMORoot(this->filename);
-	this->position.coords = Vector3(position.coords.x, -position.coords.z, position.coords.y);
+	this->position.coords = Vector3(this->position.coords.x, -this->position.coords.z, this->position.coords.y);
 	parts = vector<WMOPart>();
 	for (auto &group : root.GetWMOGroups())
 	{
@@ -39,14 +39,16 @@ WMO::WMO(string filename, unsigned uuid, Position position) :
 	indices = new int[index_count];
 	for (auto &part : parts)
 	{
+		part.Rotate();
 		for (unsigned long i = 0; i < part.GetVertexCount(); i++)
 		{
-			rvertices[vc] = part.GetVertices()[i].position.x + position.coords.x;
-			rvertices[vc + 1] = part.GetVertices()[i].position.z + position.coords.z;
-			rvertices[vc + 2] = part.GetVertices()[i].position.y + position.coords.y;
+			rvertices[vc] = part.GetVertices()[i].position.x + this->position.coords.x;
+			rvertices[vc + 1] = part.GetVertices()[i].position.z + this->position.coords.z;
+			rvertices[vc + 2] = part.GetVertices()[i].position.y + this->position.coords.y;
 			vc += 3;
 		}
 	}
+	//Rotate();
 	unsigned vert_offset = 0;
 	for (auto &part : parts)
 	{

@@ -1,12 +1,17 @@
 #include "stdafx.h"
 #include <Windows.h>
 
-unsigned short* ChunkModel::indices=ChunkModel::Init();
+int * ChunkModel::indices=ChunkModel::Init();
 
 Chunk::Chunk(void)
 {
 }
-Chunk::Chunk(Area * area,ChunkStreamInfo info, ChunkStreamInfo obj_info, ADT * adt_file/*, Location * location, Point2D<int> block_coordinates*/,Point2D<int> coordinates):root_info(info),adt(adt_file)/*,location(location),block_coordinates(block_coordinates)*/,coordinates(coordinates),area(area)
+Chunk::Chunk(Area * area,ChunkStreamInfo info, ChunkStreamInfo obj_info, ADT * adt_file/*, Location * location, Point2D<int> block_coordinates*/,Point2D<int> coordinates):
+	Model<int>(),
+	root_info(info),
+	adt(adt_file)/*,location(location),block_coordinates(block_coordinates)*/,
+	coordinates(coordinates),
+	area(area)
 {
 
 	yey=false;
@@ -18,8 +23,9 @@ Chunk::Chunk(Area * area,ChunkStreamInfo info, ChunkStreamInfo obj_info, ADT * a
 	root_info=info;
 	root_reader=root_info.reader;
 	this->obj_reader = obj_info.reader;
-	indices=ChunkModel::indices;
+	//indices=ChunkModel::indices;
 	index_count=ChunkModel::index_count;
+	indices = new int[768];
 	vertex_count=ChunkModel::vertex_count;
 	//root_reader->GetStream()->seekg(root_info.start,ios::beg);
 	root_reader->SetPosition(root_info.start);
@@ -89,7 +95,9 @@ void Chunk::LoadMcvt()
 	//posx=0;
 	//posy=0;
 	int counter = 0;
+	int counter2 = 0;
 	vertices=new Utils::Graphics::Vertex[145];
+	rvertices = new float[435];
 	for(int i = 0; i < 17; ++i)
 	{
 		for(int j = 0; j < (((i % 2) != 0) ? 8 : 9); ++j)
@@ -101,6 +109,10 @@ void Chunk::LoadMcvt()
 			float y = position.coords.y - i * Metrics::UnitSize * 0.5f;
 
 			vertices[counter].position =Vector3(x, y, heights[counter]);
+			rvertices[counter2++] = x + real_position.x;
+			rvertices[counter2++] = heights[counter] + real_position.z;
+			rvertices[counter2++] = y + real_position.y;
+
 			
 			if ((i % 2) != 0)
 			{
@@ -122,6 +134,13 @@ void Chunk::LoadMcvt()
 			++counter;
 		}
 	}
+	for (int i = 0; i < index_count; i += 3)
+	{
+		indices[i] = ChunkModel::indices[i+2];
+		indices[i+1] = ChunkModel::indices[i + 1];
+		indices[i+2] = ChunkModel::indices[i];
+	}
+	rcCalcBounds(rvertices, vertex_count, reinterpret_cast<float*>(&bounding_box.up), reinterpret_cast<float*>(&bounding_box.down));
 
 	delete [] heights;
 }
@@ -177,10 +196,10 @@ void Chunk::LoadMcrw(unsigned long size)
 			if (modf.UniqueId == wmo->GetUUID())
 			{
 				exist = true;
-				wmo->Refresh();
+				//wmo->Refresh();
 				if (!wmo->IsOccupied())
 				{
-					//wmos.push_back(wmo);
+					wmos.push_back(wmo);
 					wmo->Occupie();
 				}
 				break;
@@ -192,7 +211,7 @@ void Chunk::LoadMcrw(unsigned long size)
 			WMO  * wmo = new WMO(filename, modf.UniqueId, Position(modf.Position, modf.Rotation));
 			wmo->Occupie();
 			area->GetWMOs().push_back(move(unique_ptr<WMO>(wmo)));
-			///wmos.push_back(area->GetWMOs().back().get());
+			wmos.push_back(area->GetWMOs().back().get());
 		
 		}
 		/*string filename = Configuration::GetGameDataPath() + (adt->GetWMOFilenames() + adt->GetWMOsIds()[modf.Mwid]);

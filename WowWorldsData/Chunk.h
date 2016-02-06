@@ -26,11 +26,11 @@ class ChunkModel
 public:
 	
 	static const unsigned long index_count=768;
-	static unsigned short * indices;
+	static int * indices;
 	static const unsigned long vertex_count=145;
-	static unsigned short* Init()
+	static int* Init()
 	{
-		static unsigned short *indices=new unsigned short[index_count];
+		static int *indices=new int[index_count];
 		for (unsigned y = 0; y < 8; ++y)
 		{
 			for (unsigned x = 0; x < 8; ++x)
@@ -57,7 +57,7 @@ public:
 	}
 };
 class ADT;
-class Chunk:public Model<unsigned short>
+class Chunk:public Model<int>
 {
 private:
 	static vector<unsigned> doodad_uuids;

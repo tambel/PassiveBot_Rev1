@@ -202,12 +202,15 @@ unsigned char * NavArea::BuildTileMesh(int x, int y, const float* bmin, const fl
 			Chunk * chunk = chunks[i][j];
 			if (!chunk)
 				continue;
+			
 			for (auto doodad : chunk->GetDoodads())
 			{
-				RastChunks(doodad, m_cfg, m_ctx, m_solid,doodad->GetBoundingBox(), m_tileTriCount);
+				RastChunks(doodad, m_cfg, m_ctx, m_solid, m_tileTriCount);
 			}
 			for (auto wmo : chunk->GetWMOs())
 			{
+				RastChunks(wmo, m_cfg, m_ctx, m_solid, m_tileTriCount);
+
 				//for (auto &part : wmo->GetParts())
 				{
 					
@@ -234,27 +237,29 @@ unsigned char * NavArea::BuildTileMesh(int x, int y, const float* bmin, const fl
 					//}
 				}
 			}
-			Utils::Graphics::BoundingBox & bbox = chunk->GetTerrainBoundingBox();
-			bool overlap = true;
-			overlap = (tbmin[0] > bbox.down.x || tbmax[0] < bbox.up.x) ? false : overlap;
-			overlap = (tbmin[1] > bbox.down.z || tbmax[1] < bbox.up.z) ? false : overlap;
-			if (overlap)
-			{
-				//overlapping_chunks.push_back(chunk);
-				float * verts = chunk->nav_vertices.get();
-				const int* ctris = chunk->nav_indices.get();
-				const int nctris = chunk->ind_count / 3;
-				m_tileTriCount += nctris;
-				m_triareas_ptr.reset();
-				m_triareas_ptr = unique_ptr<unsigned char>(new unsigned char[nctris]);
-				m_triareas = m_triareas_ptr.get();
-				//m_triareas = new unsigned char[nctris];
-				rcMarkWalkableTriangles(m_ctx, m_cfg.walkableSlopeAngle, verts, chunk->vert_count, ctris, nctris, m_triareas);
-				if (!rcRasterizeTriangles(m_ctx, verts, chunk->vert_count, ctris, m_triareas, nctris, *m_solid, m_cfg.walkableClimb))
-					return 0;
-				//delete[] m_triareas;
-				m_triareas = 0;
-			}
+			RastChunks(chunk, m_cfg, m_ctx, m_solid, m_tileTriCount);
+
+			//Utils::Graphics::BoundingBox & bbox = chunk->GetTerrainBoundingBox();
+			//bool overlap = true;
+			//overlap = (tbmin[0] > bbox.down.x || tbmax[0] < bbox.up.x) ? false : overlap;
+			//overlap = (tbmin[1] > bbox.down.z || tbmax[1] < bbox.up.z) ? false : overlap;
+			//if (overlap)
+			//{
+			//	//overlapping_chunks.push_back(chunk);
+			//	float * verts = chunk->nav_vertices.get();
+			//	const int* ctris = chunk->nav_indices.get();
+			//	const int nctris = chunk->ind_count / 3;
+			//	m_tileTriCount += nctris;
+			//	m_triareas_ptr.reset();
+			//	m_triareas_ptr = unique_ptr<unsigned char>(new unsigned char[nctris]);
+			//	m_triareas = m_triareas_ptr.get();
+			//	//m_triareas = new unsigned char[nctris];
+			//	rcMarkWalkableTriangles(m_ctx, m_cfg.walkableSlopeAngle, verts, chunk->vert_count, ctris, nctris, m_triareas);
+			//	if (!rcRasterizeTriangles(m_ctx, verts, chunk->vert_count, ctris, m_triareas, nctris, *m_solid, m_cfg.walkableClimb))
+			//		return 0;
+			//	//delete[] m_triareas;
+			//	m_triareas = 0;
+			//}
 		
 
 		}
@@ -724,29 +729,27 @@ int NavArea::fixupShortcuts(dtPolyRef* path, int npath, dtNavMeshQuery* navQuery
 	return npath;
 }
 
-int  NavArea::RastChunks(Model<int> * model, rcConfig & m_cfg, rcContext * m_ctx, rcHeightfield * m_solid, Utils::Graphics::BoundingBox bb, int & m_tileTriCount)
+int  NavArea::RastChunks(Model<int> * model, rcConfig & m_cfg, rcContext * m_ctx, rcHeightfield * m_solid, int & m_tileTriCount)
 {
+
 	float tbmin[2], tbmax[2];
 	tbmin[0] = m_cfg.bmin[0];
 	tbmin[1] = m_cfg.bmin[2];
 	tbmax[0] = m_cfg.bmax[0];
 	tbmax[1] = m_cfg.bmax[2];
-	vector<Chunk*> overlapping_chunks = vector<Chunk*>();
 	unique_ptr<unsigned char>m_triareas_ptr;
 	unsigned char * m_triareas;
-	//int m_tileTriCount = 0;
-	//Utils::Graphics::BoundingBox & bbox = model->GetBoundingBox();
-	Utils::Graphics::BoundingBox & bbox = bb;
+	Utils::Graphics::BoundingBox & bbox = model->GetBoundingBox();
 	bool overlap = true;
 	overlap = (tbmin[0] > bbox.down.x || tbmax[0] < bbox.up.x) ? false : overlap;
 	overlap = (tbmin[1] > bbox.down.z || tbmax[1] < bbox.up.z) ? false : overlap;
-
+	overlap = true;
 	if (overlap)
 	{
 		//overlapping_chunks.push_back(chunk);
 		float * verts = model->rvertices;
 		const int* ctris = model->GetIndices();
-		const int nctris = model->GetIndexCount() / 3;
+		const int nctris = model->GetIndexCount()/3;
 		m_tileTriCount += nctris;
 		m_triareas_ptr.reset();
 		m_triareas_ptr = unique_ptr<unsigned char>(new unsigned char[nctris]);

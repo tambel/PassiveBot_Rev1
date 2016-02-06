@@ -24,17 +24,17 @@ WMOPart::WMOPart(WMOGroup & group, WMO & wmo)
 	//indices = group.indices;
 	//group.indices = nullptr;
 	Rotate();
-	//unsigned vc = 0;
-	//rvertices = new float[vertex_count * 3];
-	//for (unsigned long i = 0; i < vertex_count; i++)
-	//{
-	//	rvertices[vc] = vertices[i].position.x + wmo.GetPosition().coords.x;
-	//	rvertices[vc + 1] = vertices[i].position.z + wmo.GetPosition().coords.z;
-	//	rvertices[vc + 2] = vertices[i].position.y + wmo.GetPosition().coords.y;
-	//	vc += 3;
-	//}
-	//
-	//rcCalcBounds(rvertices, vertex_count, bounding_box.GetArrayMin(), bounding_box.GetArrayMax());
+	/*unsigned vc = 0;
+	rvertices = new float[vertex_count * 3];
+	for (unsigned long i = 0; i < vertex_count; i++)
+	{
+		rvertices[vc] = vertices[i].position.x + wmo.GetPosition().coords.x;
+		rvertices[vc + 1] = vertices[i].position.z + wmo.GetPosition().coords.z;
+		rvertices[vc + 2] = vertices[i].position.y + wmo.GetPosition().coords.y;
+		vc += 3;
+	}
+	
+	rcCalcBounds(rvertices, vertex_count, bounding_box.GetArrayMin(), bounding_box.GetArrayMax());*/
 }
 
 WMOPart::WMOPart(WMOPart && right):filename(std::move(right.filename))

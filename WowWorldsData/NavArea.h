@@ -57,6 +57,6 @@ public:
 	static int fixupCorridor(dtPolyRef* path, const int npath, const int maxPath,
 		const dtPolyRef* visited, const int nvisited);
 	static int fixupShortcuts(dtPolyRef* path, int npath, dtNavMeshQuery* navQuery);
-	static int  RastChunks(Model<int> * model, rcConfig & m_cfg, rcContext * m_ctx, rcHeightfield * m_solid, Utils::Graphics::BoundingBox bb, int & m_tileTriCount);
+	static int  RastChunks(Model<int> * model, rcConfig & m_cfg, rcContext * m_ctx, rcHeightfield * m_solid, int & m_tileTriCount);
 };
 

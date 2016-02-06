@@ -122,8 +122,8 @@ void Area::Fill(Location * location, Point2D<int> block_coordinates, Point2D<int
 
 	}
 	//DeleteDuplicates();
+
 	CheckAndClearOldObjects();
-	
 	for (int i = 0; i < area_size; i++)
 	{
 		for (int j = 0; j < area_size; j++)
@@ -132,7 +132,7 @@ void Area::Fill(Location * location, Point2D<int> block_coordinates, Point2D<int
 
 			//chunks[i][j] = ADTWorker::GetChunk(location, block_coordinates += (Point2D<int>(abs_pos.X / 16, abs_pos.Y / 16) - Point2D<int>(1, 1)), Point2D<int>(abs_pos.X % 16, abs_pos.Y % 16));
 			if (!chunks[i][j]) continue;
-			chunks[i][j]->InitNavigation();
+			//chunks[i][j]->InitNavigation();
 		}
 
 	}
@@ -240,23 +240,24 @@ void Area::InitAreaBoundingBox()
 			{
 				for (auto wmo : chunk->GetWMOs())
 				{
-					for (auto &part : wmo->GetParts())
-					{
-						add_point(points, part.GetBoundingBox());
-					}
+					
+						add_point(points, wmo->GetBoundingBox());
 				}
-				points.push_back(chunk->GetTerrainBoundingBox().up.x);
+				add_point(points, chunk->GetBoundingBox());
+				/*points.push_back(chunk->GetBoundingBox().up.x);
+				points.push_back(chunk->GetBoundingBox().up.y);
+				points.push_back(chunk->GetBoundingBox().up.z);
+				points.push_back(chunk->GetBoundingBox().down.x);
+				points.push_back(chunk->GetBoundingBox().down.y);
+				points.push_back(chunk->GetBoundingBox().down.z);*/
+
+				/*points.push_back(chunk->GetTerrainBoundingBox().up.x);
 				points.push_back(chunk->GetTerrainBoundingBox().up.y);
 				points.push_back(chunk->GetTerrainBoundingBox().up.z);
 				points.push_back(chunk->GetTerrainBoundingBox().down.x);
 				points.push_back(chunk->GetTerrainBoundingBox().down.y);
-				points.push_back(chunk->GetTerrainBoundingBox().down.z);
-				/*points.push_back(chunk->GetTerrainBoundingBox().up.x);
-				points.push_back(chunk->GetFullBoundingBox().up.y);
-				points.push_back(chunk->GetTerrainBoundingBox().up.z);
-				points.push_back(chunk->GetTerrainBoundingBox().down.x);
-				points.push_back(chunk->GetFullBoundingBox().down.y);
 				points.push_back(chunk->GetTerrainBoundingBox().down.z);*/
+				
 
 			}
 			
