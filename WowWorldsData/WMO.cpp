@@ -12,7 +12,7 @@ void WMO::_move(WMO & other)
 	skip = other.skip;
 }
 
-WMO::WMO(string filename, unsigned uuid, Position position) :
+WMO::WMO(string filename, unsigned uuid, Position & position):
 	MapObject(filename),
 	uuid(uuid)// ,position(position)
 {
@@ -23,45 +23,88 @@ WMO::WMO(string filename, unsigned uuid, Position position) :
 	parts = vector<WMOPart>();
 	for (auto &group : root.GetWMOGroups())
 	{
-		parts.push_back(WMOPart(group, *this));
+		//parts.push_back(WMOPart(group, *this));
 	}
-	for (auto &part : parts)
+	for (auto &group : root.wmo_groups)
 	{
-		//part.position.rotation.y = 45;
-			part.Rotate();
+		vertex_count += group.vertex_count;
+		index_count += group.index_count;
 	}
-	for (auto &part : parts)
-	{
-		vertex_count += part.GetVertexCount();
-		index_count += part.GetIndexCount();
-	}
-	unsigned vc = 0;
-	unsigned ic = 0;
 	rvertices = new float[vertex_count * 3];
 	indices = new int[index_count];
-	for (auto &part : parts)
+	unsigned vc = 0;
+	unsigned ic = 0;
+	unsigned offset = 0;
+	for (auto &group : root.wmo_groups)
 	{
 		//part.Rotate();
-		for (unsigned long i = 0; i < part.GetVertexCount(); i++)
-		{
-			rvertices[vc] = part.GetVertices()[i].position.x + this->position.coords.x;
-			rvertices[vc + 1] = part.GetVertices()[i].position.z + this->position.coords.z;
-			rvertices[vc + 2] = part.GetVertices()[i].position.y + this->position.coords.y;
-			vc += 3;
-		}
+		memcpy(rvertices + offset, group.vertices, group.vertex_count * 12);
+		offset += group.vertex_count * 3;
+
+
+		//for (unsigned long i = 0; i < group.vertex_count; i++)
+		//{
+		//	rvertices[vc] = group.vertices[i].x;// +this->position.coords.x;
+		//	rvertices[vc + 1] = group.vertices[i].y;// +this->position.coords.z;
+		//	rvertices[vc + 2] = group.vertices[i].z;// +this->position.coords.y;
+		//	vc += 3;
+		//}
+	}
+	vertices = nullptr;
+	Rotate();
+	for (unsigned i = 0; i < vertex_count * 3; i += 3)
+	{
+		rvertices[i]+= this->position.coords.x;
+		rvertices[i+1]+= this->position.coords.z;
+		rvertices[i+2] += this->position.coords.y;
 	}
 	unsigned vert_offset = 0;
-	for (auto &part : parts)
+	for (auto &group : root.wmo_groups)
 	{
-		for (unsigned long i = 0; i < part.GetIndexCount();i+=3)
+		for (unsigned long i = 0; i < group.index_count; i += 3)
 		{
-			indices[ic] = part.GetIndices()[i+2] + vert_offset;
-			indices[ic+1] = part.GetIndices()[i+1] + vert_offset;
-			indices[ic+2] = part.GetIndices()[i] + vert_offset;
+			indices[ic] = group.indices[i + 2] + vert_offset;
+			indices[ic + 1] = group.indices[i + 1] + vert_offset;
+			indices[ic + 2] = group.indices[i] + vert_offset;
 			ic += 3;
 		}
-		vert_offset += part.GetVertexCount();
+		vert_offset += group.vertex_count;
 	}
+
+
+
+
+	//for (auto &part : parts)
+	//{
+	//		part.Rotate();
+	//}
+	//unsigned vc = 0;
+	//unsigned ic = 0;
+	//rvertices = new float[vertex_count * 3];
+	//indices = new int[index_count];
+	//for (auto &part : parts)
+	//{
+	//	//part.Rotate();
+	//	for (unsigned long i = 0; i < part.GetVertexCount(); i++)
+	//	{
+	//		rvertices[vc] = part.GetVertices()[i].position.x + this->position.coords.x;
+	//		rvertices[vc + 1] = part.GetVertices()[i].position.z + this->position.coords.z;
+	//		rvertices[vc + 2] = part.GetVertices()[i].position.y + this->position.coords.y;
+	//		vc += 3;
+	//	}
+	//}
+	//unsigned vert_offset = 0;
+	//for (auto &part : parts)
+	//{
+	//	for (unsigned long i = 0; i < part.GetIndexCount();i+=3)
+	//	{
+	//		indices[ic] = part.GetIndices()[i+2] + vert_offset;
+	//		indices[ic+1] = part.GetIndices()[i+1] + vert_offset;
+	//		indices[ic+2] = part.GetIndices()[i] + vert_offset;
+	//		ic += 3;
+	//	}
+	//	vert_offset += part.GetVertexCount();
+	//}
 	
 
 	rcCalcBounds(rvertices, vertex_count, bounding_box.GetArrayMin(), bounding_box.GetArrayMax());

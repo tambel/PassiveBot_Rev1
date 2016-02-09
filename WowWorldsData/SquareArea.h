@@ -5,6 +5,7 @@
 #include "WowInteraction\WowObject.h"
 #include "WowObjectAvatar.h"
 #include "WMO.h"
+#include "Doodad.h"
 using namespace Utils;
 using namespace Utils::Game;
 

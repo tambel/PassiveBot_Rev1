@@ -2,10 +2,11 @@
 #include <string>
 #include <vector>
 #include "M2Header.h"
-#include "Tools\BinaryReader.h"
+
 #include "Utils.h"
 #include "M2Structs.h"
-
+#include "Doodad.h"
+class Doodad;
 class M2
 {
 	
@@ -14,6 +15,7 @@ class M2
 	//BinaryReader * skin_reader;
 	void LoadSkinFile(int index);
 public:
+	Doodad * dood;
 	M2Vertex * vertices;
 	unsigned long vertex_count;
 	int * indices;
@@ -25,5 +27,7 @@ public:
 	unsigned long GetVertexCount() {return vertex_count;}
 	inline int * GetIndices(){return indices;}
 	unsigned GetIndexCount() {return index_count;}
+	//friend Doodad::Doodad(string filename, unsigned uuid, Position position, short scale);
+
 };
 

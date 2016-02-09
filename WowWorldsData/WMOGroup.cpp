@@ -23,8 +23,8 @@ WMOGroup::WMOGroup(string filename) :filename(std::move(filename))
 		case ChunkSignatures::WMOSignature::GroupSignatures::Movt:
 			using namespace Utils::Graphics;
 			vertex_count = size / sizeof(Vector3);
-			vertices = new Vector3[vertex_count];
-			reader.ReadArray<Vector3>(vertices, vertex_count);
+			vertices = new float[vertex_count*3];
+			reader.ReadArray<float>(vertices, vertex_count*3);
 			break;
 		case ChunkSignatures::WMOSignature::GroupSignatures::Movi:
 			index_count = size / 2;
@@ -53,9 +53,9 @@ WMOGroup::WMOGroup(WMOGroup && right):filename(std::move(right.filename))
 
 WMOGroup::~WMOGroup()
 {
-	delete[] vertices;
+	//delete[] vertices;
 	vertices = 0;
-	delete[] indices;
+	//delete[] indices;
 	indices = 0;
 	vertex_count = 0;
 	index_count = 0;

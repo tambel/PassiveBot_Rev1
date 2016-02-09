@@ -6,12 +6,12 @@ WMOPart::WMOPart(WMOGroup & group, WMO & wmo)
 {
 	this->filename = move(group.filename);
 	this->position = wmo.GetPosition();
-	vertex_count = group.vertex_count;
+	//vertex_count = group.vertex_count;
 	index_count = group.index_count;
 	vertices = new Utils::Graphics::Vertex[vertex_count];
 	for (unsigned long i = 0; i < vertex_count; i++)
 	{
-		vertices[i].position = group.vertices[i];
+		//vertices[i].position = group.vertices[i];
 		vertices[i].color = Utils::Graphics::Color(0.0f, 0.0f, 0.0f, 1.0f);
 		if (i % 2 == 0)
 			vertices[i].color = Utils::Graphics::Color(1.0f, 0.0f, 1.0f, 1.0f);

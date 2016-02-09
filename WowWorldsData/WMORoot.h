@@ -19,5 +19,6 @@ public:
 	vector<WMOGroup> & GetWMOGroups() { return wmo_groups; }
 	WMORoot(string  & filename);
 	~WMORoot();
+	friend WMO::WMO(string filename, unsigned uuid, Position & position);
 };
 

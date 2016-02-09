@@ -24,6 +24,7 @@
 #include "NavArea.h"
 #include "Utils.h"
 #include "Model.h"
+#include "Doodad.h"
 #include "WMORoot.h"
 #include "WMOGroup.h"
 #include "WMO.h"

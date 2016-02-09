@@ -8,13 +8,13 @@ class WMO :public MapObject,public Model
 	//Position position;
 	bool skip;
 	inline void _move(WMO & other);
-	Utils::Graphics::BoundingBox bounding_box;
+	//Utils::Graphics::BoundingBox bounding_box;
 
 	
 public:
 
 	//WMO(WMORoot & root, unsigned uuid, Position position);
-	WMO(string filename, unsigned uuid, Position position);
+	WMO(string filename, unsigned uuid, Position & position);
 	WMO(WMO && right);
 	~WMO();
 	WMO & operator=(WMO && right);
@@ -24,7 +24,7 @@ public:
 	vector<WMOPart> & GetParts() { return parts; }
 	void Skip() { skip = true; }
 	inline bool  IsSkipped() { return skip; }
-	inline Utils::Graphics::BoundingBox & GetBoundingBox() { return bounding_box; }
+	//inline Utils::Graphics::BoundingBox & GetBoundingBox() { return bounding_box; }
 
 };
 
