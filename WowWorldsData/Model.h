@@ -71,13 +71,13 @@ class Model
 
 	void _move(Model & other);
 public:
-	Utils::Graphics::Vertex * vertices;
 	unsigned long vertex_count=0;
 	int * indices;
 	unsigned long index_count=0;
 	Position position;
 	float * rvertices = 0;
-	virtual Utils::Graphics::Vertex * GetVertices() { return vertices; }
+	//virtual Utils::Graphics::Vertex * GetVertices() { return vertices; }
+	virtual float* GetVertices() { return rvertices; }
 	virtual unsigned long GetVertexCount() { return vertex_count; }
 	virtual Position GetPosition() { return position; }
 	void SetPosition(Position position) { this->position = position; }

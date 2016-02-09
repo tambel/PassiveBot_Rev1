@@ -50,7 +50,7 @@ WMO::WMO(string filename, unsigned uuid, Position & position):
 		//	vc += 3;
 		//}
 	}
-	vertices = nullptr;
+	//vertices = nullptr;
 	Rotate();
 	for (unsigned i = 0; i < vertex_count * 3; i += 3)
 	{

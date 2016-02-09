@@ -28,7 +28,7 @@ Doodad::Doodad(string filename, unsigned uuid, Position position, short scale) :
 	this->position.rotation = position.rotation;
 	this->game_position=Vector3(Metrics::MapMidPoint-this->position.coords.x,Metrics::MapMidPoint-this->position.coords.z,position.coords.y);
 	vertex_count=m2.vertex_count;
-	vertices=new Utils::Graphics::Vertex[vertex_count];
+	//vertices=new Utils::Graphics::Vertex[vertex_count];
 	
 	/*for (unsigned long i=0;i<vertex_count;i++)
 	{
@@ -58,7 +58,7 @@ Doodad::Doodad(string filename, unsigned uuid, Position position, short scale) :
 		indices[i]=m2->GetIndices()[i];
 	}
 	*/
-	vertices = nullptr;
+	//vertices = nullptr;
 	Rescale(this->scale);
 	Rotate();
 	for (unsigned long i = 0; i < vertex_count*3; i+=3)

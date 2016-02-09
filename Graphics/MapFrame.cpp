@@ -19,7 +19,7 @@ void MapFrame::createScene()
 {
 	area->data_mutex.lock();
 	CreateAreaScene();
-	//CreateNavMesh();
+	CreateNavMesh();
 	//createRecastPathLine(0);
 	for (int i = 0; i < area->GetRadius() * 2 + 1; i++)
 	{

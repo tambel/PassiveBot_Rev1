@@ -93,9 +93,9 @@ void Model::_move(Model & other)
 
 	rvertices = other.rvertices;
 	rvertices = nullptr;
-	vertices = other.vertices;
+	//vertices = other.vertices;
 	vertex_count = other.vertex_count;
-	other.vertices = nullptr;
+	//other.vertices = nullptr;
 	other.vertex_count = 0;
 
 	indices = other.indices;
@@ -118,8 +118,8 @@ Model::~Model(void)
 {
 	delete[] rvertices;
 	rvertices = nullptr;
-	delete[] vertices;
-	vertices = nullptr;
+	//delete[] vertices;
+	//vertices = nullptr;
 	vertex_count = 0;
 	delete[] indices;
 	indices = 0;
@@ -146,39 +146,21 @@ void Model::Rotate()
 	boost::numeric::ublas::matrix<float> rotY = Geometry::Transformer3D::rotation_matrix_Y;
 	boost::numeric::ublas::matrix<float> rotZ = Geometry::Transformer3D::rotation_matrix_Z;
 
-	if (vertices != nullptr)
+	
+	for (unsigned long i = 0; i < vertex_count*3; i+=3)
 	{
-		for (unsigned long i = 0; i < vertex_count; i++)
-		{
-
-			vertice(0) = vertices[i].position.x;
-			vertice(1) = vertices[i].position.y;
-			vertice(2) = vertices[i].position.z;
-			vertice(3) = 1.0f;
-			boost::numeric::ublas::matrix<float>tm = prod(rotY, rotZ);
-			tm = prod(rotX, tm);
-			vertice = boost::numeric::ublas::prod(vertice, tm);
-			vertices[i].position.x = vertice(0);
-			vertices[i].position.y = vertice(1);
-			vertices[i].position.z = vertice(2);
-		}
+		vertice(0) = rvertices[i];
+		vertice(2) = rvertices[i  + 2];
+		vertice(1) = rvertices[i  + 1];
+		vertice(3) = 1.0f;
+		boost::numeric::ublas::matrix<float>tm = prod(rotY, rotZ);
+		tm = prod(rotX, tm);
+		vertice = boost::numeric::ublas::prod(vertice, tm);
+		rvertices[i ] = vertice(0);
+		rvertices[i  + 1] = vertice(2);
+		rvertices[i  + 2] = vertice(1);
 	}
-	else
-	{
-		for (unsigned long i = 0; i < vertex_count*3; i+=3)
-		{
-			vertice(0) = rvertices[i];
-			vertice(2) = rvertices[i  + 2];
-			vertice(1) = rvertices[i  + 1];
-			vertice(3) = 1.0f;
-			boost::numeric::ublas::matrix<float>tm = prod(rotY, rotZ);
-			tm = prod(rotX, tm);
-			vertice = boost::numeric::ublas::prod(vertice, tm);
-			rvertices[i ] = vertice(0);
-			rvertices[i  + 1] = vertice(2);
-			rvertices[i  + 2] = vertice(1);
-		}
-	}
+	
 
 }
 
@@ -189,20 +171,10 @@ void Model::Rotate(float vertices, unsigned vertex_count, int indices, unsigned 
 
 void Model::Rescale(float scale)
 {
-	if (vertices!=nullptr)
-		for (unsigned long i = 0; i < vertex_count; i++)
-		{
-			//vertices[i].position = Vector3(vertices[i].position.x + scale, vertices[i].position.y + scale, vertices[i].position.z + scale);
-			vertices[i].position.x *= scale;
-			vertices[i].position.y *= scale;
-			vertices[i].position.z *= scale;
-		}
-	else
+	for (unsigned long i = 0; i < vertex_count * 3; i++)
 	{
-		for (unsigned long i = 0; i < vertex_count*3; i++)
-		{
-			//vertices[i].position = Vector3(vertices[i].position.x + scale, vertices[i].position.y + scale, vertices[i].position.z + scale);
-			rvertices[i] *= scale;
-		}
+		//vertices[i].position = Vector3(vertices[i].position.x + scale, vertices[i].position.y + scale, vertices[i].position.z + scale);
+		rvertices[i] *= scale;
 	}
+
 }
