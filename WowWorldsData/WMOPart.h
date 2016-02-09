@@ -4,7 +4,7 @@
 
 class WMO;
 class WMOGroup;
-class WMOPart:public Model<int>
+class WMOPart:public Model
 {
 	string filename;
 public:

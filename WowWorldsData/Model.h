@@ -9,11 +9,11 @@ class ModelVertBase
 	
 protected:
 	Utils::Graphics::Vertex * vertices;
-	
 	unsigned long vertex_count;
-	Position position;
+	
 	
 public:
+	Position position;
 	float * rvertices = 0;
 	ModelVertBase(ModelVertBase && right);
 	ModelVertBase(void);
@@ -27,12 +27,11 @@ public:
 	virtual void Rotate();
 	virtual void Rescale(float scale);
 };
-template<typename T>
 class ModelIndBase
 {
 	
 protected:
-	T * indices;
+	int * indices;
 	unsigned long index_count;
 public:
 	ModelIndBase(ModelIndBase && right)
@@ -50,7 +49,7 @@ public:
 	}
 	~ModelIndBase(void)
 	{
-		delete[] indices;
+		delete [] indices;
 		indices = 0;
 		index_count = 0;
 	}
@@ -62,44 +61,42 @@ public:
 		right.index_count = 0;
 		return *this;
 	}
-	virtual T * GetIndices() { return indices; }
+	virtual int * GetIndices() { return indices; }
 	virtual unsigned long GetIndexCount() { return index_count; }
 };
-template<typename T>
-class Model:public ModelIndBase<T>, public ModelVertBase
+class Model
 {
+	
+
+
+	void _move(Model & other);
 public:
+	Utils::Graphics::Vertex * vertices;
+	unsigned long vertex_count=0;
+	int * indices;
+	unsigned long index_count=0;
+	Position position;
+	float * rvertices = 0;
+	virtual Utils::Graphics::Vertex * GetVertices() { return vertices; }
+	virtual unsigned long GetVertexCount() { return vertex_count; }
+	virtual Position GetPosition() { return position; }
+	void SetPosition(Position position) { this->position = position; }
+	inline void SetPosition(Vector3 & position) { this->position.coords = position; }
+	virtual void Rotate();
+	virtual void Rescale(float scale);
+	virtual int * GetIndices() { return indices; }
+	virtual unsigned long GetIndexCount() { return index_count; }
+
 	string name;
 	Utils::Graphics::BoundingBox bounding_box;
-	Model() {}
-	Model(Utils::Graphics::BoundingBox bounding_box) :
-		ModelIndBase<T>(),
-		ModelVertBase(),
-		bounding_box(bounding_box)
-	{
-
-	}
+	Model();
+	Model(Utils::Graphics::BoundingBox bounding_box);
+	~Model();
 	Model(Model&) = delete;
 	Model & operator=(Model &) = delete;
-	~Model(void)
-	{
 
-	}
-	Model(Model && right)
-	{
-
-	}
-	Model & operator=(Model && right)
-	{
-		ModelVertBase::operator=(std::move(right));
-		ModelIndBase::operator=(std::move(right));
-		bounding_box = right.bounding_box;
-		name = right.name;
-		return *this;
-	}
-	inline Utils::Graphics::BoundingBox & GetBoundingBox() {
-		return bounding_box;
-	}
+	Model & operator=(Model && right);
+	inline Utils::Graphics::BoundingBox & GetBoundingBox() {return bounding_box;}
 };
 
 

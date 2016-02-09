@@ -14,8 +14,9 @@ void WMO::_move(WMO & other)
 
 WMO::WMO(string filename, unsigned uuid, Position position) :
 	MapObject(filename),
-	uuid(uuid), position(position)
+	uuid(uuid)// ,position(position)
 {
+	this->position = position;
 	skip = false;
 	WMORoot root = WMORoot(this->filename);
 	this->position.coords = Vector3(this->position.coords.x, -this->position.coords.z, this->position.coords.y);
@@ -26,7 +27,8 @@ WMO::WMO(string filename, unsigned uuid, Position position) :
 	}
 	for (auto &part : parts)
 	{
-			//part.Rotate();
+		//part.position.rotation.y = 45;
+			part.Rotate();
 	}
 	for (auto &part : parts)
 	{
@@ -39,7 +41,7 @@ WMO::WMO(string filename, unsigned uuid, Position position) :
 	indices = new int[index_count];
 	for (auto &part : parts)
 	{
-		part.Rotate();
+		//part.Rotate();
 		for (unsigned long i = 0; i < part.GetVertexCount(); i++)
 		{
 			rvertices[vc] = part.GetVertices()[i].position.x + this->position.coords.x;
@@ -48,7 +50,6 @@ WMO::WMO(string filename, unsigned uuid, Position position) :
 			vc += 3;
 		}
 	}
-	//Rotate();
 	unsigned vert_offset = 0;
 	for (auto &part : parts)
 	{

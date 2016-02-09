@@ -57,7 +57,7 @@ public:
 	}
 };
 class ADT;
-class Chunk:public Model<int>
+class Chunk:public Model
 {
 private:
 	static vector<unsigned> doodad_uuids;

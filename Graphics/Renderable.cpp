@@ -1,6 +1,6 @@
 #include "stdafx.h"
 unsigned long Renderable::counter=0;
-Renderable::Renderable(Model<int> * model):model(model)
+Renderable::Renderable(Model * model):model(model)
 {
 	to_kill=false;
 	id=counter;

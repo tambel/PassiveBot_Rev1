@@ -5,18 +5,18 @@
 class Renderable
 {
 
-	Model<int> * model;
+	Model * model;
 	static unsigned long counter;
 	unsigned long id;
 	Ogre::SceneNode * scene;
 public:
 	bool to_kill;
-	Renderable(Model<int> * model);
+	Renderable(Model * model);
 	~Renderable(void);
 	bool CreateScene(Ogre::SceneNode * parent);
 	unsigned long GetID() {return id;}
 	Ogre::SceneNode * GetScene() {return scene;}
-	Model<int> * GetModel() {return model;}
+	Model * GetModel() {return model;}
 
 };
 

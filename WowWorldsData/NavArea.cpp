@@ -729,7 +729,7 @@ int NavArea::fixupShortcuts(dtPolyRef* path, int npath, dtNavMeshQuery* navQuery
 	return npath;
 }
 
-int  NavArea::RastChunks(Model<int> * model, rcConfig & m_cfg, rcContext * m_ctx, rcHeightfield * m_solid, int & m_tileTriCount)
+int  NavArea::RastChunks(Model * model, rcConfig & m_cfg, rcContext * m_ctx, rcHeightfield * m_solid, int & m_tileTriCount)
 {
 
 	float tbmin[2], tbmax[2];

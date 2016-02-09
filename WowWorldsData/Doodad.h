@@ -7,7 +7,7 @@
 #include <boost/geometry/strategies/transform/matrix_transformers.hpp>
 #include "MapObject.h"
 using namespace std;
-class Doodad:public Model<int>,public MapObject
+class Doodad:public Model,public MapObject
 {
 	unsigned long uuid;
 	bool skip;

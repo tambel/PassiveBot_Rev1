@@ -1,11 +1,11 @@
 #pragma once
 #include "MapObject.h"
 #include "WMOPart.h"
-class WMO :public MapObject,public Model<int>
+class WMO :public MapObject,public Model
 {
 	vector<WMOPart> parts;
 	unsigned long uuid;
-	Position position;
+	//Position position;
 	bool skip;
 	inline void _move(WMO & other);
 	Utils::Graphics::BoundingBox bounding_box;

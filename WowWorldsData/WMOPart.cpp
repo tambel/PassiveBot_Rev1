@@ -23,7 +23,7 @@ WMOPart::WMOPart(WMOGroup & group, WMO & wmo)
 	}
 	//indices = group.indices;
 	//group.indices = nullptr;
-	Rotate();
+	//Rotate();
 	/*unsigned vc = 0;
 	rvertices = new float[vertex_count * 3];
 	for (unsigned long i = 0; i < vertex_count; i++)
@@ -40,7 +40,7 @@ WMOPart::WMOPart(WMOGroup & group, WMO & wmo)
 WMOPart::WMOPart(WMOPart && right):filename(std::move(right.filename))
 {
 	Model::operator=(std::move(right));
-	//this->position = right.position;
+	this->position = right.position;
 	//vertices = right.vertices;
 	//indices = right.indices;
 	//vertex_count = right.vertex_count;

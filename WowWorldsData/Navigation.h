@@ -49,7 +49,7 @@ public:
 	Navigation();
 	~Navigation();
 	Navigation & operator=(Navigation && right);
-	Model<unsigned> * GetModel();
+	Model * GetModel();
 	void ToFile();
 };
 
