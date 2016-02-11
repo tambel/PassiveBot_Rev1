@@ -36,6 +36,7 @@ void MapFrame::createScene()
 		if (br) break;
 
 	}
+	mCamera->setPosition(Vector3ToOgreVector(area->GetChunkss()[0]->GetRealPosition()));
 	//mCamera->setPosition(0,0,0);
 	area->data_mutex.unlock();
 	//createNavMesh();
@@ -345,27 +346,25 @@ void MapFrame::UpdateScene()
 			{
 				exist = true;
 			}
-		}
-		//Chunk * chunk = area->GetChunks()[i][j];
-		//if (!chunk) continue;
-		for (auto &wmo : area->GetWMOs())
-		{
-			if (it->GetModel() == &*wmo)
+
+			//Chunk * chunk = area->GetChunks()[i][j];
+			//if (!chunk) continue;
+			for (auto &wmo : chunk->GetWMOs())
 			{
-				exist = true;
-			}
+				if (it->GetModel() == &*wmo)
+				{
+					exist = true;
+				}
 
-		}
-		for (auto &doodad : area->GetDoodads())
-		{
-			if (it->GetModel() == &*doodad)
+			}
+			for (auto &doodad : chunk->GetDoodads())
 			{
-				exist = true;
+				if (it->GetModel() == &*doodad)
+				{
+					exist = true;
+				}
 			}
 		}
-
-
-
 		if (!exist)
 		{
 			it = rends.erase(it);
@@ -374,6 +373,7 @@ void MapFrame::UpdateScene()
 		else
 		{
 			++it;
+
 		}
 	}
 

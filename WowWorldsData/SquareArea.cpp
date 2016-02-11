@@ -126,7 +126,7 @@ void Area::Fill(Location * location, Point2D<int> block_coordinates, Point2D<int
 			Point2D<int> abs_pos = area_position + Point2D<int>(i, j);
 			Point2D<int>bc = block_coordinates + (Point2D<int>(abs_pos.X / 16, abs_pos.Y / 16) - Point2D<int>(1, 1));
 			Point2D<int> c = Point2D<int>(abs_pos.X % 16, abs_pos.Y % 16);
-			chunks[i][j] = ADTWorker::GetChunk(this,location, block_coordinates + (Point2D<int>(abs_pos.X / 16, abs_pos.Y / 16) - Point2D<int>(1, 1)), Point2D<int>(abs_pos.X % 16, abs_pos.Y % 16));
+			//chunks[i][j] = ADTWorker::GetChunk(this,location, block_coordinates + (Point2D<int>(abs_pos.X / 16, abs_pos.Y / 16) - Point2D<int>(1, 1)), Point2D<int>(abs_pos.X % 16, abs_pos.Y % 16));
 			
 			for (auto &chunk : chunkss)
 			{
@@ -204,7 +204,7 @@ void Area::InitAreaBoundingBox()
 {
 	vector<float> points = vector<float>();
 	Chunk * chunk;
-	auto add_point=[](vector<float> & points, Utils::Graphics::BoundingBox & bb)
+	auto add_point = [](vector<float> & points, Utils::Graphics::BoundingBox & bb)
 	{
 		points.push_back(bb.up.x);
 		points.push_back(bb.up.y);
@@ -213,41 +213,40 @@ void Area::InitAreaBoundingBox()
 		points.push_back(bb.down.y);
 		points.push_back(bb.down.z);
 	};
-	for (int i = 0; i < area_size; i++)
+	/*for (int i = 0; i < area_size; i++)
 	{
 		for (int j = 0; j < area_size; j++)
 		{
 			chunk = chunks[i][j];
-			if (chunk)
-			{
-				add_point(points, chunk->GetBoundingBox());
-			}
-		}
+			if (chunk)*/
+	for (auto &chunk : chunkss)
+	{
+		add_point(points, chunk->GetBoundingBox());
 	}
 	rcCalcBounds(&points[0], points.size() / 3, bounding_box.GetArrayMin(), bounding_box.GetArrayMax());
 	points.clear();
-	for (int i = 0; i < area_size; i++)
+	/*for (int i = 0; i < area_size; i++)
 	{
 		for (int j = 0; j < area_size; j++)
 		{
 			chunk = chunks[i][j];
-			if (chunk)
-			{
-				for (auto wmo : chunk->GetWMOs())
-				{
-					
-						add_point(points, wmo->GetBoundingBox());
-				}
-				for (auto doodad : chunk->GetDoodads())
-				{
+			if (chunk)*/
+	for (auto &chunk : chunkss)
 
-					add_point(points, doodad->GetBoundingBox());
-				}
-				//add_point(points, chunk->GetBoundingBox());
-			}
-			
+	{
+		for (auto wmo : chunk->GetWMOs())
+		{
+
+			add_point(points, wmo->GetBoundingBox());
 		}
+		for (auto doodad : chunk->GetDoodads())
+		{
+
+			add_point(points, doodad->GetBoundingBox());
+		}
+		//add_point(points, chunk->GetBoundingBox());
 	}
+
 	Utils::Graphics::BoundingBox bb;
 	rcCalcBounds(&points[0], points.size() / 3, bb.GetArrayMin(), bb.GetArrayMax());
 	bounding_box.up.y = bb.up.y;
