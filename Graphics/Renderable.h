@@ -9,15 +9,25 @@ class Renderable
 	static unsigned long counter;
 	unsigned long id;
 	Ogre::SceneNode * scene;
+	void _move(Renderable & other);
 public:
 	bool to_kill;
+	Renderable() {}
 	Renderable(Model * model);
-	~Renderable(void);
-	bool CreateScene(Ogre::SceneNode * parent);
+
+	
+	
+	Renderable(const Renderable &)=default  ;
+	Renderable(Renderable &&);
+	Renderable & operator=(const Renderable &)=default;
+	Renderable & operator=(Renderable &&);
+	
+	~Renderable();
+	void CreateScene(Ogre::SceneNode * parent);
 	unsigned long GetID() {return id;}
 	Ogre::SceneNode * GetScene() {return scene;}
 	Model * GetModel() {return model;}
-
+	
 };
 
 

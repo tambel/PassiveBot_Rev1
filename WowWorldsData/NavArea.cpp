@@ -40,14 +40,14 @@ void NavArea::Fill(Location * location, Point2D<int> block_coordinates, Point2D<
 {
 	Area::Fill(location, block_coordinates, coordinates);
 	InitAreaBoundingBox();
-	InitNavigation();
+	//InitNavigation();
 }
 void NavArea::CheckAndMove(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {
 	if (IsMoved(location, block_coordinates, coordinates))
 	{
 		Fill(location, block_coordinates, coordinates);
-		InitNavigation();
+		//InitNavigation();
 	}
 
 }
@@ -747,7 +747,7 @@ int  NavArea::RastChunks(Model * model, rcConfig & m_cfg, rcContext * m_ctx, rcH
 	if (overlap)
 	{
 		//overlapping_chunks.push_back(chunk);
-		float * verts = model->rvertices;
+		float * verts = model->vertices;
 		const int* ctris = model->GetIndices();
 		const int nctris = model->GetIndexCount()/3;
 		m_tileTriCount += nctris;

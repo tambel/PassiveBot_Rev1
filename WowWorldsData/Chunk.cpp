@@ -97,7 +97,7 @@ void Chunk::LoadMcvt()
 	int counter = 0;
 	int counter2 = 0;
 	//vertices=new Utils::Graphics::Vertex[145];
-	rvertices = new float[435];
+	vertices = new float[435];
 	for(int i = 0; i < 17; ++i)
 	{
 		for(int j = 0; j < (((i % 2) != 0) ? 8 : 9); ++j)
@@ -109,9 +109,9 @@ void Chunk::LoadMcvt()
 			float y = position.coords.y - i * Metrics::UnitSize * 0.5f;
 
 			//vertices[counter].position =Vector3(x, y, heights[counter]);
-			rvertices[counter2++] = x + real_position.x;
-			rvertices[counter2++] = heights[counter] + real_position.z;
-			rvertices[counter2++] = y + real_position.y;
+			vertices[counter2++] = x + real_position.x;
+			vertices[counter2++] = heights[counter] + real_position.z;
+			vertices[counter2++] = y + real_position.y;
 			++counter;
 		}
 	}
@@ -121,7 +121,7 @@ void Chunk::LoadMcvt()
 		indices[i+1] = ChunkModel::indices[i + 1];
 		indices[i+2] = ChunkModel::indices[i];
 	}
-	rcCalcBounds(rvertices, vertex_count, reinterpret_cast<float*>(&bounding_box.up), reinterpret_cast<float*>(&bounding_box.down));
+	rcCalcBounds(vertices, vertex_count, reinterpret_cast<float*>(&bounding_box.up), reinterpret_cast<float*>(&bounding_box.down));
 
 	delete [] heights;
 }

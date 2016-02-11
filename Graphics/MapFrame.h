@@ -12,6 +12,8 @@ class MapFrame: public Window
 	vector<Renderable*> additional_objects;
 	Ogre::SceneNode * navmesh;
 	rcPolyMesh  mesh;
+	vector<Renderable> rends;
+	vector<Renderable*> old_rends;
 	
 public:
 	//PATHDATA * m_PathStore;
@@ -27,5 +29,6 @@ public:
 	void createRecastPathLine(int nPathSlot/*, PATHDATA * m_PathStore*/);
 	void CreateAreaScene();
 	void CreateNavMesh();
+	void UpdateScene();
 };
 

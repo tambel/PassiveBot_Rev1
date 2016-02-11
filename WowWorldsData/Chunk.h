@@ -57,7 +57,7 @@ public:
 	}
 };
 class ADT;
-class Chunk:public Model
+class Chunk:public Model,public MapObject
 {
 private:
 	static vector<unsigned> doodad_uuids;

@@ -91,8 +91,8 @@ void Model::_move(Model & other)
 	bounding_box = other.bounding_box;
 	name = other.name;
 
-	rvertices = other.rvertices;
-	rvertices = nullptr;
+	vertices = other.vertices;
+	vertices = nullptr;
 	//vertices = other.vertices;
 	vertex_count = other.vertex_count;
 	//other.vertices = nullptr;
@@ -116,8 +116,8 @@ Model::Model(Utils::Graphics::BoundingBox bounding_box):
 
 Model::~Model(void)
 {
-	delete[] rvertices;
-	rvertices = nullptr;
+	delete[] vertices;
+	vertices = nullptr;
 	//delete[] vertices;
 	//vertices = nullptr;
 	vertex_count = 0;
@@ -149,16 +149,16 @@ void Model::Rotate()
 	
 	for (unsigned long i = 0; i < vertex_count*3; i+=3)
 	{
-		vertice(0) = rvertices[i];
-		vertice(2) = rvertices[i  + 2];
-		vertice(1) = rvertices[i  + 1];
+		vertice(0) = vertices[i];
+		vertice(2) = vertices[i  + 2];
+		vertice(1) = vertices[i  + 1];
 		vertice(3) = 1.0f;
 		boost::numeric::ublas::matrix<float>tm = prod(rotY, rotZ);
 		tm = prod(rotX, tm);
 		vertice = boost::numeric::ublas::prod(vertice, tm);
-		rvertices[i ] = vertice(0);
-		rvertices[i  + 1] = vertice(2);
-		rvertices[i  + 2] = vertice(1);
+		vertices[i ] = vertice(0);
+		vertices[i  + 1] = vertice(2);
+		vertices[i  + 2] = vertice(1);
 	}
 	
 
@@ -174,7 +174,7 @@ void Model::Rescale(float scale)
 	for (unsigned long i = 0; i < vertex_count * 3; i++)
 	{
 		//vertices[i].position = Vector3(vertices[i].position.x + scale, vertices[i].position.y + scale, vertices[i].position.z + scale);
-		rvertices[i] *= scale;
+		vertices[i] *= scale;
 	}
 
 }

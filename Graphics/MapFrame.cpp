@@ -6,8 +6,8 @@
 #include "DetourNavMeshQuery.h" 
 MapFrame::MapFrame(void)
 {
-
-	additional_objects = vector<Renderable*>();
+	rends = vector<Renderable>();
+	//additional_objects = vector<Renderable*>();
 }
 
 
@@ -18,8 +18,9 @@ MapFrame::~MapFrame(void)
 void MapFrame::createScene()
 {
 	area->data_mutex.lock();
-	CreateAreaScene();
-	CreateNavMesh();
+	//CreateAreaScene();
+	UpdateScene();
+	//CreateNavMesh();
 	//createRecastPathLine(0);
 	for (int i = 0; i < area->GetRadius() * 2 + 1; i++)
 	{
@@ -52,9 +53,10 @@ void MapFrame::OnUpdate()
 	area->data_mutex.lock();
 	if (area->to_update)
 	{
-		mSceneMgr->destroyAllManualObjects();
-		CreateAreaScene();
-		CreateNavMesh();
+		//mSceneMgr->destroyAllManualObjects();
+		//CreateAreaScene();
+		UpdateScene();
+		//CreateNavMesh();
 		area->to_update = false;
 	}
 	area->data_mutex.unlock();
@@ -64,45 +66,45 @@ void MapFrame::OnUpdate()
 
 void MapFrame::InitAdditionalObjects()
 {
-	for (auto model : additional_objects)
-	{
-		model->to_kill = true;
-	}
-	for (auto avatar : *area->GetWowAvatars())
-	{
-		bool exist = false;
-		for (auto rend : additional_objects)
-		{
+	//for (auto model : additional_objects)
+	//{
+	//	model->to_kill = true;
+	//}
+	//for (auto avatar : *area->GetWowAvatars())
+	//{
+	//	bool exist = false;
+	//	for (auto rend : additional_objects)
+	//	{
 
-			if (rend->GetModel() == avatar->doodad)
-			{
-				exist = true;
-				rend->to_kill = false;
-				rend->GetScene()->setPosition(Vector3ToOgreVector(avatar->GetPosition().coords));
-				break;
-			}
-		}
-		if (!exist)
-		{
-			Renderable * rend = new Renderable(avatar->doodad);
-			rend->CreateScene(mSceneMgr->getRootSceneNode());
-			rend->GetScene()->setPosition(Vector3ToOgreVector(avatar->GetPosition().coords));
-			//rend->GetScene()->setPosition(Ogre::Vector3(0,0,0));
-			additional_objects.push_back(rend);
-		}
-	}
-	bool has_killed = false;
-	for (unsigned i = 0; i < additional_objects.size(); i++)
-	{
-		if (additional_objects[i]->to_kill)
-		{
-			has_killed = true;
-			delete additional_objects[i];
-			additional_objects[i] = 0;
-		}
-	}
-	if (has_killed)
-		additional_objects.erase(remove(additional_objects.begin(), additional_objects.end(), (Renderable*)0), additional_objects.end());
+	//		if (rend->GetModel() == avatar->doodad)
+	//		{
+	//			exist = true;
+	//			rend->to_kill = false;
+	//			rend->GetScene()->setPosition(Vector3ToOgreVector(avatar->GetPosition().coords));
+	//			break;
+	//		}
+	//	}
+	//	if (!exist)
+	//	{
+	//		Renderable * rend = new Renderable(avatar->doodad);
+	//		rend->CreateScene(mSceneMgr->getRootSceneNode());
+	//		rend->GetScene()->setPosition(Vector3ToOgreVector(avatar->GetPosition().coords));
+	//		//rend->GetScene()->setPosition(Ogre::Vector3(0,0,0));
+	//		additional_objects.push_back(rend);
+	//	}
+	//}
+	//bool has_killed = false;
+	//for (unsigned i = 0; i < additional_objects.size(); i++)
+	//{
+	//	if (additional_objects[i]->to_kill)
+	//	{
+	//		has_killed = true;
+	//		delete additional_objects[i];
+	//		additional_objects[i] = 0;
+	//	}
+	//}
+	//if (has_killed)
+	//	additional_objects.erase(remove(additional_objects.begin(), additional_objects.end(), (Renderable*)0), additional_objects.end());
 }
 
 
@@ -169,16 +171,16 @@ void MapFrame::CreateAreaScene()
 			Chunk *chunk = area->GetChunks()[i][j];
 			if (!chunk)
 				continue;
-			createObject(man,chunk->rvertices, chunk->GetVertexCount(), chunk->GetIndices(), chunk->GetIndexCount(), vert_offset);
+			createObject(man,chunk->vertices, chunk->GetVertexCount(), chunk->GetIndices(), chunk->GetIndexCount(), vert_offset);
 			for (auto doodad : chunk->GetDoodads())
 			{
-				createObject(man, doodad->rvertices, doodad->GetVertexCount(), doodad->GetIndices(), doodad->GetIndexCount(), vert_offset);
+				createObject(man, doodad->vertices, doodad->GetVertexCount(), doodad->GetIndices(), doodad->GetIndexCount(), vert_offset);
 			}
 			for (auto wmo : chunk->GetWMOs())
 			{
 				//for (auto &part : wmo->GetParts())
 				{
-					createObject(man, wmo->rvertices, wmo->GetVertexCount(), wmo->GetIndices(), wmo->GetIndexCount(), vert_offset);
+					createObject(man, wmo->vertices, wmo->GetVertexCount(), wmo->GetIndices(), wmo->GetIndexCount(), vert_offset);
 				}
 			}
 			/*float * vertices = chunk->nav_vertices.get();
@@ -238,7 +240,7 @@ void MapFrame::CreateNavMesh()
 
 							m_pRecastMOWalk->position(x, z, y);
 							if (mesh.areas[i] == 0)
-								m_pRecastMOWalk->colour(0, 1, 0, 1);
+m_pRecastMOWalk->colour(0, 1, 0, 1);
 							else
 								m_pRecastMOWalk->colour(0, 1, 1, 1);
 
@@ -249,77 +251,156 @@ void MapFrame::CreateNavMesh()
 						nIndex += 3;
 					}
 				}
-			m_pRecastMOWalk->end();
+				m_pRecastMOWalk->end();
 
 
-			m_pRecastSN->attachObject(m_pRecastMOWalk);
+				m_pRecastSN->attachObject(m_pRecastMOWalk);
 
 
-			Ogre::ManualObject*  m_pRecastMONeighbour = mSceneMgr->createManualObject("RecastMONeighbour" + to_string(count));
-			m_pRecastMONeighbour->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_LIST);
+				Ogre::ManualObject*  m_pRecastMONeighbour = mSceneMgr->createManualObject("RecastMONeighbour" + to_string(count));
+				m_pRecastMONeighbour->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_LIST);
 
-			for (int i = 0; i < mesh.npolys; ++i)
-			{
-				const unsigned short* p = &mesh.polys[i*nvp * 2];
-				for (int j = 0; j < nvp; ++j)
+				for (int i = 0; i < mesh.npolys; ++i)
 				{
-					if (p[j] == RC_MESH_NULL_IDX) break;
-					if (p[nvp + j] == RC_MESH_NULL_IDX) continue;
-					int vi[2];
-					vi[0] = p[j];
-					if (j + 1 >= nvp || p[j + 1] == RC_MESH_NULL_IDX)
-						vi[1] = p[0];
-					else
-						vi[1] = p[j + 1];
-					for (int k = 0; k < 2; ++k)
+					const unsigned short* p = &mesh.polys[i*nvp * 2];
+					for (int j = 0; j < nvp; ++j)
 					{
-						const unsigned short* v = &mesh.verts[vi[k] * 3];
-						const float x = orig[0] + v[0] * cs;
-						const float y = orig[1] + (v[1] + 1)*ch + 0.1f;
-						const float z = orig[2] + v[2] * cs;
-						m_pRecastMONeighbour->position(x, z, y);
-						m_pRecastMONeighbour->colour(1, 1, 1);
+						if (p[j] == RC_MESH_NULL_IDX) break;
+						if (p[nvp + j] == RC_MESH_NULL_IDX) continue;
+						int vi[2];
+						vi[0] = p[j];
+						if (j + 1 >= nvp || p[j + 1] == RC_MESH_NULL_IDX)
+							vi[1] = p[0];
+						else
+							vi[1] = p[j + 1];
+						for (int k = 0; k < 2; ++k)
+						{
+							const unsigned short* v = &mesh.verts[vi[k] * 3];
+							const float x = orig[0] + v[0] * cs;
+							const float y = orig[1] + (v[1] + 1)*ch + 0.1f;
+							const float z = orig[2] + v[2] * cs;
+							m_pRecastMONeighbour->position(x, z, y);
+							m_pRecastMONeighbour->colour(1, 1, 1);
 
+						}
 					}
 				}
-			}
 
-			m_pRecastMONeighbour->end();
-			m_pRecastSN->attachObject(m_pRecastMONeighbour);
+				m_pRecastMONeighbour->end();
+				m_pRecastSN->attachObject(m_pRecastMONeighbour);
 
-			Ogre::ManualObject * m_pRecastMOBoundary = mSceneMgr->createManualObject("RecastMOBoundary"+to_string(count));
-			m_pRecastMOBoundary->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_LIST);
+				Ogre::ManualObject * m_pRecastMOBoundary = mSceneMgr->createManualObject("RecastMOBoundary" + to_string(count));
+				m_pRecastMOBoundary->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_LIST);
 
-			for (int i = 0; i < mesh.npolys; ++i)
-			{
-				const unsigned short* p = &mesh.polys[i*nvp * 2];
-				for (int j = 0; j < nvp; ++j)
+				for (int i = 0; i < mesh.npolys; ++i)
 				{
-					if (p[j] == RC_MESH_NULL_IDX) break;
-					if (p[nvp + j] != RC_MESH_NULL_IDX) continue;
-					int vi[2];
-					vi[0] = p[j];
-					if (j + 1 >= nvp || p[j + 1] == RC_MESH_NULL_IDX)
-						vi[1] = p[0];
-					else
-						vi[1] = p[j + 1];
-					for (int k = 0; k < 2; ++k)
+					const unsigned short* p = &mesh.polys[i*nvp * 2];
+					for (int j = 0; j < nvp; ++j)
 					{
-						const unsigned short* v = &mesh.verts[vi[k] * 3];
-						const float x = orig[0] + v[0] * cs;
-						const float y = orig[1] + (v[1] + 1)*ch + 0.1f;
-						const float z = orig[2] + v[2] * cs;
-						//dd->vertex(x, y, z, colb);
+						if (p[j] == RC_MESH_NULL_IDX) break;
+						if (p[nvp + j] != RC_MESH_NULL_IDX) continue;
+						int vi[2];
+						vi[0] = p[j];
+						if (j + 1 >= nvp || p[j + 1] == RC_MESH_NULL_IDX)
+							vi[1] = p[0];
+						else
+							vi[1] = p[j + 1];
+						for (int k = 0; k < 2; ++k)
+						{
+							const unsigned short* v = &mesh.verts[vi[k] * 3];
+							const float x = orig[0] + v[0] * cs;
+							const float y = orig[1] + (v[1] + 1)*ch + 0.1f;
+							const float z = orig[2] + v[2] * cs;
+							//dd->vertex(x, y, z, colb);
 
-						m_pRecastMOBoundary->position(x, z + 0.25, y);
-						m_pRecastMOBoundary->colour(0, 0, 0);
+							m_pRecastMOBoundary->position(x, z + 0.25, y);
+							m_pRecastMOBoundary->colour(0, 0, 0);
+						}
 					}
 				}
-			}
 
-			m_pRecastMOBoundary->end();
-			m_pRecastSN->attachObject(m_pRecastMOBoundary);
+				m_pRecastMOBoundary->end();
+				m_pRecastSN->attachObject(m_pRecastMOBoundary);
 		}
 		count++;
+	}
+}
+
+void MapFrame::UpdateScene()
+{
+	vector<Renderable> er;
+	int area_size = area->GetSize();
+	bool exist = 0;
+	bool kill = false;
+
+	for (vector<Renderable>::iterator it = rends.begin(); it != rends.end();)
+	{
+		exist = false;
+		//for (int i = 0; i < area_size; i++)
+		//{
+		//	for (int j = 0; j < area_size; j++)
+		for (auto &chunk : area->GetChunkss())
+		{
+			//Chunk * chunk = area->GetChunks()[i][j];
+			//if (!chunk) continue;
+			for (auto &wmo : area->GetWMOs())
+			{
+				if (it->GetModel() == &*wmo)
+				{
+					exist = true;
+				}
+
+			}
+			for (auto &doodad : area->GetDoodads())
+			{
+				if (it->GetModel() == &*doodad)
+				{
+					exist = true;
+				}
+			}
+			if (it->GetModel() == &*chunk)
+			{
+				exist = true;
+			}
+		}
+
+		if (!exist)
+		{
+			it = rends.erase(it);
+			//rends.erase(rends.begin());
+		}
+		else
+		{
+			++it;
+		}
+	}
+
+
+	auto add_if_not_exist = [](Model * model, vector<Renderable> & rends, Ogre::SceneManager * mngr)
+	{
+		bool exist = false;
+		for (auto &rend : rends)
+		{
+			if (model == rend.GetModel())
+			{
+				return;
+			}
+		}
+		rends.push_back(move(Renderable(model)));
+		rends.back().CreateScene(mngr->getRootSceneNode());
+	};
+	/*for (int i = 0; i < area_size; i++)
+	{
+		for (int j = 0; j < area_size; j++)
+		{*/
+	for (auto &chunk : area->GetChunkss())
+	{
+		//Chunk * chunk = area->GetChunks()[i][j];
+		//if (!chunk) continue;
+		add_if_not_exist(&*chunk, rends, mSceneMgr);
+		for (auto &wmo : area->GetWMOs())
+			add_if_not_exist(&*wmo, rends, mSceneMgr);
+		for (auto &doodad : area->GetDoodads())
+			add_if_not_exist(&*doodad, rends, mSceneMgr);
 	}
 }

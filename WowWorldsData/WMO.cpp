@@ -9,7 +9,6 @@ void WMO::_move(WMO & other)
 	position = other.position;
 	uuid = other.uuid;
 	other.uuid = 0;
-	skip = other.skip;
 }
 
 WMO::WMO(string filename, unsigned uuid, Position & position):
@@ -17,20 +16,14 @@ WMO::WMO(string filename, unsigned uuid, Position & position):
 	uuid(uuid)// ,position(position)
 {
 	this->position = position;
-	skip = false;
 	WMORoot root = WMORoot(this->filename);
 	this->position.coords = Vector3(this->position.coords.x, -this->position.coords.z, this->position.coords.y);
-	parts = vector<WMOPart>();
-	for (auto &group : root.GetWMOGroups())
-	{
-		//parts.push_back(WMOPart(group, *this));
-	}
 	for (auto &group : root.wmo_groups)
 	{
 		vertex_count += group.vertex_count;
 		index_count += group.index_count;
 	}
-	rvertices = new float[vertex_count * 3];
+	vertices = new float[vertex_count * 3];
 	indices = new int[index_count];
 	unsigned vc = 0;
 	unsigned ic = 0;
@@ -38,7 +31,7 @@ WMO::WMO(string filename, unsigned uuid, Position & position):
 	for (auto &group : root.wmo_groups)
 	{
 		//part.Rotate();
-		memcpy(rvertices + offset, group.vertices, group.vertex_count * 12);
+		memcpy(vertices + offset, group.vertices, group.vertex_count * 12);
 		offset += group.vertex_count * 3;
 
 
@@ -54,9 +47,9 @@ WMO::WMO(string filename, unsigned uuid, Position & position):
 	Rotate();
 	for (unsigned i = 0; i < vertex_count * 3; i += 3)
 	{
-		rvertices[i]+= this->position.coords.x;
-		rvertices[i+1]+= this->position.coords.z;
-		rvertices[i+2] += this->position.coords.y;
+		vertices[i]+= this->position.coords.x;
+		vertices[i+1]+= this->position.coords.z;
+		vertices[i+2] += this->position.coords.y;
 	}
 	unsigned vert_offset = 0;
 	for (auto &group : root.wmo_groups)
@@ -107,7 +100,7 @@ WMO::WMO(string filename, unsigned uuid, Position & position):
 	//}
 	
 
-	rcCalcBounds(rvertices, vertex_count, bounding_box.GetArrayMin(), bounding_box.GetArrayMax());
+	rcCalcBounds(vertices, vertex_count, bounding_box.GetArrayMin(), bounding_box.GetArrayMax());
 	//vector<float> points = vector<float>();
 	//for (auto &part : parts)
 	//{
@@ -124,7 +117,7 @@ WMO::WMO(string filename, unsigned uuid, Position & position):
 
 }
 
-WMO::WMO(WMO && right):parts(std::move(right.parts))
+WMO::WMO(WMO && right)
 {
 
 	//_move(right);
@@ -133,14 +126,12 @@ WMO::WMO(WMO && right):parts(std::move(right.parts))
 	position = right.position;
 	uuid = right.uuid;
 	right.uuid = 0;
-	skip = right.skip;
 
 }
 
 
 WMO::~WMO()
 {
-	parts.clear();
 }
 
 WMO & WMO::operator=(WMO && right)
@@ -151,6 +142,5 @@ WMO & WMO::operator=(WMO && right)
 	position = right.position;
 	uuid = right.uuid;
 	right.uuid = 0;
-	skip = right.skip;
 	return *this;
 }

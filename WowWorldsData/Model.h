@@ -75,9 +75,9 @@ public:
 	int * indices;
 	unsigned long index_count=0;
 	Position position;
-	float * rvertices = 0;
+	float * vertices = 0;
 	//virtual Utils::Graphics::Vertex * GetVertices() { return vertices; }
-	virtual float* GetVertices() { return rvertices; }
+	virtual float* GetVertices() { return vertices; }
 	virtual unsigned long GetVertexCount() { return vertex_count; }
 	virtual Position GetPosition() { return position; }
 	void SetPosition(Position position) { this->position = position; }

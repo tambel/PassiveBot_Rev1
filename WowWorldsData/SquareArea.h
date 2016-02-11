@@ -25,7 +25,7 @@ protected:
 
 	vector<unique_ptr<Doodad>> doodads;
 	vector<unique_ptr<WMO>> wmos;
-
+	vector<unique_ptr<Chunk>>chunkss;
 	Chunk *** chunks;
 	int radius;
 	int area_size;
@@ -59,9 +59,8 @@ public:
 	Utils::Graphics::BoundingBox & GetBoundingBox() { return bounding_box; }
 	inline vector<unique_ptr<WMO>> & GetWMOs() { return wmos; }
 	inline vector<unique_ptr<Doodad>> & GetDoodads() { return doodads; }
-	void DeleteDuplicates();
 	void InitAreaBoundingBox();
-	void ToMesh();
+	inline vector<unique_ptr<Chunk>> & GetChunkss() { return chunkss; }
 
 	
 	
