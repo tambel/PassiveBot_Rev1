@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "MapObject.h"
 
-unsigned MapObject::lifetime = 5;
+unsigned MapObject::lifetime = 2;
 inline void MapObject::swap(MapObject & other)
 {
-	filename = move(other.filename);
+	name = move(other.name);
 	unused_iter_count = other.unused_iter_count;
 	refreshed = other.refreshed;
 }
@@ -13,9 +13,9 @@ MapObject::MapObject()
 	//unused_iter_count = 0;
 	//refreshed = true;
 }
-MapObject::MapObject(string filename)
+MapObject::MapObject(string name)
 {
-	this->filename = move(filename);
+	this->name = move(name);
 	/*unused_iter_count = 0;
 	refreshed = true;*/
 }

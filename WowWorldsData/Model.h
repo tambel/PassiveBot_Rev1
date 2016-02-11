@@ -87,8 +87,6 @@ public:
 	virtual void Rescale(float scale);
 	virtual int * GetIndices() { return indices; }
 	virtual unsigned long GetIndexCount() { return index_count; }
-
-	string name;
 	Utils::Graphics::BoundingBox bounding_box;
 	Model();
 	Model(Utils::Graphics::BoundingBox bounding_box);

@@ -8,7 +8,7 @@ protected:
 	static unsigned  lifetime;
 	unsigned unused_iter_count=0;
 	bool refreshed=true;
-	string filename;
+	string name;
 	void swap(MapObject & other);
 	bool occupied = false;
 public:
@@ -24,6 +24,7 @@ public:
 	inline void Occupie() { occupied = true; }
 	inline void Free() { occupied = false; }
 	inline bool  IsOccupied() { return occupied; }
+	inline string & GetName() { return name; }
 	//inline bool IsRefreshed() {  return  refreshed}
 };
 

@@ -152,8 +152,9 @@ void Area::Fill(Location * location, Point2D<int> block_coordinates, Point2D<int
 	cout << "WMOS" << endl;
 	for (auto &wmo : wmos)
 	{
-		cout << wmo->name << ", " << wmo->GetUUID() << endl;
+		cout << wmo->name << ", " << wmo->GetUUID() << " Lifetime - "<<wmo->GetUnusedIterCount()<< endl;
 	}
+
 	cout << "CHUNKS " << "WMOS" << endl;
 	for (int i = 0; i < area_size; i++)
 	{

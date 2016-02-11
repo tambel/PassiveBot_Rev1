@@ -19,8 +19,8 @@ Doodad::Doodad(string filename, unsigned uuid, Position position, short scale) :
 	uuid(uuid),
 	scale(scale/1024.0f)
 {
-	M2 m2 = M2(this->filename);
-	name = m2.filename;
+	M2 m2 = M2(this->name);
+	//name = m2.filename;
 	this->scale = scale/1024.0f;
 	this->position.coords=Vector3(position.coords.x,-position.coords.z,position.coords.y);
 	this->position.rotation = position.rotation;
