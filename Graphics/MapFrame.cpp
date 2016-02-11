@@ -341,28 +341,30 @@ void MapFrame::UpdateScene()
 		//	for (int j = 0; j < area_size; j++)
 		for (auto &chunk : area->GetChunkss())
 		{
-			//Chunk * chunk = area->GetChunks()[i][j];
-			//if (!chunk) continue;
-			for (auto &wmo : area->GetWMOs())
-			{
-				if (it->GetModel() == &*wmo)
-				{
-					exist = true;
-				}
-
-			}
-			for (auto &doodad : area->GetDoodads())
-			{
-				if (it->GetModel() == &*doodad)
-				{
-					exist = true;
-				}
-			}
 			if (it->GetModel() == &*chunk)
 			{
 				exist = true;
 			}
 		}
+		//Chunk * chunk = area->GetChunks()[i][j];
+		//if (!chunk) continue;
+		for (auto &wmo : area->GetWMOs())
+		{
+			if (it->GetModel() == &*wmo)
+			{
+				exist = true;
+			}
+
+		}
+		for (auto &doodad : area->GetDoodads())
+		{
+			if (it->GetModel() == &*doodad)
+			{
+				exist = true;
+			}
+		}
+
+
 
 		if (!exist)
 		{
@@ -374,7 +376,6 @@ void MapFrame::UpdateScene()
 			++it;
 		}
 	}
-
 
 	auto add_if_not_exist = [](Model * model, vector<Renderable> & rends, Ogre::SceneManager * mngr)
 	{
@@ -394,13 +395,12 @@ void MapFrame::UpdateScene()
 		for (int j = 0; j < area_size; j++)
 		{*/
 	for (auto &chunk : area->GetChunkss())
-	{
-		//Chunk * chunk = area->GetChunks()[i][j];
-		//if (!chunk) continue;
 		add_if_not_exist(&*chunk, rends, mSceneMgr);
-		for (auto &wmo : area->GetWMOs())
-			add_if_not_exist(&*wmo, rends, mSceneMgr);
-		for (auto &doodad : area->GetDoodads())
-			add_if_not_exist(&*doodad, rends, mSceneMgr);
-	}
+	//Chunk * chunk = area->GetChunks()[i][j];
+	//if (!chunk) continue;
+
+	for (auto &wmo : area->GetWMOs())
+		add_if_not_exist(&*wmo, rends, mSceneMgr);
+	for (auto &doodad : area->GetDoodads())
+		add_if_not_exist(&*doodad, rends, mSceneMgr);
 }

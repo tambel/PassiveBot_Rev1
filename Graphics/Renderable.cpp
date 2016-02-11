@@ -37,8 +37,10 @@ Renderable & Renderable::operator=( Renderable && other)
 Renderable::~Renderable()
 {
 	if (scene)
+	{
 		scene->detachAllObjects();
-	scene->getCreator()->getRootSceneNode()->removeChild(scene);
+		scene->getCreator()->getRootSceneNode()->removeChild(scene);
+	}
 }
 void Renderable::CreateScene(Ogre::SceneNode * parent)
 {
