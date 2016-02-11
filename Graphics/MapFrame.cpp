@@ -395,12 +395,18 @@ void MapFrame::UpdateScene()
 		for (int j = 0; j < area_size; j++)
 		{*/
 	for (auto &chunk : area->GetChunkss())
+	{
 		add_if_not_exist(&*chunk, rends, mSceneMgr);
-	//Chunk * chunk = area->GetChunks()[i][j];
-	//if (!chunk) continue;
+		//Chunk * chunk = area->GetChunks()[i][j];
+		//if (!chunk) continue;
 
-	for (auto &wmo : area->GetWMOs())
-		add_if_not_exist(&*wmo, rends, mSceneMgr);
-	for (auto &doodad : area->GetDoodads())
-		add_if_not_exist(&*doodad, rends, mSceneMgr);
+		/*for (auto &wmo : area->GetWMOs())
+			add_if_not_exist(&*wmo, rends, mSceneMgr);
+		for (auto &doodad : area->GetDoodads())
+			add_if_not_exist(&*doodad, rends, mSceneMgr);*/
+		for (auto wmo : chunk->GetWMOs())
+			add_if_not_exist(&*wmo, rends, mSceneMgr);
+			for (auto &doodad : chunk->GetDoodads())
+			add_if_not_exist(&*doodad, rends, mSceneMgr);
+	}
 }
