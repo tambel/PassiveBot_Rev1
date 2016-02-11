@@ -20,7 +20,7 @@ void MapFrame::createScene()
 	area->data_mutex.lock();
 	//CreateAreaScene();
 	UpdateScene();
-	//CreateNavMesh();
+	CreateNavMesh();
 	//createRecastPathLine(0);
 	for (int i = 0; i < area->GetRadius() * 2 + 1; i++)
 	{
@@ -56,7 +56,7 @@ void MapFrame::OnUpdate()
 		//mSceneMgr->destroyAllManualObjects();
 		//CreateAreaScene();
 		UpdateScene();
-		//CreateNavMesh();
+		CreateNavMesh();
 		area->to_update = false;
 	}
 	area->data_mutex.unlock();

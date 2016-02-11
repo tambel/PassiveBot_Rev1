@@ -40,7 +40,7 @@ void NavArea::Fill(Location * location, Point2D<int> block_coordinates, Point2D<
 {
 	Area::Fill(location, block_coordinates, coordinates);
 	InitAreaBoundingBox();
-	//InitNavigation();
+	InitNavigation();
 }
 void NavArea::CheckAndMove(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {

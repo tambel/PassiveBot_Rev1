@@ -8,6 +8,7 @@ Chunk::Chunk(void)
 }
 Chunk::Chunk(Area * area,ChunkStreamInfo info, ChunkStreamInfo obj_info, ADT * adt_file/*, Location * location, Point2D<int> block_coordinates*/,Point2D<int> coordinates):
 	Model(),
+	MapObject(),
 	root_info(info),
 	adt(adt_file)/*,location(location),block_coordinates(block_coordinates)*/,
 	coordinates(coordinates),
