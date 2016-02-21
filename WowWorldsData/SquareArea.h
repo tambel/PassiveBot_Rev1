@@ -59,11 +59,12 @@ public:
 	Utils::Graphics::BoundingBox & GetBoundingBox() { return bounding_box; }
 	inline vector<unique_ptr<WMO>> & GetWMOs() { return wmos; }
 	inline vector<unique_ptr<Doodad>> & GetDoodads() { return doodads; }
-	void InitAreaBoundingBox();
+	
 	inline vector<unique_ptr<Chunk>> & GetChunkss() { return chunkss; }
 	inline vector<Chunk*> GetActiveChunks() { return active_chunks; }
 	bool IsOutOfBounds(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	void InitMapObjects();
+	virtual void CheckAndMoveImpl(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	
 	
 

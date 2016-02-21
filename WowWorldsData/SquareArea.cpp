@@ -204,89 +204,19 @@ void Area::Fill(Location * location, Point2D<int> block_coordinates, Point2D<int
 void Area::CheckAndMove(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {
 	if (IsOutOfBounds(location, block_coordinates, coordinates))
-		Fill(location, block_coordinates, coordinates);
-	/*if (IsMoved(location, block_coordinates, coordinates))
 	{
-		Fill(location, block_coordinates, coordinates);
-	}*/
+		this->CheckAndMoveImpl(location, block_coordinates, coordinates);
+	}
+	/*if (IsOutOfBounds(location, block_coordinates, coordinates))
+		Fill(location, block_coordinates, coordinates);*/
 
 }
 void Area::AddWowObjectAvatar(Wow::WowObject * object)
 {
 	WowObjectAvatar * avatar = new WowObjectAvatar(object);
-	/*
-	Position pos=object->GetPosition();
-	pos.coords=Vector3(Metrics::MapMidPoint - pos.coords.y,-(Metrics::MapMidPoint - pos.coords.x),pos.coords.z);
-	M2 * m2 = new M2("E:\\Extracted\\Character\\Tauren\\Male\\TaurenMale.M2");
-	Doodad * doodad=new Doodad(m2,0,pos,1024);
-	//Doodad * doodad=new Doodad(m2,0,object->GetPosition(),1024);
-	//real_position=Vector3(Metrics::MapMidPoint - header.position.y,-(Metrics::MapMidPoint - header.position.x),header.position.z);
-	doodad->SetPosition(pos);
-	for (unsigned long i=0;i<doodad->GetVertexCount();i++)
-	{
-	doodad->GetVertices()[i].position.x*=100;
-	doodad->GetVertices()[i].position.y*=100;
-	doodad->GetVertices()[i].position.z*=100;
-	}
-	delete m2;
-	*/
 	wow_object_avatars.push_back(avatar);
 }
 
-void Area::InitAreaBoundingBox()
-{
-	vector<float> points = vector<float>();
-	Chunk * chunk;
-	auto add_point = [](vector<float> & points, Utils::Graphics::BoundingBox & bb)
-	{
-		points.push_back(bb.up.x);
-		points.push_back(bb.up.y);
-		points.push_back(bb.up.z);
-		points.push_back(bb.down.x);
-		points.push_back(bb.down.y);
-		points.push_back(bb.down.z);
-	};
-	/*for (int i = 0; i < area_size; i++)
-	{
-		for (int j = 0; j < area_size; j++)
-		{
-			chunk = chunks[i][j];
-			if (chunk)*/
-	for (auto &chunk : chunkss)
-	{
-		add_point(points, chunk->GetBoundingBox());
-	}
-	rcCalcBounds(&points[0], points.size() / 3, bounding_box.GetArrayMin(), bounding_box.GetArrayMax());
-	points.clear();
-	/*for (int i = 0; i < area_size; i++)
-	{
-		for (int j = 0; j < area_size; j++)
-		{
-			chunk = chunks[i][j];
-			if (chunk)*/
-
-	for (auto &wmo : wmos)
-	{
-
-		add_point(points, wmo->GetBoundingBox());
-	}
-	for (auto &doodad : doodads)
-	{
-
-		add_point(points, doodad->GetBoundingBox());
-	}
-	//add_point(points, chunk->GetBoundingBox());
-
-
-	Utils::Graphics::BoundingBox bb;
-	if (points.size() > 0)
-	{
-		rcCalcBounds(&points[0], points.size() / 3, bb.GetArrayMin(), bb.GetArrayMax());
-		bounding_box.up.y = bb.up.y;
-		bounding_box.down.y = bb.down.y;
-	}
-
-}
 
 bool Area::IsOutOfBounds(Location * location, Point2D<int> block_coordinates,Point2D<int> coordinates)
 {
@@ -376,4 +306,9 @@ void Area::InitMapObjects()
 		else
 			++it;
 	}
+}
+
+void Area::CheckAndMoveImpl(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
+{
+	Fill(location, block_coordinates, coordinates);
 }

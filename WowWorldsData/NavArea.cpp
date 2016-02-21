@@ -36,24 +36,85 @@ NavArea & NavArea::operator=(NavArea && right)
 	return *this;
 }
 
-void NavArea::Fill(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
+//void NavArea::Fill(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
+//{
+//	Area::Fill(location, block_coordinates, coordinates);
+//	InitAreaBoundingBox();
+//	InitNavigation();
+//}
+//void NavArea::CheckAndMove(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
+//{
+//	if (IsMoved(location, block_coordinates, coordinates))
+//	{
+//		Fill(location, block_coordinates, coordinates);
+//		//InitNavigation();
+//	}
+//
+//}
+void NavArea::CheckAndMoveImpl(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {
-	Area::Fill(location, block_coordinates, coordinates);
-	InitAreaBoundingBox();
+	cout << "NAV";
+	//Fill(location, block_coordinates, coordinates);
+	Area::CheckAndMoveImpl(location, block_coordinates, coordinates);
 	InitNavigation();
 }
-void NavArea::CheckAndMove(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
+void NavArea::InitAreaBoundingBox()
 {
-	if (IsMoved(location, block_coordinates, coordinates))
+	vector<float> points = vector<float>();
+	Chunk * chunk;
+	auto add_point = [](vector<float> & points, Utils::Graphics::BoundingBox & bb)
 	{
-		Fill(location, block_coordinates, coordinates);
-		//InitNavigation();
+		points.push_back(bb.up.x);
+		points.push_back(bb.up.y);
+		points.push_back(bb.up.z);
+		points.push_back(bb.down.x);
+		points.push_back(bb.down.y);
+		points.push_back(bb.down.z);
+	};
+	/*for (int i = 0; i < area_size; i++)
+	{
+	for (int j = 0; j < area_size; j++)
+	{
+	chunk = chunks[i][j];
+	if (chunk)*/
+	for (auto &chunk : chunkss)
+	{
+		add_point(points, chunk->GetBoundingBox());
+	}
+	rcCalcBounds(&points[0], points.size() / 3, bounding_box.GetArrayMin(), bounding_box.GetArrayMax());
+	points.clear();
+	/*for (int i = 0; i < area_size; i++)
+	{
+	for (int j = 0; j < area_size; j++)
+	{
+	chunk = chunks[i][j];
+	if (chunk)*/
+
+	for (auto &wmo : wmos)
+	{
+
+		add_point(points, wmo->GetBoundingBox());
+	}
+	for (auto &doodad : doodads)
+	{
+
+		add_point(points, doodad->GetBoundingBox());
+	}
+	//add_point(points, chunk->GetBoundingBox());
+
+
+	Utils::Graphics::BoundingBox bb;
+	if (points.size() > 0)
+	{
+		rcCalcBounds(&points[0], points.size() / 3, bb.GetArrayMin(), bb.GetArrayMax());
+		bounding_box.up.y = bb.up.y;
+		bounding_box.down.y = bb.down.y;
 	}
 
 }
+
 void NavArea::InitNavigation()
 {
-
 	InitAreaBoundingBox();
 	BuildAllTiles();
 }
