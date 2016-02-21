@@ -136,30 +136,33 @@ void Chunk::LoadMcrd(unsigned long size)
 	{
 		
 		MDDF mddf = adt->GetMDDFs()[doodads_refs.get()[i]];
-		exist = false;
-		for (auto &doodad_ptr : area->GetDoodads())
-		{
-			Doodad * doodad = doodad_ptr.get();
-			if (mddf.UniqueId == doodad->GetUUID())
-			{
-				exist = true;
-				doodad->Refresh();
-				if (!doodad->IsOccupied())
-				{
-					doodads.push_back(doodad);
-					doodad->Occupie();
-				}
-				break;
-			}
-		}
+		M2Info info = M2Info(Configuration::GetGameDataPath() + (adt->GetDoodadsFilenames() + adt->GetDoodadsIds()[mddf.Mmid]),mddf);
+		doodad_infos.push_back(info);
+		doodad_uuids.push_back(mddf.UniqueId);
+		mddfs.push_back(mddf);
+		//exist = false;
+		//for (auto &doodad_ptr : area->GetDoodads())
+		//{
+		//	Doodad * doodad = doodad_ptr.get();
+		//	if (mddf.UniqueId == doodad->GetUUID())
+		//	{
+		//		exist = true;
+		//		/*doodad->Refresh();
+		//		if (!doodad->IsOccupied())
+		//		{
+		//			doodads.push_back(doodad);
+		//			doodad->Occupie();
+		//		}*/
+		//		break;
+		//	}
+		//}
 
 
-		string filename= Configuration::GetGameDataPath()+(adt->GetDoodadsFilenames()+adt->GetDoodadsIds()[mddf.Mmid]);
-		Doodad * doodad = new Doodad(filename, mddf.UniqueId, Position(mddf.Position, mddf.Rotation), mddf.Scale);
-		doodad->Occupie();
-		//wmos.push_back(move(wmo));
-		area->GetDoodads().push_back(move(unique_ptr<Doodad>(doodad)));
-		doodads.push_back(area->GetDoodads().back().get());
+		//string filename= Configuration::GetGameDataPath()+(adt->GetDoodadsFilenames()+adt->GetDoodadsIds()[mddf.Mmid]);
+		//Doodad * doodad = new Doodad(filename, mddf.UniqueId, Position(mddf.Position, mddf.Rotation), mddf.Scale);
+		////doodad->Occupie();
+		//area->GetDoodads().push_back(move(unique_ptr<Doodad>(doodad)));
+		////doodads.push_back(area->GetDoodads().back().get());
 	}
 }
 void Chunk::LoadMcrw(unsigned long size)
@@ -170,32 +173,40 @@ void Chunk::LoadMcrw(unsigned long size)
 	obj_reader->ReadArray<unsigned>(wmo_refs.get(), count);
 	for (unsigned i = 0; i < count; i++)
 	{
-		MODF modf = adt->GetMODFs()[wmo_refs.get()[i]];
-		exist = false;
-		for (auto &wmo_ptr : area->GetWMOs())
-		{
-			WMO * wmo = wmo_ptr.get();
-			if (modf.UniqueId == wmo->GetUUID())
-			{
-				exist = true;
-				//wmo->Refresh();
-				if (!wmo->IsOccupied())
-				{
-					wmos.push_back(wmo);
-					wmo->Occupie();
-				}
-				break;
-			}
-		}
-		if (!exist)
-		{
-			string filename = Configuration::GetGameDataPath() + (adt->GetWMOFilenames() + adt->GetWMOsIds()[modf.Mwid]);
-			WMO  * wmo = new WMO(filename, modf.UniqueId, Position(modf.Position, modf.Rotation));
-			wmo->Occupie();
-			area->GetWMOs().push_back(move(unique_ptr<WMO>(wmo)));
-			wmos.push_back(area->GetWMOs().back().get());
 		
-		}
+		//info.modf = adt->GetMODFs()[wmo_refs.get()[i]];
+		MODF modf = adt->GetMODFs()[wmo_refs.get()[i]];
+		WMOInfo info = WMOInfo(Configuration::GetGameDataPath() + (adt->GetWMOFilenames() + adt->GetWMOsIds()[modf.Mwid]), modf);
+		wmo_infos.push_back(info);
+		wmo_uuids.push_back(modf.UniqueId);
+		modfs.push_back(modf);
+		//exist = false;
+		//for (auto &wmo_ptr : area->GetWMOs())
+		//{
+		//	WMO * wmo = wmo_ptr.get();
+		//	if (modf.UniqueId == wmo->GetUUID())
+		//	{
+		//		exist = true;
+		//		/*wmo->Refresh();
+		//		if (!wmo->IsOccupied())
+		//		{
+		//			wmos.push_back(wmo);
+		//			wmo->Occupie();
+		//		}*/
+		//		break;
+		//	}
+		//}
+		//if (!exist)
+		//{
+		//	string filename = Configuration::GetGameDataPath() + (adt->GetWMOFilenames() + adt->GetWMOsIds()[modf.Mwid]);
+		//	WMO  * wmo = new WMO(filename, modf.UniqueId, Position(modf.Position, modf.Rotation));
+		//	//wmo->Occupie();
+		//	area->GetWMOs().push_back(move(unique_ptr<WMO>(wmo)));
+		//	//wmos.push_back(area->GetWMOs().back().get());
+		//
+		//}
+
+
 		/*string filename = Configuration::GetGameDataPath() + (adt->GetWMOFilenames() + adt->GetWMOsIds()[modf.Mwid]);
 		WMO wmo = WMO(filename, modf.UniqueId, Position(modf.Position, modf.Rotation));
 		wmos.push_back(move(wmo));*/
@@ -335,4 +346,72 @@ bool Chunk::operator==(const Chunk & right)
 void Chunk::SearchForObjects()
 {
 
+}
+
+void Chunk::InitObjects()
+{
+	wmos.clear();
+	doodads.clear();
+	bool exist;
+	for (auto modf : modfs)
+	{
+		exist = false;
+		for (auto &wmo : area->GetWMOs())
+		{
+			if (wmo->GetUUID() == modf.UniqueId)
+			{
+				exist = true;
+				if (!wmo->IsOccupied())
+				{
+					wmo->Occupie();
+					wmo->Refresh();
+					wmos.push_back(&*wmo);
+
+				}
+				break;
+			}
+		}
+		if (!exist)
+		{
+			string filename = Configuration::GetGameDataPath() + (adt->GetWMOFilenames() + adt->GetWMOsIds()[modf.Mwid]);
+			WMO  * wmo = new WMO(filename, modf.UniqueId, Position(modf.Position, modf.Rotation));
+			wmo->Occupie();
+			area->GetWMOs().push_back(move(unique_ptr<WMO>(wmo)));
+			wmos.push_back(&*area->GetWMOs().back());
+		}
+
+	}
+	for (auto mddf : mddfs)
+	{
+		exist = false;
+		for (auto &doodad : area->GetDoodads())
+		{
+			if (mddf.UniqueId == doodad->GetUUID())
+			{
+				exist = true;
+				//doodad->Refresh();
+				if (!doodad->IsOccupied())
+				{
+					doodads.push_back(&*doodad);
+					doodad->Occupie();
+				}
+				break;
+			}
+		}
+
+		if (!exist)
+		{
+			string filename = Configuration::GetGameDataPath() + (adt->GetDoodadsFilenames() + adt->GetDoodadsIds()[mddf.Mmid]);
+			Doodad * doodad = new Doodad(filename, mddf.UniqueId, Position(mddf.Position, mddf.Rotation), mddf.Scale);
+			doodad->Occupie();
+			area->GetDoodads().push_back(move(unique_ptr<Doodad>(doodad)));
+			doodads.push_back(doodad);
+		}
+	}
+}
+
+Chunk & Chunk::operator=(Chunk && other)
+{
+	area = other.area;
+	return *this;
 }

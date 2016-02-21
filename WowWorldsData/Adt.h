@@ -8,12 +8,7 @@
 using namespace Utils;
 using namespace std;
 using namespace Game;
-struct M2Info
-{
-	string file;
-	MDDF mddf;
-	M2Info(string file,MDDF mddf):file(file),mddf(mddf){}
-};
+
 
 
 class ADT:public ChunkedData

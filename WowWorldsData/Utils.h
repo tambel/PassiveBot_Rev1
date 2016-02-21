@@ -155,6 +155,7 @@ namespace Utils
 	Point2D<int> WorldPositionToBlockCoords(Vector3 position);
 	Point2D<float> BlockCoordsToWorldPosition(Point2D<int> coords);
 	Point2D<int> WorldPositionToChunkCoords(Vector3 position);
+	Point2D<int> ToGlobalChunkCoords(Point2D<int> & block_coordinates, Point2D<int> & coordinates);
 
 	namespace Graphics
 	{

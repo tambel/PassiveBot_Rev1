@@ -89,8 +89,6 @@ using namespace std;
 void Model::_move(Model & other)
 {
 	bounding_box = other.bounding_box;
-	name = other.name;
-
 	vertices = other.vertices;
 	vertices = nullptr;
 	//vertices = other.vertices;

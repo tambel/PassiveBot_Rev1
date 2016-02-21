@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "MapObject.h"
 
-unsigned MapObject::lifetime = 2;
+unsigned MapObject::lifetime = 3;
 inline void MapObject::swap(MapObject & other)
 {
 	name = move(other.name);

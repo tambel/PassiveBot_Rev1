@@ -56,13 +56,17 @@ void MapFrame::OnUpdate()
 	{
 		//mSceneMgr->destroyAllManualObjects();
 		//CreateAreaScene();
+		rends.clear();
+		mSceneMgr->destroyAllManualObjects();
 		UpdateScene();
+		
 		CreateNavMesh();
+		
 		area->to_update = false;
 	}
 	area->data_mutex.unlock();
 	//InitAdditionalObjects();
-
+	//cout << rends.size() << endl;
 }
 
 void MapFrame::InitAdditionalObjects()
@@ -349,7 +353,8 @@ void MapFrame::UpdateScene()
 
 			//Chunk * chunk = area->GetChunks()[i][j];
 			//if (!chunk) continue;
-			for (auto &wmo : chunk->GetWMOs())
+
+			/*for (auto &wmo : chunk->GetWMOs())
 			{
 				if (it->GetModel() == &*wmo)
 				{
@@ -363,6 +368,21 @@ void MapFrame::UpdateScene()
 				{
 					exist = true;
 				}
+			}*/
+		}
+		for (auto &wmo : area->GetWMOs())
+		{
+			if (it->GetModel() == &*wmo)
+			{
+				exist = true;
+			}
+
+		}
+		for (auto &doodad : area->GetDoodads())
+		{
+			if (it->GetModel() == &*doodad)
+			{
+				exist = true;
 			}
 		}
 		if (!exist)
@@ -400,13 +420,13 @@ void MapFrame::UpdateScene()
 		//Chunk * chunk = area->GetChunks()[i][j];
 		//if (!chunk) continue;
 
-		/*for (auto &wmo : area->GetWMOs())
-			add_if_not_exist(&*wmo, rends, mSceneMgr);
-		for (auto &doodad : area->GetDoodads())
-			add_if_not_exist(&*doodad, rends, mSceneMgr);*/
-		for (auto wmo : chunk->GetWMOs())
-			add_if_not_exist(&*wmo, rends, mSceneMgr);
-			for (auto &doodad : chunk->GetDoodads())
-			add_if_not_exist(&*doodad, rends, mSceneMgr);
+		/*for (auto wmo : chunk->GetWMOs())
+			add_if_not_exist(wmo, rends, mSceneMgr);
+		for (auto doodad : chunk->GetDoodads())
+			add_if_not_exist(doodad, rends, mSceneMgr);*/
 	}
+	for (auto &wmo : area->GetWMOs())
+		add_if_not_exist(&*wmo, rends, mSceneMgr);
+	for (auto &doodad : area->GetDoodads())
+		add_if_not_exist(&*doodad, rends, mSceneMgr);
 }

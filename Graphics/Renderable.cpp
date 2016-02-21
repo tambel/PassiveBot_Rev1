@@ -39,7 +39,24 @@ Renderable::~Renderable()
 	if (scene)
 	{
 		scene->detachAllObjects();
-		scene->getCreator()->getRootSceneNode()->removeChild(scene);
+		//scene->getCreator()->getRootSceneNode()->removeAndDestroyChild(to_string(id));
+		Ogre::SceneNode::ObjectIterator itObject = scene->getAttachedObjectIterator();
+
+		while (itObject.hasMoreElements())
+		{
+			Ogre::MovableObject* pObject = static_cast<Ogre::MovableObject*>(itObject.getNext());
+			scene->getCreator()->destroyMovableObject(pObject);
+		}
+
+		// Recurse to child SceneNodes
+		//Ogre::SceneNode::ChildNodeIterator itChild = scene->getChildIterator();
+
+		/*while (itChild.hasMoreElements())
+		{
+			Ogre::SceneNode* pChildNode = static_cast<SceneNode*>(itChild.getNext());
+			DestroyAllAttachedMovableObjects(pChildNode);
+		}*/
+		
 	}
 }
 void Renderable::CreateScene(Ogre::SceneNode * parent)
@@ -49,7 +66,7 @@ void Renderable::CreateScene(Ogre::SceneNode * parent)
 		return;
 	}
 	string name=to_string(GetID());
-	scene=parent->createChildSceneNode();
+	scene=parent->createChildSceneNode(name);
 	//Ogre::SceneNode * scene =parent_scene->createChildSceneNode();
 	Ogre::ManualObject * manual = scene->getCreator()->createManualObject();
 	manual->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_LIST);

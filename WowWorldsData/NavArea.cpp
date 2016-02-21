@@ -40,7 +40,7 @@ void NavArea::Fill(Location * location, Point2D<int> block_coordinates, Point2D<
 {
 	Area::Fill(location, block_coordinates, coordinates);
 	InitAreaBoundingBox();
-	//InitNavigation();
+	InitNavigation();
 }
 void NavArea::CheckAndMove(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {
@@ -195,74 +195,21 @@ unsigned char * NavArea::BuildTileMesh(int x, int y, const float* bmin, const fl
 	unique_ptr<unsigned char>m_triareas_ptr;
 	unsigned char * m_triareas;
 	int m_tileTriCount = 0;
-	for (int i = 0; i < area_size; i++)
+	/*for (int i = 0; i < area_size; i++)
 	{
 		for (int j = 0; j < area_size; j++)
-		{
-			Chunk * chunk = chunks[i][j];
-			if (!chunk)
-				continue;
-			
-			for (auto doodad : chunk->GetDoodads())
-			{
-				RastChunks(doodad, m_cfg, m_ctx, m_solid, m_tileTriCount);
-			}
-			for (auto wmo : chunk->GetWMOs())
-			{
-				RastChunks(wmo, m_cfg, m_ctx, m_solid, m_tileTriCount);
-
-				//for (auto &part : wmo->GetParts())
-				{
-					
-					//Utils::Graphics::BoundingBox & bbox = wmo->GetBoundingBox();
-					//bool overlap = true;
-					//overlap = (tbmin[0] > bbox.down.x || tbmax[0] < bbox.up.x) ? false : overlap;
-					//overlap = (tbmin[1] > bbox.down.z || tbmax[1] < bbox.up.z) ? false : overlap;
-					//if (overlap)
-					//{
-					//	//overlapping_chunks.push_back(chunk);
-					//	float * verts = wmo->rvertices;
-					//	const int* ctris = wmo->GetIndices();
-					//	const int nctris = wmo->GetIndexCount() / 3;
-					//	m_tileTriCount += nctris;
-					//	m_triareas_ptr.reset();
-					//	m_triareas_ptr = unique_ptr<unsigned char>(new unsigned char[nctris]);
-					//	m_triareas = m_triareas_ptr.get();
-					//	//m_triareas = new unsigned char[nctris];
-					//	rcMarkWalkableTriangles(m_ctx, m_cfg.walkableSlopeAngle, verts, chunk->vert_count, ctris, nctris, m_triareas);
-					//	if (!rcRasterizeTriangles(m_ctx, verts, chunk->vert_count, ctris, m_triareas, nctris, *m_solid, m_cfg.walkableClimb))
-					//		return 0;
-					//	//delete[] m_triareas;
-					//	m_triareas = 0;
-					//}
-				}
-			}
-			RastChunks(chunk, m_cfg, m_ctx, m_solid, m_tileTriCount);
-
-			//Utils::Graphics::BoundingBox & bbox = chunk->GetTerrainBoundingBox();
-			//bool overlap = true;
-			//overlap = (tbmin[0] > bbox.down.x || tbmax[0] < bbox.up.x) ? false : overlap;
-			//overlap = (tbmin[1] > bbox.down.z || tbmax[1] < bbox.up.z) ? false : overlap;
-			//if (overlap)
-			//{
-			//	//overlapping_chunks.push_back(chunk);
-			//	float * verts = chunk->nav_vertices.get();
-			//	const int* ctris = chunk->nav_indices.get();
-			//	const int nctris = chunk->ind_count / 3;
-			//	m_tileTriCount += nctris;
-			//	m_triareas_ptr.reset();
-			//	m_triareas_ptr = unique_ptr<unsigned char>(new unsigned char[nctris]);
-			//	m_triareas = m_triareas_ptr.get();
-			//	//m_triareas = new unsigned char[nctris];
-			//	rcMarkWalkableTriangles(m_ctx, m_cfg.walkableSlopeAngle, verts, chunk->vert_count, ctris, nctris, m_triareas);
-			//	if (!rcRasterizeTriangles(m_ctx, verts, chunk->vert_count, ctris, m_triareas, nctris, *m_solid, m_cfg.walkableClimb))
-			//		return 0;
-			//	//delete[] m_triareas;
-			//	m_triareas = 0;
-			//}
-		
-
-		}
+		{*/
+	for (auto &chunk : chunkss)
+	{
+		RastChunks(&*chunk, m_cfg, m_ctx, m_solid, m_tileTriCount);
+	}
+	for (auto &doodad : doodads)
+	{
+		RastChunks(&*doodad, m_cfg, m_ctx, m_solid, m_tileTriCount);
+	}
+	for (auto &wmo : wmos)
+	{
+		RastChunks(&*wmo, m_cfg, m_ctx, m_solid, m_tileTriCount);
 	}
 	rcFilterLowHangingWalkableObstacles(m_ctx, m_cfg.walkableClimb, *m_solid);
 	rcFilterLedgeSpans(m_ctx, m_cfg.walkableHeight, m_cfg.walkableClimb, *m_solid);

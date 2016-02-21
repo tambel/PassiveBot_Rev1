@@ -23,7 +23,12 @@ struct MODF
 	short NameSet;
 	short padding;
 };
-
+struct M2Info
+{
+	string filename;
+	MDDF mddf;
+	M2Info(string filename, MDDF mddf) :filename(move(filename)), mddf(mddf) {}
+};
 struct MCNK
 {
 	char unk1[4];//0

@@ -26,6 +26,7 @@ protected:
 	vector<unique_ptr<Doodad>> doodads;
 	vector<unique_ptr<WMO>> wmos;
 	vector<unique_ptr<Chunk>>chunkss;
+	vector<Chunk*> active_chunks;
 	Chunk *** chunks;
 	int radius;
 	int area_size;
@@ -38,7 +39,6 @@ protected:
 	bool IsMoved(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 
 	void CheckAndClearOldObjects();
-
 
 public:
 	
@@ -61,7 +61,9 @@ public:
 	inline vector<unique_ptr<Doodad>> & GetDoodads() { return doodads; }
 	void InitAreaBoundingBox();
 	inline vector<unique_ptr<Chunk>> & GetChunkss() { return chunkss; }
-
+	inline vector<Chunk*> GetActiveChunks() { return active_chunks; }
+	bool IsOutOfBounds(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
+	void InitMapObjects();
 	
 	
 

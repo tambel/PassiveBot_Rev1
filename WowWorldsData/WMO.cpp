@@ -16,7 +16,7 @@ WMO::WMO(string filename, unsigned uuid, Position & position):
 	uuid(uuid)// ,position(position)
 {
 	this->position = position;
-	WMORoot root = WMORoot(this->filename);
+	WMORoot root = WMORoot(this->name);
 	this->position.coords = Vector3(this->position.coords.x, -this->position.coords.z, this->position.coords.y);
 	for (auto &group : root.wmo_groups)
 	{
@@ -132,6 +132,7 @@ WMO::WMO(WMO && right)
 
 WMO::~WMO()
 {
+	cout << "WMO DELETED!" << endl << name << " UUID -" << uuid << " lifetime -" << unused_iter_count << endl;
 }
 
 WMO & WMO::operator=(WMO && right)

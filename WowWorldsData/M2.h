@@ -7,6 +7,7 @@
 #include "M2Structs.h"
 #include "Doodad.h"
 class Doodad;
+
 class M2
 {
 	

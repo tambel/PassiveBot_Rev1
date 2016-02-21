@@ -11,6 +11,7 @@ protected:
 	string name;
 	void swap(MapObject & other);
 	bool occupied = false;
+	bool to_remove = true;;
 public:
 	MapObject();
 	MapObject(string  filename);
@@ -22,9 +23,14 @@ public:
 	inline bool IsAlive() { return unused_iter_count < lifetime; }
 	void Refresh();
 	inline void Occupie() { occupied = true; }
+	inline void Unoccupie() { occupied = false; }
 	inline void Free() { occupied = false; }
 	inline bool  IsOccupied() { return occupied; }
 	inline string & GetName() { return name; }
 	//inline bool IsRefreshed() {  return  refreshed}
+	inline void ToRemove() { to_remove = true; }
+	inline bool IsRemoved() { return to_remove; }
+	inline void Prolong() { to_remove = false; }
+	
 };
 

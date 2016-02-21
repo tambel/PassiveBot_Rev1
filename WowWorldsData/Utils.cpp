@@ -16,6 +16,11 @@ namespace Utils
 		Point2D<int> r = Point2D<int>(floor(abs(position.x-block_position.X)/Metrics::ChunkSize),floor(abs(position.y-block_position.Y)/Metrics::ChunkSize));
 		return r;
 	}
+	Point2D<int> ToGlobalChunkCoords(Point2D<int> & block_coordinates, Point2D<int> & coordinates)
+	{
+
+		return Point2D<int>(block_coordinates.X*16+coordinates.X,block_coordinates.Y+coordinates.Y);
+	}
 	namespace Game
 	{
 		vector<Location*> LocationBase::locations=vector<Location*>();

@@ -21,6 +21,10 @@ struct ChunkAdditionalData
 	MDDF * mddfs;
 	unsigned mddfs_count;
 };
+
+
+
+
 class ChunkModel
 {
 public:
@@ -56,14 +60,19 @@ public:
 		return indices;
 	}
 };
+struct M2info;
 class ADT;
+struct WMOInfo;
+
 class Chunk:public Model,public MapObject
 {
 private:
-	static vector<unsigned> doodad_uuids;
-	static vector <unsigned> wmo_uuids;
-
-
+	 vector<unsigned> doodad_uuids;
+	 vector <unsigned> wmo_uuids;
+	 vector<MDDF> mddfs;
+	 vector <MODF> modfs;
+	 vector<WMOInfo> wmo_infos;
+	 vector<M2Info> doodad_infos;
 
 	ADT * adt;
 	Area * area;
@@ -130,7 +139,11 @@ public:
 	vector<WMO*> & GetWMOs() { return wmos; }
 	inline Utils::Graphics::BoundingBox & GetTerrainBoundingBox() { return terrain_bounding_box; }
 	inline Utils::Graphics::BoundingBox & GetFullBoundingBox() { return full_bounding_box; }
-
+	void InitObjects();
+	inline Area * GetArea() { return area; }
+	Chunk & operator=(Chunk &&);
+	inline vector<WMOInfo>  & GetWMOInfos() { return wmo_infos; }
+	inline vector<M2Info> & GetDoodadInfos() { return doodad_infos; }
 
 };
 
