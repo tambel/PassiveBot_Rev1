@@ -18,21 +18,11 @@ MutableArea & MutableArea::operator=(MutableArea && other)
 	return *this;
 }
 
-void MutableArea::CheckAndMoveImpl(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
+void MutableArea::Update(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {
 	data_mutex.lock();
-	NavArea::CheckAndMoveImpl(location,block_coordinates,coordinates);
+	NavArea::Update(location, block_coordinates, coordinates);
 	to_update = true;
 	data_mutex.unlock();
 }
 
-//void MutableArea::CheckAndMove(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
-//{
-//	if (IsOutOfBounds(location,block_coordinates,coordinates))
-//	{
-//		data_mutex.lock();
-//		Fill(location, block_coordinates, coordinates);
-//		to_update = true;
-//		data_mutex.unlock();
-//	}
-//}

@@ -10,8 +10,7 @@ public:
 	MutableArea(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius);
 	~MutableArea() {}
 	MutableArea & operator=(MutableArea && other);
-	//virtual void CheckAndMove(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
-	virtual void CheckAndMoveImpl(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
+	virtual void Update(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 
 };
 

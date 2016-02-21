@@ -27,7 +27,7 @@ void WorldViewer::ShowMap()
 void WorldViewer::Update(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {
 	
-	area.CheckAndMove(location, block_coordinates, coordinates);
+	area.CheckAndUpdate(location, block_coordinates, coordinates);
 
 }
 WorldViewer & WorldViewer::operator=(WorldViewer && other)

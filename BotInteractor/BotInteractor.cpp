@@ -34,7 +34,7 @@ bool BotInteractor::FindPath(Vector3 & start, Vector3 & end)
 void BotInteractor::PulseCheck()
 {
 	Player * player = ObjectManager::GetPlayer();
-	area.CheckAndMove(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords));
+	area.CheckAndUpdate(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords));
 }
 void BotInteractor::__Test(int o)
 {

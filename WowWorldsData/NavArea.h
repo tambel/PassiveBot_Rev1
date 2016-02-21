@@ -23,6 +23,8 @@ struct NavConfig
 class NavArea :
 	public Area
 {
+protected:
+	virtual void Update(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 public:
 	NavArea();
 	NavArea(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius);
@@ -30,7 +32,7 @@ public:
 	NavArea & operator=(NavArea && right);
 	//virtual  void Fill(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	//virtual void CheckAndMove(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
-	virtual void CheckAndMoveImpl(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
+	//virtual void CheckAndMoveImpl(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	void InitAreaBoundingBox();
 
 	static NavConfig config;

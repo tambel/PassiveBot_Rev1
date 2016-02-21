@@ -22,12 +22,12 @@ void MapFrame::createScene()
 	UpdateScene();
 	CreateNavMesh();
 	//createRecastPathLine(0);
-	for (int i = 0; i < area->GetRadius() * 2 + 1; i++)
+	/*for (int i = 0; i < area->GetRadius() * 2 + 1; i++)
 	{
 		bool br = false;
 		for (int j = 0; j < area->GetRadius() * 2 + 1; j++)
 		{
-			if (area->GetChunks()[i][j])
+			if (area->GetChunkss()[i][j])
 			{
 				mCamera->setPosition(Vector3ToOgreVector(area->GetChunks()[i][j]->GetRealPosition()));
 				break;
@@ -35,7 +35,7 @@ void MapFrame::createScene()
 		}
 		if (br) break;
 
-	}
+	}*/
 	mCamera->setPosition(Vector3ToOgreVector(area->GetChunkss()[0]->GetRealPosition()));
 	//mCamera->setPosition(0,0,0);
 	area->data_mutex.unlock();

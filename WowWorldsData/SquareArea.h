@@ -39,6 +39,7 @@ protected:
 	bool IsMoved(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 
 	void CheckAndClearOldObjects();
+	virtual void Update(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 
 public:
 	
@@ -49,8 +50,9 @@ public:
 	//Area(Area && area);
 	~Area(void);
 	Area & operator=(Area && right);
-	virtual void Fill(Location * location, Point2D<int> block_coordinates,Point2D<int> coordinates);
-	virtual void CheckAndMove(Location * location, Point2D<int> block_coordinates,Point2D<int> coordinates);
+	//void Update(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
+	
+	virtual void CheckAndUpdate(Location * location, Point2D<int> block_coordinates,Point2D<int> coordinates);
 	int GetRadius() {return radius;}
 	inline int GetSize() { return area_size; }
 	Chunk *** GetChunks() { return chunks; }
@@ -64,7 +66,7 @@ public:
 	inline vector<Chunk*> GetActiveChunks() { return active_chunks; }
 	bool IsOutOfBounds(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	void InitMapObjects();
-	virtual void CheckAndMoveImpl(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
+	//virtual void CheckAndMoveImpl(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	
 	
 

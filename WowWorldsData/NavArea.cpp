@@ -1,6 +1,12 @@
 #include "stdafx.h"
 #include "NavArea.h"
 NavConfig NavArea::config;
+void NavArea::Update(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
+{
+	Area::Update(location, block_coordinates, coordinates);
+	//InitNavigation();
+
+}
 NavArea::NavArea() :Area()
 {
 	m_nsmoothPath = 0;
@@ -14,7 +20,7 @@ NavArea::NavArea(Location * location, Point2D<int> block_coordinates, Point2D<in
 	m_nsmoothPath = 0;
 	polys = vector<unique_ptr<rcPolyMesh>>();
 	m_navMesh = 0;
-	Fill(location, block_coordinates, coordinates);
+	//InitNavigation();
 }
 
 
@@ -34,29 +40,6 @@ NavArea & NavArea::operator=(NavArea && right)
 	m_navMesh = right.m_navMesh;
 	right.m_navMesh = nullptr;
 	return *this;
-}
-
-//void NavArea::Fill(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
-//{
-//	Area::Fill(location, block_coordinates, coordinates);
-//	InitAreaBoundingBox();
-//	InitNavigation();
-//}
-//void NavArea::CheckAndMove(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
-//{
-//	if (IsMoved(location, block_coordinates, coordinates))
-//	{
-//		Fill(location, block_coordinates, coordinates);
-//		//InitNavigation();
-//	}
-//
-//}
-void NavArea::CheckAndMoveImpl(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
-{
-	cout << "NAV";
-	//Fill(location, block_coordinates, coordinates);
-	Area::CheckAndMoveImpl(location, block_coordinates, coordinates);
-	InitNavigation();
 }
 void NavArea::InitAreaBoundingBox()
 {

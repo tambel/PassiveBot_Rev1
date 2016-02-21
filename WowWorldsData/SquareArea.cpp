@@ -70,17 +70,8 @@ Area::Area(Location * location, Point2D<int> block_coordinates, Point2D<int> coo
 	area_size = radius * 2 + 1;
 	chunks = new Chunk**[area_size];
 	wow_object_avatars = vector<WowObjectAvatar*>();
-	for (int i = 0; i < area_size; i++)
-	{
-		chunks[i] = new Chunk *[area_size];
-		for (int j = 0; j < area_size; j++)
-		{
-			chunks[i][j] = 0;
-		}
-	}
+	this->Update(location,block_coordinates,coordinates);
 }
-
-
 Area::~Area(void)
 {
 
@@ -110,7 +101,7 @@ Area & Area::operator=(Area && right)
 	return *this;
 }
 
-void Area::Fill(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
+void Area::Update(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {
  	active_chunks.clear();
 	this->location = location;
@@ -132,10 +123,6 @@ void Area::Fill(Location * location, Point2D<int> block_coordinates, Point2D<int
 			Point2D<int> abs_pos = area_position + Point2D<int>(i, j);
 			Point2D<int>bc = block_coordinates + (Point2D<int>(abs_pos.X / 16, abs_pos.Y / 16) - Point2D<int>(1, 1));
 			Point2D<int> c = Point2D<int>(abs_pos.X % 16, abs_pos.Y % 16);
-			//chunks[i][j] = ADTWorker::GetChunk(this,location, block_coordinates + (Point2D<int>(abs_pos.X / 16, abs_pos.Y / 16) - Point2D<int>(1, 1)), Point2D<int>(abs_pos.X % 16, abs_pos.Y % 16));
-			
-			
-
 			for (auto &chunk : chunkss)
 			{
 				if (chunk->GetLocation() == location && chunk->GetBlockCoordinates() == bc && chunk->GetCoordinates() == c)
@@ -144,23 +131,16 @@ void Area::Fill(Location * location, Point2D<int> block_coordinates, Point2D<int
 					chunk->Prolong();
 					exist = true;
 					break;
-					/*chunk->Refresh();
-					active_chunks.push_back(&*chunk);
-					exist = true;
-					break;*/
 				}
 				
 			}
 			if (!exist)
 			{
 				Chunk * chunk = ADTWorker::GetChunk(this, location, bc, c);
-				//unique_ptr<Chunk> chunk_ptr = unique_ptr<Chunk>(ADTWorker::GetChunk(this, location, bc, c));
 				if (chunk)
 				{
-					//chunk->Refresh();
 					chunkss.push_back(unique_ptr<Chunk>(chunk));
 					chunk->Prolong();
-					//active_chunks.push_back(chunk);
 				}
 			}
 
@@ -175,37 +155,19 @@ void Area::Fill(Location * location, Point2D<int> block_coordinates, Point2D<int
 			++it;
 	}
 	InitMapObjects();
-	//CheckAndClearOldObjects();
-	//for (auto ac : active_chunks)
-		//ac->InitObjects();
-	
-	cout << "WMOS" << endl;
-	for (auto &wmo : wmos)
-	{
-		cout << wmo->GetName() << ", " << wmo->GetUUID() << " Lifetime - "<<wmo->GetUnusedIterCount()<< endl;
-	}
-
-	//cout << "CHUNKS " << "WMOS" << endl;
-	//for (int i = 0; i < area_size; i++)
-	//{
-	//	for (int j = 0; j < area_size; j++)
-	//	{
-	//		Chunk * chunk = chunks[i][j];
-	//		if (!chunk) continue;
-	//		for (auto wmo : chunk->GetWMOs())
-	//		{
-	//			cout << wmo->GetName() << ", " << wmo->GetUUID() << endl;
-	//		}
-	//	}
-	//}
-	
 }
 
-void Area::CheckAndMove(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
+//void Area::Update(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
+//{
+//	this->UpdateImpl(location, block_coordinates, coordinates);
+//}
+
+void Area::CheckAndUpdate(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {
 	if (IsOutOfBounds(location, block_coordinates, coordinates))
 	{
-		this->CheckAndMoveImpl(location, block_coordinates, coordinates);
+		//Update(location, block_coordinates, coordinates);
+		this->Update(location, block_coordinates, coordinates);
 	}
 	/*if (IsOutOfBounds(location, block_coordinates, coordinates))
 		Fill(location, block_coordinates, coordinates);*/
@@ -308,7 +270,7 @@ void Area::InitMapObjects()
 	}
 }
 
-void Area::CheckAndMoveImpl(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
-{
-	Fill(location, block_coordinates, coordinates);
-}
+//void Area::CheckAndMoveImpl(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
+//{
+//	Update(location, block_coordinates, coordinates);
+//}
