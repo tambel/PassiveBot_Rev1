@@ -2,15 +2,15 @@
 using namespace std;
 using namespace ChunkSignatures;
 
-ADT::ADT(Location * location,Point2D<int> coordinates)
+ADT::ADT(Location & location,Point2D<int> coordinates)
 {
 	this->location=location;
 	this->coordinates=coordinates;
 	string terrian_path="World\\Maps\\";
-	path=Configuration::GetGameDataPath()+terrian_path+location->name+"\\"+location->name+"_"+std::to_string(coordinates.Y)+"_"+std::to_string(coordinates.X);
+	path=Configuration::GetGameDataPath()+terrian_path+location.name+"\\"+location.name+"_"+std::to_string(coordinates.Y)+"_"+std::to_string(coordinates.X);
 	root_reader=new BinaryReader(path+".adt");
 	if (!root_reader->IsFileExist())
-		throw exception();
+		throw exception("Adt file not exist");
 	for (int i=0;i<256;i++)
 	{
 		SeekChunk(root_reader,ChunkSignatures::ADTSignature::Mcnk);
@@ -22,8 +22,27 @@ ADT::ADT(Location * location,Point2D<int> coordinates)
 }
 ADT::~ADT()
 {
+	delete[] wmos_filenames;
+	wmos_filenames = nullptr;
+	delete[]doodads_filenames;
+	doodads_filenames = nullptr;
+	delete[] wmos_ids;
+	wmos_ids = nullptr;
+	delete[] doodads_ids;
+	doodads_ids = nullptr;
+
+	delete[] modfs;
+	delete[] mddfs;
+	modfs = nullptr;
+	mddfs = nullptr;
+
 	delete root_reader;
 	root_reader=0;
+
+	delete obj_reader;
+	obj_reader = nullptr;
+	m2_infos.clear();
+	wmo_infos.clear();
 }
 Chunk * ADT::GetChunk(Area * area,Point2D<int> coordinates)
 {
@@ -32,7 +51,7 @@ Chunk * ADT::GetChunk(Area * area,Point2D<int> coordinates)
 
 bool ADT::operator==(const ADT & right)
 {
-	return this->location->id==right.location->id && this->coordinates==right.coordinates && this->location==right.location;
+	return this->location==right.location && this->coordinates==right.coordinates && this->location==right.location;
 }
 void ADT::ReadObjects(bool hight_detalization)
 {
@@ -103,6 +122,7 @@ void ADT::ReadWMOModels()
 	{
 		wmos_filenames_length = obj_reader->Read<unsigned>();
 		wmos_filenames = new char[wmos_filenames_length];
+
 		obj_reader->ReadArray<char>(wmos_filenames, wmos_filenames_length);
 	}
 	if (!ChunkedData::SeekChunk(obj_reader, Utils::ChunkSignatures::ADTSignature::Mwid, true))
@@ -122,7 +142,14 @@ void ADT::ReadWMOModels()
 	}
 	for (unsigned i = 0; i<modf_count; i++)
 	{
-		wmo_infos.push_back(WMOInfo(Configuration::GetGameDataPath() + (wmos_filenames + wmos_ids[modfs[i].Mwid]), modfs[i]));
+		char ss[1000];
+		strcpy(ss, wmos_filenames + wmos_ids[modfs[i].Mwid]);
+		
+		string s = ss;
+		string n = Configuration::GetGameDataPath() + s;
+		WMOInfo info =WMOInfo(n, modfs[i]);
+		wmo_infos.push_back(info);
+		//wmo_infos.push_back(WMOInfo(Configuration::GetGameDataPath() + (wmos_filenames + wmos_ids[modfs[i].Mwid]), modfs[i]));
 	}
 	//delete [] wmos_filenames;
 	//delete[] wmos_ids;

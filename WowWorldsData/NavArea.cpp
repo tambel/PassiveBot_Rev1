@@ -1,45 +1,70 @@
 #include "stdafx.h"
 #include "NavArea.h"
+
+
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
 NavConfig NavArea::config;
-void NavArea::Update(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
+void NavArea::Update(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {
 	Area::Update(location, block_coordinates, coordinates);
-	//InitNavigation();
+	InitNavigation();
+
+}
+void NavArea::_move(NavArea & other)
+{
+	Area::_move(other);
+	m_nsmoothPath = other.m_nsmoothPath;
+	other.m_nsmoothPath = 0;
+	//m_PathStore = move(right.m_PathStore);
+	polys = move(other.polys);
+	m_navQuery = other.m_navQuery;
+	other.m_navQuery = nullptr;
+	m_navMesh = other.m_navMesh;
+	other.m_navMesh = nullptr;
 
 }
 NavArea::NavArea() :Area()
 {
-	m_nsmoothPath = 0;
+	//m_nsmoothPath = 0;
 	polys = vector<unique_ptr<rcPolyMesh>>();
 	m_navMesh = 0;
 }
-NavArea::NavArea(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius):
+NavArea::NavArea(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius):
 	Area(location,block_coordinates,coordinates,radius)
 {
 	//m_PathStore = unique_ptr<PATHDATA>(new PATHDATA);
-	m_nsmoothPath = 0;
+	//m_nsmoothPath = 0;
 	polys = vector<unique_ptr<rcPolyMesh>>();
 	m_navMesh = 0;
-	//InitNavigation();
+	InitNavigation();
 }
 
 
 NavArea::~NavArea()
 {
+	delete m_navQuery;
+	m_navQuery = nullptr;
 }
 
 NavArea & NavArea::operator=(NavArea && right)
 {
-	Area::operator=(move(right));
-	m_nsmoothPath = right.m_nsmoothPath;
-	right.m_nsmoothPath = 0;
-	//m_PathStore = move(right.m_PathStore);
-	polys = move(right.polys);
-	m_navQuery = right.m_navQuery;
-	right.m_navQuery = nullptr;
-	m_navMesh = right.m_navMesh;
-	right.m_navMesh = nullptr;
+	_move(right);
+	//m_nsmoothPath = right.m_nsmoothPath;
+	//right.m_nsmoothPath = 0;
+	////m_PathStore = move(right.m_PathStore);
+	//polys = move(right.polys);
+	//m_navQuery = right.m_navQuery;
+	//right.m_navQuery = nullptr;
+	//m_navMesh = right.m_navMesh;
+	//right.m_navMesh = nullptr;
 	return *this;
+}
+NavArea::NavArea(NavArea && area)
+{
+	_move(area);
 }
 void NavArea::InitAreaBoundingBox()
 {
@@ -54,25 +79,12 @@ void NavArea::InitAreaBoundingBox()
 		points.push_back(bb.down.y);
 		points.push_back(bb.down.z);
 	};
-	/*for (int i = 0; i < area_size; i++)
-	{
-	for (int j = 0; j < area_size; j++)
-	{
-	chunk = chunks[i][j];
-	if (chunk)*/
 	for (auto &chunk : chunkss)
 	{
 		add_point(points, chunk->GetBoundingBox());
 	}
 	rcCalcBounds(&points[0], points.size() / 3, bounding_box.GetArrayMin(), bounding_box.GetArrayMax());
 	points.clear();
-	/*for (int i = 0; i < area_size; i++)
-	{
-	for (int j = 0; j < area_size; j++)
-	{
-	chunk = chunks[i][j];
-	if (chunk)*/
-
 	for (auto &wmo : wmos)
 	{
 
@@ -98,8 +110,10 @@ void NavArea::InitAreaBoundingBox()
 
 void NavArea::InitNavigation()
 {
+	//_CrtSetBreakAlloc(7037);
 	InitAreaBoundingBox();
 	BuildAllTiles();
+	//_CrtDumpMemoryLeaks();
 }
 void NavArea::BuildAllTiles()
 {
@@ -148,7 +162,10 @@ void NavArea::BuildAllTiles()
 		//m_ctx->log(RC_LOG_ERROR, "buildTiledNavigation: Could not init Detour navmesh query");
 		return;
 	}
+	int c = 0;
 	int count = 0;
+	//ifstream file;
+	string name;
 	for (int y = 0; y < th; ++y)
 	{
 		for (int x = 0; x < tw; ++x)
@@ -160,22 +177,31 @@ void NavArea::BuildAllTiles()
 			m_tileBmax[0] = bmin[0] + (x + 1)*tcs;
 			m_tileBmax[1] = bmax[1];
 			m_tileBmax[2] = bmin[2] + (y + 1)*tcs;
-
+			auto vector_to_string = [](const float * vector)
+			{
+				return to_string(vector[0]) + "-" + to_string(vector[1]) + "-" + to_string(vector[2]);
+			};
 			int dataSize = 0;
 			unsigned char* data = BuildTileMesh(x, y, m_tileBmin, m_tileBmax, dataSize);
 
 			if (!data) count++;
 			if (data)
 			{
+
 				// Remove any previous data (navmesh owns and deletes the data).
 				m_navMesh->removeTile(m_navMesh->getTileRefAt(x, y, 0), 0, 0);
 				// Let the navmesh own the data.
-				dtStatus status = m_navMesh->addTile(data, dataSize, DT_TILE_FREE_DATA, 0, 0);
-				if (dtStatusFailed(status))
-					dtFree(data);
+				if (c > 10)
+				{
+					dtStatus status = m_navMesh->addTile(data, dataSize, DT_TILE_FREE_DATA, 0, 0);
+					if (dtStatusFailed(status))
+						dtFree(data);
+				}
+				c++;
 			}
 		}
 	}
+	//saveAll("all_tiles_navmesh.bin", m_navMesh);
 	status = m_navQuery->init(m_navMesh, 2048);
 	if (dtStatusFailed(status))
 	{
@@ -183,8 +209,61 @@ void NavArea::BuildAllTiles()
 		return;
 	}
 }
+struct NavMeshSetHeader
+{
+	int magic;
+	int version;
+	int numTiles;
+	dtNavMeshParams params;
+};
+struct NavMeshTileHeader
+{
+	dtTileRef tileRef;
+	int dataSize;
+};
+static const int NAVMESHSET_MAGIC = 'M' << 24 | 'S' << 16 | 'E' << 8 | 'T'; //'MSET';
+static const int NAVMESHSET_VERSION = 1;
+void NavArea::saveAll(const char* path, const dtNavMesh* mesh)
+{
+	if (!mesh) return;
 
-unsigned char * NavArea::BuildTileMesh(int x, int y, const float* bmin, const float* bmax, int dataSize)
+	FILE* fp = fopen(path, "wb");
+	if (!fp)
+		return;
+
+	// Store header.
+	NavMeshSetHeader header;
+	header.magic = NAVMESHSET_MAGIC;
+	header.version = NAVMESHSET_VERSION;
+	header.numTiles = 0;
+	for (int i = 0; i < mesh->getMaxTiles(); ++i)
+	{
+		const dtMeshTile* tile = mesh->getTile(i);
+		if (!tile || !tile->header || !tile->dataSize) continue;
+		header.numTiles++;
+	}
+	memcpy(&header.params, mesh->getParams(), sizeof(dtNavMeshParams));
+	fwrite(&header, sizeof(NavMeshSetHeader), 1, fp);
+
+	// Store tiles.
+	for (int i = 0; i < mesh->getMaxTiles(); ++i)
+	{
+		const dtMeshTile* tile = mesh->getTile(i);
+		if (!tile || !tile->header || !tile->dataSize) continue;
+
+		NavMeshTileHeader tileHeader;
+		tileHeader.tileRef = mesh->getTileRef(tile);
+		tileHeader.dataSize = tile->dataSize;
+		fwrite(&tileHeader, sizeof(tileHeader), 1, fp);
+
+		fwrite(tile->data, tile->dataSize, 1, fp);
+	}
+
+	fclose(fp);
+}
+
+
+unsigned char * NavArea::BuildTileMesh(int x, int y, const float* bmin, const float* bmax, int & dataSize)
 {
 	unique_ptr<rcContext> m_ctx_ptr = unique_ptr<rcContext>(new rcContext());
 	rcContext * m_ctx = m_ctx_ptr.get();
@@ -243,17 +322,50 @@ unsigned char * NavArea::BuildTileMesh(int x, int y, const float* bmin, const fl
 	{
 		for (int j = 0; j < area_size; j++)
 		{*/
+	auto  RasterizeModel=[](Model * model, rcConfig & m_cfg, rcContext * m_ctx, rcHeightfield * m_solid, int & m_tileTriCount)
+	{
+
+		float tbmin[2], tbmax[2];
+		tbmin[0] = m_cfg.bmin[0];
+		tbmin[1] = m_cfg.bmin[2];
+		tbmax[0] = m_cfg.bmax[0];
+		tbmax[1] = m_cfg.bmax[2];
+		unique_ptr<unsigned char>m_triareas_ptr;
+		unsigned char * m_triareas;
+		Utils::Graphics::BoundingBox & bbox = model->GetBoundingBox();
+		bool overlap = true;
+		overlap = (tbmin[0] > bbox.down.x || tbmax[0] < bbox.up.x) ? false : overlap;
+		overlap = (tbmin[1] > bbox.down.z || tbmax[1] < bbox.up.z) ? false : overlap;
+		overlap = true;
+		if (overlap)
+		{
+			//overlapping_chunks.push_back(chunk);
+			float * verts = model->vertices;
+			const int* ctris = model->GetIndices();
+			const int nctris = model->GetIndexCount() / 3;
+			m_tileTriCount += nctris;
+			m_triareas_ptr.reset();
+			m_triareas_ptr = unique_ptr<unsigned char>(new unsigned char[nctris]);
+			m_triareas = m_triareas_ptr.get();
+			//m_triareas = new unsigned char[nctris];
+			rcMarkWalkableTriangles(m_ctx, m_cfg.walkableSlopeAngle, verts, model->GetVertexCount(), ctris, nctris, m_triareas);
+			if (!rcRasterizeTriangles(m_ctx, verts, model->GetVertexCount(), ctris, m_triareas, nctris, *m_solid, m_cfg.walkableClimb))
+				return 0;
+			//delete[] m_triareas;
+			m_triareas = 0;
+		}
+	};
 	for (auto &chunk : chunkss)
 	{
-		RastChunks(&*chunk, m_cfg, m_ctx, m_solid, m_tileTriCount);
+		RasterizeModel(&*chunk, m_cfg, m_ctx, m_solid, m_tileTriCount);
 	}
 	for (auto &doodad : doodads)
 	{
-		RastChunks(&*doodad, m_cfg, m_ctx, m_solid, m_tileTriCount);
+		RasterizeModel(&*doodad, m_cfg, m_ctx, m_solid, m_tileTriCount);
 	}
 	for (auto &wmo : wmos)
 	{
-		RastChunks(&*wmo, m_cfg, m_ctx, m_solid, m_tileTriCount);
+		RasterizeModel(&*wmo, m_cfg, m_ctx, m_solid, m_tileTriCount);
 	}
 	rcFilterLowHangingWalkableObstacles(m_ctx, m_cfg.walkableClimb, *m_solid);
 	rcFilterLedgeSpans(m_ctx, m_cfg.walkableHeight, m_cfg.walkableClimb, *m_solid);
@@ -806,7 +918,7 @@ void NavArea::InitNavConfig()
 {
 	config.m_maxTiles = 1024;
 	config.m_maxPolysPerTile = 4096;
-	config.m_tileSize = 32.0;
+	config.m_tileSize = 111, 11111;// Utils::Metrics::ChunkSize;
 	config.m_cellSize = 0.3;
 	config.m_cellHeight = 0.2;
 	config.m_agentHeight = 2.0;

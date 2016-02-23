@@ -132,6 +132,7 @@ WMO::WMO(WMO && right)
 
 WMO::~WMO()
 {
+	
 	cout << "WMO DELETED!" << endl << name << " UUID -" << uuid << " lifetime -" << unused_iter_count << endl;
 }
 

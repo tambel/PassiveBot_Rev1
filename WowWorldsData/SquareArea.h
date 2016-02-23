@@ -30,29 +30,30 @@ protected:
 	Chunk *** chunks;
 	int radius;
 	int area_size;
-	Location * location;
+	Location  location;
 	Point2D<int> block_coordinates;
 	Point2D<int> coordinates;
 	vector<WowObjectAvatar*> wow_object_avatars;
 
 	Utils::Graphics::BoundingBox bounding_box;
-	bool IsMoved(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
+	bool IsMoved(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 
 	void CheckAndClearOldObjects();
-	virtual void Update(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
-
+	virtual void Update(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates);
+	void _move(Area & other);
 public:
 	
 	bool to_update;
 	bool busy;
 	Area();
-	Area(Location * location, Point2D<int> block_coordinates,Point2D<int> coordinates,int radius);
-	//Area(Area && area);
+	Area(Location & location, Point2D<int> block_coordinates,Point2D<int> coordinates,int radius);
+	
 	~Area(void);
 	Area & operator=(Area && right);
+	Area(Area && area);
 	//void Update(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	
-	virtual void CheckAndUpdate(Location * location, Point2D<int> block_coordinates,Point2D<int> coordinates);
+	virtual void CheckAndUpdate(Location & location, Point2D<int> block_coordinates,Point2D<int> coordinates);
 	int GetRadius() {return radius;}
 	inline int GetSize() { return area_size; }
 	Chunk *** GetChunks() { return chunks; }
@@ -64,7 +65,7 @@ public:
 	
 	inline vector<unique_ptr<Chunk>> & GetChunkss() { return chunkss; }
 	inline vector<Chunk*> GetActiveChunks() { return active_chunks; }
-	bool IsOutOfBounds(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
+	bool IsOutOfBounds(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	void InitMapObjects();
 	//virtual void CheckAndMoveImpl(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	

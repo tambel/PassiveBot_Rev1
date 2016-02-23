@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include <algorithm>
 
-bool Area::IsMoved(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
+bool Area::IsMoved(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {
-	if (this->location->id != location->id || this->block_coordinates != block_coordinates || this->coordinates != coordinates)
+	if (this->location != location || this->block_coordinates != block_coordinates || this->coordinates != coordinates)
 	{
 		return true;
 	}
@@ -64,11 +64,11 @@ void Area::CheckAndClearOldObjects()
 Area::Area()
 {
 }
-Area::Area(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius) :location(location), block_coordinates(block_coordinates), coordinates(coordinates), radius(radius)
+Area::Area(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius) :location(location), block_coordinates(block_coordinates), coordinates(coordinates), radius(radius)
 {
 	busy = false;
 	area_size = radius * 2 + 1;
-	chunks = new Chunk**[area_size];
+	//chunks = new Chunk**[area_size];
 	wow_object_avatars = vector<WowObjectAvatar*>();
 	this->Update(location,block_coordinates,coordinates);
 }
@@ -79,29 +79,18 @@ Area::~Area(void)
 
 Area & Area::operator=(Area && right)
 {
-	doodads = move(right.doodads);
-	wmos = move(right.wmos);
-	chunks = right.chunks;
-	chunkss = move(right.chunkss);
-	active_chunks = move(right.active_chunks);
-	right.chunks = nullptr;
-	radius = right.radius;
-	right.radius = 0;
-	area_size = right.area_size;
-	right.area_size = 0;
-	location = right.location;
-	right.location = nullptr;
-	block_coordinates = right.block_coordinates;
-	coordinates = right.coordinates;
-	bounding_box = right.bounding_box;
-	to_update = right.to_update;
-	busy = right.busy;
+	_move(right);
 	
 
 	return *this;
 }
 
-void Area::Update(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
+Area::Area(Area && area)
+{
+	_move(area);
+}
+
+void Area::Update(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {
  	active_chunks.clear();
 	this->location = location;
@@ -157,12 +146,33 @@ void Area::Update(Location * location, Point2D<int> block_coordinates, Point2D<i
 	InitMapObjects();
 }
 
+void Area::_move(Area & other)
+{
+	doodads = move(other.doodads);
+	wmos = move(other.wmos);
+	chunks = other.chunks;
+	chunkss = move(other.chunkss);
+	active_chunks = move(other.active_chunks);
+	other.chunks = nullptr;
+	radius = other.radius;
+	other.radius = 0;
+	area_size = other.area_size;
+	other.area_size = 0;
+	location = other.location;
+	//other.location = nullptr;
+	block_coordinates = other.block_coordinates;
+	coordinates = other.coordinates;
+	bounding_box = other.bounding_box;
+	to_update = other.to_update;
+	busy = other.busy;
+}
+
 //void Area::Update(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 //{
 //	this->UpdateImpl(location, block_coordinates, coordinates);
 //}
 
-void Area::CheckAndUpdate(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
+void Area::CheckAndUpdate(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {
 	if (IsOutOfBounds(location, block_coordinates, coordinates))
 	{
@@ -180,7 +190,7 @@ void Area::AddWowObjectAvatar(Wow::WowObject * object)
 }
 
 
-bool Area::IsOutOfBounds(Location * location, Point2D<int> block_coordinates,Point2D<int> coordinates)
+bool Area::IsOutOfBounds(Location & location, Point2D<int> block_coordinates,Point2D<int> coordinates)
 {
 	if (this->location == location)
 	{

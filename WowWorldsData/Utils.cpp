@@ -23,50 +23,51 @@ namespace Utils
 	}
 	namespace Game
 	{
-		vector<Location*> LocationBase::locations=vector<Location*>();
+		vector<Location> LocationBase::locations=vector<Location>();
 		bool LocationBase::initialized=false;
-		void LocationBase::Add(Location * loc)
+		void LocationBase::Add(Location & loc)
 		{
 			locations.push_back(loc);
 		}
 		void LocationBase::Clear()
 		{
-			for (auto loc:locations)
+			/*for (auto loc:locations)
 			{
 				delete loc;
-			}
+			}*/
 			locations.clear();
+			locations.shrink_to_fit();
 		}
 		void LocationBase::Init()
 		{
-			locations.push_back(new Location("Kalimdor",1));
+			locations.push_back(Location("Kalimdor",1));
 			initialized=true;
 		}
 		bool LocationBase::IsInitialized()
 		{
 			return initialized;
 		}
-		Location * LocationBase::Get(string name)
+		Location & LocationBase::Get(string name)
 		{
-			for (auto loc:locations)
+			for (auto &loc:locations)
 			{
-				if (loc->name==name)
+				if (loc.name==name)
 				{
 					return loc;
 				}
 			}
-			return 0;
+			throw exception(("Location:" + name + " not found").c_str());
 		}
-		Location * LocationBase::Get(unsigned id)
+		Location & LocationBase::Get(unsigned id)
 		{
-			for (auto loc:locations)
+			for (auto &loc:locations)
 			{
-				if (loc->id==id)
+				if (loc.id==id)
 				{
 					return loc;
 				}
 			}
-			return 0;
+			throw exception(("Location:" + to_string(id) + " not found").c_str());
 		}
 
 	}

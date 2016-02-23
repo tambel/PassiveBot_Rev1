@@ -5,7 +5,6 @@ class BotInteractor
 {
 	static NavArea area;
 	static bool FindPath(Vector3 & start, Vector3 & end);
-
 	
 	
 public:

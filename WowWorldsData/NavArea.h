@@ -24,12 +24,14 @@ class NavArea :
 	public Area
 {
 protected:
-	virtual void Update(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
+	virtual void Update(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates);
+	void _move(NavArea & other);
 public:
 	NavArea();
-	NavArea(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius);
+	NavArea(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius);
 	~NavArea();
 	NavArea & operator=(NavArea && right);
+	NavArea(NavArea && area);
 	//virtual  void Fill(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	//virtual void CheckAndMove(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	//virtual void CheckAndMoveImpl(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
@@ -42,12 +44,12 @@ public:
 	//unique_ptr<PATHDATA>  m_PathStore;
 	const static int MAX_SMOOTH = 2048;
 	float m_smoothPath[MAX_SMOOTH * 3];
-	int m_nsmoothPath;
+	int m_nsmoothPath=0;
 
 	void InitNavigation();
 
 	void BuildAllTiles();
-	unsigned char * BuildTileMesh(int x, int y, const float* bmin, const float* bmax, int dataSize);
+	unsigned char * BuildTileMesh(int x, int y, const float* bmin, const float* bmax, int & dataSize);
 	int  FindPath(Vector3 & start, Vector3  & end, int nPathSlot);
 	static void InitNavConfig();
 
@@ -61,5 +63,6 @@ public:
 		const dtPolyRef* visited, const int nvisited);
 	static int fixupShortcuts(dtPolyRef* path, int npath, dtNavMeshQuery* navQuery);
 	static int  RastChunks(Model * model, rcConfig & m_cfg, rcContext * m_ctx, rcHeightfield * m_solid, int & m_tileTriCount);
+	void saveAll(const char* path, const dtNavMesh* mesh);
 };
 

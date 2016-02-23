@@ -6,8 +6,11 @@ struct WMOInfo
 {
 	string filename;
 	MODF modf;
-	WMOInfo(string & filename, MODF modf) : filename(filename), modf(modf) {}
-	
+	WMOInfo(string & filename, MODF modf) : modf(modf) 
+	{
+		this->filename = filename;
+	}
+	~WMOInfo() {};
 };
 
 class WMORoot
@@ -20,5 +23,6 @@ public:
 	WMORoot(string  & filename);
 	~WMORoot();
 	friend WMO::WMO(string filename, unsigned uuid, Position & position);
+	friend WMO::~WMO();
 };
 

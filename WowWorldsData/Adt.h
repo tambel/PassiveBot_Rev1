@@ -15,28 +15,28 @@ class ADT:public ChunkedData
 {
 private:
 	string path;
-	Location * location;
+	Location location;
 	Point2D<int> coordinates;
 	BinaryReader * root_reader;
-	//BinaryReader * tex;
 	BinaryReader * obj_reader;
 	ChunkStreamInfo chunk_stream_infos[16][16];
 	ChunkStreamInfo obj_chunk_stream_infos[16][16];
 	vector<M2Info> m2_infos;
-	char * doodads_filenames;
-	unsigned * doodads_ids;
-	MDDF * mddfs;
-	MODF * modfs;
-	char * wmos_filenames;
-	unsigned * wmos_ids;
+	char * doodads_filenames=nullptr;
+	unsigned * doodads_ids = nullptr;
+	MDDF * mddfs = nullptr;
+	MODF * modfs = nullptr;
+	char * wmos_filenames = nullptr;
+	unsigned * wmos_ids = nullptr;
 	vector<WMOInfo> wmo_infos;
 	void ReadM2Models(bool hight_detalization=false);
 	void ReadWMOModels();
+	vector<string> wmofilenames;
 public:
-	ADT(Location * location,  Point2D<int> coordinates);
+	ADT(Location & location,  Point2D<int> coordinates);
 	~ADT(void);
 	Chunk * GetChunk(Area * area,Point2D<int> coordinates);
-	Location * GetLocation() {return location;}
+	Location & GetLocation() {return location;}
 	Point2D<int> GetCoordinates(){return coordinates;}
 	bool IsExist() {return root_reader->IsFileExist();}
 	bool operator==(const ADT & right);
@@ -51,89 +51,3 @@ public:
 	const MODF * GetMODFs() { return modfs; }
 };
 
-
-/*
-struct MVER {
-unsigned  version;
-};
-struct MCVT 
-{
-float height[145];
-};
-struct MCNK
-{
-unsigned offset;
-Vector3 position;
-MCVT mcvt;
-Point2D<int> coords;
-};
-struct MWMO
-{
-unsigned long length;
-//string * names;
-char * names;
-};
-struct MWID
-{
-unsigned long length;
-unsigned long * offsets;
-};
-struct MMDX 
-{
-unsigned long length;
-//string * names;
-char * names;
-};
-struct MMID
-{
-unsigned long length;
-unsigned long * offsets;
-};
-struct MODF
-{
-unsigned mwidEntry;           // references an entry in the MWID chunk, specifying the model to use.
-unsigned uniqueId;            // this ID should be unique for all ADTs currently loaded. Best, they are unique for the whole map.
-Vector3 position;
-Vector3 rotation;            // same as in MDDF.
-float lowerBounds[3];         // these two are position plus the wmo bounding box.
-float upperBounds[3];
-unsigned wtf[2];
-};
-struct MDDF
-{
-unsigned mwidEntry;           // references an entry in the MWID chunk, specifying the model to use.
-unsigned uniqueId;            // this ID should be unique for all ADTs currently loaded. Best, they are unique for the whole map.
-Vector3 position;
-Vector3 rotation;     
-unsigned short scale;
-
-unsigned short wtf;
-};
-class Adt
-{
-bool is_file_exists;
-char * root;
-unsigned long root_length;
-char * obj;
-unsigned long obj_length;
-char * tex;
-unsigned long tex_length;
-public:
-
-MVER mver;
-vector<MCNK*> mcnk_list;
-/*
-MWMO * mwmo;
-MWID * mwid;
-MODF * modf;
-
-vector<WmoInfo> wmo_infos;
-vector <M2Info> m2_infos;
-Adt(string  path);
-~Adt(void);
-unsigned GetVersion();
-bool IsExist();
-
-};
-
-*/

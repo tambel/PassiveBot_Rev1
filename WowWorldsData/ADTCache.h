@@ -21,7 +21,7 @@ class ADTCache
 	static unsigned long list_size_limit;
 public:
 	static void Add(ADT * adt);
-	static ADT * Find(Location * location, Point2D<int> coordinates);
+	static ADT * Find(Location & location, Point2D<int> coordinates);
 	//static ADT * Find(ADT * adt) {return Find(adt->GetLocation(),adt->GetCoordinates());}
-
+	static void Clear();
 };

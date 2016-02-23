@@ -53,9 +53,9 @@ WMOGroup::WMOGroup(WMOGroup && right):filename(std::move(right.filename))
 
 WMOGroup::~WMOGroup()
 {
-	//delete[] vertices;
+	delete[] vertices;
 	vertices = 0;
-	//delete[] indices;
+	delete[] indices;
 	indices = 0;
 	vertex_count = 0;
 	index_count = 0;

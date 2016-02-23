@@ -34,6 +34,7 @@ WMORoot::WMORoot(string & filename):filename(filename)
 
 WMORoot::~WMORoot()
 {
+	wmo_groups.clear();
 }
 void WMORoot::LoadGroups(MOHD & header)
 {

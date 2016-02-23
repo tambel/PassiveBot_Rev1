@@ -6,6 +6,7 @@ class BinaryReader
 {
 	ifstream * stream;
 public:
+	BinaryReader() {}
 	BinaryReader(ifstream * stream);
 	BinaryReader(string path);
 	~BinaryReader(void);

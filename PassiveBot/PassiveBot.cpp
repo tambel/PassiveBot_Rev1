@@ -1,6 +1,9 @@
 // PassiveBot.cpp: определяет точку входа для консольного приложения.
 //
 
+
+
+
 #include "stdafx.h"
 #include <iostream>
 #include "AutoItX3_DLL.h"
@@ -23,7 +26,7 @@ void init_static()
 
 
 
-int main(int argc, wchar_t * argv[])
+int main2(int argc, wchar_t * argv[])
 {
 
 	init_static();
@@ -45,10 +48,18 @@ int main(int argc, wchar_t * argv[])
 
 	WorldViewer viewer=WorldViewer(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords), 3);
 	viewer.ShowMap();
+
 	while (1)
 	{
-		viewer.Update(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords));
-		Sleep(1000);
+		try
+		{
+			viewer.Update(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords));
+			Sleep(1000);
+		}
+		catch (...)
+		{
+
+		}
 	}
 
 
@@ -64,8 +75,35 @@ int main(int argc, wchar_t * argv[])
 	}
 */
 
-	
+	//_CrtDumpMemoryLeaks();
 	return 0;
 
+}
+void DestructStatic()
+{
+	Utils::Geometry::Transformer3D::Transformer3D();
+	Game::LocationBase::Clear();
+	NavArea::InitNavConfig();
+	ADTWorker::Clear();
+	ChunkModel::Clear();
+}
+void foo()
+{
+	init_static();
+	NavArea area = NavArea(Game::LocationBase::Get("Kalimdor"), Point2D<int>(34, 31/*28, 40*/), Point2D<int>(2, 16), 3);
+	DestructStatic();
+}
+
+int main(int argc, wchar_t * argv[])
+{
+	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	//_CrtSetBreakAlloc(301329);
+
+	//main2(argc, argv);
+	foo();
+
+	
+	//_CrtDumpMemoryLeaks();
+	return 0;
 }
 

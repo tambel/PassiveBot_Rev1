@@ -48,21 +48,26 @@ namespace Utils
 	{
 		struct Location
 		{
-			const string name;
-			const unsigned id;
+			string name;
+			unsigned id=0;
+			Location() {}
 			Location(string name,unsigned id):name(name),id(id){};
+			//Location(Location & other) = default;
+			//Location & operator=(Location & other) = default;
+			bool operator==(const Location & other) { return id == other.id; }
+			bool operator!=(const Location & other) { return id != other.id; }
 		};
 		class LocationBase
 		{
 			static bool initialized;
-			static vector<Location*> locations;
+			static vector<Location> locations;
 		public:
 			static void Init();
-			static void Add(Location * loc);
+			static void Add(Location & loc);
 			static void Clear();
 			static bool IsInitialized();
-			static Location * Get(string name);
-			static Location * Get(unsigned id);
+			static Location & Get(string name);
+			static Location & Get(unsigned id);
 		};
 	};
 	namespace ChunkSignatures

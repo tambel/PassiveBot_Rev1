@@ -6,7 +6,7 @@ void thread_func(MapFrame & frame)
 	frame.go();
 }
  
-WorldViewer::WorldViewer(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius)
+WorldViewer::WorldViewer(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius)
 {
 	frame = MapFrame();
 	area = MutableArea(location,block_coordinates,coordinates,radius);
@@ -24,7 +24,7 @@ void WorldViewer::ShowMap()
 	frame_thread.detach();
 }
 
-void WorldViewer::Update(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates)
+void WorldViewer::Update(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {
 	
 	area.CheckAndUpdate(location, block_coordinates, coordinates);

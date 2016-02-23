@@ -59,6 +59,11 @@ public:
 		}
 		return indices;
 	}
+	static void  Clear()
+	{
+		delete[] indices;
+		indices = nullptr;
+	}
 };
 struct M2info;
 class ADT;
@@ -75,8 +80,10 @@ private:
 	 vector<M2Info> doodad_infos;
 
 	ADT * adt;
+	shared_ptr<ADT> adt_ptr;
+
 	Area * area;
-	Location * location;
+	Location location;
 	Point2D<int> block_coordinates;
 	Point2D<int> coordinates;
 	Vector3 game_position;
@@ -98,6 +105,7 @@ private:
 	void LoadMcrw(unsigned long size);
 	Utils::Graphics::BoundingBox terrain_bounding_box;
 	Utils::Graphics::BoundingBox full_bounding_box;
+	
 
 
 
@@ -124,7 +132,7 @@ public:
 	~Chunk(void);
 	Chunk(Area * area,ChunkStreamInfo info, ChunkStreamInfo obj_info, ADT * adt_file/*, Location * loc,Point2D<int> block_coordinates*/,Point2D<int> coordinates);
 
-	Location * GetLocation() {return location;}
+	Location & GetLocation() {return location;}
 	Point2D<int> GetBlockCoordinates() {return block_coordinates;}
 	Point2D<int> GetCoordinates() {return coordinates;}
 	//Utils::Graphics::Vertice * GetVertices() {return vertices;}
@@ -144,6 +152,7 @@ public:
 	Chunk & operator=(Chunk &&);
 	inline vector<WMOInfo>  & GetWMOInfos() { return wmo_infos; }
 	inline vector<M2Info> & GetDoodadInfos() { return doodad_infos; }
-
+	inline shared_ptr<ADT> GetADT() { return adt_ptr; }
+	 void SetADTptr(shared_ptr<ADT> & ptr) { adt_ptr = ptr; }
 };
 
