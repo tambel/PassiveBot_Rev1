@@ -12,18 +12,18 @@ namespace Wow
 	{
 		
 		static unsigned base;
-		static vector<GameObject*> * game_objects;
-		static vector<Item*> * items;
-		static vector <Unit*> * units;
-		static vector <Player*> * players;
+		static vector<GameObject*> game_objects;
+		static vector<Item*>  items;
+		static vector <Unit*>  units;
+		static vector <Player*>  players;
 		
 	public:
 		static void EnumAllVisibleObjects();
 		static void Initialize();
-		static vector<GameObject*> * GetGameObjectsList();
-		static vector<Item*> *GetItemsList();
-		static vector<Unit*> *GetUnitsList();
-		static vector<Player*> *GetPlayersList();
+		static vector<GameObject*> & GetGameObjectsList();
+		static vector<Item*> &GetItemsList();
+		static vector<Unit*> &GetUnitsList();
+		static vector<Player*> &GetPlayersList();
 		static void DumpAllObjectNames();
 		static Player * GetPlayer();
 		static Unit * FindUnitByName(const wstring & name);

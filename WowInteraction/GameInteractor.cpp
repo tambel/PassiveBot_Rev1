@@ -182,7 +182,7 @@ namespace Wow
 	void GameInteractor::Test()
 	{
 		FrameManager::EnumAllFrames();
-		vector<Frame*> * frames=FrameManager::GetFrames();
+		vector<Frame*>  frames=FrameManager::GetFrames();
 		Frame *frame1=FrameManager::FindFrameByName("CharSelectCharacterButton1");
 		vector<wchar_t*> names=vector<wchar_t*>();
 		vector<unsigned> u=vector<unsigned>();

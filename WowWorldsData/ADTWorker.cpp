@@ -41,7 +41,17 @@ shared_ptr<ADT> ADTWorker::GetADT(Location & location, Point2D<int> coordinates)
 	{
 		return nullptr;
 	}
-	
+	for (vector<shared_ptr<ADT>>::iterator it = adts.begin(); it != adts.end();)
+	{
+		if (it->use_count() < 2)
+		{
+			it = adts.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
 	/*for (vector<shared_ptr<ADT>>::iterator it = adts.begin(); it != adts.end();)
 	{
 		if ((*it)->GetLocation() == location && (*it)->GetCoordinates() == coordinates)
@@ -58,4 +68,5 @@ void ADTWorker::Clear()
 		adt.reset();
 	}
 	adts.clear();
+	adts.shrink_to_fit();
 }

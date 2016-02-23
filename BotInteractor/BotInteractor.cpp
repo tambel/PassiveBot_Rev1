@@ -34,7 +34,7 @@ bool BotInteractor::FindPath(Vector3 & start, Vector3 & end)
 void BotInteractor::PulseCheck()
 {
 		Player * player = ObjectManager::GetPlayer();
-		//area.CheckAndUpdate(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords));
+		area.CheckAndUpdate(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords));
 
 }
 void BotInteractor::__Test(int o)
@@ -203,7 +203,7 @@ void BotInteractor::StartGame(string login, string password,wstring char_name)
 	Player * player = ObjectManager::GetPlayer();
 	//Area tmp_area=Area(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords), 2);
 	//area = move(tmp_area);
-	//area=move(NavArea(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords), 3));
+	area=move(NavArea(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords), 3));
 	
 	///area.AddWowObjectAvatar(player);
 

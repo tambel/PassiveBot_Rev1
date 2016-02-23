@@ -5,13 +5,13 @@ namespace Wow
 {
 	class FrameManager
 	{
-		static vector <Frame*> * frames; 
+		static vector <Frame*>  frames; 
 		static float screen_width;
 		static float screen_heigth;
 	public:
 		FrameManager(void);
 		~FrameManager(void);
-		static vector <Frame*> * GetFrames();
+		static vector <Frame*> & GetFrames();
 		static void EnumAllFrames();
 		static void FindParents();
 		static void DumpAllFramesNames();

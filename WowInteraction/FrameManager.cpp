@@ -2,7 +2,7 @@
 using namespace Tools;
 namespace Wow
 {
-	vector<Frame*> * FrameManager::frames=new vector<Frame*>();
+	vector<Frame*> FrameManager::frames=vector<Frame*>();
 	float FrameManager::screen_heigth=0;
 	float FrameManager::screen_width=0;
 	FrameManager::FrameManager(void)
@@ -14,7 +14,7 @@ namespace Wow
 	FrameManager::~FrameManager(void)
 	{
 	}
-	vector <Frame*> * FrameManager::GetFrames()
+	vector <Frame*> & FrameManager::GetFrames()
 	{
 		return frames;
 	}
@@ -36,7 +36,7 @@ namespace Wow
 		{
 			try
 			{
-				frames->push_back(new Frame(current));
+				frames.push_back(new Frame(current));
 				current = Process::Read<unsigned>(current + Process::Read<unsigned>(base_frame + WowOffsets::FrameManager::NextFrame) + 4);
 			}
 			catch (MemoryReadException e)
@@ -47,27 +47,27 @@ namespace Wow
 	}
 	void FrameManager::DumpAllFramesNames()
 	{
-		cout<<"Frame Names "<<frames->size()<<endl;
-		for (auto frame:*frames)
+		cout<<"Frame Names "<<frames.size()<<endl;
+		for (auto frame:frames)
 		{
 			cout<<frame->GetName()<<endl;
 		}
-		cout<<frames->size();
+		cout<<frames.size();
 	}
 	void FrameManager::ClearFrames()
 	{
-		for (auto frame:*frames)
+		for (auto frame:frames)
 		{
 			delete frame;
 		} 
-		frames->clear();
+		frames.clear();
 	}
 	void FrameManager::FindParents()
 	{
 		unsigned parent_ptr;
-		for (auto frame:*frames)
+		for (auto frame:frames)
 		{
-			for (auto frame2:*frames)
+			for (auto frame2:frames)
 			{
 				parent_ptr=Process::Read<unsigned>(frame->GetBase()+WowOffsets::FrameManager::ParentFrame);
 				if (parent_ptr==frame2->GetBase())
@@ -97,7 +97,7 @@ namespace Wow
 	Frame * FrameManager::FindFrameByName(const string &  name)
 	{
 		EnumAllFrames();
-		for (auto frame:*frames)
+		for (auto frame:frames)
 		{
 			if (frame->GetName()==name)
 			{
@@ -109,7 +109,7 @@ namespace Wow
 	}
 	Frame * FrameManager::FindFrameByAddress(unsigned address)
 	{
-		for (auto frame:*frames)
+		for (auto frame:frames)
 		{
 			if (address==frame->GetBase())
 			{

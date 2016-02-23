@@ -26,7 +26,7 @@ void init_static()
 
 
 
-int main2(int argc, wchar_t * argv[])
+int main(int argc, wchar_t * argv[])
 {
 
 	init_static();
@@ -42,18 +42,19 @@ int main2(int argc, wchar_t * argv[])
 	
 	Player * player = ObjectManager::GetPlayer();
 	default_random_engine generator;
-	uniform_int_distribution<int> distribution(0, ObjectManager::GetUnitsList()->size() - 1);
+	uniform_int_distribution<int> distribution(0, ObjectManager::GetUnitsList().size() - 1);
 	
 	//BotInteractor::GoToPoint(*ObjectManager::FindUnitByName(L"Тал"));
 
-	WorldViewer viewer=WorldViewer(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords), 3);
-	viewer.ShowMap();
+	//WorldViewer viewer=WorldViewer(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords), 3);
+	//viewer.ShowMap();
 
 	while (1)
 	{
 		try
 		{
-			viewer.Update(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords));
+			BotInteractor::PulseCheck();
+			//viewer.Update(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords));
 			Sleep(1000);
 		}
 		catch (...)
@@ -86,15 +87,18 @@ void DestructStatic()
 	NavArea::InitNavConfig();
 	ADTWorker::Clear();
 	ChunkModel::Clear();
+	ObjectManager::ClearAllLists();
+	FrameManager::ClearFrames();
 }
 void foo()
 {
 	init_static();
 	NavArea area = NavArea(Game::LocationBase::Get("Kalimdor"), Point2D<int>(34, 31/*28, 40*/), Point2D<int>(2, 16), 3);
+	area.CheckAndUpdate(Game::LocationBase::Get("Kalimdor"), Point2D<int>(34, 31/*28, 40*/), Point2D<int>(7, 16));
 	DestructStatic();
 }
 
-int main(int argc, wchar_t * argv[])
+int main2(int argc, wchar_t * argv[])
 {
 	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	//_CrtSetBreakAlloc(301329);
