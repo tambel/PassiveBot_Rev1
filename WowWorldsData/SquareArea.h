@@ -48,7 +48,7 @@ public:
 	Area();
 	Area(Location & location, Point2D<int> block_coordinates,Point2D<int> coordinates,int radius);
 	
-	~Area(void);
+	virtual ~Area(void);
 	Area & operator=(Area && right);
 	Area(Area && area);
 	//void Update(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);

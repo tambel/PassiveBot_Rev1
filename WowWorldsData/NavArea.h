@@ -40,13 +40,20 @@ public:
 	static NavConfig config;
 	vector<unique_ptr<rcPolyMesh>> polys;
 	dtNavMeshQuery* m_navQuery;
-	dtNavMesh * m_navMesh;
+	dtNavMesh * m_navMesh=nullptr;
+	rcPolyMesh *  m_pmesh=nullptr;
+	rcPolyMeshDetail * m_dmesh=nullptr;
+	rcHeightfield * m_solid=nullptr;
+	rcCompactHeightfield * m_chf=nullptr;
+	rcContourSet * m_cset = nullptr;
+	rcContext * m_ctx;
 	//unique_ptr<PATHDATA>  m_PathStore;
 	const static int MAX_SMOOTH = 2048;
 	float m_smoothPath[MAX_SMOOTH * 3];
 	int m_nsmoothPath=0;
 
 	void InitNavigation();
+	void DeleteAll();
 
 	void BuildAllTiles();
 	unsigned char * BuildTileMesh(int x, int y, const float* bmin, const float* bmax, int & dataSize);

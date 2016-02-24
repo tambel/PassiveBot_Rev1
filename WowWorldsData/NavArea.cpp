@@ -24,7 +24,18 @@ void NavArea::_move(NavArea & other)
 	other.m_navQuery = nullptr;
 	m_navMesh = other.m_navMesh;
 	other.m_navMesh = nullptr;
-
+	m_dmesh = other.m_dmesh;
+	other.m_dmesh = nullptr;
+	m_pmesh = other.m_pmesh;
+	other.m_pmesh = nullptr;
+	m_ctx = other.m_ctx;
+	other.m_ctx = nullptr;
+	m_solid = other.m_solid;
+	other.m_solid = nullptr;
+	m_chf = other.m_chf;
+	other.m_chf = nullptr;
+	m_cset = other.m_cset;
+	other.m_cset = nullptr;
 }
 NavArea::NavArea() :Area()
 {
@@ -38,15 +49,19 @@ NavArea::NavArea(Location & location, Point2D<int> block_coordinates, Point2D<in
 	//m_PathStore = unique_ptr<PATHDATA>(new PATHDATA);
 	//m_nsmoothPath = 0;
 	polys = vector<unique_ptr<rcPolyMesh>>();
-	m_navMesh = 0;
+	m_navMesh = nullptr;
+	m_navQuery = nullptr;
+	m_ctx = new rcContext();
 	InitNavigation();
 }
 
 
 NavArea::~NavArea()
 {
-	delete m_navQuery;
-	m_navQuery = nullptr;
+	//delete m_navQuery;
+	//m_navQuery = nullptr;
+	dtFreeNavMeshQuery(m_navQuery);
+	dtFreeNavMesh(m_navMesh);
 }
 
 NavArea & NavArea::operator=(NavArea && right)
@@ -113,14 +128,32 @@ void NavArea::InitNavigation()
 	//_CrtSetBreakAlloc(7037);
 	InitAreaBoundingBox();
 	BuildAllTiles();
+	DeleteAll();
 	//_CrtDumpMemoryLeaks();
+}
+void NavArea::DeleteAll()
+{
+	rcFreeHeightField(m_solid);
+	m_solid = nullptr;
+	rcFreeCompactHeightfield(m_chf);
+	m_chf = nullptr;
+	rcFreeContourSet(m_cset);
+	m_cset = nullptr;
+	rcFreePolyMesh(m_pmesh);
+	m_pmesh = nullptr;
+	rcFreePolyMeshDetail(m_dmesh);
+	m_dmesh = nullptr;
+
 }
 void NavArea::BuildAllTiles()
 {
 	polys.clear();
-	m_navQuery = new dtNavMeshQuery();
-	unique_ptr<rcContext> m_ctx_ptr = unique_ptr<rcContext>(new rcContext());
-	rcContext * m_ctx = m_ctx_ptr.get();
+	dtFreeNavMeshQuery(m_navQuery);
+	m_navQuery=dtAllocNavMeshQuery();
+	///m_navQuery = new dtNavMeshQuery();
+	
+	//unique_ptr<rcContext> m_ctx_ptr = unique_ptr<rcContext>(new rcContext());
+	//rcContext * m_ctx = m_ctx_ptr.get();
 	//rcContext *m_ctx = new rcContext();
 	const float* bmin = bounding_box.GetArrayMin();
 	const float* bmax = bounding_box.GetArrayMax();
@@ -132,8 +165,9 @@ void NavArea::BuildAllTiles()
 	const float tcs = config.m_tileSize*config.m_cellSize;
 	float m_tileBmin[3];
 	float m_tileBmax[3];
+	
 	dtFreeNavMesh(m_navMesh);
-
+	
 	m_navMesh = dtAllocNavMesh();
 	if (!m_navMesh)
 	{
@@ -191,14 +225,13 @@ void NavArea::BuildAllTiles()
 				// Remove any previous data (navmesh owns and deletes the data).
 				m_navMesh->removeTile(m_navMesh->getTileRefAt(x, y, 0), 0, 0);
 				// Let the navmesh own the data.
-				if (c > 10)
-				{
-					dtStatus status = m_navMesh->addTile(data, dataSize, DT_TILE_FREE_DATA, 0, 0);
-					if (dtStatusFailed(status))
-						dtFree(data);
-				}
-				c++;
+
+				dtStatus status = m_navMesh->addTile(data, dataSize, DT_TILE_FREE_DATA, 0, 0);
+				if (dtStatusFailed(status))
+					dtFree(data);
+
 			}
+			DeleteAll();
 		}
 	}
 	//saveAll("all_tiles_navmesh.bin", m_navMesh);
@@ -265,8 +298,8 @@ void NavArea::saveAll(const char* path, const dtNavMesh* mesh)
 
 unsigned char * NavArea::BuildTileMesh(int x, int y, const float* bmin, const float* bmax, int & dataSize)
 {
-	unique_ptr<rcContext> m_ctx_ptr = unique_ptr<rcContext>(new rcContext());
-	rcContext * m_ctx = m_ctx_ptr.get();
+	//unique_ptr<rcContext> m_ctx_ptr = unique_ptr<rcContext>(new rcContext());
+	//rcContext * m_ctx = m_ctx_ptr.get();
 	//rcContext * m_ctx = new rcContext();
 	rcConfig m_cfg;
 	std::memset(&m_cfg, 0, sizeof(m_cfg));
@@ -295,9 +328,11 @@ unsigned char * NavArea::BuildTileMesh(int x, int y, const float* bmin, const fl
 	m_cfg.bmax[0] += m_cfg.borderSize*m_cfg.cs;
 	m_cfg.bmax[2] += m_cfg.borderSize*m_cfg.cs;
 
-	unique_ptr<rcHeightfield> m_solid_ptr = unique_ptr<rcHeightfield>(rcAllocHeightfield());
-	//rcHeightfield * m_solid = rcAllocHeightfield();
-	rcHeightfield * m_solid = m_solid_ptr.get();
+	//unique_ptr<rcHeightfield> m_solid_ptr = unique_ptr<rcHeightfield>(rcAllocHeightfield());
+	//rcHeightfield * m_solid = m_solid_ptr.get();
+	///rcFreeHeightField(m_solid);
+	m_solid = rcAllocHeightfield();
+	
 	if (!m_solid)
 	{
 		//m_ctx->log(RC_LOG_ERROR, "buildNavigation: Out of memory 'solid'.");
@@ -314,7 +349,7 @@ unsigned char * NavArea::BuildTileMesh(int x, int y, const float* bmin, const fl
 	tbmin[1] = m_cfg.bmin[2];
 	tbmax[0] = m_cfg.bmax[0];
 	tbmax[1] = m_cfg.bmax[2];
-	vector<Chunk*> overlapping_chunks = vector<Chunk*>();
+	//vector<Chunk*> overlapping_chunks = vector<Chunk*>();
 	unique_ptr<unsigned char>m_triareas_ptr;
 	unsigned char * m_triareas;
 	int m_tileTriCount = 0;
@@ -371,9 +406,10 @@ unsigned char * NavArea::BuildTileMesh(int x, int y, const float* bmin, const fl
 	rcFilterLedgeSpans(m_ctx, m_cfg.walkableHeight, m_cfg.walkableClimb, *m_solid);
 	rcFilterWalkableLowHeightSpans(m_ctx, m_cfg.walkableHeight, *m_solid);
 
-	unique_ptr<rcCompactHeightfield> m_chf_ptr = unique_ptr<rcCompactHeightfield>(rcAllocCompactHeightfield());
-	rcCompactHeightfield * m_chf = m_chf_ptr.get();
-	//rcCompactHeightfield * m_chf = rcAllocCompactHeightfield();
+	//unique_ptr<rcCompactHeightfield> m_chf_ptr = unique_ptr<rcCompactHeightfield>(rcAllocCompactHeightfield());
+	//rcCompactHeightfield * m_chf = m_chf_ptr.get();
+	m_chf = rcAllocCompactHeightfield();
+
 	if (!m_chf)
 	{
 		//m_ctx->log(RC_LOG_ERROR, "buildNavigation: Out of memory 'chf'.");
@@ -386,7 +422,7 @@ unsigned char * NavArea::BuildTileMesh(int x, int y, const float* bmin, const fl
 	}
 
 	//rcFreeHeightField(m_solid);
-	m_solid = 0;
+	//m_solid = 0;
 
 	if (!rcErodeWalkableArea(m_ctx, m_cfg.walkableRadius, *m_chf))
 	{
@@ -410,9 +446,9 @@ unsigned char * NavArea::BuildTileMesh(int x, int y, const float* bmin, const fl
 			return false;
 		}
 	}
-	unique_ptr<rcContourSet> m_cset_ptr = unique_ptr<rcContourSet>(rcAllocContourSet());
-	rcContourSet * m_cset = m_cset_ptr.get();
-	//rcContourSet * m_cset = rcAllocContourSet();
+	//unique_ptr<rcContourSet> m_cset_ptr = unique_ptr<rcContourSet>(rcAllocContourSet());
+	//rcContourSet * m_cset = m_cset_ptr.get();
+	m_cset = rcAllocContourSet();
 	if (!m_cset)
 	{
 		//m_ctx->log(RC_LOG_ERROR, "buildNavigation: Out of memory 'cset'.");
@@ -430,9 +466,10 @@ unsigned char * NavArea::BuildTileMesh(int x, int y, const float* bmin, const fl
 	}
 
 	// Build polygon navmesh from the contours.
-	unique_ptr<rcPolyMesh> m_pmesh_ptr = unique_ptr<rcPolyMesh>(rcAllocPolyMesh());
-	rcPolyMesh* m_pmesh = m_pmesh_ptr.get();
-	//rcPolyMesh *  m_pmesh = rcAllocPolyMesh();
+	//unique_ptr<rcPolyMesh> m_pmesh_ptr = unique_ptr<rcPolyMesh>(rcAllocPolyMesh());
+	//rcPolyMesh* m_pmesh = m_pmesh_ptr.get();
+	//rcFreePolyMesh(m_pmesh);
+	m_pmesh = rcAllocPolyMesh();
 	if (!m_pmesh)
 	{
 		//m_ctx->log(RC_LOG_ERROR, "buildNavigation: Out of memory 'pmesh'.");
@@ -444,11 +481,12 @@ unsigned char * NavArea::BuildTileMesh(int x, int y, const float* bmin, const fl
 		//m_ctx->log(RC_LOG_ERROR, "buildNavigation: Could not triangulate contours.");
 		return 0;
 	}
-	polys.push_back(move(m_pmesh_ptr));
+	//polys.push_back(move(m_pmesh_ptr));
 	// Build detail mesh.
-	unique_ptr<rcPolyMeshDetail> m_dmesh_ptr = unique_ptr<rcPolyMeshDetail>(rcAllocPolyMeshDetail());
-	rcPolyMeshDetail* m_dmesh = m_dmesh_ptr.get();
-	//rcPolyMeshDetail * m_dmesh = rcAllocPolyMeshDetail();
+	//unique_ptr<rcPolyMeshDetail> m_dmesh_ptr = unique_ptr<rcPolyMeshDetail>(rcAllocPolyMeshDetail());
+	//rcPolyMeshDetail* m_dmesh = m_dmesh_ptr.get();
+	//rcFreePolyMeshDetail(m_dmesh);
+	m_dmesh = rcAllocPolyMeshDetail();
 	if (!m_dmesh)
 	{
 		//m_ctx->log(RC_LOG_ERROR, "buildNavigation: Out of memory 'dmesh'.");
@@ -460,8 +498,10 @@ unsigned char * NavArea::BuildTileMesh(int x, int y, const float* bmin, const fl
 		//m_ctx->log(RC_LOG_ERROR, "buildNavigation: Could build polymesh detail.");
 		return 0;
 	}
-	m_chf = 0;
-	m_cset = 0;
+	//rcFreeCompactHeightfield(m_chf);
+	//m_chf = 0;
+	//rcFreeContourSet(m_cset);
+	//m_cset = 0;
 
 	unsigned char* navData = 0;
 	int navDataSize = 0;
@@ -535,6 +575,7 @@ unsigned char * NavArea::BuildTileMesh(int x, int y, const float* bmin, const fl
 			return 0;
 		}
 	}
+	//m_dmesh_ptr.release();
 	dataSize = navDataSize;
 	return navData;
 }
