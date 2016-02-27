@@ -53,7 +53,7 @@ public:
 	int m_nsmoothPath=0;
 
 	void InitNavigation();
-	void DeleteAll();
+	void CleanUp();
 
 	void BuildAllTiles();
 	unsigned char * BuildTileMesh(int x, int y, const float* bmin, const float* bmax, int & dataSize);

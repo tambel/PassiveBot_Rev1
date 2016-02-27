@@ -128,27 +128,30 @@ void NavArea::InitNavigation()
 	//_CrtSetBreakAlloc(7037);
 	InitAreaBoundingBox();
 	BuildAllTiles();
-	DeleteAll();
+	CleanUp();
+	//dtFreeNavMesh(m_navMesh);
+	//dtFreeNavMeshQuery(m_navQuery);
+
 	//_CrtDumpMemoryLeaks();
 }
-void NavArea::DeleteAll()
+void NavArea::CleanUp()
 {
 	rcFreeHeightField(m_solid);
-	m_solid = nullptr;
+	m_solid = 0;
 	rcFreeCompactHeightfield(m_chf);
-	m_chf = nullptr;
+	m_chf = 0;
 	rcFreeContourSet(m_cset);
-	m_cset = nullptr;
+	m_cset = 0;
 	rcFreePolyMesh(m_pmesh);
-	m_pmesh = nullptr;
+	m_pmesh = 0;
 	rcFreePolyMeshDetail(m_dmesh);
-	m_dmesh = nullptr;
+	m_dmesh = 0;
 
 }
 void NavArea::BuildAllTiles()
 {
 	polys.clear();
-	dtFreeNavMeshQuery(m_navQuery);
+	//dtFreeNavMeshQuery(m_navQuery);
 	m_navQuery=dtAllocNavMeshQuery();
 	///m_navQuery = new dtNavMeshQuery();
 	
@@ -166,7 +169,7 @@ void NavArea::BuildAllTiles()
 	float m_tileBmin[3];
 	float m_tileBmax[3];
 	
-	dtFreeNavMesh(m_navMesh);
+	//dtFreeNavMesh(m_navMesh);
 	
 	m_navMesh = dtAllocNavMesh();
 	if (!m_navMesh)
@@ -190,7 +193,7 @@ void NavArea::BuildAllTiles()
 		return;
 	}
 
-	status = m_navQuery->init(m_navMesh, 2048);
+	//status = m_navQuery->init(m_navMesh, 2048);
 	if (dtStatusFailed(status))
 	{
 		//m_ctx->log(RC_LOG_ERROR, "buildTiledNavigation: Could not init Detour navmesh query");
@@ -216,6 +219,7 @@ void NavArea::BuildAllTiles()
 				return to_string(vector[0]) + "-" + to_string(vector[1]) + "-" + to_string(vector[2]);
 			};
 			int dataSize = 0;
+			//unsigned char * data;
 			unsigned char* data = BuildTileMesh(x, y, m_tileBmin, m_tileBmax, dataSize);
 
 			if (!data) count++;
@@ -231,7 +235,7 @@ void NavArea::BuildAllTiles()
 					dtFree(data);
 
 			}
-			DeleteAll();
+			CleanUp();
 		}
 	}
 	//saveAll("all_tiles_navmesh.bin", m_navMesh);
@@ -379,14 +383,14 @@ unsigned char * NavArea::BuildTileMesh(int x, int y, const float* bmin, const fl
 			const int* ctris = model->GetIndices();
 			const int nctris = model->GetIndexCount() / 3;
 			m_tileTriCount += nctris;
-			m_triareas_ptr.reset();
-			m_triareas_ptr = unique_ptr<unsigned char>(new unsigned char[nctris]);
-			m_triareas = m_triareas_ptr.get();
-			//m_triareas = new unsigned char[nctris];
+			//m_triareas_ptr.reset();
+			//m_triareas_ptr = unique_ptr<unsigned char>(new unsigned char[nctris]);
+			//m_triareas = m_triareas_ptr.get();
+			m_triareas = new unsigned char[nctris];
 			rcMarkWalkableTriangles(m_ctx, m_cfg.walkableSlopeAngle, verts, model->GetVertexCount(), ctris, nctris, m_triareas);
 			if (!rcRasterizeTriangles(m_ctx, verts, model->GetVertexCount(), ctris, m_triareas, nctris, *m_solid, m_cfg.walkableClimb))
 				return 0;
-			//delete[] m_triareas;
+			delete[] m_triareas;
 			m_triareas = 0;
 		}
 	};
@@ -572,6 +576,7 @@ unsigned char * NavArea::BuildTileMesh(int x, int y, const float* bmin, const fl
 		if (!dtCreateNavMeshData(&params, &navData, &navDataSize))
 		{
 			//m_ctx->log(RC_LOG_ERROR, "Could not build Detour navmesh.");
+			delete[] navData;
 			return 0;
 		}
 	}

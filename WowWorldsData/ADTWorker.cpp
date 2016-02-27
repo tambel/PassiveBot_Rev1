@@ -13,7 +13,7 @@ Chunk * ADTWorker::GetChunk(Area * area,Location & location, Point2D<int> block_
 		return 0;
 
 	chunk= adt->GetChunk(area,coordinates);
-	chunk->SetADTptr(adt);
+	//chunk->SetADTptr(adt);
 	if (chunk)
 	{
 		//if (save)
