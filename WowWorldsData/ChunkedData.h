@@ -4,10 +4,10 @@ using namespace std;
 struct ChunkStreamInfo
 {
 	BinaryReader * reader;
-	unsigned long start;
+	unsigned long long start;
 	unsigned long size;
 	ChunkStreamInfo():reader(0),start(0),size(0){}
-	ChunkStreamInfo(unsigned long position,unsigned long size,BinaryReader * reader) 
+	ChunkStreamInfo(unsigned long long  position,unsigned long size,BinaryReader * reader) 
 	{
 		start=position;
 		this->size=size;

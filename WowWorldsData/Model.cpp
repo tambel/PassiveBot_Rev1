@@ -133,13 +133,13 @@ Model & Model::operator=(Model && right)
 void Model::Rotate()
 {
 
-	float angle_x = position.rotation.x *M_PI / 180.0;
-	float angle_y = position.rotation.y *M_PI / 180.0;
-	float angle_z = position.rotation.z * M_PI / 180.0;
+	float angle_x = position.rotation.x *Utils::PI / 180.0f;
+	float angle_y = position.rotation.y *Utils::PI / 180.0f;
+	float angle_z = position.rotation.z * Utils::PI / 180.0f;
 	boost::numeric::ublas::vector<float> vertice(4);
 	Geometry::Transformer3D::SetRotationAngle(Geometry::Axis::X, angle_x );
 	Geometry::Transformer3D::SetRotationAngle(Geometry::Axis::Y, angle_z);
-	Geometry::Transformer3D::SetRotationAngle(Geometry::Axis::Z, angle_y -1.57);
+	Geometry::Transformer3D::SetRotationAngle(Geometry::Axis::Z, angle_y -1.57f);
 	boost::numeric::ublas::matrix<float> rotX = Geometry::Transformer3D::rotation_matrix_X;
 	boost::numeric::ublas::matrix<float> rotY = Geometry::Transformer3D::rotation_matrix_Y;
 	boost::numeric::ublas::matrix<float> rotZ = Geometry::Transformer3D::rotation_matrix_Z;

@@ -148,7 +148,7 @@ namespace Tools
 		}
 		tmpWCResult = unique_ptr<wchar_t>(new wchar_t[length]);
 		tmpResult = unique_ptr<wchar_t>(new wchar_t[length]);
-		bool r_res = ReadProcessMemory(process, (void*)address, tmpWCResult.get(), real_length * 2, NULL);
+		bool r_res = ReadProcessMemory(process, (void*)address, tmpWCResult.get(), real_length * 2, NULL)!=0;
 		MultiByteToWideChar(65001,0,(LPCCH)tmpWCResult.get(),-1,tmpResult.get(),real_length);
 		resLength=wcslen(tmpResult.get())+1;
 		result = unique_ptr<wchar_t>(new wchar_t[resLength]);
@@ -164,7 +164,7 @@ namespace Tools
 	bool Process::ReadRaw(unsigned address, void * buffer,unsigned long length)
 	{
 		DWORD byte_read;
-		bool r_res = ReadProcessMemory(process, (void*)address, buffer, length, &byte_read);
+		bool r_res = ReadProcessMemory(process, (void*)address, buffer, length, &byte_read)!=0;
 		if (!r_res || byte_read != length)
 		{
 			throw MemoryReadException(address);
@@ -198,10 +198,11 @@ namespace Tools
 			real_length=(bi.RegionSize-((DWORD)address-(DWORD)bi.BaseAddress));
 		}
 		tmp_result = unique_ptr<char>(new char[real_length]);
-		bool r_res=ReadProcessMemory(process, (void*)address, tmp_result.get(), real_length, &byte_read);
+		bool r_res=ReadProcessMemory(process, (void*)address, tmp_result.get(), real_length, &byte_read)!=0;
 		res_length=strlen(tmp_result.get());
 		result = unique_ptr<char>(new char[res_length + 1]);
-		strcpy(result.get(),tmp_result.get());
+		strcpy_s(result.get(), res_length + 1, tmp_result.get());
+		//strcpy(result.get(),tmp_result.get());
 		if (!r_res || !result.get())
 		{
 			throw MemoryReadException(address);
@@ -382,6 +383,7 @@ namespace Tools
 		HKL l = GetKeyboardLayout(thread_id);
 		Language lang;
 		WORD low = (WORD)l >> 0;
+		
 		char low2 = low >> 0;
 		switch (low2 >> 0)
 		{

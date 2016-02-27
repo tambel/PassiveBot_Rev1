@@ -3,7 +3,7 @@ namespace Utils
 {
 	Point2D<int> WorldPositionToBlockCoords(Vector3 position)
 	{
-		return Point2D<int>(floor((32 - (position.x / (Metrics::BlockSize)))),floor((32 - (position.y / (Metrics::BlockSize)))));
+		return Point2D<int>(floor((32.0f - (position.x / (Metrics::BlockSize)))),floor((32.0f - (position.y / (Metrics::BlockSize)))));
 	}
 	Point2D<float> BlockCoordsToWorldPosition(Point2D<int> coords)
 	{

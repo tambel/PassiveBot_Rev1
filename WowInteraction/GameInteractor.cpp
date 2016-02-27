@@ -71,7 +71,7 @@ namespace Wow
 	}
 	bool GameInteractor::IsLoaded()
 	{
-		return Process::ReadRel<char>(WowOffsets::Client::Loaded); 
+		return Process::ReadRel<char>(WowOffsets::Client::Loaded)!=0; 
 	}
 	bool GameInteractor::IsCharacterSelecting()
 	{
@@ -212,7 +212,7 @@ namespace Wow
 		cout<<"Selecting character"<<endl;
 		__int64 v1=0;
 		unsigned long characters_number=Process::ReadRel<unsigned>(WowOffsets::Client::CharactersNumber);
-		for (int i=0;i<characters_number;i++)
+		for (unsigned i=0;i<characters_number;i++)
 		{
 			*((int*)&v1+1)=Process::ReadRel<unsigned>(WowOffsets::Client::CharactersOffset)+464*i;
 			wstring nm=Process::ReadString_UTF8((v1 + 0x1000000000i64) >> 32,0);

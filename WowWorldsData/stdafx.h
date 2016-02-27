@@ -29,9 +29,8 @@
 #include "WMOGroup.h"
 #include "WMO.h"
 #include "WMOPart.h"
-
 #include "WMOStructs.h"
-#include "WowObjectAvatar.h"
+
 
 
 #define WIN32_LEAN_AND_MEAN             // Исключите редко используемые компоненты из заголовков Windows

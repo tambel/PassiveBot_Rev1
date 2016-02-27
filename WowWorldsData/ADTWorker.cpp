@@ -10,7 +10,7 @@ Chunk * ADTWorker::GetChunk(Area * area,Location & location, Point2D<int> block_
 	//shared_ptr<ADT>  adt=0;
 	shared_ptr<ADT>  adt=GetADT(location, block_coordinates);
 	if (!adt)
-		return 0;
+		return nullptr;
 
 	chunk= adt->GetChunk(area,coordinates);
 	//chunk->SetADTptr(adt);
@@ -20,6 +20,7 @@ Chunk * ADTWorker::GetChunk(Area * area,Location & location, Point2D<int> block_
 			//ChunkCache::Add(chunk);
 		return chunk;
 	}
+	return nullptr;
 }
 shared_ptr<ADT> ADTWorker::GetADT(Location & location, Point2D<int> coordinates)
 {

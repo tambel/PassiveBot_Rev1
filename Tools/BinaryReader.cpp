@@ -21,7 +21,7 @@ unsigned int BinaryReader::ReadUInt()
 }
 unsigned int BinaryReader::ReadUInt(unsigned long abs_position)
 {
-	unsigned long old_position=stream->tellg();
+	unsigned long long  old_position=stream->tellg();
 	unsigned int result;
 	stream->seekg (abs_position, stream->beg);
 	stream->read((char*)&result,4);
@@ -30,7 +30,7 @@ unsigned int BinaryReader::ReadUInt(unsigned long abs_position)
 }
 void BinaryReader::ReadBytes(char * buff,unsigned long abs_position,unsigned long length)
 {
-	unsigned long old_position=stream->tellg();
+	unsigned long long  old_position=stream->tellg();
 	stream->seekg (abs_position, stream->beg);
 	stream->read(buff,length);
 	stream->seekg(old_position,ios::beg);
@@ -49,11 +49,11 @@ ifstream * BinaryReader::GetStream()
 {
 	return stream;
 }
-void BinaryReader::SetPosition(unsigned long position)
+void BinaryReader::SetPosition(unsigned long long position)
 {
 	stream->seekg(position,ios::beg);
 }
-unsigned long BinaryReader::GetPosition()
+unsigned long long BinaryReader::GetPosition()
 { 
 
 	return stream->tellg();

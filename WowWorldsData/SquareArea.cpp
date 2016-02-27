@@ -197,3 +197,4 @@ void Area::InitMapObjects()
 			++it;
 	}
 }
+

@@ -2,8 +2,6 @@
 #include "Utils.h"
 #include "ADTWorker.h"
 #include "MapArea.h"
-#include "WowInteraction\WowObject.h"
-#include "WowObjectAvatar.h"
 #include "WMO.h"
 #include "Doodad.h"
 using namespace Utils;
@@ -43,13 +41,15 @@ public:
 	Area & operator=(Area && right);
 	Area(Area && area);
 	
-	virtual void CheckAndUpdate(Location & location, Point2D<int> block_coordinates,Point2D<int> coordinates);
+	void CheckAndUpdate(Location & location, Point2D<int> block_coordinates,Point2D<int> coordinates);
+	inline void UpdateArea(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates) { this->Update(location, block_coordinates, coordinates); }
+	//void Update(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	inline int GetRadius() {return radius;}
 	inline int GetSize() { return area_size; }
 	inline Utils::Graphics::BoundingBox & GetBoundingBox() { return bounding_box; }
 	inline vector<unique_ptr<WMO>> & GetWMOs() { return wmos; }
 	inline vector<unique_ptr<Doodad>> & GetDoodads() { return doodads; }
-	
+	inline Location & GetLocation() { return location; }
 	 vector<unique_ptr<Chunk>> & GetChunks() { return chunks; }
 	bool IsOutOfBounds(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	void InitMapObjects();

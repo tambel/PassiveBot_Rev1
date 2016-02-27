@@ -36,9 +36,9 @@ public:
 	//
 	void MoveToBegining();
 	void MoveForward(unsigned long offset);
-	void MoveBackward(unsigned long offset);
-	void SetPosition(unsigned long position);
-	unsigned long GetPosition();
+	//void MoveBackward(unsigned long offset);
+	void SetPosition(unsigned long long position);
+	unsigned long long GetPosition();
 	ifstream * GetStream();
 	bool IsFileExist();
 };

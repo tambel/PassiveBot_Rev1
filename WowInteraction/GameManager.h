@@ -7,6 +7,7 @@ namespace Wow
 	class GameManager
 	{
 	
+
 	public:
 
 		GameManager(void);
@@ -23,7 +24,7 @@ namespace Wow
 		inline static float GetPlayerDistanceToPoint(WowObject & object);
 		static void RotatePlayer(Vector3 & point);
 		static void GoToPoint(Vector3 & point);
-		static void GoToPointTest(Vector3 & point);
+		
 
 	};
 }

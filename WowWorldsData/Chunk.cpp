@@ -116,7 +116,7 @@ void Chunk::LoadMcvt()
 			++counter;
 		}
 	}
-	for (int i = 0; i < index_count; i += 3)
+	for (unsigned i = 0; i < index_count; i += 3)
 	{
 		indices[i] = ChunkModel::indices[i+2];
 		indices[i+1] = ChunkModel::indices[i + 1];
@@ -128,7 +128,6 @@ void Chunk::LoadMcvt()
 }
 void Chunk::LoadMcrd(unsigned long size)
 {
-	bool exist;
 	unsigned count = size / 4;
 	unique_ptr<unsigned> doodads_refs = unique_ptr<unsigned>(new unsigned[count]);
 	obj_reader->ReadArray<unsigned>(doodads_refs.get(), count);
@@ -144,7 +143,6 @@ void Chunk::LoadMcrd(unsigned long size)
 }
 void Chunk::LoadMcrw(unsigned long size)
 {
-	bool exist;
 	unsigned count = size / 4;
 	unique_ptr<unsigned> wmo_refs = unique_ptr<unsigned>(new unsigned[count]);
 	obj_reader->ReadArray<unsigned>(wmo_refs.get(), count);

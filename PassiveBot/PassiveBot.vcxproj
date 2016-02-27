@@ -52,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(OGRE_HOME)\include;$(OGRE_HOME)\include\OIS;$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\Samples\Common\include;$(OGRE_HOME)\include\OGRE\Overlay;$(BOOST_ROOT);$(RECASTDETOUR)\Recast\Include;$(RECASTDETOUR)\Detour\Include;$(RECASTDETOUR)\DebugUtils\Include;$(RECASTDETOUR)\Sample\Include;$(AUTOIT)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir);$(RECASTDETOUR)\Recast\Include;$(RECASTDETOUR)\Detour\Include;$(RECASTDETOUR)\DebugUtils\Include;$(RECASTDETOUR)\Sample\Include;$(AUTOIT)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zm1000 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -76,7 +76,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(OGRE_HOME)\include;$(OGRE_HOME)\include\OIS;$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\Samples\Common\include;$(OGRE_HOME)\include\OGRE\Overlay;$(BOOST_ROOT);$(RECASTDETOUR)\Recast\Include;$(RECASTDETOUR)\Detour\Include;$(RECASTDETOUR)\DebugUtils\Include;$(RECASTDETOUR)\Sample\Include;$(AUTOIT)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir);$(RECASTDETOUR)\Recast\Include;$(RECASTDETOUR)\Detour\Include;$(RECASTDETOUR)\DebugUtils\Include;$(RECASTDETOUR)\Sample\Include;$(AUTOIT)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zm1000 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>

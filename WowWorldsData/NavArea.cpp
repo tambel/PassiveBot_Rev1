@@ -84,7 +84,6 @@ NavArea::NavArea(NavArea && area)
 void NavArea::InitAreaBoundingBox()
 {
 	vector<float> points = vector<float>();
-	Chunk * chunk;
 	auto add_point = [](vector<float> & points, Utils::Graphics::BoundingBox & bb)
 	{
 		points.push_back(bb.up.x);
@@ -258,47 +257,6 @@ struct NavMeshTileHeader
 	dtTileRef tileRef;
 	int dataSize;
 };
-static const int NAVMESHSET_MAGIC = 'M' << 24 | 'S' << 16 | 'E' << 8 | 'T'; //'MSET';
-static const int NAVMESHSET_VERSION = 1;
-void NavArea::saveAll(const char* path, const dtNavMesh* mesh)
-{
-	if (!mesh) return;
-
-	FILE* fp = fopen(path, "wb");
-	if (!fp)
-		return;
-
-	// Store header.
-	NavMeshSetHeader header;
-	header.magic = NAVMESHSET_MAGIC;
-	header.version = NAVMESHSET_VERSION;
-	header.numTiles = 0;
-	for (int i = 0; i < mesh->getMaxTiles(); ++i)
-	{
-		const dtMeshTile* tile = mesh->getTile(i);
-		if (!tile || !tile->header || !tile->dataSize) continue;
-		header.numTiles++;
-	}
-	memcpy(&header.params, mesh->getParams(), sizeof(dtNavMeshParams));
-	fwrite(&header, sizeof(NavMeshSetHeader), 1, fp);
-
-	// Store tiles.
-	for (int i = 0; i < mesh->getMaxTiles(); ++i)
-	{
-		const dtMeshTile* tile = mesh->getTile(i);
-		if (!tile || !tile->header || !tile->dataSize) continue;
-
-		NavMeshTileHeader tileHeader;
-		tileHeader.tileRef = mesh->getTileRef(tile);
-		tileHeader.dataSize = tile->dataSize;
-		fwrite(&tileHeader, sizeof(tileHeader), 1, fp);
-
-		fwrite(tile->data, tile->dataSize, 1, fp);
-	}
-
-	fclose(fp);
-}
-
 
 unsigned char * NavArea::BuildTileMesh(int x, int y, const float* bmin, const float* bmax, int & dataSize)
 {
@@ -354,8 +312,8 @@ unsigned char * NavArea::BuildTileMesh(int x, int y, const float* bmin, const fl
 	tbmax[0] = m_cfg.bmax[0];
 	tbmax[1] = m_cfg.bmax[2];
 	//vector<Chunk*> overlapping_chunks = vector<Chunk*>();
-	unique_ptr<unsigned char>m_triareas_ptr;
-	unsigned char * m_triareas;
+	//unique_ptr<unsigned char>m_triareas_ptr;
+	//unsigned char * m_triareas;
 	int m_tileTriCount = 0;
 	/*for (int i = 0; i < area_size; i++)
 	{
@@ -389,7 +347,7 @@ unsigned char * NavArea::BuildTileMesh(int x, int y, const float* bmin, const fl
 			m_triareas = new unsigned char[nctris];
 			rcMarkWalkableTriangles(m_ctx, m_cfg.walkableSlopeAngle, verts, model->GetVertexCount(), ctris, nctris, m_triareas);
 			if (!rcRasterizeTriangles(m_ctx, verts, model->GetVertexCount(), ctris, m_triareas, nctris, *m_solid, m_cfg.walkableClimb))
-				return 0;
+				return;
 			delete[] m_triareas;
 			m_triareas = 0;
 		}
@@ -596,12 +554,12 @@ int NavArea::FindPath(Vector3 & start, Vector3 & end, int nPathSlot)
 	dtStatus status;
 	float pExtents[3] = { 2.0f, 4.0f, 2.0f }; // size of box around start/end points to look for nav polygons
 	dtPolyRef m_startRef;
-	float StartNearest[3];
+	//float StartNearest[3];
 	dtPolyRef m_endRef;
-	float EndNearest[3];
+	//float EndNearest[3];
 	dtPolyRef m_polys[MAX_PATHPOLY];
 	int m_npolys = 0;
-	float StraightPath[MAX_PATHVERT * 3];
+	//float StraightPath[MAX_PATHVERT * 3];
 	int nVertCount = 0;
 	//PATHDATA * path_store = m_PathStore.get();
 
@@ -643,7 +601,6 @@ int NavArea::FindPath(Vector3 & start, Vector3 & end, int nPathSlot)
 
 			dtVcopy(&m_smoothPath[m_nsmoothPath * 3], iterPos);
 			m_nsmoothPath++;
-			cout << m_nsmoothPath << endl;
 
 			while (npolys && m_nsmoothPath < MAX_SMOOTH)
 			{
@@ -965,18 +922,18 @@ void NavArea::InitNavConfig()
 	config.m_maxTiles = 1024;
 	config.m_maxPolysPerTile = 4096;
 	config.m_tileSize = 111, 11111;// Utils::Metrics::ChunkSize;
-	config.m_cellSize = 0.3;
-	config.m_cellHeight = 0.2;
-	config.m_agentHeight = 2.0;
-	config.m_agentRadius = 1.0;//0.800000024;
-	config.m_agentMaxClimb =  0.899999976;
-	config.m_agentMaxSlope = 45.0000000;
-	config.m_regionMinSize = 8.00000000;
-	config.m_regionMergeSize = 20.0000000;
-	config.m_edgeMaxLen = 12.0000000;
-	config.m_edgeMaxError = 1.29999995;
-	config.m_vertsPerPoly = 6.00000000;
-	config.m_detailSampleDist = 6.00000000;
-	config.m_detailSampleMaxError = 1.00000000;
+	config.m_cellSize = 0.3f;
+	config.m_cellHeight = 0.2f;
+	config.m_agentHeight = 2.0f;
+	config.m_agentRadius = 1.0f;//0.800000024;
+	config.m_agentMaxClimb =  0.899999976f;
+	config.m_agentMaxSlope = 45.0000000f;
+	config.m_regionMinSize = 8.00000000f;
+	config.m_regionMergeSize = 20.0000000f;
+	config.m_edgeMaxLen = 12.0000000f;
+	config.m_edgeMaxError = 1.29999995f;
+	config.m_vertsPerPoly = 6.00000000f;
+	config.m_detailSampleDist = 6.00000000f;
+	config.m_detailSampleMaxError = 1.00000000f;
 	config.m_partitionType = 0;
 }

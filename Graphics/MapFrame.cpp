@@ -175,7 +175,7 @@ m_pRecastMOWalk->colour(0, 1, 0, 1);
 							const float z = orig[2] + v[2] * cs;
 							//dd->vertex(x, y, z, colb);
 
-							m_pRecastMOBoundary->position(x, z + 0.25, y);
+							m_pRecastMOBoundary->position(x, z + 0.25f, y);
 							m_pRecastMOBoundary->colour(0, 0, 0);
 						}
 					}

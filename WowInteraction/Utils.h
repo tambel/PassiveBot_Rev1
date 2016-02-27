@@ -1,7 +1,7 @@
 #pragma once
 namespace Utils
 {
-	const float PI = 3.14159265358979323846;
+	const float PI = 3.14159265358979323846f;
 	namespace WowTypes
 	{
 		struct Vector3

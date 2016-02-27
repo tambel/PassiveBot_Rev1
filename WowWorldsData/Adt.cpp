@@ -142,14 +142,14 @@ void ADT::ReadWMOModels()
 	}
 	for (unsigned i = 0; i<modf_count; i++)
 	{
-		char ss[1000];
+		/*char ss[1000];
 		strcpy(ss, wmos_filenames + wmos_ids[modfs[i].Mwid]);
 		
 		string s = ss;
 		string n = Configuration::GetGameDataPath() + s;
 		WMOInfo info =WMOInfo(n, modfs[i]);
-		wmo_infos.push_back(info);
-		//wmo_infos.push_back(WMOInfo(Configuration::GetGameDataPath() + (wmos_filenames + wmos_ids[modfs[i].Mwid]), modfs[i]));
+		wmo_infos.push_back(info);*/
+		wmo_infos.push_back(WMOInfo(Configuration::GetGameDataPath() + (wmos_filenames + wmos_ids[modfs[i].Mwid]), modfs[i]));
 	}
 	//delete [] wmos_filenames;
 	//delete[] wmos_ids;

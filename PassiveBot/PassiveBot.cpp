@@ -7,10 +7,8 @@
 #include "stdafx.h"
 #include <iostream>
 #include "AutoItX3_DLL.h"
-//#include "boost\thread\thread.hpp"
 #include <thread>
 #include <random>
-#include "Graphics\WorldViewer.h"
 using namespace std;
 using namespace Wow;
 using namespace Utils;
@@ -36,26 +34,56 @@ int main(int argc, wchar_t * argv[])
 
 
 	BotInteractor::StartGame("lissek7@ya.ru", "lebmat2762066", L"Тестируем");
-	/*Area * area=new Area(Game::LocationBase::Get("Kalimdor"), Point2D<int>(33, 41), Point2D<int>(10, 3), 3);
-	area->FindPath(Vector3(21882.5879, 22.1627789, -17879.6426), Vector3(22094.2168, 0.594630361, -17916.1914),0);*/
-
-	
 	Player * player = ObjectManager::GetPlayer();
-	default_random_engine generator;
-	uniform_int_distribution<int> distribution(0, ObjectManager::GetUnitsList().size() - 1);
 	
-	BotInteractor::GoToPoint(*ObjectManager::FindUnitByName(L"Тал"));
+	vector<Guid128> past;
 
-	//WorldViewer viewer=WorldViewer(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords), 3);
-	//viewer.ShowMap();
+	default_random_engine generator;
+	while (10)
+	{
+		auto GetRandomUnit = []()
+		{
+			
+		};
+		player->DumpPosition();
+		bool exist;
+		Unit * unit;
+		do
+		{
+			exist = false;
+			
+			uniform_int_distribution<int> distribution(0, ObjectManager::GetUnitsList().size() - 1);
+			int random_variable = distribution(generator);
+			unit =(ObjectManager::GetUnitsList())[random_variable];
+			for (auto guid : past)
+			{
+				if (*unit->GetGuid() == guid)
+				{
+					exist = true;
+					break;
+				}
+			}
+
+		} while (exist);
+
+		wcout << unit->GetName() << endl;;
+		BotInteractor::GoToPoint(*unit);
+		past.push_back(*unit->GetGuid());
+		///BotInteractor::PulseCheck();
+		Sleep(1000);
+	}
+	
+
+
+	BotInteractor::GoToPoint(*ObjectManager::FindUnitByName(L"Так"));
 
 	while (1)
 	{
 		try
 		{
 			//BotInteractor::PulseCheck();
-			//viewer.Update(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords));
-			Sleep(1000);
+			//GameManager::WorldToScreen(ObjectManager::FindUnitByName(L"Так")->GetPosition());
+			Sleep(10);
 		}
 		catch (...)
 		{
@@ -75,8 +103,6 @@ int main(int argc, wchar_t * argv[])
 		Sleep(1000);
 	}
 */
-
-	//_CrtDumpMemoryLeaks();
 	return 0;
 
 }

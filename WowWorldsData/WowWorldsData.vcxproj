@@ -112,7 +112,6 @@
     <ClInclude Include="WMOPart.h" />
     <ClInclude Include="WMORoot.h" />
     <ClInclude Include="WMOStructs.h" />
-    <ClInclude Include="WowObjectAvatar.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Adt.cpp" />
@@ -140,7 +139,6 @@
     <ClCompile Include="WMOGroup.cpp" />
     <ClCompile Include="WMOPart.cpp" />
     <ClCompile Include="WMORoot.cpp" />
-    <ClCompile Include="WowObjectAvatar.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

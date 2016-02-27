@@ -6,8 +6,13 @@
 #pragma once
 #include <DirectXMath.h>
 #include <D3dx9math.h>
+#include "boost\geometry\geometry.hpp"
+#include "boost\numeric\ublas\matrix.hpp"
+#include "boost\numeric\ublas\vector.hpp"
 
 #define _USE_MATH_DEFINES
+
+
 using namespace std;
 using namespace DirectX;
 using namespace Tools;
@@ -60,7 +65,7 @@ namespace Wow
 	void GameManager::RotatePlayer(Vector3 & point)
 	{
 		Player * player = ObjectManager::GetPlayer();
-		float da = 0.00392698825257;
+		float da = 0.00392698825257f;
 		float pr = player->GetPosition().rotation.z;
 		float tr =GetOrientationToTarget(point);
 		float angle;
@@ -87,8 +92,7 @@ namespace Wow
 			}
 
 		}
-
-		int npixel = roundf(angle/da);
+		int npixel = static_cast<int>(roundf(angle/da));
 		RECT rect = RECT();
 		AU3_WinGetClientSize(L"World of Warcraft", L"", &rect);
 		AU3_MouseMove(rect.right / 2 + npixel, rect.bottom / 2, 1);
@@ -102,10 +106,6 @@ namespace Wow
 	{
 		RotatePlayer(point);
 		GoStraighToPoint(point);
-	}
-	void GameManager::GoToPointTest(Vector3 & point)
-	{
-		RotatePlayer(point);
 	}
 	Camera * GameManager::GetCamera()
 	{

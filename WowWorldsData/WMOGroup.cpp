@@ -13,7 +13,7 @@ WMOGroup::WMOGroup(string filename) :filename(std::move(filename))
 		return;
 	unsigned chunk_size = reader.Read<unsigned>() - sizeof(MOGP);
 	header = reader.Read<MOGP>();
-	unsigned end_pos = reader.GetPosition() + chunk_size;
+	unsigned long long end_pos = reader.GetPosition() + chunk_size;
 	while (reader.GetPosition() < end_pos)
 	{
 		unsigned sig = reader.Read<unsigned>();

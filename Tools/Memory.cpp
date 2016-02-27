@@ -38,7 +38,8 @@ namespace Tools
 	void Process::TypeByKeyboard(string & str)
 	{
 		char * string = new char[str.length()+1];
-		strcpy(string, str.c_str());
+		//strcpy(string, str.c_str());
+		strcpy_s(string, str.length() + 1, str.c_str());
 		unsigned additional_key=0;
 		unsigned short key;
 		while(*string)

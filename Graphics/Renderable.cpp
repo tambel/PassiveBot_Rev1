@@ -70,7 +70,7 @@ void Renderable::CreateScene(Ogre::SceneNode * parent)
 	//Ogre::SceneNode * scene =parent_scene->createChildSceneNode();
 	Ogre::ManualObject * manual = scene->getCreator()->createManualObject();
 	manual->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_LIST);
-	for (int vi = 0; vi < model->GetVertexCount() * 3; vi += 3)
+	for (unsigned vi = 0; vi < model->GetVertexCount() * 3; vi += 3)
 	{
 		manual->position(model->GetVertices()[vi], model->GetVertices()[vi + 2], model->GetVertices()[vi + 1]);
 		if (vi % 9 == 0)
@@ -80,7 +80,7 @@ void Renderable::CreateScene(Ogre::SceneNode * parent)
 		else
 			manual->colour(1, 1, 0, 1);
 	}
-	for (int ii = 0; ii < model->GetIndexCount(); ii += 3)
+	for (unsigned ii = 0; ii < model->GetIndexCount(); ii += 3)
 	{
 		manual->index(model->GetIndices()[ii + 2]);
 		manual->index(model->GetIndices()[ii + 1]);
