@@ -142,12 +142,10 @@ public:
 	void SetGamePosition(Vector3 position) {game_position=position;}
 	Vector3 GetRealPosition() {return real_position;}
 	void  SetRealPosition(Vector3 pos) {real_position=pos;}
-	void SearchForObjects();
 	vector<Doodad*> & GetDoodads() { return doodads; }
 	vector<WMO*> & GetWMOs() { return wmos; }
 	inline Utils::Graphics::BoundingBox & GetTerrainBoundingBox() { return terrain_bounding_box; }
 	inline Utils::Graphics::BoundingBox & GetFullBoundingBox() { return full_bounding_box; }
-	void InitObjects();
 	inline Area * GetArea() { return area; }
 	Chunk & operator=(Chunk &&);
 	inline vector<WMOInfo>  & GetWMOInfos() { return wmo_infos; }

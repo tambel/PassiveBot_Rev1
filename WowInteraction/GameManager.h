@@ -22,7 +22,6 @@ namespace Wow
 		static float GetPlayerDistanceToPoint(Vector3 & end);
 		inline static float GetPlayerDistanceToPoint(WowObject & object);
 		static void RotatePlayer(Vector3 & point);
-		static void RotatePlayerTest(Vector3 & point);
 		static void GoToPoint(Vector3 & point);
 		static void GoToPointTest(Vector3 & point);
 

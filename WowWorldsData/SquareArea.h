@@ -25,46 +25,32 @@ protected:
 
 	vector<unique_ptr<Doodad>> doodads;
 	vector<unique_ptr<WMO>> wmos;
-	vector<unique_ptr<Chunk>>chunkss;
-	vector<Chunk*> active_chunks;
-	Chunk *** chunks;
+	vector<unique_ptr<Chunk>>chunks;
 	int radius;
 	int area_size;
 	Location  location;
 	Point2D<int> block_coordinates;
 	Point2D<int> coordinates;
-	vector<WowObjectAvatar*> wow_object_avatars;
-
 	Utils::Graphics::BoundingBox bounding_box;
-	bool IsMoved(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates);
-
-	void CheckAndClearOldObjects();
 	virtual void Update(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	void _move(Area & other);
 public:
 	
-	bool to_update;
-	bool busy;
 	Area();
 	Area(Location & location, Point2D<int> block_coordinates,Point2D<int> coordinates,int radius);
 	
 	virtual ~Area(void);
 	Area & operator=(Area && right);
 	Area(Area && area);
-	//void Update(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	
 	virtual void CheckAndUpdate(Location & location, Point2D<int> block_coordinates,Point2D<int> coordinates);
-	int GetRadius() {return radius;}
+	inline int GetRadius() {return radius;}
 	inline int GetSize() { return area_size; }
-	Chunk *** GetChunks() { return chunks; }
-	vector<WowObjectAvatar*> * GetWowAvatars() {return &wow_object_avatars;}
-	void AddWowObjectAvatar(Wow::WowObject* object);
-	Utils::Graphics::BoundingBox & GetBoundingBox() { return bounding_box; }
+	inline Utils::Graphics::BoundingBox & GetBoundingBox() { return bounding_box; }
 	inline vector<unique_ptr<WMO>> & GetWMOs() { return wmos; }
 	inline vector<unique_ptr<Doodad>> & GetDoodads() { return doodads; }
 	
-	inline vector<unique_ptr<Chunk>> & GetChunkss() { return chunkss; }
-	inline vector<Chunk*> GetActiveChunks() { return active_chunks; }
+	 vector<unique_ptr<Chunk>> & GetChunks() { return chunks; }
 	bool IsOutOfBounds(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	void InitMapObjects();
 	//virtual void CheckAndMoveImpl(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);

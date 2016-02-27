@@ -94,7 +94,7 @@ void NavArea::InitAreaBoundingBox()
 		points.push_back(bb.down.y);
 		points.push_back(bb.down.z);
 	};
-	for (auto &chunk : chunkss)
+	for (auto &chunk : chunks)
 	{
 		add_point(points, chunk->GetBoundingBox());
 	}
@@ -394,7 +394,7 @@ unsigned char * NavArea::BuildTileMesh(int x, int y, const float* bmin, const fl
 			m_triareas = 0;
 		}
 	};
-	for (auto &chunk : chunkss)
+	for (auto &chunk : chunks)
 	{
 		RasterizeModel(&*chunk, m_cfg, m_ctx, m_solid, m_tileTriCount);
 	}
