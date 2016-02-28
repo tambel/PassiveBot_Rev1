@@ -201,5 +201,31 @@ FakesAssemblies/
 
 #python
 *.idea
+*.pyc
 
-swig
+#swig
+Swig/Area.py
+Swig/Area_wrap.cxx
+Swig/BotInteractor.py
+Swig/BotInteractor_wrap.cxx
+Swig/NavArea.py
+Swig/NavArea_wrap.cxx
+Swig/ObjectManager.py
+Swig/ObjectManager_wrap.cxx
+Swig/Player.py
+Swig/Player_wrap.cxx
+Swig/Unit.py
+Swig/test.py
+
+Swig/Unit_wrap.cxx
+Swig/WowInteractionUtils.py
+Swig/WowInteractionUtils_wrap.cxx
+Swig/WowObject.iSwig/WowObject.py
+Swig/WowObject_wrap.cxx
+Swig/WowWorldsDataUtils.py
+Swig/WowWorldsDataUtils_wrap.cxx
+*.iobj
+*.ipdb
+*.pyd
+
+

@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="DBCReader.h" />
     <ClInclude Include="Exceptions.h" />
     <ClInclude Include="Frame.h" />
     <ClInclude Include="FrameManager.h" />
@@ -100,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="DBCReader.cpp" />
     <ClCompile Include="Exceptions.cpp" />
     <ClCompile Include="Frame.cpp" />
     <ClCompile Include="FrameManager.cpp" />
