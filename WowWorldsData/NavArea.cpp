@@ -7,6 +7,7 @@
 #include <crtdbg.h>
 
 NavConfig NavArea::config;
+int NavArea::MAX_SMOOTH = 2048;
 void NavArea::Update(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {
 	Area::Update(location, block_coordinates, coordinates);

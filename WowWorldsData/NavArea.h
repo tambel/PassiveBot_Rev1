@@ -1,5 +1,5 @@
 #pragma once
-#include "SquareArea.h"
+#include "Area.h"
 struct NavConfig
 {
 	int m_maxTiles;
@@ -48,8 +48,8 @@ public:
 	rcContourSet * m_cset = nullptr;
 	rcContext * m_ctx;
 	//unique_ptr<PATHDATA>  m_PathStore;
-	const static int MAX_SMOOTH = 2048;
-	float m_smoothPath[MAX_SMOOTH * 3];
+	static int MAX_SMOOTH;// = 2048;
+	float m_smoothPath[2048 * 3];
 	int m_nsmoothPath=0;
 
 	void InitNavigation();

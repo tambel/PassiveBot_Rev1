@@ -2,51 +2,50 @@
 #include "Utils.h"
 using namespace Utils::WowTypes;
 using namespace std;
-namespace Wow
+
+struct Guid128
 {
-	struct Guid128
+	unsigned long long low;
+	unsigned long long high;
+	Guid128()
 	{
-		unsigned long long low;
-		unsigned long long high;
-		Guid128()
+		low = 0;
+		high = 0;
+	}
+	friend bool operator==(const Guid128& left, const Guid128& right)
+	{
+		if (left.high == right.high && left.low == right.low)
 		{
-			low=0;
-			high=0;
+			return true;
 		}
-		friend bool operator==(const Guid128& left, const Guid128& right)
+		else
 		{
-			if (left.high==right.high && left.low==right.low)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			return false;
 		}
-		friend bool operator!=(const Guid128& left, const Guid128& right)
+	}
+	friend bool operator!=(const Guid128& left, const Guid128& right)
+	{
+		if (left.high != right.high || left.low != right.low)
 		{
-			if (left.high!=right.high || left.low!=right.low)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			return true;
 		}
-		friend bool operator!(const Guid128& guid)
+		else
 		{
-			if (guid.high==0 && guid.low==0)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			return false;
 		}
-	};
+	}
+	friend bool operator!(const Guid128& guid)
+	{
+		if (guid.high == 0 && guid.low == 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+};
 enum ObjectType
 {
 	ITEM = 1,
@@ -75,13 +74,13 @@ public:
 	virtual ~WowObject(void);
 	void SetBase(unsigned base);
 	unsigned GetBase();
-	char GetType(bool refresh=false);
-	unsigned GetID(bool refresh=false);
-	Guid128 * GetGuid(bool refresh=false);
-	virtual wstring & GetName(bool refresh=false)=0;
+	char GetType(bool refresh = false);
+	unsigned GetID(bool refresh = false);
+	Guid128 * GetGuid(bool refresh = false);
+	virtual wstring & GetName(bool refresh = false) = 0;
 	static char GetType_Static(unsigned base);
 	virtual Position GetPosition();
 	//virtual void DumpPosition(bool refresh=false)=0;
 
 };
-}
+

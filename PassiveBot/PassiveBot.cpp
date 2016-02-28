@@ -10,7 +10,6 @@
 #include <thread>
 #include <random>
 using namespace std;
-using namespace Wow;
 using namespace Utils;
 using namespace Tools;
 

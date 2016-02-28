@@ -59,7 +59,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration)\;$(BOOST_ROOT)\stage\lib;$(OGRE_HOME)\lib\$(Configuration);$(RECASTDETOUR)\Recast\lib\$(Configuration);$(RECASTDETOUR)\Detour\lib\$(Configuration);$(AUTOIT)\Lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Detour.lib;WowInteraction.lib;WowWorldsData.lib;Tools.lib;Graphics.lib;BotInteractor.lib;AutoItX3_DLL.lib;OgreMain_d.lib;OIS_d.lib;OgreOverlay_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Detour.lib;WowInteraction.lib;WowWorldsData.lib;Tools.lib;BotInteractor.lib;AutoItX3_DLL.lib;OgreMain_d.lib;OIS_d.lib;OgreOverlay_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <HeapReserveSize>10000000</HeapReserveSize>
       <HeapCommitSize>10000000</HeapCommitSize>
     </Link>
@@ -85,7 +85,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration)\;$(BOOST_ROOT)\stage\lib;$(OGRE_HOME)\lib\$(Configuration);$(RECASTDETOUR)\Recast\lib\$(Configuration);$(RECASTDETOUR)\Detour\lib\$(Configuration);$(AUTOIT)\Lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Detour.lib;WowInteraction.lib;WowWorldsData.lib;Tools.lib;Graphics.lib;BotInteractor.lib;AutoItX3_DLL.lib;OgreMain.lib;OIS.lib;OgreOverlay.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Detour.lib;WowInteraction.lib;WowWorldsData.lib;Tools.lib;BotInteractor.lib;AutoItX3_DLL.lib;OgreMain.lib;OIS.lib;OgreOverlay.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <HeapReserveSize>10000000</HeapReserveSize>
       <HeapCommitSize>10000000</HeapCommitSize>
     </Link>

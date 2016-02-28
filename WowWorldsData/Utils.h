@@ -14,11 +14,6 @@ namespace Utils
 {
 	namespace Geometry
 	{
-		
-		
-		
-
-
 		enum class  Axis
 		{
 			X,

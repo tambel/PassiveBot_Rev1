@@ -1,7 +1,6 @@
 #include "stdafx.h"
 using namespace Tools; 
-namespace Wow
-{
+
 	Camera::Camera(unsigned base)
 	{
 		this->base=base;
@@ -66,4 +65,4 @@ namespace Wow
 		}
 		return far_clip;
 	}
-}
+

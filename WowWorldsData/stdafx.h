@@ -20,7 +20,7 @@
 #include "Chunk.h"
 #include "ChunkCache.h"
 #include "ChunkedData.h"
-#include "SquareArea.h"
+#include "Area.h"
 #include "NavArea.h"
 #include "Utils.h"
 #include "Model.h"

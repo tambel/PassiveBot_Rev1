@@ -2,7 +2,6 @@
 #include "BotInteractor.h"
 
 using namespace std;
-using namespace Wow;
 
 NavArea BotInteractor::area;
 bool BotInteractor::FindPath(Vector3 & start, Vector3 & end)

@@ -3,17 +3,16 @@
 #include "Utils.h"
 #include <string>
 using namespace std;
-using namespace Utils::WowTypes; 
-namespace Wow
+using namespace Utils::WowTypes;
+
+class Unit : public WowObject
 {
-	class Unit: public WowObject
-	{
-	public:
-		Unit(unsigned base);
-		~Unit(void);
-		wstring & GetName(bool refresh=false);
-		Position GetPosition();
-		void DumpPosition();
-	};
-}
+public:
+	Unit(unsigned base);
+	~Unit(void);
+	wstring & GetName(bool refresh = false);
+	Position GetPosition();
+	void DumpPosition();
+};
+
 

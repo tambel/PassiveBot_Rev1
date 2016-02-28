@@ -90,6 +90,678 @@ except AttributeError:
     _newclass = 0
 
 
+class Vector3(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Vector3, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, Vector3, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["x"] = _BotInteractor.Vector3_x_set
+    __swig_getmethods__["x"] = _BotInteractor.Vector3_x_get
+    if _newclass:
+        x = _swig_property(_BotInteractor.Vector3_x_get, _BotInteractor.Vector3_x_set)
+    __swig_setmethods__["y"] = _BotInteractor.Vector3_y_set
+    __swig_getmethods__["y"] = _BotInteractor.Vector3_y_get
+    if _newclass:
+        y = _swig_property(_BotInteractor.Vector3_y_get, _BotInteractor.Vector3_y_set)
+    __swig_setmethods__["z"] = _BotInteractor.Vector3_z_set
+    __swig_getmethods__["z"] = _BotInteractor.Vector3_z_get
+    if _newclass:
+        z = _swig_property(_BotInteractor.Vector3_z_get, _BotInteractor.Vector3_z_set)
+
+    def __init__(self, *args):
+        this = _BotInteractor.new_Vector3(*args)
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+
+    def __add__(self, right):
+        return _BotInteractor.Vector3___add__(self, right)
+
+    def __sub__(self, right):
+        return _BotInteractor.Vector3___sub__(self, right)
+
+    def __mul__(self, right):
+        return _BotInteractor.Vector3___mul__(self, right)
+
+    def __eq__(self, right):
+        return _BotInteractor.Vector3___eq__(self, right)
+
+    def __ne__(self, right):
+        return _BotInteractor.Vector3___ne__(self, right)
+    __swig_destroy__ = _BotInteractor.delete_Vector3
+    __del__ = lambda self: None
+Vector3_swigregister = _BotInteractor.Vector3_swigregister
+Vector3_swigregister(Vector3)
+cvar = _BotInteractor.cvar
+PI = cvar.PI
+
+class Position(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Position, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, Position, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["coords"] = _BotInteractor.Position_coords_set
+    __swig_getmethods__["coords"] = _BotInteractor.Position_coords_get
+    if _newclass:
+        coords = _swig_property(_BotInteractor.Position_coords_get, _BotInteractor.Position_coords_set)
+    __swig_setmethods__["rotation"] = _BotInteractor.Position_rotation_set
+    __swig_getmethods__["rotation"] = _BotInteractor.Position_rotation_get
+    if _newclass:
+        rotation = _swig_property(_BotInteractor.Position_rotation_get, _BotInteractor.Position_rotation_set)
+
+    def __init__(self, *args):
+        this = _BotInteractor.new_Position(*args)
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+    __swig_destroy__ = _BotInteractor.delete_Position
+    __del__ = lambda self: None
+Position_swigregister = _BotInteractor.Position_swigregister
+Position_swigregister(Position)
+
+
+_BotInteractor.Axis_X_swigconstant(_BotInteractor)
+Axis_X = _BotInteractor.Axis_X
+
+_BotInteractor.Axis_Y_swigconstant(_BotInteractor)
+Axis_Y = _BotInteractor.Axis_Y
+
+_BotInteractor.Axis_Z_swigconstant(_BotInteractor)
+Axis_Z = _BotInteractor.Axis_Z
+
+_BotInteractor.AngleValueType_degree_swigconstant(_BotInteractor)
+AngleValueType_degree = _BotInteractor.AngleValueType_degree
+
+_BotInteractor.AngleValueType_radian_swigconstant(_BotInteractor)
+AngleValueType_radian = _BotInteractor.AngleValueType_radian
+class Transformer3D(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Transformer3D, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, Transformer3D, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["rotation_matrix_X"] = _BotInteractor.Transformer3D_rotation_matrix_X_set
+    __swig_getmethods__["rotation_matrix_X"] = _BotInteractor.Transformer3D_rotation_matrix_X_get
+    if _newclass:
+        rotation_matrix_X = _swig_property(_BotInteractor.Transformer3D_rotation_matrix_X_get, _BotInteractor.Transformer3D_rotation_matrix_X_set)
+    __swig_setmethods__["rotation_matrix_Y"] = _BotInteractor.Transformer3D_rotation_matrix_Y_set
+    __swig_getmethods__["rotation_matrix_Y"] = _BotInteractor.Transformer3D_rotation_matrix_Y_get
+    if _newclass:
+        rotation_matrix_Y = _swig_property(_BotInteractor.Transformer3D_rotation_matrix_Y_get, _BotInteractor.Transformer3D_rotation_matrix_Y_set)
+    __swig_setmethods__["rotation_matrix_Z"] = _BotInteractor.Transformer3D_rotation_matrix_Z_set
+    __swig_getmethods__["rotation_matrix_Z"] = _BotInteractor.Transformer3D_rotation_matrix_Z_get
+    if _newclass:
+        rotation_matrix_Z = _swig_property(_BotInteractor.Transformer3D_rotation_matrix_Z_get, _BotInteractor.Transformer3D_rotation_matrix_Z_set)
+
+    def __init__(self):
+        this = _BotInteractor.new_Transformer3D()
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+    __swig_getmethods__["Rotate"] = lambda x: _BotInteractor.Transformer3D_Rotate
+    if _newclass:
+        Rotate = staticmethod(_BotInteractor.Transformer3D_Rotate)
+    __swig_getmethods__["SetRotationAngle"] = lambda x: _BotInteractor.Transformer3D_SetRotationAngle
+    if _newclass:
+        SetRotationAngle = staticmethod(_BotInteractor.Transformer3D_SetRotationAngle)
+    __swig_destroy__ = _BotInteractor.delete_Transformer3D
+    __del__ = lambda self: None
+Transformer3D_swigregister = _BotInteractor.Transformer3D_swigregister
+Transformer3D_swigregister(Transformer3D)
+
+def Transformer3D_Rotate(angle, value, axis):
+    return _BotInteractor.Transformer3D_Rotate(angle, value, axis)
+Transformer3D_Rotate = _BotInteractor.Transformer3D_Rotate
+
+def Transformer3D_SetRotationAngle(axis, angle):
+    return _BotInteractor.Transformer3D_SetRotationAngle(axis, angle)
+Transformer3D_SetRotationAngle = _BotInteractor.Transformer3D_SetRotationAngle
+
+class Location(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Location, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, Location, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["name"] = _BotInteractor.Location_name_set
+    __swig_getmethods__["name"] = _BotInteractor.Location_name_get
+    if _newclass:
+        name = _swig_property(_BotInteractor.Location_name_get, _BotInteractor.Location_name_set)
+    __swig_setmethods__["id"] = _BotInteractor.Location_id_set
+    __swig_getmethods__["id"] = _BotInteractor.Location_id_get
+    if _newclass:
+        id = _swig_property(_BotInteractor.Location_id_get, _BotInteractor.Location_id_set)
+
+    def __init__(self, *args):
+        this = _BotInteractor.new_Location(*args)
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+
+    def __eq__(self, other):
+        return _BotInteractor.Location___eq__(self, other)
+
+    def __ne__(self, other):
+        return _BotInteractor.Location___ne__(self, other)
+    __swig_destroy__ = _BotInteractor.delete_Location
+    __del__ = lambda self: None
+Location_swigregister = _BotInteractor.Location_swigregister
+Location_swigregister(Location)
+
+class LocationBase(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, LocationBase, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, LocationBase, name)
+    __repr__ = _swig_repr
+    __swig_getmethods__["Init"] = lambda x: _BotInteractor.LocationBase_Init
+    if _newclass:
+        Init = staticmethod(_BotInteractor.LocationBase_Init)
+    __swig_getmethods__["Add"] = lambda x: _BotInteractor.LocationBase_Add
+    if _newclass:
+        Add = staticmethod(_BotInteractor.LocationBase_Add)
+    __swig_getmethods__["Clear"] = lambda x: _BotInteractor.LocationBase_Clear
+    if _newclass:
+        Clear = staticmethod(_BotInteractor.LocationBase_Clear)
+    __swig_getmethods__["IsInitialized"] = lambda x: _BotInteractor.LocationBase_IsInitialized
+    if _newclass:
+        IsInitialized = staticmethod(_BotInteractor.LocationBase_IsInitialized)
+    __swig_getmethods__["Get"] = lambda x: _BotInteractor.LocationBase_Get
+    if _newclass:
+        Get = staticmethod(_BotInteractor.LocationBase_Get)
+
+    def __init__(self):
+        this = _BotInteractor.new_LocationBase()
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+    __swig_destroy__ = _BotInteractor.delete_LocationBase
+    __del__ = lambda self: None
+LocationBase_swigregister = _BotInteractor.LocationBase_swigregister
+LocationBase_swigregister(LocationBase)
+
+def LocationBase_Init():
+    return _BotInteractor.LocationBase_Init()
+LocationBase_Init = _BotInteractor.LocationBase_Init
+
+def LocationBase_Add(loc):
+    return _BotInteractor.LocationBase_Add(loc)
+LocationBase_Add = _BotInteractor.LocationBase_Add
+
+def LocationBase_Clear():
+    return _BotInteractor.LocationBase_Clear()
+LocationBase_Clear = _BotInteractor.LocationBase_Clear
+
+def LocationBase_IsInitialized():
+    return _BotInteractor.LocationBase_IsInitialized()
+LocationBase_IsInitialized = _BotInteractor.LocationBase_IsInitialized
+
+def LocationBase_Get(*args):
+    return _BotInteractor.LocationBase_Get(*args)
+LocationBase_Get = _BotInteractor.LocationBase_Get
+
+
+def WorldPositionToBlockCoords(position):
+    return _BotInteractor.WorldPositionToBlockCoords(position)
+WorldPositionToBlockCoords = _BotInteractor.WorldPositionToBlockCoords
+
+def BlockCoordsToWorldPosition(coords):
+    return _BotInteractor.BlockCoordsToWorldPosition(coords)
+BlockCoordsToWorldPosition = _BotInteractor.BlockCoordsToWorldPosition
+
+def WorldPositionToChunkCoords(position):
+    return _BotInteractor.WorldPositionToChunkCoords(position)
+WorldPositionToChunkCoords = _BotInteractor.WorldPositionToChunkCoords
+
+def ToGlobalChunkCoords(block_coordinates, coordinates):
+    return _BotInteractor.ToGlobalChunkCoords(block_coordinates, coordinates)
+ToGlobalChunkCoords = _BotInteractor.ToGlobalChunkCoords
+class Triangle(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Triangle, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, Triangle, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["indices"] = _BotInteractor.Triangle_indices_set
+    __swig_getmethods__["indices"] = _BotInteractor.Triangle_indices_get
+    if _newclass:
+        indices = _swig_property(_BotInteractor.Triangle_indices_get, _BotInteractor.Triangle_indices_set)
+
+    def __init__(self):
+        this = _BotInteractor.new_Triangle()
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+    __swig_destroy__ = _BotInteractor.delete_Triangle
+    __del__ = lambda self: None
+Triangle_swigregister = _BotInteractor.Triangle_swigregister
+Triangle_swigregister(Triangle)
+Mver = cvar.Mver
+Mhdr = cvar.Mhdr
+Mcin = cvar.Mcin
+Mtex = cvar.Mtex
+Mmdx = cvar.Mmdx
+Mmid = cvar.Mmid
+Mwmo = cvar.Mwmo
+Mwid = cvar.Mwid
+Mddf = cvar.Mddf
+Modf = cvar.Modf
+Mh2o = cvar.Mh2o
+Mfbo = cvar.Mfbo
+Mtxf = cvar.Mtxf
+Mtxp = cvar.Mtxp
+Mcnk = cvar.Mcnk
+Mcvt = cvar.Mcvt
+Mcrd = cvar.Mcrd
+Mcrw = cvar.Mcrw
+Mohd = cvar.Mohd
+Mogp = cvar.Mogp
+Movt = cvar.Movt
+Movi = cvar.Movi
+BlockSize = cvar.BlockSize
+ChunkSize = cvar.ChunkSize
+UnitSize = cvar.UnitSize
+MapSize = cvar.MapSize
+MapMidPoint = cvar.MapMidPoint
+
+class Color(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Color, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, Color, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["r"] = _BotInteractor.Color_r_set
+    __swig_getmethods__["r"] = _BotInteractor.Color_r_get
+    if _newclass:
+        r = _swig_property(_BotInteractor.Color_r_get, _BotInteractor.Color_r_set)
+    __swig_setmethods__["g"] = _BotInteractor.Color_g_set
+    __swig_getmethods__["g"] = _BotInteractor.Color_g_get
+    if _newclass:
+        g = _swig_property(_BotInteractor.Color_g_get, _BotInteractor.Color_g_set)
+    __swig_setmethods__["b"] = _BotInteractor.Color_b_set
+    __swig_getmethods__["b"] = _BotInteractor.Color_b_get
+    if _newclass:
+        b = _swig_property(_BotInteractor.Color_b_get, _BotInteractor.Color_b_set)
+    __swig_setmethods__["a"] = _BotInteractor.Color_a_set
+    __swig_getmethods__["a"] = _BotInteractor.Color_a_get
+    if _newclass:
+        a = _swig_property(_BotInteractor.Color_a_get, _BotInteractor.Color_a_set)
+
+    def __init__(self, *args):
+        this = _BotInteractor.new_Color(*args)
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+    __swig_destroy__ = _BotInteractor.delete_Color
+    __del__ = lambda self: None
+Color_swigregister = _BotInteractor.Color_swigregister
+Color_swigregister(Color)
+
+class Vertex(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Vertex, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, Vertex, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["position"] = _BotInteractor.Vertex_position_set
+    __swig_getmethods__["position"] = _BotInteractor.Vertex_position_get
+    if _newclass:
+        position = _swig_property(_BotInteractor.Vertex_position_get, _BotInteractor.Vertex_position_set)
+    __swig_setmethods__["color"] = _BotInteractor.Vertex_color_set
+    __swig_getmethods__["color"] = _BotInteractor.Vertex_color_get
+    if _newclass:
+        color = _swig_property(_BotInteractor.Vertex_color_get, _BotInteractor.Vertex_color_set)
+
+    def __init__(self, *args):
+        this = _BotInteractor.new_Vertex(*args)
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+    __swig_destroy__ = _BotInteractor.delete_Vertex
+    __del__ = lambda self: None
+Vertex_swigregister = _BotInteractor.Vertex_swigregister
+Vertex_swigregister(Vertex)
+
+class BoundingBox(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, BoundingBox, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, BoundingBox, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["up"] = _BotInteractor.BoundingBox_up_set
+    __swig_getmethods__["up"] = _BotInteractor.BoundingBox_up_get
+    if _newclass:
+        up = _swig_property(_BotInteractor.BoundingBox_up_get, _BotInteractor.BoundingBox_up_set)
+    __swig_setmethods__["down"] = _BotInteractor.BoundingBox_down_set
+    __swig_getmethods__["down"] = _BotInteractor.BoundingBox_down_get
+    if _newclass:
+        down = _swig_property(_BotInteractor.BoundingBox_down_get, _BotInteractor.BoundingBox_down_set)
+
+    def IsInside2D(self, point):
+        return _BotInteractor.BoundingBox_IsInside2D(self, point)
+
+    def GetArrayMin(self):
+        return _BotInteractor.BoundingBox_GetArrayMin(self)
+
+    def GetArrayMax(self):
+        return _BotInteractor.BoundingBox_GetArrayMax(self)
+
+    def __init__(self):
+        this = _BotInteractor.new_BoundingBox()
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+    __swig_destroy__ = _BotInteractor.delete_BoundingBox
+    __del__ = lambda self: None
+BoundingBox_swigregister = _BotInteractor.BoundingBox_swigregister
+BoundingBox_swigregister(BoundingBox)
+
+class Area(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Area, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, Area, name)
+    __repr__ = _swig_repr
+    __swig_destroy__ = _BotInteractor.delete_Area
+    __del__ = lambda self: None
+
+    def __init__(self, *args):
+        this = _BotInteractor.new_Area(*args)
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+
+    def CheckAndUpdate(self, location, block_coordinates, coordinates):
+        return _BotInteractor.Area_CheckAndUpdate(self, location, block_coordinates, coordinates)
+
+    def UpdateArea(self, location, block_coordinates, coordinates):
+        return _BotInteractor.Area_UpdateArea(self, location, block_coordinates, coordinates)
+
+    def GetRadius(self):
+        return _BotInteractor.Area_GetRadius(self)
+
+    def GetSize(self):
+        return _BotInteractor.Area_GetSize(self)
+
+    def GetBoundingBox(self):
+        return _BotInteractor.Area_GetBoundingBox(self)
+
+    def GetWMOs(self):
+        return _BotInteractor.Area_GetWMOs(self)
+
+    def GetDoodads(self):
+        return _BotInteractor.Area_GetDoodads(self)
+
+    def GetLocation(self):
+        return _BotInteractor.Area_GetLocation(self)
+
+    def GetChunks(self):
+        return _BotInteractor.Area_GetChunks(self)
+
+    def IsOutOfBounds(self, location, block_coordinates, coordinates):
+        return _BotInteractor.Area_IsOutOfBounds(self, location, block_coordinates, coordinates)
+
+    def InitMapObjects(self):
+        return _BotInteractor.Area_InitMapObjects(self)
+Area_swigregister = _BotInteractor.Area_swigregister
+Area_swigregister(Area)
+
+class NavConfig(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, NavConfig, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, NavConfig, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["m_maxTiles"] = _BotInteractor.NavConfig_m_maxTiles_set
+    __swig_getmethods__["m_maxTiles"] = _BotInteractor.NavConfig_m_maxTiles_get
+    if _newclass:
+        m_maxTiles = _swig_property(_BotInteractor.NavConfig_m_maxTiles_get, _BotInteractor.NavConfig_m_maxTiles_set)
+    __swig_setmethods__["m_maxPolysPerTile"] = _BotInteractor.NavConfig_m_maxPolysPerTile_set
+    __swig_getmethods__["m_maxPolysPerTile"] = _BotInteractor.NavConfig_m_maxPolysPerTile_get
+    if _newclass:
+        m_maxPolysPerTile = _swig_property(_BotInteractor.NavConfig_m_maxPolysPerTile_get, _BotInteractor.NavConfig_m_maxPolysPerTile_set)
+    __swig_setmethods__["m_tileSize"] = _BotInteractor.NavConfig_m_tileSize_set
+    __swig_getmethods__["m_tileSize"] = _BotInteractor.NavConfig_m_tileSize_get
+    if _newclass:
+        m_tileSize = _swig_property(_BotInteractor.NavConfig_m_tileSize_get, _BotInteractor.NavConfig_m_tileSize_set)
+    __swig_setmethods__["m_cellSize"] = _BotInteractor.NavConfig_m_cellSize_set
+    __swig_getmethods__["m_cellSize"] = _BotInteractor.NavConfig_m_cellSize_get
+    if _newclass:
+        m_cellSize = _swig_property(_BotInteractor.NavConfig_m_cellSize_get, _BotInteractor.NavConfig_m_cellSize_set)
+    __swig_setmethods__["m_cellHeight"] = _BotInteractor.NavConfig_m_cellHeight_set
+    __swig_getmethods__["m_cellHeight"] = _BotInteractor.NavConfig_m_cellHeight_get
+    if _newclass:
+        m_cellHeight = _swig_property(_BotInteractor.NavConfig_m_cellHeight_get, _BotInteractor.NavConfig_m_cellHeight_set)
+    __swig_setmethods__["m_agentHeight"] = _BotInteractor.NavConfig_m_agentHeight_set
+    __swig_getmethods__["m_agentHeight"] = _BotInteractor.NavConfig_m_agentHeight_get
+    if _newclass:
+        m_agentHeight = _swig_property(_BotInteractor.NavConfig_m_agentHeight_get, _BotInteractor.NavConfig_m_agentHeight_set)
+    __swig_setmethods__["m_agentRadius"] = _BotInteractor.NavConfig_m_agentRadius_set
+    __swig_getmethods__["m_agentRadius"] = _BotInteractor.NavConfig_m_agentRadius_get
+    if _newclass:
+        m_agentRadius = _swig_property(_BotInteractor.NavConfig_m_agentRadius_get, _BotInteractor.NavConfig_m_agentRadius_set)
+    __swig_setmethods__["m_agentMaxClimb"] = _BotInteractor.NavConfig_m_agentMaxClimb_set
+    __swig_getmethods__["m_agentMaxClimb"] = _BotInteractor.NavConfig_m_agentMaxClimb_get
+    if _newclass:
+        m_agentMaxClimb = _swig_property(_BotInteractor.NavConfig_m_agentMaxClimb_get, _BotInteractor.NavConfig_m_agentMaxClimb_set)
+    __swig_setmethods__["m_agentMaxSlope"] = _BotInteractor.NavConfig_m_agentMaxSlope_set
+    __swig_getmethods__["m_agentMaxSlope"] = _BotInteractor.NavConfig_m_agentMaxSlope_get
+    if _newclass:
+        m_agentMaxSlope = _swig_property(_BotInteractor.NavConfig_m_agentMaxSlope_get, _BotInteractor.NavConfig_m_agentMaxSlope_set)
+    __swig_setmethods__["m_regionMinSize"] = _BotInteractor.NavConfig_m_regionMinSize_set
+    __swig_getmethods__["m_regionMinSize"] = _BotInteractor.NavConfig_m_regionMinSize_get
+    if _newclass:
+        m_regionMinSize = _swig_property(_BotInteractor.NavConfig_m_regionMinSize_get, _BotInteractor.NavConfig_m_regionMinSize_set)
+    __swig_setmethods__["m_regionMergeSize"] = _BotInteractor.NavConfig_m_regionMergeSize_set
+    __swig_getmethods__["m_regionMergeSize"] = _BotInteractor.NavConfig_m_regionMergeSize_get
+    if _newclass:
+        m_regionMergeSize = _swig_property(_BotInteractor.NavConfig_m_regionMergeSize_get, _BotInteractor.NavConfig_m_regionMergeSize_set)
+    __swig_setmethods__["m_edgeMaxLen"] = _BotInteractor.NavConfig_m_edgeMaxLen_set
+    __swig_getmethods__["m_edgeMaxLen"] = _BotInteractor.NavConfig_m_edgeMaxLen_get
+    if _newclass:
+        m_edgeMaxLen = _swig_property(_BotInteractor.NavConfig_m_edgeMaxLen_get, _BotInteractor.NavConfig_m_edgeMaxLen_set)
+    __swig_setmethods__["m_edgeMaxError"] = _BotInteractor.NavConfig_m_edgeMaxError_set
+    __swig_getmethods__["m_edgeMaxError"] = _BotInteractor.NavConfig_m_edgeMaxError_get
+    if _newclass:
+        m_edgeMaxError = _swig_property(_BotInteractor.NavConfig_m_edgeMaxError_get, _BotInteractor.NavConfig_m_edgeMaxError_set)
+    __swig_setmethods__["m_vertsPerPoly"] = _BotInteractor.NavConfig_m_vertsPerPoly_set
+    __swig_getmethods__["m_vertsPerPoly"] = _BotInteractor.NavConfig_m_vertsPerPoly_get
+    if _newclass:
+        m_vertsPerPoly = _swig_property(_BotInteractor.NavConfig_m_vertsPerPoly_get, _BotInteractor.NavConfig_m_vertsPerPoly_set)
+    __swig_setmethods__["m_detailSampleDist"] = _BotInteractor.NavConfig_m_detailSampleDist_set
+    __swig_getmethods__["m_detailSampleDist"] = _BotInteractor.NavConfig_m_detailSampleDist_get
+    if _newclass:
+        m_detailSampleDist = _swig_property(_BotInteractor.NavConfig_m_detailSampleDist_get, _BotInteractor.NavConfig_m_detailSampleDist_set)
+    __swig_setmethods__["m_detailSampleMaxError"] = _BotInteractor.NavConfig_m_detailSampleMaxError_set
+    __swig_getmethods__["m_detailSampleMaxError"] = _BotInteractor.NavConfig_m_detailSampleMaxError_get
+    if _newclass:
+        m_detailSampleMaxError = _swig_property(_BotInteractor.NavConfig_m_detailSampleMaxError_get, _BotInteractor.NavConfig_m_detailSampleMaxError_set)
+    __swig_setmethods__["m_partitionType"] = _BotInteractor.NavConfig_m_partitionType_set
+    __swig_getmethods__["m_partitionType"] = _BotInteractor.NavConfig_m_partitionType_get
+    if _newclass:
+        m_partitionType = _swig_property(_BotInteractor.NavConfig_m_partitionType_get, _BotInteractor.NavConfig_m_partitionType_set)
+
+    def __init__(self):
+        this = _BotInteractor.new_NavConfig()
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+    __swig_destroy__ = _BotInteractor.delete_NavConfig
+    __del__ = lambda self: None
+NavConfig_swigregister = _BotInteractor.NavConfig_swigregister
+NavConfig_swigregister(NavConfig)
+
+class NavArea(Area):
+    __swig_setmethods__ = {}
+    for _s in [Area]:
+        __swig_setmethods__.update(getattr(_s, '__swig_setmethods__', {}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, NavArea, name, value)
+    __swig_getmethods__ = {}
+    for _s in [Area]:
+        __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
+    __getattr__ = lambda self, name: _swig_getattr(self, NavArea, name)
+    __repr__ = _swig_repr
+    __swig_destroy__ = _BotInteractor.delete_NavArea
+    __del__ = lambda self: None
+
+    def __init__(self, *args):
+        this = _BotInteractor.new_NavArea(*args)
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+
+    def InitAreaBoundingBox(self):
+        return _BotInteractor.NavArea_InitAreaBoundingBox(self)
+    __swig_setmethods__["config"] = _BotInteractor.NavArea_config_set
+    __swig_getmethods__["config"] = _BotInteractor.NavArea_config_get
+    if _newclass:
+        config = _swig_property(_BotInteractor.NavArea_config_get, _BotInteractor.NavArea_config_set)
+    __swig_setmethods__["polys"] = _BotInteractor.NavArea_polys_set
+    __swig_getmethods__["polys"] = _BotInteractor.NavArea_polys_get
+    if _newclass:
+        polys = _swig_property(_BotInteractor.NavArea_polys_get, _BotInteractor.NavArea_polys_set)
+    __swig_setmethods__["m_navQuery"] = _BotInteractor.NavArea_m_navQuery_set
+    __swig_getmethods__["m_navQuery"] = _BotInteractor.NavArea_m_navQuery_get
+    if _newclass:
+        m_navQuery = _swig_property(_BotInteractor.NavArea_m_navQuery_get, _BotInteractor.NavArea_m_navQuery_set)
+    __swig_setmethods__["m_navMesh"] = _BotInteractor.NavArea_m_navMesh_set
+    __swig_getmethods__["m_navMesh"] = _BotInteractor.NavArea_m_navMesh_get
+    if _newclass:
+        m_navMesh = _swig_property(_BotInteractor.NavArea_m_navMesh_get, _BotInteractor.NavArea_m_navMesh_set)
+    __swig_setmethods__["m_pmesh"] = _BotInteractor.NavArea_m_pmesh_set
+    __swig_getmethods__["m_pmesh"] = _BotInteractor.NavArea_m_pmesh_get
+    if _newclass:
+        m_pmesh = _swig_property(_BotInteractor.NavArea_m_pmesh_get, _BotInteractor.NavArea_m_pmesh_set)
+    __swig_setmethods__["m_dmesh"] = _BotInteractor.NavArea_m_dmesh_set
+    __swig_getmethods__["m_dmesh"] = _BotInteractor.NavArea_m_dmesh_get
+    if _newclass:
+        m_dmesh = _swig_property(_BotInteractor.NavArea_m_dmesh_get, _BotInteractor.NavArea_m_dmesh_set)
+    __swig_setmethods__["m_solid"] = _BotInteractor.NavArea_m_solid_set
+    __swig_getmethods__["m_solid"] = _BotInteractor.NavArea_m_solid_get
+    if _newclass:
+        m_solid = _swig_property(_BotInteractor.NavArea_m_solid_get, _BotInteractor.NavArea_m_solid_set)
+    __swig_setmethods__["m_chf"] = _BotInteractor.NavArea_m_chf_set
+    __swig_getmethods__["m_chf"] = _BotInteractor.NavArea_m_chf_get
+    if _newclass:
+        m_chf = _swig_property(_BotInteractor.NavArea_m_chf_get, _BotInteractor.NavArea_m_chf_set)
+    __swig_setmethods__["m_cset"] = _BotInteractor.NavArea_m_cset_set
+    __swig_getmethods__["m_cset"] = _BotInteractor.NavArea_m_cset_get
+    if _newclass:
+        m_cset = _swig_property(_BotInteractor.NavArea_m_cset_get, _BotInteractor.NavArea_m_cset_set)
+    __swig_setmethods__["m_ctx"] = _BotInteractor.NavArea_m_ctx_set
+    __swig_getmethods__["m_ctx"] = _BotInteractor.NavArea_m_ctx_get
+    if _newclass:
+        m_ctx = _swig_property(_BotInteractor.NavArea_m_ctx_get, _BotInteractor.NavArea_m_ctx_set)
+    __swig_setmethods__["MAX_SMOOTH"] = _BotInteractor.NavArea_MAX_SMOOTH_set
+    __swig_getmethods__["MAX_SMOOTH"] = _BotInteractor.NavArea_MAX_SMOOTH_get
+    if _newclass:
+        MAX_SMOOTH = _swig_property(_BotInteractor.NavArea_MAX_SMOOTH_get, _BotInteractor.NavArea_MAX_SMOOTH_set)
+    __swig_setmethods__["m_smoothPath"] = _BotInteractor.NavArea_m_smoothPath_set
+    __swig_getmethods__["m_smoothPath"] = _BotInteractor.NavArea_m_smoothPath_get
+    if _newclass:
+        m_smoothPath = _swig_property(_BotInteractor.NavArea_m_smoothPath_get, _BotInteractor.NavArea_m_smoothPath_set)
+    __swig_setmethods__["m_nsmoothPath"] = _BotInteractor.NavArea_m_nsmoothPath_set
+    __swig_getmethods__["m_nsmoothPath"] = _BotInteractor.NavArea_m_nsmoothPath_get
+    if _newclass:
+        m_nsmoothPath = _swig_property(_BotInteractor.NavArea_m_nsmoothPath_get, _BotInteractor.NavArea_m_nsmoothPath_set)
+
+    def InitNavigation(self):
+        return _BotInteractor.NavArea_InitNavigation(self)
+
+    def CleanUp(self):
+        return _BotInteractor.NavArea_CleanUp(self)
+
+    def BuildAllTiles(self):
+        return _BotInteractor.NavArea_BuildAllTiles(self)
+
+    def BuildTileMesh(self, x, y, bmin, bmax, dataSize):
+        return _BotInteractor.NavArea_BuildTileMesh(self, x, y, bmin, bmax, dataSize)
+
+    def FindPath(self, start, end, nPathSlot):
+        return _BotInteractor.NavArea_FindPath(self, start, end, nPathSlot)
+    __swig_getmethods__["InitNavConfig"] = lambda x: _BotInteractor.NavArea_InitNavConfig
+    if _newclass:
+        InitNavConfig = staticmethod(_BotInteractor.NavArea_InitNavConfig)
+    __swig_getmethods__["getSteerTarget"] = lambda x: _BotInteractor.NavArea_getSteerTarget
+    if _newclass:
+        getSteerTarget = staticmethod(_BotInteractor.NavArea_getSteerTarget)
+    __swig_getmethods__["inRange"] = lambda x: _BotInteractor.NavArea_inRange
+    if _newclass:
+        inRange = staticmethod(_BotInteractor.NavArea_inRange)
+    __swig_getmethods__["fixupCorridor"] = lambda x: _BotInteractor.NavArea_fixupCorridor
+    if _newclass:
+        fixupCorridor = staticmethod(_BotInteractor.NavArea_fixupCorridor)
+    __swig_getmethods__["fixupShortcuts"] = lambda x: _BotInteractor.NavArea_fixupShortcuts
+    if _newclass:
+        fixupShortcuts = staticmethod(_BotInteractor.NavArea_fixupShortcuts)
+    __swig_getmethods__["RastChunks"] = lambda x: _BotInteractor.NavArea_RastChunks
+    if _newclass:
+        RastChunks = staticmethod(_BotInteractor.NavArea_RastChunks)
+
+    def saveAll(self, path, mesh):
+        return _BotInteractor.NavArea_saveAll(self, path, mesh)
+NavArea_swigregister = _BotInteractor.NavArea_swigregister
+NavArea_swigregister(NavArea)
+
+def NavArea_InitNavConfig():
+    return _BotInteractor.NavArea_InitNavConfig()
+NavArea_InitNavConfig = _BotInteractor.NavArea_InitNavConfig
+
+def NavArea_getSteerTarget(navQuery, startPos, endPos, minTargetDist, path, pathSize, steerPos, steerPosFlag, steerPosRef, outPoints=None, outPointCount=None):
+    return _BotInteractor.NavArea_getSteerTarget(navQuery, startPos, endPos, minTargetDist, path, pathSize, steerPos, steerPosFlag, steerPosRef, outPoints, outPointCount)
+NavArea_getSteerTarget = _BotInteractor.NavArea_getSteerTarget
+
+def NavArea_inRange(v1, v2, r, h):
+    return _BotInteractor.NavArea_inRange(v1, v2, r, h)
+NavArea_inRange = _BotInteractor.NavArea_inRange
+
+def NavArea_fixupCorridor(path, npath, maxPath, visited, nvisited):
+    return _BotInteractor.NavArea_fixupCorridor(path, npath, maxPath, visited, nvisited)
+NavArea_fixupCorridor = _BotInteractor.NavArea_fixupCorridor
+
+def NavArea_fixupShortcuts(path, npath, navQuery):
+    return _BotInteractor.NavArea_fixupShortcuts(path, npath, navQuery)
+NavArea_fixupShortcuts = _BotInteractor.NavArea_fixupShortcuts
+
+def NavArea_RastChunks(model, m_cfg, m_ctx, m_solid, m_tileTriCount):
+    return _BotInteractor.NavArea_RastChunks(model, m_cfg, m_ctx, m_solid, m_tileTriCount)
+NavArea_RastChunks = _BotInteractor.NavArea_RastChunks
+
+class Player(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Player, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, Player, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, base):
+        this = _BotInteractor.new_Player(base)
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+    __swig_destroy__ = _BotInteractor.delete_Player
+    __del__ = lambda self: None
+
+    def GetName(self, refresh=False):
+        return _BotInteractor.Player_GetName(self, refresh)
+Player_swigregister = _BotInteractor.Player_swigregister
+Player_swigregister(Player)
+
 class BotInteractor(_object):
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, BotInteractor, name, value)

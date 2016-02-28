@@ -104,7 +104,7 @@
     <ClInclude Include="MapObject.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="NavArea.h" />
-    <ClInclude Include="SquareArea.h" />
+    <ClInclude Include="Area.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="WMO.h" />
@@ -129,7 +129,7 @@
     <ClCompile Include="MapObject.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="NavArea.cpp" />
-    <ClCompile Include="SquareArea.cpp" />
+    <ClCompile Include="Area.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

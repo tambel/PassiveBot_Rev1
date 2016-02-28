@@ -21,5 +21,37 @@
     <CustomBuild Include="BotInteractor.i">
       <Filter>Interface files</Filter>
     </CustomBuild>
+    <CustomBuild Include="Area.i">
+      <Filter>Interface files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="NavArea.i">
+      <Filter>Interface files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="WowWorldsDataUtils.i">
+      <Filter>Interface files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="WowInteractionUtils.i">
+      <Filter>Interface files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Player.i">
+      <Filter>Interface files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BotInteractor_wrap.cxx">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="Area_wrap.cxx">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="NavArea_wrap.cxx">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="WowInteractionUtils_wrap.cxx">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="WowWorldsDataUtils_wrap.cxx">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -3007,48 +3007,44 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
 /* -------- TYPES TABLE (BEGIN) -------- */
 
 #define SWIGTYPE_p_Area swig_types[0]
-#define SWIGTYPE_p_BotInteractor swig_types[1]
-#define SWIGTYPE_p_Model swig_types[2]
-#define SWIGTYPE_p_NavArea swig_types[3]
-#define SWIGTYPE_p_NavConfig swig_types[4]
-#define SWIGTYPE_p_Player swig_types[5]
-#define SWIGTYPE_p_Utils__Game__Location swig_types[6]
-#define SWIGTYPE_p_Utils__Game__LocationBase swig_types[7]
-#define SWIGTYPE_p_Utils__Geometry__Transformer3D swig_types[8]
-#define SWIGTYPE_p_Utils__Graphics__BoundingBox swig_types[9]
-#define SWIGTYPE_p_Utils__Graphics__Color swig_types[10]
-#define SWIGTYPE_p_Utils__Graphics__Triangle swig_types[11]
-#define SWIGTYPE_p_Utils__Graphics__Vertex swig_types[12]
-#define SWIGTYPE_p_Utils__Point2DT_float_t swig_types[13]
-#define SWIGTYPE_p_Utils__Point2DT_int_t swig_types[14]
-#define SWIGTYPE_p_Utils__WowTypes__Position swig_types[15]
-#define SWIGTYPE_p_Utils__WowTypes__Vector3 swig_types[16]
-#define SWIGTYPE_p_Vector3F swig_types[17]
-#define SWIGTYPE_p_WowObject swig_types[18]
-#define SWIGTYPE_p_boost__numeric__ublas__matrixT_float_t swig_types[19]
-#define SWIGTYPE_p_char swig_types[20]
-#define SWIGTYPE_p_dtNavMesh swig_types[21]
-#define SWIGTYPE_p_dtNavMeshQuery swig_types[22]
-#define SWIGTYPE_p_dtPolyRef swig_types[23]
-#define SWIGTYPE_p_float swig_types[24]
-#define SWIGTYPE_p_int swig_types[25]
-#define SWIGTYPE_p_rcCompactHeightfield swig_types[26]
-#define SWIGTYPE_p_rcConfig swig_types[27]
-#define SWIGTYPE_p_rcContext swig_types[28]
-#define SWIGTYPE_p_rcContourSet swig_types[29]
-#define SWIGTYPE_p_rcHeightfield swig_types[30]
-#define SWIGTYPE_p_rcPolyMesh swig_types[31]
-#define SWIGTYPE_p_rcPolyMeshDetail swig_types[32]
-#define SWIGTYPE_p_string swig_types[33]
-#define SWIGTYPE_p_unsigned_char swig_types[34]
-#define SWIGTYPE_p_unsigned_short swig_types[35]
-#define SWIGTYPE_p_vectorT_unique_ptrT_Chunk_t_t swig_types[36]
-#define SWIGTYPE_p_vectorT_unique_ptrT_Doodad_t_t swig_types[37]
-#define SWIGTYPE_p_vectorT_unique_ptrT_WMO_t_t swig_types[38]
-#define SWIGTYPE_p_vectorT_unique_ptrT_rcPolyMesh_t_t swig_types[39]
-#define SWIGTYPE_p_wstring swig_types[40]
-static swig_type_info *swig_types[42];
-static swig_module_info swig_module = {swig_types, 41, 0, 0, 0, 0};
+#define SWIGTYPE_p_Model swig_types[1]
+#define SWIGTYPE_p_NavArea swig_types[2]
+#define SWIGTYPE_p_NavConfig swig_types[3]
+#define SWIGTYPE_p_Utils__Game__Location swig_types[4]
+#define SWIGTYPE_p_Utils__Game__LocationBase swig_types[5]
+#define SWIGTYPE_p_Utils__Geometry__Transformer3D swig_types[6]
+#define SWIGTYPE_p_Utils__Graphics__BoundingBox swig_types[7]
+#define SWIGTYPE_p_Utils__Graphics__Color swig_types[8]
+#define SWIGTYPE_p_Utils__Graphics__Triangle swig_types[9]
+#define SWIGTYPE_p_Utils__Graphics__Vertex swig_types[10]
+#define SWIGTYPE_p_Utils__Point2DT_float_t swig_types[11]
+#define SWIGTYPE_p_Utils__Point2DT_int_t swig_types[12]
+#define SWIGTYPE_p_Utils__WowTypes__Position swig_types[13]
+#define SWIGTYPE_p_Utils__WowTypes__Vector3 swig_types[14]
+#define SWIGTYPE_p_Vector3F swig_types[15]
+#define SWIGTYPE_p_boost__numeric__ublas__matrixT_float_t swig_types[16]
+#define SWIGTYPE_p_char swig_types[17]
+#define SWIGTYPE_p_dtNavMesh swig_types[18]
+#define SWIGTYPE_p_dtNavMeshQuery swig_types[19]
+#define SWIGTYPE_p_dtPolyRef swig_types[20]
+#define SWIGTYPE_p_float swig_types[21]
+#define SWIGTYPE_p_int swig_types[22]
+#define SWIGTYPE_p_rcCompactHeightfield swig_types[23]
+#define SWIGTYPE_p_rcConfig swig_types[24]
+#define SWIGTYPE_p_rcContext swig_types[25]
+#define SWIGTYPE_p_rcContourSet swig_types[26]
+#define SWIGTYPE_p_rcHeightfield swig_types[27]
+#define SWIGTYPE_p_rcPolyMesh swig_types[28]
+#define SWIGTYPE_p_rcPolyMeshDetail swig_types[29]
+#define SWIGTYPE_p_string swig_types[30]
+#define SWIGTYPE_p_unsigned_char swig_types[31]
+#define SWIGTYPE_p_unsigned_short swig_types[32]
+#define SWIGTYPE_p_vectorT_unique_ptrT_Chunk_t_t swig_types[33]
+#define SWIGTYPE_p_vectorT_unique_ptrT_Doodad_t_t swig_types[34]
+#define SWIGTYPE_p_vectorT_unique_ptrT_WMO_t_t swig_types[35]
+#define SWIGTYPE_p_vectorT_unique_ptrT_rcPolyMesh_t_t swig_types[36]
+static swig_type_info *swig_types[38];
+static swig_module_info swig_module = {swig_types, 37, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -3061,16 +3057,16 @@ static swig_module_info swig_module = {swig_types, 41, 0, 0, 0, 0};
 #endif
 
 /*-----------------------------------------------
-              @(target):= _BotInteractor.so
+              @(target):= _NavArea.so
   ------------------------------------------------*/
 #if PY_VERSION_HEX >= 0x03000000
-#  define SWIG_init    PyInit__BotInteractor
+#  define SWIG_init    PyInit__NavArea
 
 #else
-#  define SWIG_init    init_BotInteractor
+#  define SWIG_init    init_NavArea
 
 #endif
-#define SWIG_name    "_BotInteractor"
+#define SWIG_name    "_NavArea"
 
 #define SWIGVERSION 0x030008 
 #define SWIG_VERSION SWIGVERSION
@@ -3151,9 +3147,6 @@ namespace swig {
     }
   };
 }
-
-
-#include "../BotInteractor/BotInteractor.h"
 
 
 #include "../WowWorldsData/NavArea.h"
@@ -3565,23 +3558,6 @@ SWIG_AsCharPtrAndSize(PyObject *obj, char** cptr, size_t* psize, int *alloc)
 
 
 
-
-
-#include "../WowInteraction/Player.h"
-
-
-SWIGINTERN int
-SWIG_AsVal_bool (PyObject *obj, bool *val)
-{
-  int r;
-  if (!PyBool_Check(obj))
-    return SWIG_ERROR;
-  r = PyObject_IsTrue(obj);
-  if (r == -1)
-    return SWIG_ERROR;
-  if (val) *val = r ? true : false;
-  return SWIG_OK;
-}
 
 #ifdef __cplusplus
 extern "C" {
@@ -9837,409 +9813,6 @@ SWIGINTERN PyObject *NavArea_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObje
   return SWIG_Py_Void();
 }
 
-SWIGINTERN PyObject *_wrap_new_Player(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  unsigned int arg1 ;
-  unsigned int val1 ;
-  int ecode1 = 0 ;
-  PyObject * obj0 = 0 ;
-  Player *result = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:new_Player",&obj0)) SWIG_fail;
-  ecode1 = SWIG_AsVal_unsigned_SS_int(obj0, &val1);
-  if (!SWIG_IsOK(ecode1)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_Player" "', argument " "1"" of type '" "unsigned int""'");
-  } 
-  arg1 = static_cast< unsigned int >(val1);
-  result = (Player *)new Player(arg1);
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_Player, SWIG_POINTER_NEW |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_delete_Player(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  Player *arg1 = (Player *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:delete_Player",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Player, SWIG_POINTER_DISOWN |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_Player" "', argument " "1"" of type '" "Player *""'"); 
-  }
-  arg1 = reinterpret_cast< Player * >(argp1);
-  delete arg1;
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Player_GetName__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  Player *arg1 = (Player *) 0 ;
-  bool arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  bool val2 ;
-  int ecode2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  wstring *result = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:Player_GetName",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Player, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Player_GetName" "', argument " "1"" of type '" "Player *""'"); 
-  }
-  arg1 = reinterpret_cast< Player * >(argp1);
-  ecode2 = SWIG_AsVal_bool(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Player_GetName" "', argument " "2"" of type '" "bool""'");
-  } 
-  arg2 = static_cast< bool >(val2);
-  result = (wstring *) &(arg1)->GetName(arg2);
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_wstring, 0 |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Player_GetName__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  Player *arg1 = (Player *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  wstring *result = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:Player_GetName",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Player, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Player_GetName" "', argument " "1"" of type '" "Player *""'"); 
-  }
-  arg1 = reinterpret_cast< Player * >(argp1);
-  result = (wstring *) &(arg1)->GetName();
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_wstring, 0 |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Player_GetName(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[3] = {
-    0
-  };
-  Py_ssize_t ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = args ? PyObject_Length(args) : 0;
-  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 1) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_Player, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      return _wrap_Player_GetName__SWIG_1(self, args);
-    }
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_Player, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_bool(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        return _wrap_Player_GetName__SWIG_0(self, args);
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'Player_GetName'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    Player::GetName(bool)\n"
-    "    Player::GetName()\n");
-  return 0;
-}
-
-
-SWIGINTERN PyObject *Player_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *obj;
-  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
-  SWIG_TypeNewClientData(SWIGTYPE_p_Player, SWIG_NewClientData(obj));
-  return SWIG_Py_Void();
-}
-
-SWIGINTERN PyObject *_wrap_BotInteractor_GoThroughPath(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  
-  if (!PyArg_ParseTuple(args,(char *)":BotInteractor_GoThroughPath")) SWIG_fail;
-  BotInteractor::GoThroughPath();
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_BotInteractor_StartGame(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  string arg1 ;
-  string arg2 ;
-  wstring arg3 ;
-  void *argp1 ;
-  int res1 = 0 ;
-  void *argp2 ;
-  int res2 = 0 ;
-  void *argp3 ;
-  int res3 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OOO:BotInteractor_StartGame",&obj0,&obj1,&obj2)) SWIG_fail;
-  {
-    res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_string,  0  | 0);
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BotInteractor_StartGame" "', argument " "1"" of type '" "string""'"); 
-    }  
-    if (!argp1) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "BotInteractor_StartGame" "', argument " "1"" of type '" "string""'");
-    } else {
-      string * temp = reinterpret_cast< string * >(argp1);
-      arg1 = *temp;
-      if (SWIG_IsNewObj(res1)) delete temp;
-    }
-  }
-  {
-    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_string,  0  | 0);
-    if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "BotInteractor_StartGame" "', argument " "2"" of type '" "string""'"); 
-    }  
-    if (!argp2) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "BotInteractor_StartGame" "', argument " "2"" of type '" "string""'");
-    } else {
-      string * temp = reinterpret_cast< string * >(argp2);
-      arg2 = *temp;
-      if (SWIG_IsNewObj(res2)) delete temp;
-    }
-  }
-  {
-    res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_wstring,  0  | 0);
-    if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "BotInteractor_StartGame" "', argument " "3"" of type '" "wstring""'"); 
-    }  
-    if (!argp3) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "BotInteractor_StartGame" "', argument " "3"" of type '" "wstring""'");
-    } else {
-      wstring * temp = reinterpret_cast< wstring * >(argp3);
-      arg3 = *temp;
-      if (SWIG_IsNewObj(res3)) delete temp;
-    }
-  }
-  BotInteractor::StartGame(arg1,arg2,arg3);
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_BotInteractor_GoToPoint__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  Utils::WowTypes::Vector3 *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:BotInteractor_GoToPoint",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_Utils__WowTypes__Vector3,  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BotInteractor_GoToPoint" "', argument " "1"" of type '" "Utils::WowTypes::Vector3 &""'"); 
-  }
-  if (!argp1) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "BotInteractor_GoToPoint" "', argument " "1"" of type '" "Utils::WowTypes::Vector3 &""'"); 
-  }
-  arg1 = reinterpret_cast< Utils::WowTypes::Vector3 * >(argp1);
-  BotInteractor::GoToPoint(*arg1);
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_BotInteractor_GoToPoint__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  WowObject *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:BotInteractor_GoToPoint",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_WowObject,  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BotInteractor_GoToPoint" "', argument " "1"" of type '" "WowObject &""'"); 
-  }
-  if (!argp1) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "BotInteractor_GoToPoint" "', argument " "1"" of type '" "WowObject &""'"); 
-  }
-  arg1 = reinterpret_cast< WowObject * >(argp1);
-  BotInteractor::GoToPoint(*arg1);
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_BotInteractor_GoToPoint(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[2] = {
-    0
-  };
-  Py_ssize_t ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = args ? PyObject_Length(args) : 0;
-  for (ii = 0; (ii < 1) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 1) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_Utils__WowTypes__Vector3, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      return _wrap_BotInteractor_GoToPoint__SWIG_0(self, args);
-    }
-  }
-  if (argc == 1) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_WowObject, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      return _wrap_BotInteractor_GoToPoint__SWIG_1(self, args);
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'BotInteractor_GoToPoint'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    BotInteractor::GoToPoint(Utils::WowTypes::Vector3 &)\n"
-    "    BotInteractor::GoToPoint(WowObject &)\n");
-  return 0;
-}
-
-
-SWIGINTERN PyObject *_wrap_BotInteractor_GetArea(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  Area *result = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)":BotInteractor_GetArea")) SWIG_fail;
-  result = (Area *)BotInteractor::GetArea();
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_Area, 0 |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_BotInteractor_FindPlayerPath(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  Utils::WowTypes::Vector3 *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  bool result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:BotInteractor_FindPlayerPath",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_Utils__WowTypes__Vector3,  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BotInteractor_FindPlayerPath" "', argument " "1"" of type '" "Utils::WowTypes::Vector3 &""'"); 
-  }
-  if (!argp1) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "BotInteractor_FindPlayerPath" "', argument " "1"" of type '" "Utils::WowTypes::Vector3 &""'"); 
-  }
-  arg1 = reinterpret_cast< Utils::WowTypes::Vector3 * >(argp1);
-  result = (bool)BotInteractor::FindPlayerPath(*arg1);
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_BotInteractor_PulseCheck(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  
-  if (!PyArg_ParseTuple(args,(char *)":BotInteractor_PulseCheck")) SWIG_fail;
-  BotInteractor::PulseCheck();
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_new_BotInteractor(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  BotInteractor *result = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)":new_BotInteractor")) SWIG_fail;
-  result = (BotInteractor *)new BotInteractor();
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_BotInteractor, SWIG_POINTER_NEW |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_delete_BotInteractor(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  BotInteractor *arg1 = (BotInteractor *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:delete_BotInteractor",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_BotInteractor, SWIG_POINTER_DISOWN |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_BotInteractor" "', argument " "1"" of type '" "BotInteractor *""'"); 
-  }
-  arg1 = reinterpret_cast< BotInteractor * >(argp1);
-  delete arg1;
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *BotInteractor_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *obj;
-  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
-  SWIG_TypeNewClientData(SWIGTYPE_p_BotInteractor, SWIG_NewClientData(obj));
-  return SWIG_Py_Void();
-}
-
 static PyMethodDef SwigMethods[] = {
 	 { (char *)"SWIG_PyInstanceMethod_New", (PyCFunction)SWIG_PyInstanceMethod_New, METH_O, NULL},
 	 { (char *)"Vector3_x_set", _wrap_Vector3_x_set, METH_VARARGS, NULL},
@@ -10426,19 +9999,6 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"NavArea_RastChunks", _wrap_NavArea_RastChunks, METH_VARARGS, NULL},
 	 { (char *)"NavArea_saveAll", _wrap_NavArea_saveAll, METH_VARARGS, NULL},
 	 { (char *)"NavArea_swigregister", NavArea_swigregister, METH_VARARGS, NULL},
-	 { (char *)"new_Player", _wrap_new_Player, METH_VARARGS, NULL},
-	 { (char *)"delete_Player", _wrap_delete_Player, METH_VARARGS, NULL},
-	 { (char *)"Player_GetName", _wrap_Player_GetName, METH_VARARGS, NULL},
-	 { (char *)"Player_swigregister", Player_swigregister, METH_VARARGS, NULL},
-	 { (char *)"BotInteractor_GoThroughPath", _wrap_BotInteractor_GoThroughPath, METH_VARARGS, NULL},
-	 { (char *)"BotInteractor_StartGame", _wrap_BotInteractor_StartGame, METH_VARARGS, NULL},
-	 { (char *)"BotInteractor_GoToPoint", _wrap_BotInteractor_GoToPoint, METH_VARARGS, NULL},
-	 { (char *)"BotInteractor_GetArea", _wrap_BotInteractor_GetArea, METH_VARARGS, NULL},
-	 { (char *)"BotInteractor_FindPlayerPath", _wrap_BotInteractor_FindPlayerPath, METH_VARARGS, NULL},
-	 { (char *)"BotInteractor_PulseCheck", _wrap_BotInteractor_PulseCheck, METH_VARARGS, NULL},
-	 { (char *)"new_BotInteractor", _wrap_new_BotInteractor, METH_VARARGS, NULL},
-	 { (char *)"delete_BotInteractor", _wrap_delete_BotInteractor, METH_VARARGS, NULL},
-	 { (char *)"BotInteractor_swigregister", BotInteractor_swigregister, METH_VARARGS, NULL},
 	 { NULL, NULL, 0, NULL }
 };
 
@@ -10449,11 +10009,9 @@ static void *_p_NavAreaTo_p_Area(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((Area *)  ((NavArea *) x));
 }
 static swig_type_info _swigt__p_Area = {"_p_Area", "Area *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_BotInteractor = {"_p_BotInteractor", "BotInteractor *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_Model = {"_p_Model", "Model *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_NavArea = {"_p_NavArea", "NavArea *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_NavConfig = {"_p_NavConfig", "NavConfig *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_Player = {"_p_Player", "Player *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_Utils__Game__Location = {"_p_Utils__Game__Location", "Utils::Game::Location *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_Utils__Game__LocationBase = {"_p_Utils__Game__LocationBase", "Utils::Game::LocationBase *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_Utils__Geometry__Transformer3D = {"_p_Utils__Geometry__Transformer3D", "Utils::Geometry::Transformer3D *", 0, 0, (void*)0, 0};
@@ -10466,7 +10024,6 @@ static swig_type_info _swigt__p_Utils__Point2DT_int_t = {"_p_Utils__Point2DT_int
 static swig_type_info _swigt__p_Utils__WowTypes__Position = {"_p_Utils__WowTypes__Position", "Utils::WowTypes::Position *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_Utils__WowTypes__Vector3 = {"_p_Utils__WowTypes__Vector3", "Utils::WowTypes::Vector3 *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_Vector3F = {"_p_Vector3F", "Vector3F *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_WowObject = {"_p_WowObject", "WowObject *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_boost__numeric__ublas__matrixT_float_t = {"_p_boost__numeric__ublas__matrixT_float_t", "boost::numeric::ublas::matrix< float > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_dtNavMesh = {"_p_dtNavMesh", "dtNavMesh *", 0, 0, (void*)0, 0};
@@ -10488,15 +10045,12 @@ static swig_type_info _swigt__p_vectorT_unique_ptrT_Chunk_t_t = {"_p_vectorT_uni
 static swig_type_info _swigt__p_vectorT_unique_ptrT_Doodad_t_t = {"_p_vectorT_unique_ptrT_Doodad_t_t", "vector< unique_ptr< Doodad > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_vectorT_unique_ptrT_WMO_t_t = {"_p_vectorT_unique_ptrT_WMO_t_t", "vector< unique_ptr< WMO > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_vectorT_unique_ptrT_rcPolyMesh_t_t = {"_p_vectorT_unique_ptrT_rcPolyMesh_t_t", "vector< unique_ptr< rcPolyMesh > > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_wstring = {"_p_wstring", "wstring *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
   &_swigt__p_Area,
-  &_swigt__p_BotInteractor,
   &_swigt__p_Model,
   &_swigt__p_NavArea,
   &_swigt__p_NavConfig,
-  &_swigt__p_Player,
   &_swigt__p_Utils__Game__Location,
   &_swigt__p_Utils__Game__LocationBase,
   &_swigt__p_Utils__Geometry__Transformer3D,
@@ -10509,7 +10063,6 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_Utils__WowTypes__Position,
   &_swigt__p_Utils__WowTypes__Vector3,
   &_swigt__p_Vector3F,
-  &_swigt__p_WowObject,
   &_swigt__p_boost__numeric__ublas__matrixT_float_t,
   &_swigt__p_char,
   &_swigt__p_dtNavMesh,
@@ -10531,15 +10084,12 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_vectorT_unique_ptrT_Doodad_t_t,
   &_swigt__p_vectorT_unique_ptrT_WMO_t_t,
   &_swigt__p_vectorT_unique_ptrT_rcPolyMesh_t_t,
-  &_swigt__p_wstring,
 };
 
 static swig_cast_info _swigc__p_Area[] = {  {&_swigt__p_Area, 0, 0, 0},  {&_swigt__p_NavArea, _p_NavAreaTo_p_Area, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_BotInteractor[] = {  {&_swigt__p_BotInteractor, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Model[] = {  {&_swigt__p_Model, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_NavArea[] = {  {&_swigt__p_NavArea, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_NavConfig[] = {  {&_swigt__p_NavConfig, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_Player[] = {  {&_swigt__p_Player, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Utils__Game__Location[] = {  {&_swigt__p_Utils__Game__Location, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Utils__Game__LocationBase[] = {  {&_swigt__p_Utils__Game__LocationBase, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Utils__Geometry__Transformer3D[] = {  {&_swigt__p_Utils__Geometry__Transformer3D, 0, 0, 0},{0, 0, 0, 0}};
@@ -10552,7 +10102,6 @@ static swig_cast_info _swigc__p_Utils__Point2DT_int_t[] = {  {&_swigt__p_Utils__
 static swig_cast_info _swigc__p_Utils__WowTypes__Position[] = {  {&_swigt__p_Utils__WowTypes__Position, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Utils__WowTypes__Vector3[] = {  {&_swigt__p_Utils__WowTypes__Vector3, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Vector3F[] = {  {&_swigt__p_Vector3F, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_WowObject[] = {  {&_swigt__p_WowObject, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_boost__numeric__ublas__matrixT_float_t[] = {  {&_swigt__p_boost__numeric__ublas__matrixT_float_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_dtNavMesh[] = {  {&_swigt__p_dtNavMesh, 0, 0, 0},{0, 0, 0, 0}};
@@ -10574,15 +10123,12 @@ static swig_cast_info _swigc__p_vectorT_unique_ptrT_Chunk_t_t[] = {  {&_swigt__p
 static swig_cast_info _swigc__p_vectorT_unique_ptrT_Doodad_t_t[] = {  {&_swigt__p_vectorT_unique_ptrT_Doodad_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_vectorT_unique_ptrT_WMO_t_t[] = {  {&_swigt__p_vectorT_unique_ptrT_WMO_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_vectorT_unique_ptrT_rcPolyMesh_t_t[] = {  {&_swigt__p_vectorT_unique_ptrT_rcPolyMesh_t_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_wstring[] = {  {&_swigt__p_wstring, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_Area,
-  _swigc__p_BotInteractor,
   _swigc__p_Model,
   _swigc__p_NavArea,
   _swigc__p_NavConfig,
-  _swigc__p_Player,
   _swigc__p_Utils__Game__Location,
   _swigc__p_Utils__Game__LocationBase,
   _swigc__p_Utils__Geometry__Transformer3D,
@@ -10595,7 +10141,6 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_Utils__WowTypes__Position,
   _swigc__p_Utils__WowTypes__Vector3,
   _swigc__p_Vector3F,
-  _swigc__p_WowObject,
   _swigc__p_boost__numeric__ublas__matrixT_float_t,
   _swigc__p_char,
   _swigc__p_dtNavMesh,
@@ -10617,7 +10162,6 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_vectorT_unique_ptrT_Doodad_t_t,
   _swigc__p_vectorT_unique_ptrT_WMO_t_t,
   _swigc__p_vectorT_unique_ptrT_rcPolyMesh_t_t,
-  _swigc__p_wstring,
 };
 
 

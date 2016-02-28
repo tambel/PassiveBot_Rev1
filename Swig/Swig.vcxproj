@@ -31,7 +31,7 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -74,7 +74,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(PYTHON_INCLUDE);$(SolutionDir);$(BOOST_ROOT);$(RECASTDETOUR)\Recast\Include;$(RECASTDETOUR)\Detour\Include;$(RECASTDETOUR)\DebugUtils\Include;$(RECASTDETOUR)\Sample\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(PYTHON_LIB);kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>_BotInteractor.pyd</OutputFile>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -90,10 +95,13 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(PYTHON_INCLUDE);$(SolutionDir);$(BOOST_ROOT);$(RECASTDETOUR)\Recast\Include;$(RECASTDETOUR)\Detour\Include;$(RECASTDETOUR)\DebugUtils\Include;$(RECASTDETOUR)\Sample\Include;$(AUTOIT)\Include%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <OutputFile>_BotInteractor.pyd</OutputFile>
+      <AdditionalDependencies>$(PYTHON_LIB);kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -111,6 +119,97 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <CustomBuild Include="BotInteractor.i">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">echo In order to function correctly, please ensure the following environment variables are correctly set: 
+echo PYTHON_INCLUDE: %PYTHON_INCLUDE% 
+echo PYTHON_LIB: %PYTHON_LIB% 
+echo on 
+%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)" </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">echo In order to function correctly, please ensure the following environment variables are correctly set: 
+echo PYTHON_INCLUDE: %PYTHON_INCLUDE% 
+echo PYTHON_LIB: %PYTHON_LIB% 
+echo on 
+%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)" </Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(InputName)_wrap.cxx;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(InputName)_wrap.cxx;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Area_wrap.cxx" />
+    <ClCompile Include="BotInteractor_wrap.cxx" />
+    <ClCompile Include="NavArea_wrap.cxx" />
+    <ClCompile Include="WowInteractionUtils_wrap.cxx" />
+    <ClCompile Include="WowWorldsDataUtils_wrap.cxx" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Area.i">
+      <FileType>Document</FileType>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(InputName)_wrap.cxx;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(InputName)_wrap.cxx;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">echo In order to function correctly, please ensure the following environment variables are correctly set: 
+echo PYTHON_INCLUDE: %PYTHON_INCLUDE% 
+echo PYTHON_LIB: %PYTHON_LIB% 
+echo on 
+%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)" </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">echo In order to function correctly, please ensure the following environment variables are correctly set: 
+echo PYTHON_INCLUDE: %PYTHON_INCLUDE% 
+echo PYTHON_LIB: %PYTHON_LIB% 
+echo on 
+%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)" </Command>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="NavArea.i">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">echo In order to function correctly, please ensure the following environment variables are correctly set: 
+echo PYTHON_INCLUDE: %PYTHON_INCLUDE% 
+echo PYTHON_LIB: %PYTHON_LIB% 
+echo on 
+%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)" </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">echo In order to function correctly, please ensure the following environment variables are correctly set: 
+echo PYTHON_INCLUDE: %PYTHON_INCLUDE% 
+echo PYTHON_LIB: %PYTHON_LIB% 
+echo on 
+%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)" </Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(InputName)_wrap.cxx;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(InputName)_wrap.cxx;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="WowInteractionUtils.i">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">echo In order to function correctly, please ensure the following environment variables are correctly set: 
+echo PYTHON_INCLUDE: %PYTHON_INCLUDE% 
+echo PYTHON_LIB: %PYTHON_LIB% 
+echo on 
+%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)" </Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(InputName)_wrap.cxx;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">echo In order to function correctly, please ensure the following environment variables are correctly set: 
+echo PYTHON_INCLUDE: %PYTHON_INCLUDE% 
+echo PYTHON_LIB: %PYTHON_LIB% 
+echo on 
+%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)" </Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(InputName)_wrap.cxx;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="WowWorldsDataUtils.i">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">echo In order to function correctly, please ensure the following environment variables are correctly set: 
+echo PYTHON_INCLUDE: %PYTHON_INCLUDE% 
+echo PYTHON_LIB: %PYTHON_LIB% 
+echo on 
+%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)" </Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(InputName)_wrap.cxx;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">echo In order to function correctly, please ensure the following environment variables are correctly set: 
+echo PYTHON_INCLUDE: %PYTHON_INCLUDE% 
+echo PYTHON_LIB: %PYTHON_LIB% 
+echo on 
+%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)" </Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(InputName)_wrap.cxx;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Player.i">
       <FileType>Document</FileType>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">echo In order to function correctly, please ensure the following environment variables are correctly set: 
 echo PYTHON_INCLUDE: %PYTHON_INCLUDE% 
