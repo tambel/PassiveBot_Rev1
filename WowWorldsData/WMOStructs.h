@@ -1,5 +1,6 @@
 #pragma once
 #include "Utils.h"
+using namespace Utils;
 struct MOHD
 {
 	unsigned  nMaterials;
@@ -11,8 +12,8 @@ struct MOHD
 	unsigned  nSets;
 	unsigned ambientColor;
 	unsigned  wmoAreaTable;
-	Utils::WowTypes::Vector3 bboxMin;
-	Utils::WowTypes::Vector3 bboxMax;
+	Vector3 bboxMin;
+	Vector3 bboxMax;
 	unsigned  flags;
 };
  struct MOGP

@@ -1,7 +1,7 @@
 #pragma once
 #include "Utils.h"
 #include "Camera.h"
-using namespace Utils::WowTypes;
+using namespace Utils;
 
 class GameManager
 {

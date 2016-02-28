@@ -1,6 +1,6 @@
 #pragma once
 #include "Utils.h"
-using namespace Utils::WowTypes;
+using namespace Utils;
 using namespace std;
 
 struct Guid128

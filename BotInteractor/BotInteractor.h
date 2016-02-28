@@ -1,5 +1,7 @@
 #pragma once
 #include "WowInteraction\Player.h"
+#include "WowWorldsData\NavArea.h"
+#define DEBUG
 class BotInteractor
 {
 	static NavArea area;
@@ -15,5 +17,7 @@ public:
 	static Area  * GetArea() { return &area; }
 	static bool FindPlayerPath(Vector3 & end);
 	static void PulseCheck();
+	static void Init();
+	static void CleanUp();
 };
 

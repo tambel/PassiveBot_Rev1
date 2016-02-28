@@ -35,46 +35,13 @@ int main(int argc, wchar_t * argv[])
 	BotInteractor::StartGame("lissek7@ya.ru", "lebmat2762066", L"Тестируем");
 	Player * player = ObjectManager::GetPlayer();
 	
-	vector<Guid128> past;
 
-	default_random_engine generator;
-	while (10)
+	//BotInteractor::GoToPoint(*ObjectManager::FindUnitByName(L"Так"));
+
+	for (auto u : ObjectManager::GetUnitsList())
 	{
-		auto GetRandomUnit = []()
-		{
-			
-		};
-		player->DumpPosition();
-		bool exist;
-		Unit * unit;
-		do
-		{
-			exist = false;
-			
-			uniform_int_distribution<int> distribution(0, ObjectManager::GetUnitsList().size() - 1);
-			int random_variable = distribution(generator);
-			unit =(ObjectManager::GetUnitsList())[random_variable];
-			for (auto guid : past)
-			{
-				if (*unit->GetGuid() == guid)
-				{
-					exist = true;
-					break;
-				}
-			}
-
-		} while (exist);
-
-		wcout << unit->GetName() << endl;;
-		BotInteractor::GoToPoint(*unit);
-		past.push_back(*unit->GetGuid());
-		///BotInteractor::PulseCheck();
-		Sleep(1000);
+		wcout<<u->GetName()<<" "<<u->GetID()<<endl;
 	}
-	
-
-
-	BotInteractor::GoToPoint(*ObjectManager::FindUnitByName(L"Так"));
 
 	while (1)
 	{

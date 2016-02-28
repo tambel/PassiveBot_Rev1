@@ -38,6 +38,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WorldViewer", "WorldViewer\
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Swig", "Swig\Swig.vcxproj", "{83181B7A-043A-4209-90FD-2C1A482F3594}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EEE21940-A07D-4D1F-84EA-66079CEAE25F} = {EEE21940-A07D-4D1F-84EA-66079CEAE25F}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

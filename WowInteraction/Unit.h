@@ -3,7 +3,7 @@
 #include "Utils.h"
 #include <string>
 using namespace std;
-using namespace Utils::WowTypes;
+using namespace Utils;
 
 class Unit : public WowObject
 {

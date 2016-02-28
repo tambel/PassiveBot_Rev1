@@ -9,7 +9,6 @@
 #include "boost\numeric\ublas\vector.hpp"
 using Vector3F = boost::geometry::model::point<float, 3, boost::geometry::cs::cartesian>;
 using namespace std;
-using namespace Utils::WowTypes;
 namespace Utils
 {
 	namespace Geometry

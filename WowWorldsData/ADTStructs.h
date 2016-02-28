@@ -5,7 +5,7 @@ struct MDDF
 {
 	unsigned Mmid;
 	unsigned UniqueId;
-	Utils::WowTypes::Vector3 Position;
+	Utils::Vector3 Position;
 	Vector3 Rotation;
 	unsigned short Scale;
 	unsigned short Flags;
@@ -14,10 +14,10 @@ struct MODF
 {
 	unsigned  Mwid;
 	unsigned  UniqueId;
-	Utils::WowTypes::Vector3 Position;
-	Utils::WowTypes::Vector3 Rotation;
-	Utils::WowTypes::Vector3 BboxMax;
-	Utils::WowTypes::Vector3 BboxMin;
+	Utils::Vector3 Position;
+	Utils::Vector3 Rotation;
+	Utils::Vector3 BboxMax;
+	Utils::Vector3 BboxMin;
 	unsigned short Flags;
 	short DoodadSet;
 	short NameSet;

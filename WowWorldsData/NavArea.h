@@ -38,7 +38,7 @@ public:
 	void InitAreaBoundingBox();
 
 	static NavConfig config;
-	vector<unique_ptr<rcPolyMesh>> polys;
+	//vector<unique_ptr<rcPolyMesh>> polys;
 	dtNavMeshQuery* m_navQuery;
 	dtNavMesh * m_navMesh=nullptr;
 	rcPolyMesh *  m_pmesh=nullptr;
@@ -70,6 +70,5 @@ public:
 		const dtPolyRef* visited, const int nvisited);
 	static int fixupShortcuts(dtPolyRef* path, int npath, dtNavMeshQuery* navQuery);
 	static int  RastChunks(Model * model, rcConfig & m_cfg, rcContext * m_ctx, rcHeightfield * m_solid, int & m_tileTriCount);
-	void saveAll(const char* path, const dtNavMesh* mesh);
 };
 

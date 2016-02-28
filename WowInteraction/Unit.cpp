@@ -1,7 +1,7 @@
 #include "stdafx.h"
 using namespace std;
 using namespace Tools;
-using namespace Utils::WowTypes;
+using namespace Utils;
 
 Unit::Unit(unsigned base) :WowObject(base)
 {
@@ -29,6 +29,7 @@ Position Unit::GetPosition()
 void Unit::DumpPosition()
 {
 	Position position = GetPosition();
-	wcout << name << ":" << endl << "X- " << position.coords.x << " Y- " << position.coords.y << " Z- " << position.coords.z << endl << "Rotation " << position.rotation.z << endl;
+	wcout << name << ":";
+	cout<< "X- " << position.coords.x << " Y- " << position.coords.y << " Z- " << position.coords.z << endl << "Rotation " << position.rotation.z << endl<<endl;
 }
 

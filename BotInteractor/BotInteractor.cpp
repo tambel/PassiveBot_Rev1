@@ -23,6 +23,20 @@ void BotInteractor::PulseCheck()
 		Player * player = ObjectManager::GetPlayer();
 		area.CheckAndUpdate(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords));
 }
+void BotInteractor::Init()
+{
+#ifdef DEBUG
+	setlocale(LC_ALL, "Russian");
+#endif // DEBUG
+
+	Utils::Geometry::Transformer3D::Transformer3D();
+	Game::LocationBase::Init();
+	NavArea::InitNavConfig();
+}
+void BotInteractor::CleanUp()
+{
+}
+
 bool BotInteractor::FindPlayerPath(Vector3 & end)
 {
 	return FindPath(ObjectManager::GetPlayer()->GetPosition().coords, end);
@@ -55,7 +69,6 @@ void BotInteractor::GoThroughPath()
 }
 void BotInteractor::StartGame(string login, string password,wstring char_name)
 {
-
 	GameStartParam  param = GameStartParam();
 	param.char_name = char_name;
 	param.login = login;

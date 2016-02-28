@@ -20,7 +20,7 @@ void NavArea::_move(NavArea & other)
 	m_nsmoothPath = other.m_nsmoothPath;
 	other.m_nsmoothPath = 0;
 	//m_PathStore = move(right.m_PathStore);
-	polys = move(other.polys);
+	//polys = move(other.polys);
 	m_navQuery = other.m_navQuery;
 	other.m_navQuery = nullptr;
 	m_navMesh = other.m_navMesh;
@@ -41,7 +41,7 @@ void NavArea::_move(NavArea & other)
 NavArea::NavArea() :Area()
 {
 	//m_nsmoothPath = 0;
-	polys = vector<unique_ptr<rcPolyMesh>>();
+	//polys = vector<unique_ptr<rcPolyMesh>>();
 	m_navMesh = 0;
 }
 NavArea::NavArea(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius):
@@ -49,7 +49,7 @@ NavArea::NavArea(Location & location, Point2D<int> block_coordinates, Point2D<in
 {
 	//m_PathStore = unique_ptr<PATHDATA>(new PATHDATA);
 	//m_nsmoothPath = 0;
-	polys = vector<unique_ptr<rcPolyMesh>>();
+	//polys = vector<unique_ptr<rcPolyMesh>>();
 	m_navMesh = nullptr;
 	m_navQuery = nullptr;
 	m_ctx = new rcContext();
@@ -150,7 +150,7 @@ void NavArea::CleanUp()
 }
 void NavArea::BuildAllTiles()
 {
-	polys.clear();
+	//polys.clear();
 	//dtFreeNavMeshQuery(m_navQuery);
 	m_navQuery=dtAllocNavMeshQuery();
 	///m_navQuery = new dtNavMeshQuery();
