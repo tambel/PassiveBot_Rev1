@@ -94,6 +94,7 @@
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Offsets.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="QuestManager.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Unit.h" />
     <ClInclude Include="Utils.h" />
@@ -111,6 +112,7 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="QuestManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

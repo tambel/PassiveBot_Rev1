@@ -21,6 +21,8 @@
 #include "GameInteractor.h"
 #include "GameManager.h"
 
+#include "QuestManager.h"
+
 #include "Exceptions.h"
 
 #include "Offsets.h"

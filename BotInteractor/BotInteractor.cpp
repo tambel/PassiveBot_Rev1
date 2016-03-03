@@ -77,7 +77,7 @@ void BotInteractor::StartGame(string login, string password,wstring char_name)
 	ObjectManager::Initialize();
 	ObjectManager::EnumAllVisibleObjects();
 	Player * player = ObjectManager::GetPlayer();
-	area=move(NavArea(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords), 3));
+	//area=move(NavArea(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords), 3));
 
 }
 

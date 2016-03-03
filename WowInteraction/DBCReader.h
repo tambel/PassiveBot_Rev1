@@ -1,4 +1,56 @@
 #pragma once
+struct WoWClientDB
+{
+	void *funcTable;
+	int isLoaded;
+	int numRows;
+	int maxIndex;
+	int minIndex;
+	int stringTable;
+	void *funcTable2;
+	int FirstRow;
+	DWORD **Rows;
+};
+struct Test
+{
+	void *funcTable;
+	wchar_t * f1;
+	wchar_t * f2;
+	wchar_t * f3;
+	wchar_t * f4;
+	wchar_t * f5;
+	wchar_t * f6;
+	wchar_t * f7;
+	wchar_t * f8;
+	wchar_t * f9;
+	wchar_t * f10;
+	wchar_t * f11;
+	wchar_t * f12;
+	wchar_t * f13;
+	wchar_t * f14;
+	wchar_t * f15;
+	wchar_t * f16;
+	wchar_t * f17;
+	wchar_t * f18;
+	wchar_t * f19;
+	wchar_t * f20;
+	wchar_t * f21;
+	wchar_t * f22;
+	wchar_t * f23;
+	wchar_t * f24;
+	wchar_t * f25;
+	wchar_t * f26;
+	wchar_t * f27;
+	wchar_t * f28;
+	wchar_t * f29;
+	wchar_t * f30;
+	wchar_t * f31;
+	wchar_t * f32;
+	wchar_t * f33;
+	wchar_t * f34;
+	wchar_t * f35;
+	DWORD **Rows;
+};
 
 class DBCReader
 {

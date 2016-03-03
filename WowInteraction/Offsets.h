@@ -94,4 +94,14 @@ namespace WowOffsets
 		PlayerNameCacheRace = 0x70,
 		PlayerNameCacheClass = 0x78
 	};
+	enum Quest
+	{
+		//QuestNumber = 0xF52F10
+		QuestNumber = 0xF52F28,
+		ExtendedQuestNumber = 0xF52F10,
+		UnknonByteList = 0xF528DC,
+		QuestIdList = 0xf528d0,
+		QuestCache = 0xD7BC28
+
+	};
 }

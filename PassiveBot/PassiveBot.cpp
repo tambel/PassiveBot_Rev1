@@ -9,6 +9,7 @@
 #include "AutoItX3_DLL.h"
 #include <thread>
 #include <random>
+#include "WowInteraction\DBCReader.h"
 using namespace std;
 using namespace Utils;
 using namespace Tools;
@@ -22,31 +23,51 @@ void init_static()
 
 
 
-
+//struct WoWClientDB;
 int main(int argc, wchar_t * argv[])
 {
 
 	init_static();
+
 	setlocale(LC_ALL, "Russian");
 	Sleep(5000);
 
 
 
 	BotInteractor::StartGame("lissek7@ya.ru", "lebmat2762066", L"Тестируем");
+	WoWClientDB bd;
+
+	/*unsigned add = Process::ReadRel<unsigned>(0xd7bc28);
+	wstring s = Process::ReadString_UTF8(add, 1000);*/
+
+	Test t;
+	t = Process::ReadRel<Test>(0xD7BF94);
 	Player * player = ObjectManager::GetPlayer();
 	
 
 	//BotInteractor::GoToPoint(*ObjectManager::FindUnitByName(L"Так"));
 
-	for (auto u : ObjectManager::GetUnitsList())
-	{
-		wcout<<u->GetName()<<" "<<u->GetID()<<endl;
-	}
-
 	while (1)
 	{
 		try
 		{
+			cout << "------------------" << endl;
+			QuestManager::EnumActiveQuests();
+			for (auto qi : QuestManager::GetQuestIds())
+			{
+				Quest q = QuestManager::GetQuest(qi);
+				wchar_t n[256];
+				wchar_t o[1500];
+				wchar_t d[1500];
+				MultiByteToWideChar(65001, 0, (LPCCH)q.Name, -1, n, 512);
+				MultiByteToWideChar(65001, 0, (LPCCH)q.ObjectiveText, -1, o, 3000);
+				MultiByteToWideChar(65001, 0, (LPCCH)q.Description, -1, d, 3000);
+				wcout << n << endl << o << endl << d << endl;;
+			}
+			cout << "------------------" << endl;
+			//cout << QuestManager::GetActiveQuestNumber() << endl;
+
+
 			//BotInteractor::PulseCheck();
 			//GameManager::WorldToScreen(ObjectManager::FindUnitByName(L"Так")->GetPosition());
 			Sleep(10);
