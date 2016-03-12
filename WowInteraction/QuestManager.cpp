@@ -85,3 +85,47 @@ Quest QuestManager::GetQuest(unsigned id)
 		return Process::Read<Quest>(result);
 	}
 }
+
+unsigned QuestManager::GetQuestBlob(unsigned id)
+{
+	
+	unsigned q_id = 14455;
+	unsigned v5 = Process::ReadRel<unsigned>(0xF5CEB8) + 0x26C;
+	unsigned v9;
+	for (int i = 0;i<25; i++)
+	{
+		v9 = Process::Read<unsigned>(v5+24*i);
+		if (!v9)
+			continue;
+		if (Process::Read<unsigned>(v9) == q_id)
+		{
+			break;
+		}
+	}
+	if (Process::Read<unsigned>(v9) != q_id)
+	{
+		return 0;
+	}
+	unsigned point_count;
+	unsigned v3 = 0;
+	int * points ;
+	for (int  i = 0; i < Process::Read<unsigned>(Process::Read<unsigned>(v5) + 4); v3 += 0x4C)
+	{
+		unsigned a1 = v3 + Process::Read<unsigned>(Process::Read<unsigned>(v5) + 8);
+		if (a1)
+		{
+			if (Process::Read<unsigned>(a1) >= 3U)
+			{
+				point_count = Process::Read<unsigned>(a1);
+				if (point_count)
+				{
+					points = new  int [point_count*2];
+					Process::ReadRaw(Process::Read<unsigned>(a1 + 4), points, point_count * 8);
+					break;
+				}
+			}
+		}
+	}
+
+	return 4;
+}

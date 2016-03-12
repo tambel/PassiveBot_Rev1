@@ -101,7 +101,8 @@ namespace WowOffsets
 		ExtendedQuestNumber = 0xF52F10,
 		UnknonByteList = 0xF528DC,
 		QuestIdList = 0xf528d0,
-		QuestCache = 0xD7BC28
+		QuestCache = 0xD7BC28,
+		QuestInfos1= 0xF52F78
 
 	};
 }

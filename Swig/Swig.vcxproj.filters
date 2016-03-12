@@ -42,6 +42,7 @@
     <CustomBuild Include="WowObject.i">
       <Filter>Interface files</Filter>
     </CustomBuild>
+    <CustomBuild Include="ObjectManager.i" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BotInteractor_wrap.cxx">
@@ -71,10 +72,5 @@
     <ClCompile Include="ObjectManager_wrap.cxx">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ObjectManager.i">
-      <Filter>Interface files</Filter>
-    </None>
   </ItemGroup>
 </Project>

@@ -10,6 +10,10 @@
 #include <thread>
 #include <random>
 #include "WowInteraction\DBCReader.h"
+
+#include <fstream>
+
+
 using namespace std;
 using namespace Utils;
 using namespace Tools;
@@ -46,36 +50,19 @@ int main(int argc, wchar_t * argv[])
 	
 
 	//BotInteractor::GoToPoint(*ObjectManager::FindUnitByName(L"Так"));
+	vector<int> m;
+
+	QuestManager::EnumActiveQuests();
+	for (auto qi : QuestManager::GetQuestIds())
+	{
+		cout << qi << endl;
+	}
+	QuestManager::GetQuestBlob();
+
 
 	while (1)
 	{
-		try
-		{
-			cout << "------------------" << endl;
-			QuestManager::EnumActiveQuests();
-			for (auto qi : QuestManager::GetQuestIds())
-			{
-				Quest q = QuestManager::GetQuest(qi);
-				wchar_t n[256];
-				wchar_t o[1500];
-				wchar_t d[1500];
-				MultiByteToWideChar(65001, 0, (LPCCH)q.Name, -1, n, 512);
-				MultiByteToWideChar(65001, 0, (LPCCH)q.ObjectiveText, -1, o, 3000);
-				MultiByteToWideChar(65001, 0, (LPCCH)q.Description, -1, d, 3000);
-				wcout << n << endl << o << endl << d << endl;;
-			}
-			cout << "------------------" << endl;
-			//cout << QuestManager::GetActiveQuestNumber() << endl;
 
-
-			//BotInteractor::PulseCheck();
-			//GameManager::WorldToScreen(ObjectManager::FindUnitByName(L"Так")->GetPosition());
-			Sleep(10);
-		}
-		catch (...)
-		{
-
-		}
 	}
 
 

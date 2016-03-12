@@ -81,6 +81,11 @@
       <OutputFile>_BotInteractor.pyd</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration)\;$(BOOST_ROOT)\stage\lib;$(OGRE_HOME)\lib\$(Configuration);$(RECASTDETOUR)\Recast\lib\$(Configuration);$(RECASTDETOUR)\Detour\lib\$(Configuration);$(AUTOIT)\Lib</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(ProjectDir)BotInteractor.py" "$(SolutionDir)PassiveBotPy\BotInteractor\"
+copy "$(ProjectDir)_BotInteractor.pyd" "$(SolutionDir)PassiveBotPy\BotInteractor\"
+</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -105,6 +110,11 @@
       <AdditionalDependencies>$(PYTHON_LIB);Detour.lib;WowInteraction.lib;WowWorldsData.lib;BotInteractor.lib;Tools.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration)\;$(BOOST_ROOT)\stage\lib;$(OGRE_HOME)\lib\$(Configuration);$(RECASTDETOUR)\Recast\lib\$(Configuration);$(RECASTDETOUR)\Detour\lib\$(Configuration);$(AUTOIT)\Lib</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(ProjectDir)BotInteractor.py" "$(SolutionDir)PassiveBotPy\BotInteractor\"
+copy "$(ProjectDir)_BotInteractor.pyd" "$(SolutionDir)PassiveBotPy\BotInteractor\"
+</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -156,7 +166,7 @@ echo on
 echo PYTHON_INCLUDE: %PYTHON_INCLUDE% 
 echo PYTHON_LIB: %PYTHON_LIB% 
 echo on 
-%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)"   -std=c++11</Command>
+%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)"</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">echo In order to function correctly, please ensure the following environment variables are correctly set: 
 echo PYTHON_INCLUDE: %PYTHON_INCLUDE% 
 echo PYTHON_LIB: %PYTHON_LIB% 
@@ -171,12 +181,12 @@ echo on
 echo PYTHON_INCLUDE: %PYTHON_INCLUDE% 
 echo PYTHON_LIB: %PYTHON_LIB% 
 echo on 
-%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)" -std=c++11</Command>
+%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)"</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">echo In order to function correctly, please ensure the following environment variables are correctly set: 
 echo PYTHON_INCLUDE: %PYTHON_INCLUDE% 
 echo PYTHON_LIB: %PYTHON_LIB% 
 echo on 
-%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)" </Command>
+%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)"</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(InputName)_wrap.cxx;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(InputName)_wrap.cxx;%(Outputs)</Outputs>
     </CustomBuild>
@@ -204,13 +214,13 @@ echo on
 echo PYTHON_INCLUDE: %PYTHON_INCLUDE% 
 echo PYTHON_LIB: %PYTHON_LIB% 
 echo on 
-%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)"   -std=c++11</Command>
+%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)"</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(InputName)_wrap.cxx;%(Outputs)</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">echo In order to function correctly, please ensure the following environment variables are correctly set: 
 echo PYTHON_INCLUDE: %PYTHON_INCLUDE% 
 echo PYTHON_LIB: %PYTHON_LIB% 
 echo on 
-%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)" </Command>
+%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)"</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(InputName)_wrap.cxx;%(Outputs)</Outputs>
     </CustomBuild>
   </ItemGroup>
@@ -221,12 +231,12 @@ echo on
 echo PYTHON_INCLUDE: %PYTHON_INCLUDE% 
 echo PYTHON_LIB: %PYTHON_LIB% 
 echo on 
-%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)"  -std=c++11</Command>
+%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)"</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">echo In order to function correctly, please ensure the following environment variables are correctly set: 
 echo PYTHON_INCLUDE: %PYTHON_INCLUDE% 
 echo PYTHON_LIB: %PYTHON_LIB% 
 echo on 
-%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)" </Command>
+%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)"</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(InputName)_wrap.cxx;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(InputName)_wrap.cxx;%(Outputs)</Outputs>
     </CustomBuild>
@@ -238,12 +248,12 @@ echo on
 echo PYTHON_INCLUDE: %PYTHON_INCLUDE% 
 echo PYTHON_LIB: %PYTHON_LIB% 
 echo on 
-%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)"  -std=c++11</Command>
+%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)"</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">echo In order to function correctly, please ensure the following environment variables are correctly set: 
 echo PYTHON_INCLUDE: %PYTHON_INCLUDE% 
 echo PYTHON_LIB: %PYTHON_LIB% 
 echo on 
-%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)" </Command>
+%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)"</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(InputName)_wrap.cxx;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(InputName)_wrap.cxx;%(Outputs)</Outputs>
     </CustomBuild>
@@ -255,12 +265,12 @@ echo on
 echo PYTHON_INCLUDE: %PYTHON_INCLUDE% 
 echo PYTHON_LIB: %PYTHON_LIB% 
 echo on 
-%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)"   -std=c++11</Command>
+%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)"</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">echo In order to function correctly, please ensure the following environment variables are correctly set: 
 echo PYTHON_INCLUDE: %PYTHON_INCLUDE% 
 echo PYTHON_LIB: %PYTHON_LIB% 
 echo on 
-%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)" </Command>
+%SWIG_DIR%\swig.exe -c++ -python "%(FullPath)"</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(InputName)_wrap.cxx;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(InputName)_wrap.cxx;%(Outputs)</Outputs>
     </CustomBuild>
