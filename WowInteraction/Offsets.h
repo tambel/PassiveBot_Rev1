@@ -102,7 +102,9 @@ namespace WowOffsets
 		UnknonByteList = 0xF528DC,
 		QuestIdList = 0xf528d0,
 		QuestCache = 0xD7BC28,
-		QuestInfos1= 0xF52F78
+		QuestBlobInfo1 = 0xF5CEB8,
+		JournalSelectedQuest = 0xF52F1C
+		//QuestInfos1= 0xF52F78
 
 	};
 }

@@ -4,6 +4,62 @@ using namespace Tools;
 
 vector<unsigned> QuestManager::quest_ids;
 
+void QuestManager::SelectQuestInJournal(unsigned id)
+{
+	Frame * quest_scroll_frame = FrameManager::FindFrameByName("QuestScrollFrame");
+	
+	if (!FrameManager::QuestScrollFrame.IsVisible())
+	{
+		Process::TypeByKeyboard(string("l"));
+		Sleep(50);
+	}
+	Frame * quest_all_button = quest_scroll_frame->GetChildren()[1];
+
+
+
+	//FrameManager::AllQuestButtonFrame.PushToFrame();
+	quest_all_button->PushToFrame();
+	Sleep(1000);
+
+
+	Frame * all_quest_list_frame = quest_scroll_frame->GetChildren()[3];
+
+	//Frame * p = new Frame(Process::Read<unsigned>(FrameManager::QuestListFrame.GetBase() + 0x98));
+	//p->GetName();
+	vector<Frame*> af;
+	//for (auto frame : FrameManager::QuestListFrame.GetChildren())
+	for (auto frame : all_quest_list_frame->GetChildren())
+	{
+		if (frame->IsVisible())
+		{
+			af.push_back(frame);
+		}
+	}
+	auto it = af.begin();
+	//af.erase(af.begin());
+	unsigned ind = GetQuestJournalIndex(id);
+
+	for (int i = 0; i < af.size(); i++)
+		for (int i2 = i + 1; i2 < af.size(); i2++)
+		{
+			if (af[i]->GetTop() < af[i2]->GetTop())
+			{
+				Frame * tmp = af[i];
+				af[i] = af[i2];
+				af[i2] = tmp;
+			}
+		}
+	
+	for (auto f : af)
+	{
+		f->MoveMouseToFrame();
+		Sleep(2000);
+	}
+	af[ind]->PushToFrame();
+	Sleep(1000);
+	return ;
+}
+
 QuestManager::QuestManager()
 {
 }
@@ -16,6 +72,21 @@ QuestManager::~QuestManager()
 unsigned QuestManager::GetActiveQuestNumber()
 {
 	return Process::ReadRel<unsigned>(WowOffsets::Quest::QuestNumber);
+}
+
+unsigned QuestManager::GetQuestJournalIndex(unsigned id)
+{
+	for (int i = 0; i < (signed int)Process::ReadRel<unsigned>(WowOffsets::Quest::ExtendedQuestNumber); i++)
+	{
+		if (!(i < 0 || i >= (signed int)Process::ReadRel<unsigned>(WowOffsets::Quest::ExtendedQuestNumber) || Process::ReadRel<char>(WowOffsets::Quest::UnknonByteList + 16 * i) & 1))
+		{
+			if (Process::ReadRel<unsigned>(WowOffsets::Quest::QuestIdList + 16 * i) == id)
+			{
+				return i;
+			}
+		}
+	}
+	return 0;
 }
 
 void QuestManager::EnumActiveQuests()
@@ -34,11 +105,10 @@ void QuestManager::EnumActiveQuests()
 
 Quest QuestManager::GetQuest(unsigned id)
 {
-	//if (!id) return;
 	unsigned result = 0;
 	auto sub_1 = [](unsigned quest_cache, unsigned id)
 	{
-		auto sub_2 = [](unsigned quest_cache1,unsigned id)
+		auto sub_2 = [](unsigned quest_cache1, unsigned id)
 		{
 			auto sub_3 = [](unsigned id, unsigned digit_count = 4)
 			{
@@ -47,14 +117,14 @@ Quest QuestManager::GetQuest(unsigned id)
 				while (digit_count)
 				{
 					--digit_count;
-					
+
 					result = 16777619 * (*id_ptr++ ^ result);
 				}
 				return result;
 			};
 			if (Process::Read<unsigned>(quest_cache1 + 36) != -1)
 			{
-				unsigned v3=sub_3(id);
+				unsigned v3 = sub_3(id);
 				unsigned v5 = Process::Read<unsigned>(quest_cache1 + 24) + 12 * ((unsigned int)v3 % Process::Read<unsigned>(quest_cache1 + 36));
 				unsigned result = Process::Read<unsigned>(v5 + 8);
 				if (result & 1 || !result)
@@ -66,7 +136,7 @@ Quest QuestManager::GetQuest(unsigned id)
 					result = Process::Read<unsigned>(Process::Read<unsigned>(v5) + result + 4);
 				}
 			}
-			
+
 			return 0U;
 		};
 		unsigned edi = quest_cache + 0xC;
@@ -75,22 +145,27 @@ Quest QuestManager::GetQuest(unsigned id)
 		return result;
 	};
 	unsigned v5 = Process::GetProcessBase() + WowOffsets::QuestCache;
-	unsigned v7=sub_1(v5, id);
-	if ( Process::Read<unsigned char>(v7 + 12092) & 1)
+	unsigned v7 = sub_1(v5, id);
+	if (Process::Read<unsigned char>(v7 + 12092) & 1)
 	{
 		result = v7 + 28;
 	}
-	if (result)
-	{
-		return Process::Read<Quest>(result);
-	}
+//	if (!result)
+		//return;
+	//_Quest quest = Process::Read<_Quest>(result);
+
+	Quest r=Quest(Process::Read<_Quest>(result));
+
+	return r;
+	//return Process::Read<Quest>(result);
+
 }
 
 unsigned QuestManager::GetQuestBlob(unsigned id)
 {
-	
+	QuestManager::SelectQuestInJournal(id);
 	unsigned q_id = 14455;
-	unsigned v5 = Process::ReadRel<unsigned>(0xF5CEB8) + 0x26C;
+	unsigned v5 = Process::ReadRel<unsigned>(WowOffsets::Quest::QuestBlobInfo1) + 0x26C;
 	unsigned v9;
 	for (int i = 0;i<25; i++)
 	{
@@ -126,6 +201,6 @@ unsigned QuestManager::GetQuestBlob(unsigned id)
 			}
 		}
 	}
+	
 
-	return 4;
 }

@@ -23,14 +23,14 @@ bool GameInteractor::Login(string & login, string  & password)
 		cout << "Email frame is not visible" << endl;
 		return false;
 	}
-	email_frame->MoveMoseToFrame();
+	email_frame->MoveMouseToFrame();
 	Process::MouseClick(MouseButton::LEFT);
 	Process::MultipleKeyboardButtonPush(KeyboardButton::ARROW_RIGHT, 20, 50);
 	Process::MultipleKeyboardButtonPush(KeyboardButton::BACKSPACE, 40, 40);
 	Process::SetLanguage(Language::ENGLISH);
 	Process::TypeByKeyboard(login);
 	Frame * password_frame = FrameManager::FindFrameByName("AccountLoginPasswordEdit");
-	password_frame->MoveMoseToFrame();
+	password_frame->MoveMouseToFrame();
 	Process::MouseClick(MouseButton::LEFT);
 	Process::TypeByKeyboard(password);
 	Process::PressKeyboardButton(KeyboardButton::ENTER);
@@ -167,7 +167,7 @@ void GameInteractor::CheckForPromoFrames()
 	if (starter->IsVisible())
 	{
 
-		starter->MoveMoseToFrame();
+		starter->MoveMouseToFrame();
 		Sleep(5000);
 		Process::MouseClick(MouseButton::LEFT, 100);
 		cout << "\"StarterEditionPopUpExitButton\" frame found and closed" << endl;
@@ -199,7 +199,7 @@ void GameInteractor::Test()
 	Frame *frame4 = FrameManager::FindFrameByName("StarterEditionPopUpFeature3");
 	Frame *frame5 = FrameManager::FindFrameByName("StarterEditionPopUpExitButton");
 	Sleep(5000);
-	frame1->MoveMoseToFrame();
+	frame1->MoveMouseToFrame();
 	bool y = frame5->IsVisible();
 
 }
@@ -218,7 +218,7 @@ bool GameInteractor::SelectCharacter(wstring & name)
 		{
 			string frame_name = "CharSelectCharacterButton" + to_string(i + 1);
 			Frame * frame = FrameManager::FindFrameByName(frame_name.c_str());
-			frame->MoveMoseToFrame();
+			frame->MoveMouseToFrame();
 			Process::DoubleClick(MouseButton::LEFT);
 			return true;
 		}

@@ -2,6 +2,10 @@
 
 using namespace Tools;
 
+Frame::Frame()
+{
+}
+
 Frame::Frame(unsigned base)
 {
 	this->base = base;
@@ -79,16 +83,24 @@ float Frame::GetRight(bool refresh)
 	}
 	return right;
 }
-Frame * Frame::GetParent()
+inline Frame * Frame::GetParent()
 {
 	if (!parent)
 	{
-		unsigned parent_ptr = Process::Read<unsigned>(base + WowOffsets::FrameManager::ParentFrame);
-		parent = FrameManager::FindFrameByAddress(parent_ptr);
+		try
+		{
+			unsigned parent_ptr = Process::Read<unsigned>(base + WowOffsets::FrameManager::ParentFrame);
+			parent = FrameManager::FindFrameByAddress(parent_ptr);
+		}
+		catch (MemoryReadException e)
+		{
+			return 0;
+		}
+		
 	}
 	return parent;
 }
-void Frame::MoveMoseToFrame()
+void Frame::MoveMouseToFrame()
 {
 	int sw = 65536;
 	int sh = 65536;
@@ -133,3 +145,26 @@ bool Frame::WaitForFrameVisibility(unsigned long time)
 	return false;
 }
 
+vector<Frame*> & Frame::GetChildren()
+{
+	if (children.size() == 0)
+	{
+		if (this->base != 0)
+			for (auto frame : FrameManager::GetFrames())
+			{
+				if (frame->GetParent())
+					if (frame->GetParent()->GetBase() == this->base)
+					{
+						children.push_back(frame);
+					}
+			}
+	}
+	return children;
+}
+
+void Frame::PushToFrame()
+{
+	MoveMouseToFrame();
+	Sleep(2000);
+	AU3_MouseClick(L"Left");
+}

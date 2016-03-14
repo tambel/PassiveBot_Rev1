@@ -2,7 +2,7 @@
 
 class Frame
 {
-	unsigned base;
+	unsigned base=0;
 	string name;
 	string label_text;
 	Frame * parent;
@@ -10,7 +10,9 @@ class Frame
 	float top;
 	float left;
 	float right;
+	vector<Frame*> children;
 public:
+	Frame();
 	Frame(unsigned base);
 	~Frame(void);
 	string & GetName(bool refresh = false);
@@ -21,9 +23,11 @@ public:
 	float GetTop(bool refresh = false);
 	float GetLeft(bool refresh = false);
 	float GetRight(bool refresh = false);
-	Frame * GetParent();
-	void MoveMoseToFrame();
+	inline Frame * GetParent();
+	void MoveMouseToFrame();
 	bool IsVisible();
 	bool WaitForFrameVisibility(unsigned long time = 0);
+	vector<Frame*> & GetChildren();
+	void PushToFrame();
 };
 

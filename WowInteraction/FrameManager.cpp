@@ -3,6 +3,44 @@ using namespace Tools;
 vector<Frame*> FrameManager::frames = vector<Frame*>();
 float FrameManager::screen_heigth = 0;
 float FrameManager::screen_width = 0;
+Frame FrameManager::QuestScrollFrame;
+Frame FrameManager::AllQuestButtonFrame;
+Frame FrameManager::QuestListFrame;
+void FrameManager::InitKnownFrames()
+{
+	unsigned base_frame;
+	unsigned current;
+	ClearFrames();
+	try
+	{
+		base_frame = Process::ReadRel<unsigned>(WowOffsets::FrameManager::FrameBase);
+		current = Process::Read<unsigned>(base_frame + WowOffsets::FrameManager::FirstFrame);
+	}
+	catch (MemoryReadException e)
+	{
+		throw FrameEnumerationException();
+	}
+	while (current)
+	{
+		try
+		{
+			Frame * frame = new Frame(current);
+			if (frame->GetName() == "QuestScrollFrame")
+			{
+				QuestScrollFrame = *frame;
+			}
+			frames.push_back(frame);
+			current = Process::Read<unsigned>(current + Process::Read<unsigned>(base_frame + WowOffsets::FrameManager::NextFrame) + 4);
+		}
+		catch (MemoryReadException e)
+		{
+			break;
+		}
+	}
+	AllQuestButtonFrame=*QuestScrollFrame.GetChildren()[1];
+	QuestListFrame= *QuestScrollFrame.GetChildren()[3];
+
+}
 FrameManager::FrameManager(void)
 {
 
@@ -34,7 +72,12 @@ void FrameManager::EnumAllFrames()
 	{
 		try
 		{
-			frames.push_back(new Frame(current));
+			Frame * frame = new Frame(current);
+			if (frame->GetName() == "QuestScrollFrame")
+			{
+				QuestScrollFrame = *frame;
+			}
+			frames.push_back(frame);
 			current = Process::Read<unsigned>(current + Process::Read<unsigned>(base_frame + WowOffsets::FrameManager::NextFrame) + 4);
 		}
 		catch (MemoryReadException e)
@@ -94,7 +137,7 @@ float FrameManager::GetScreenHeigth(bool refresh)
 }
 Frame * FrameManager::FindFrameByName(const string &  name)
 {
-	EnumAllFrames();
+	//EnumAllFrames();
 	for (auto frame : frames)
 	{
 		if (frame->GetName() == name)
