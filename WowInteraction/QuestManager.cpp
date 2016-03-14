@@ -8,27 +8,21 @@ void QuestManager::SelectQuestInJournal(unsigned id)
 {
 	///Frame * quest_scroll_frame = FrameManager::FindFrameByName("QuestScrollFrame");
 	
-	if (!FrameManager::QuestScrollFrame.IsVisible())
+	AU3_Send(L"{ESC}");
+	Sleep(50);
+	Process::TypeByKeyboard(string("l"));
+	Sleep(100);
+
+	/*if (!FrameManager::QuestScrollFrame.IsVisible())
 	{
 		Process::TypeByKeyboard(string("l"));
 		Sleep(100);
-	}
-	//Frame * quest_all_button = quest_scroll_frame->GetChildren()[1];
-
-
-
+	}*/
 	FrameManager::AllQuestButtonFrame.PushToFrame();
-	//quest_all_button->PushToFrame();
-	Sleep(1000);
+	Sleep(100);
 
-
-	//Frame * all_quest_list_frame = quest_scroll_frame->GetChildren()[3];
-
-	//Frame * p = new Frame(Process::Read<unsigned>(FrameManager::QuestListFrame.GetBase() + 0x98));
-	//p->GetName();
 	vector<Frame*> af;
 	for (auto frame : FrameManager::QuestListFrame.GetChildren())
-	//for (auto frame : all_quest_list_frame->GetChildren())
 	{
 		if (frame->IsVisible() && frame->GetRight()-frame->GetLeft()== 0.162722230f)
 		{
@@ -48,6 +42,7 @@ void QuestManager::SelectQuestInJournal(unsigned id)
 			}
 		}
 	af[ind]->PushToFrame();
+	Sleep(2000);
 	return ;
 }
 

@@ -165,6 +165,6 @@ vector<Frame*> & Frame::GetChildren()
 void Frame::PushToFrame()
 {
 	MoveMouseToFrame();
-	Sleep(2000);
+	Sleep(100);
 	AU3_MouseClick(L"Left");
 }

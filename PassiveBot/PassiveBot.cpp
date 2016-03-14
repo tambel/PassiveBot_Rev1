@@ -54,14 +54,6 @@ int main(int argc, wchar_t * argv[])
 	{
 		cout <<dec<< q.kill_objective1->area.points[i][0] << " " << q.kill_objective1->area.points[i][1] << endl;
 	}
-	for (auto id : QuestManager::GetQuestIds())
-	{
-		QuestManager::SelectQuestInJournal(id);
-		Sleep(1000);
-	}
-
-	
-
 
 	while (1)
 	{
