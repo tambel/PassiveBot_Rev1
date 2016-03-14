@@ -6,37 +6,35 @@ vector<unsigned> QuestManager::quest_ids;
 
 void QuestManager::SelectQuestInJournal(unsigned id)
 {
-	Frame * quest_scroll_frame = FrameManager::FindFrameByName("QuestScrollFrame");
+	///Frame * quest_scroll_frame = FrameManager::FindFrameByName("QuestScrollFrame");
 	
 	if (!FrameManager::QuestScrollFrame.IsVisible())
 	{
 		Process::TypeByKeyboard(string("l"));
-		Sleep(50);
+		Sleep(100);
 	}
-	Frame * quest_all_button = quest_scroll_frame->GetChildren()[1];
+	//Frame * quest_all_button = quest_scroll_frame->GetChildren()[1];
 
 
 
-	//FrameManager::AllQuestButtonFrame.PushToFrame();
-	quest_all_button->PushToFrame();
+	FrameManager::AllQuestButtonFrame.PushToFrame();
+	//quest_all_button->PushToFrame();
 	Sleep(1000);
 
 
-	Frame * all_quest_list_frame = quest_scroll_frame->GetChildren()[3];
+	//Frame * all_quest_list_frame = quest_scroll_frame->GetChildren()[3];
 
 	//Frame * p = new Frame(Process::Read<unsigned>(FrameManager::QuestListFrame.GetBase() + 0x98));
 	//p->GetName();
 	vector<Frame*> af;
-	//for (auto frame : FrameManager::QuestListFrame.GetChildren())
-	for (auto frame : all_quest_list_frame->GetChildren())
+	for (auto frame : FrameManager::QuestListFrame.GetChildren())
+	//for (auto frame : all_quest_list_frame->GetChildren())
 	{
-		if (frame->IsVisible())
+		if (frame->IsVisible() && frame->GetRight()-frame->GetLeft()== 0.162722230f)
 		{
 			af.push_back(frame);
 		}
 	}
-	auto it = af.begin();
-	//af.erase(af.begin());
 	unsigned ind = GetQuestJournalIndex(id);
 
 	for (int i = 0; i < af.size(); i++)
@@ -49,14 +47,7 @@ void QuestManager::SelectQuestInJournal(unsigned id)
 				af[i2] = tmp;
 			}
 		}
-	
-	for (auto f : af)
-	{
-		f->MoveMouseToFrame();
-		Sleep(2000);
-	}
 	af[ind]->PushToFrame();
-	Sleep(1000);
 	return ;
 }
 

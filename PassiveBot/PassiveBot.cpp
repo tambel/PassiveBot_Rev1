@@ -41,23 +41,15 @@ int main(int argc, wchar_t * argv[])
 	BotInteractor::StartGame("lissek7@ya.ru", "lebmat2762066", L"Тестируем");
 	WoWClientDB bd;
 
-	/*unsigned add = Process::ReadRel<unsigned>(0xd7bc28);
-	wstring s = Process::ReadString_UTF8(add, 1000);*/
-
-	Test t;
-	t = Process::ReadRel<Test>(0xD7BF94);
-	Player * player = ObjectManager::GetPlayer();
 	
 
 	//BotInteractor::GoToPoint(*ObjectManager::FindUnitByName(L"Так"));
-	//QuestManager::EnumActiveQuests();
 	QuestManager::EnumActiveQuests();
-	FrameManager::EnumAllFrames();
-	//FrameManager::InitKnownFrames();
+	FrameManager::InitKnownFrames();
 
 	Player * p = ObjectManager::GetPlayer();
-	Position pos = p->GetPosition();
-	Quest q = QuestManager::GetQuest(14456);
+	p->DumpPosition();
+	Quest q = QuestManager::GetQuest(14455);
 	for (int i = 0; i < q.kill_objective1->area.points_count; i++)
 	{
 		cout <<dec<< q.kill_objective1->area.points[i][0] << " " << q.kill_objective1->area.points[i][1] << endl;
@@ -68,68 +60,6 @@ int main(int argc, wchar_t * argv[])
 		Sleep(1000);
 	}
 
-
-
-
- 	FrameManager::EnumAllFrames();
-	Frame * wm=FrameManager::FindFrameByName("QuestScrollFrame");
-	Frame * pwm = wm->GetParent();
-	vector<Frame*> wm_child;
-	for (auto frame : FrameManager::GetFrames())
-	{
-		if (frame->GetParent() == wm)
-		{
-			frame->GetName();
-			wm_child.push_back(frame);
-		}
-	}
-	for (auto frame : wm_child)
-	{
-		
-		frame->MoveMouseToFrame();
-		Sleep(3000);
-	}
-	wm_child.back()->GetName();
-	wm_child.back()->GetLabelText();
-	wm_child.back()->MoveMouseToFrame();
-	vector<Frame*> wm_child2;
-	for (auto frame : FrameManager::GetFrames())
-	{
-		if (frame->GetParent() == wm_child.back())
-		{
-			frame->GetName();
-
-			frame->GetLabelText();
-			wm_child2.push_back(frame);
-		}
-	}
-	Frame * f2 = wm_child2[3];
-	vector<Frame*> wm_child3;
-	for (auto frame : FrameManager::GetFrames())
-	{
-		if (frame->GetParent() == f2)
-		{
-			frame->GetName();
-
-			frame->GetLabelText();
-			wm_child3.push_back(frame);
-		}
-	}
-	for (auto frame : wm_child3)
-	{
-		Sleep(3000);
-		frame->MoveMouseToFrame();
-		
-	}
-
-
-
-	QuestManager::EnumActiveQuests();
-	for (auto qi : QuestManager::GetQuestIds())
-	{
-		cout << qi << endl;
-		//QuestManager::GetQuestBlob(qi);
-	}
 	
 
 
