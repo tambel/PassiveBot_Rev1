@@ -147,17 +147,6 @@ echo on
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Area_wrap.cxx" />
-    <ClCompile Include="BotInteractor_wrap.cxx" />
-    <ClCompile Include="NavArea_wrap.cxx" />
-    <ClCompile Include="ObjectManager_wrap.cxx" />
-    <ClCompile Include="Player_wrap.cxx" />
-    <ClCompile Include="Unit_wrap.cxx" />
-    <ClCompile Include="WowInteractionUtils_wrap.cxx" />
-    <ClCompile Include="WowObject_wrap.cxx" />
-    <ClCompile Include="WowWorldsDataUtils_wrap.cxx" />
-  </ItemGroup>
-  <ItemGroup>
     <CustomBuild Include="Area.i">
       <FileType>Document</FileType>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(InputName)_wrap.cxx;%(Outputs)</Outputs>
@@ -194,7 +183,8 @@ echo on
   <ItemGroup>
     <CustomBuild Include="WowInteractionUtils.i">
       <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">echo In order to function correctly, please ensure the following environment variables are correctly set: 
 echo PYTHON_INCLUDE: %PYTHON_INCLUDE% 
 echo PYTHON_LIB: %PYTHON_LIB% 
@@ -291,6 +281,17 @@ echo on
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(InputName)_wrap.cxx;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(InputName)_wrap.cxx;%(Outputs)</Outputs>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Area_wrap.cxx" />
+    <ClCompile Include="BotInteractor_wrap.cxx" />
+    <ClCompile Include="NavArea_wrap.cxx" />
+    <ClCompile Include="ObjectManager_wrap.cxx" />
+    <ClCompile Include="Player_wrap.cxx" />
+    <ClCompile Include="Unit_wrap.cxx" />
+    <ClCompile Include="WowInteractionUtils_wrap.cxx" />
+    <ClCompile Include="WowObject_wrap.cxx" />
+    <ClCompile Include="WowWorldsDataUtils_wrap.cxx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

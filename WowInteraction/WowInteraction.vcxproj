@@ -87,7 +87,6 @@
     <ClInclude Include="Exceptions.h" />
     <ClInclude Include="Frame.h" />
     <ClInclude Include="FrameManager.h" />
-    <ClInclude Include="Frames.h" />
     <ClInclude Include="GameInteractor.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />

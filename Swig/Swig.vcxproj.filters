@@ -45,19 +45,16 @@
     <CustomBuild Include="ObjectManager.i" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BotInteractor_wrap.cxx">
+    <ClCompile Include="Area_wrap.cxx">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="Area_wrap.cxx">
+    <ClCompile Include="BotInteractor_wrap.cxx">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="NavArea_wrap.cxx">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="WowInteractionUtils_wrap.cxx">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="WowWorldsDataUtils_wrap.cxx">
+    <ClCompile Include="ObjectManager_wrap.cxx">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="Player_wrap.cxx">
@@ -66,10 +63,13 @@
     <ClCompile Include="Unit_wrap.cxx">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="WowInteractionUtils_wrap.cxx">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
     <ClCompile Include="WowObject_wrap.cxx">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectManager_wrap.cxx">
+    <ClCompile Include="WowWorldsDataUtils_wrap.cxx">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>

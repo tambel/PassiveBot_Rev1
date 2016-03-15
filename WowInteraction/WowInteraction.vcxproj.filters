@@ -69,9 +69,6 @@
     <ClInclude Include="DBCReader.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="Frames.h">
-      <Filter>Заголовочные файлы\Frame</Filter>
-    </ClInclude>
     <ClInclude Include="Frame.h">
       <Filter>Заголовочные файлы\Frame</Filter>
     </ClInclude>
