@@ -118,7 +118,7 @@ namespace Utils
 
 
 	}
-	template<class T>
+	/*template<class T>
 	struct Point2D
 	{
 		T X;
@@ -150,7 +150,7 @@ namespace Utils
 			return Point2D(this->X+right.X,this->Y+right.Y);
 		}
 		
-	};
+	};*/
 	Point2D<int> WorldPositionToBlockCoords(Vector3 position);
 	Point2D<float> BlockCoordsToWorldPosition(Point2D<int> coords);
 	Point2D<int> WorldPositionToChunkCoords(Vector3 position);

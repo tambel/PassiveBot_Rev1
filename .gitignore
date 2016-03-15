@@ -220,7 +220,7 @@ Swig/test.py
 Swig/Unit_wrap.cxx
 Swig/WowInteractionUtils.py
 Swig/WowInteractionUtils_wrap.cxx
-Swig/WowObject.iSwig/WowObject.py
+Swig/WowObject.py
 Swig/WowObject_wrap.cxx
 Swig/WowWorldsDataUtils.py
 Swig/WowWorldsDataUtils_wrap.cxx

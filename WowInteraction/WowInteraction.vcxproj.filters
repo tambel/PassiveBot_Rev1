@@ -16,6 +16,12 @@
     <Filter Include="Заголовочные файлы\Frame">
       <UniqueIdentifier>{ed01a412-e07f-4ece-a5b0-cafaac9464c3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Заголовочные файлы\Quest">
+      <UniqueIdentifier>{c73dde2b-a4cc-4041-960a-0ffddb52b8cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Quest">
+      <UniqueIdentifier>{f356a694-9895-46da-b73e-28f730de0089}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -63,12 +69,6 @@
     <ClInclude Include="DBCReader.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="QuestManager.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="Quest.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="Frames.h">
       <Filter>Заголовочные файлы\Frame</Filter>
     </ClInclude>
@@ -77,6 +77,15 @@
     </ClInclude>
     <ClInclude Include="FrameManager.h">
       <Filter>Заголовочные файлы\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="Quest.h">
+      <Filter>Заголовочные файлы\Quest</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectiveArea.h">
+      <Filter>Заголовочные файлы\Quest</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestManager.h">
+      <Filter>Заголовочные файлы\Quest</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -122,11 +131,14 @@
     <ClCompile Include="DBCReader.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="QuestManager.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
     <ClCompile Include="Quest.cpp">
-      <Filter>Файлы исходного кода</Filter>
+      <Filter>Файлы исходного кода\Quest</Filter>
+    </ClCompile>
+    <ClCompile Include="QuestManager.cpp">
+      <Filter>Файлы исходного кода\Quest</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectiveArea.cpp">
+      <Filter>Файлы исходного кода\Quest</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

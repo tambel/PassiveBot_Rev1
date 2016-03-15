@@ -2,6 +2,39 @@
 namespace Utils
 {
 	const float PI = 3.14159265358979323846f;
+	template<class T>
+	struct Point2D
+	{
+		T X;
+		T Y;
+		Point2D() :X(0), Y(0) {}
+		Point2D(T x, T y) :X(x), Y(y) {}
+		bool operator==(const Point2D & right)
+		{
+			return (this->X == right.X && this->Y == right.Y);
+		}
+		bool operator!=(const Point2D & right)
+		{
+			return (this->X != right.X || this->Y != right.Y);
+		}
+		Point2D operator -(const Point2D & right)
+		{
+			return Point2D(this->X - right.X, this->Y - right.Y);
+		}
+		Point2D operator +(const Point2D & right)
+		{
+			return Point2D(this->X + right.X, this->Y + right.Y);
+		}
+		Point2D operator -=(const Point2D & right)
+		{
+			return Point2D(this->X - right.X, this->Y - right.Y);
+		}
+		Point2D operator +=(const Point2D & right)
+		{
+			return Point2D(this->X + right.X, this->Y + right.Y);
+		}
+
+	};
 	struct Vector3
 	{
 		float x;
@@ -34,6 +67,10 @@ namespace Utils
 		bool  operator!=(const Vector3 &right)
 		{
 			return x != right.x || y != right.y;
+		}
+		Point2D<float> To2D()
+		{
+			return Point2D<float>(x, y);
 		}
 	};
 	/*

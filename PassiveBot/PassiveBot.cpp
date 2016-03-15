@@ -48,12 +48,8 @@ int main(int argc, wchar_t * argv[])
 	FrameManager::InitKnownFrames();
 
 	Player * p = ObjectManager::GetPlayer();
-	p->DumpPosition();
 	Quest q = QuestManager::GetQuest(14455);
-	for (int i = 0; i < q.kill_objective1->area.points_count; i++)
-	{
-		cout <<dec<< q.kill_objective1->area.points[i][0] << " " << q.kill_objective1->area.points[i][1] << endl;
-	}
+	bool y = q.kill_objective1->area.IsInArea(p->GetPosition().coords.To2D());
 
 	while (1)
 	{

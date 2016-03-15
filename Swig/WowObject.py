@@ -130,6 +130,9 @@ class Vector3(_object):
 
     def __ne__(self, right):
         return _WowObject.Vector3___ne__(self, right)
+
+    def To2D(self):
+        return _WowObject.Vector3_To2D(self)
     __swig_destroy__ = _WowObject.delete_Vector3
     __del__ = lambda self: None
 Vector3_swigregister = _WowObject.Vector3_swigregister

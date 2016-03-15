@@ -92,6 +92,7 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="ObjectiveArea.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Offsets.h" />
     <ClInclude Include="Player.h" />
@@ -112,6 +113,7 @@
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ObjectiveArea.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Quest.cpp" />
