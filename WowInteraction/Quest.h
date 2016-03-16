@@ -36,6 +36,7 @@ public:
 
 class Quest
 {
+	string title;
 public:
 	unsigned id;
 	unsigned objectives_count = 0;
@@ -43,6 +44,7 @@ public:
 	QuestKillObjective kill_objective2;
 	QuestKillObjective kill_objective3;
 	QuestKillObjective kill_objective4;
+	inline string GetTitle() { return title; }
 	void GetObjectivesBlobs();
 	bool Init(unsigned id);
 

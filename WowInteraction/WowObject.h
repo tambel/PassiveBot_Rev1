@@ -74,10 +74,10 @@ public:
 	virtual ~WowObject(void);
 	void SetBase(unsigned base);
 	unsigned GetBase();
-	char GetType(bool refresh = false);
-	unsigned GetID(bool refresh = false);
+	const char GetType(bool refresh = false);
+	const unsigned GetID(bool refresh = false);
 	Guid128 * GetGuid(bool refresh = false);
-	virtual wstring & GetName(bool refresh = false) = 0;
+	virtual const wstring & GetName(bool refresh = false) = 0;
 	static char GetType_Static(unsigned base);
 	virtual Position GetPosition();
 	//virtual void DumpPosition(bool refresh=false)=0;

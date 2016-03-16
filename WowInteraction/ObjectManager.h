@@ -15,6 +15,7 @@ class ObjectManager
 	static vector<Item*>  items;
 	static vector <Unit*>  units;
 	static vector <Player*>  players;
+	static vector <WowObject*>  all_objects;
 
 public:
 	static void EnumAllVisibleObjects();
@@ -27,6 +28,7 @@ public:
 	static Player * GetPlayer();
 	static Unit * FindUnitByName(const wstring & name);
 	static void ClearAllLists();
+	static WowObject * GetTargetObject();
 };
 
 

@@ -7,6 +7,7 @@ vector<GameObject*> ObjectManager::game_objects = vector<GameObject*>();
 vector<Item*> ObjectManager::items = vector<Item*>();
 vector<Unit*> ObjectManager::units = vector<Unit*>();
 vector<Player*> ObjectManager::players = vector<Player*>();
+vector<WowObject*> ObjectManager::all_objects = vector<WowObject*>();
 void ObjectManager::EnumAllVisibleObjects()
 {
 	ClearAllLists();
@@ -16,32 +17,46 @@ void ObjectManager::EnumAllVisibleObjects()
 	{
 		try
 		{
+			WowObject * object=nullptr;
+			
 			switch (WowObject::GetType_Static(curobject))
 			{
 
 			case ObjectType::GAMEOBJECT:
 			{
-				game_objects.push_back(new GameObject(curobject));
+				object = new GameObject(curobject);
+				game_objects.push_back(static_cast<GameObject*>(object));
+				//game_objects.push_back(new GameObject(curobject));
 				break;
 			}
 			case ObjectType::ITEM:
 			{
-				items.push_back(new Item(curobject));
+				object = new Item(curobject);
+				items.push_back(static_cast<Item*>(object));
+				//items.push_back(new Item(curobject));
 				break;
 			}
 			case ObjectType::UNIT:
 			{
-				units.push_back(new Unit(curobject));
+				object = new Unit(curobject);
+				units.push_back(static_cast<Unit*>(object));
+				//units.push_back(new Unit(curobject));
 				break;
 
 			}
 			case ObjectType::PLAYER:
 			{
-				players.push_back(new Player(curobject));
+				object = new Player(curobject);
+				players.push_back(static_cast<Player*>(object));
+				//players.push_back(new Player(curobject));
 				break;
 			}
 
 			}
+			if (object)
+				all_objects.push_back(object);
+			
+
 		}
 		catch (MemoryReadException e)
 		{
@@ -77,6 +92,11 @@ vector<Player*> &ObjectManager::GetPlayersList()
 }
 void ObjectManager::ClearAllLists()
 {
+	for (auto object : all_objects)
+	{
+		delete object;
+		object = nullptr;
+	}
 	for (auto game_object : game_objects)
 	{
 		delete game_object;
@@ -94,10 +114,24 @@ void ObjectManager::ClearAllLists()
 	{
 		delete player;
 	}
+	all_objects.clear();
 	players.clear();
 	game_objects.clear();
 	items.clear();
 	units.clear();
+}
+WowObject * ObjectManager::GetTargetObject()
+{
+	//EnumAllVisibleObjects();
+	Guid128 target_guid = Process::ReadRel<Guid128>(WowOffsets::ObjectManager::TargetGUID);
+	for (auto object : all_objects)
+	{
+		if (*object->GetGuid() == target_guid)
+		{
+			return object;
+		}
+	}
+	return nullptr;
 }
 void ObjectManager::DumpAllObjectNames()
 {

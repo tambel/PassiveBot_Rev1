@@ -56,7 +56,8 @@ namespace WowOffsets
 		ObjectManagerOffset = 0x62C,
 		FirstObject = 0xD8,
 		NextObject = 0x3C,
-		LocalPlayer = 0xE379B0
+		LocalPlayer = 0xE379B0,
+		TargetGUID=0xEAEED0
 
 
 	};
@@ -87,7 +88,8 @@ namespace WowOffsets
 	};
 	enum Player
 	{
-		PlayerNameCache = 0xD7BF14,
+		//PlayerNameCache = 0xD7BF14,
+		PlayerNameCache = 0xD7BF94,
 		PlayerNameCacheNext = 0x00,
 		PlayerNameCacheGuid = 0x10,
 		PlayerNameCacheName = 0x21,

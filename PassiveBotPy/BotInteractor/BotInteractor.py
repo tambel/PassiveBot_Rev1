@@ -289,6 +289,9 @@ class Unit(WowObject):
 
     def DumpPosition(self):
         return _BotInteractor.Unit_DumpPosition(self)
+
+    def IsQuestGiver(self):
+        return _BotInteractor.Unit_IsQuestGiver(self)
 Unit_swigregister = _BotInteractor.Unit_swigregister
 Unit_swigregister(Unit)
 
@@ -953,6 +956,396 @@ class SwigPyIterator(_object):
 SwigPyIterator_swigregister = _BotInteractor.SwigPyIterator_swigregister
 SwigPyIterator_swigregister(SwigPyIterator)
 
+class QuestObjective(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, QuestObjective, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, QuestObjective, name)
+    __repr__ = _swig_repr
+    KillCreatures = _BotInteractor.QuestObjective_KillCreatures
+    __swig_setmethods__["type"] = _BotInteractor.QuestObjective_type_set
+    __swig_getmethods__["type"] = _BotInteractor.QuestObjective_type_get
+    if _newclass:
+        type = _swig_property(_BotInteractor.QuestObjective_type_get, _BotInteractor.QuestObjective_type_set)
+
+    def __init__(self):
+        this = _BotInteractor.new_QuestObjective()
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+    __swig_destroy__ = _BotInteractor.delete_QuestObjective
+    __del__ = lambda self: None
+QuestObjective_swigregister = _BotInteractor.QuestObjective_swigregister
+QuestObjective_swigregister(QuestObjective)
+
+class QuestAreaObjective(QuestObjective):
+    __swig_setmethods__ = {}
+    for _s in [QuestObjective]:
+        __swig_setmethods__.update(getattr(_s, '__swig_setmethods__', {}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, QuestAreaObjective, name, value)
+    __swig_getmethods__ = {}
+    for _s in [QuestObjective]:
+        __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
+    __getattr__ = lambda self, name: _swig_getattr(self, QuestAreaObjective, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["area"] = _BotInteractor.QuestAreaObjective_area_set
+    __swig_getmethods__["area"] = _BotInteractor.QuestAreaObjective_area_get
+    if _newclass:
+        area = _swig_property(_BotInteractor.QuestAreaObjective_area_get, _BotInteractor.QuestAreaObjective_area_set)
+
+    def __init__(self):
+        this = _BotInteractor.new_QuestAreaObjective()
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+    __swig_destroy__ = _BotInteractor.delete_QuestAreaObjective
+    __del__ = lambda self: None
+QuestAreaObjective_swigregister = _BotInteractor.QuestAreaObjective_swigregister
+QuestAreaObjective_swigregister(QuestAreaObjective)
+
+class QuestKillObjective(QuestAreaObjective):
+    __swig_setmethods__ = {}
+    for _s in [QuestAreaObjective]:
+        __swig_setmethods__.update(getattr(_s, '__swig_setmethods__', {}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, QuestKillObjective, name, value)
+    __swig_getmethods__ = {}
+    for _s in [QuestAreaObjective]:
+        __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
+    __getattr__ = lambda self, name: _swig_getattr(self, QuestKillObjective, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["unit_id"] = _BotInteractor.QuestKillObjective_unit_id_set
+    __swig_getmethods__["unit_id"] = _BotInteractor.QuestKillObjective_unit_id_get
+    if _newclass:
+        unit_id = _swig_property(_BotInteractor.QuestKillObjective_unit_id_get, _BotInteractor.QuestKillObjective_unit_id_set)
+    __swig_setmethods__["count"] = _BotInteractor.QuestKillObjective_count_set
+    __swig_getmethods__["count"] = _BotInteractor.QuestKillObjective_count_get
+    if _newclass:
+        count = _swig_property(_BotInteractor.QuestKillObjective_count_get, _BotInteractor.QuestKillObjective_count_set)
+
+    def __init__(self):
+        this = _BotInteractor.new_QuestKillObjective()
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+    __swig_destroy__ = _BotInteractor.delete_QuestKillObjective
+    __del__ = lambda self: None
+QuestKillObjective_swigregister = _BotInteractor.QuestKillObjective_swigregister
+QuestKillObjective_swigregister(QuestKillObjective)
+
+class Quest(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Quest, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, Quest, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["id"] = _BotInteractor.Quest_id_set
+    __swig_getmethods__["id"] = _BotInteractor.Quest_id_get
+    if _newclass:
+        id = _swig_property(_BotInteractor.Quest_id_get, _BotInteractor.Quest_id_set)
+    __swig_setmethods__["objectives_count"] = _BotInteractor.Quest_objectives_count_set
+    __swig_getmethods__["objectives_count"] = _BotInteractor.Quest_objectives_count_get
+    if _newclass:
+        objectives_count = _swig_property(_BotInteractor.Quest_objectives_count_get, _BotInteractor.Quest_objectives_count_set)
+    __swig_setmethods__["kill_objective1"] = _BotInteractor.Quest_kill_objective1_set
+    __swig_getmethods__["kill_objective1"] = _BotInteractor.Quest_kill_objective1_get
+    if _newclass:
+        kill_objective1 = _swig_property(_BotInteractor.Quest_kill_objective1_get, _BotInteractor.Quest_kill_objective1_set)
+    __swig_setmethods__["kill_objective2"] = _BotInteractor.Quest_kill_objective2_set
+    __swig_getmethods__["kill_objective2"] = _BotInteractor.Quest_kill_objective2_get
+    if _newclass:
+        kill_objective2 = _swig_property(_BotInteractor.Quest_kill_objective2_get, _BotInteractor.Quest_kill_objective2_set)
+    __swig_setmethods__["kill_objective3"] = _BotInteractor.Quest_kill_objective3_set
+    __swig_getmethods__["kill_objective3"] = _BotInteractor.Quest_kill_objective3_get
+    if _newclass:
+        kill_objective3 = _swig_property(_BotInteractor.Quest_kill_objective3_get, _BotInteractor.Quest_kill_objective3_set)
+    __swig_setmethods__["kill_objective4"] = _BotInteractor.Quest_kill_objective4_set
+    __swig_getmethods__["kill_objective4"] = _BotInteractor.Quest_kill_objective4_get
+    if _newclass:
+        kill_objective4 = _swig_property(_BotInteractor.Quest_kill_objective4_get, _BotInteractor.Quest_kill_objective4_set)
+
+    def GetTitle(self):
+        return _BotInteractor.Quest_GetTitle(self)
+
+    def GetObjectivesBlobs(self):
+        return _BotInteractor.Quest_GetObjectivesBlobs(self)
+
+    def Init(self, id):
+        return _BotInteractor.Quest_Init(self, id)
+
+    def __init__(self, *args):
+        this = _BotInteractor.new_Quest(*args)
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+    __swig_destroy__ = _BotInteractor.delete_Quest
+    __del__ = lambda self: None
+Quest_swigregister = _BotInteractor.Quest_swigregister
+Quest_swigregister(Quest)
+
+class _KillCreatureObjective(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, _KillCreatureObjective, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, _KillCreatureObjective, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["creature_id"] = _BotInteractor._KillCreatureObjective_creature_id_set
+    __swig_getmethods__["creature_id"] = _BotInteractor._KillCreatureObjective_creature_id_get
+    if _newclass:
+        creature_id = _swig_property(_BotInteractor._KillCreatureObjective_creature_id_get, _BotInteractor._KillCreatureObjective_creature_id_set)
+    __swig_setmethods__["creatures_count"] = _BotInteractor._KillCreatureObjective_creatures_count_set
+    __swig_getmethods__["creatures_count"] = _BotInteractor._KillCreatureObjective_creatures_count_get
+    if _newclass:
+        creatures_count = _swig_property(_BotInteractor._KillCreatureObjective_creatures_count_get, _BotInteractor._KillCreatureObjective_creatures_count_set)
+
+    def __init__(self):
+        this = _BotInteractor.new__KillCreatureObjective()
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+    __swig_destroy__ = _BotInteractor.delete__KillCreatureObjective
+    __del__ = lambda self: None
+_KillCreatureObjective_swigregister = _BotInteractor._KillCreatureObjective_swigregister
+_KillCreatureObjective_swigregister(_KillCreatureObjective)
+
+class _Quest(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, _Quest, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, _Quest, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["id"] = _BotInteractor._Quest_id_set
+    __swig_getmethods__["id"] = _BotInteractor._Quest_id_get
+    if _newclass:
+        id = _swig_property(_BotInteractor._Quest_id_get, _BotInteractor._Quest_id_set)
+    __swig_setmethods__["f"] = _BotInteractor._Quest_f_set
+    __swig_getmethods__["f"] = _BotInteractor._Quest_f_get
+    if _newclass:
+        f = _swig_property(_BotInteractor._Quest_f_get, _BotInteractor._Quest_f_set)
+    __swig_setmethods__["Name"] = _BotInteractor._Quest_Name_set
+    __swig_getmethods__["Name"] = _BotInteractor._Quest_Name_get
+    if _newclass:
+        Name = _swig_property(_BotInteractor._Quest_Name_get, _BotInteractor._Quest_Name_set)
+    __swig_setmethods__["ObjectiveText"] = _BotInteractor._Quest_ObjectiveText_set
+    __swig_getmethods__["ObjectiveText"] = _BotInteractor._Quest_ObjectiveText_get
+    if _newclass:
+        ObjectiveText = _swig_property(_BotInteractor._Quest_ObjectiveText_get, _BotInteractor._Quest_ObjectiveText_set)
+    __swig_setmethods__["Description"] = _BotInteractor._Quest_Description_set
+    __swig_getmethods__["Description"] = _BotInteractor._Quest_Description_get
+    if _newclass:
+        Description = _swig_property(_BotInteractor._Quest_Description_get, _BotInteractor._Quest_Description_set)
+    __swig_setmethods__["EndText"] = _BotInteractor._Quest_EndText_set
+    __swig_getmethods__["EndText"] = _BotInteractor._Quest_EndText_get
+    if _newclass:
+        EndText = _swig_property(_BotInteractor._Quest_EndText_get, _BotInteractor._Quest_EndText_set)
+    __swig_setmethods__["f2"] = _BotInteractor._Quest_f2_set
+    __swig_getmethods__["f2"] = _BotInteractor._Quest_f2_get
+    if _newclass:
+        f2 = _swig_property(_BotInteractor._Quest_f2_get, _BotInteractor._Quest_f2_set)
+    __swig_setmethods__["Objective1"] = _BotInteractor._Quest_Objective1_set
+    __swig_getmethods__["Objective1"] = _BotInteractor._Quest_Objective1_get
+    if _newclass:
+        Objective1 = _swig_property(_BotInteractor._Quest_Objective1_get, _BotInteractor._Quest_Objective1_set)
+    __swig_setmethods__["f3"] = _BotInteractor._Quest_f3_set
+    __swig_getmethods__["f3"] = _BotInteractor._Quest_f3_get
+    if _newclass:
+        f3 = _swig_property(_BotInteractor._Quest_f3_get, _BotInteractor._Quest_f3_set)
+
+    def __init__(self):
+        this = _BotInteractor.new__Quest()
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+    __swig_destroy__ = _BotInteractor.delete__Quest
+    __del__ = lambda self: None
+_Quest_swigregister = _BotInteractor._Quest_swigregister
+_Quest_swigregister(_Quest)
+
+class QuestManager(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, QuestManager, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, QuestManager, name)
+    __repr__ = _swig_repr
+
+    def __init__(self):
+        this = _BotInteractor.new_QuestManager()
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+    __swig_destroy__ = _BotInteractor.delete_QuestManager
+    __del__ = lambda self: None
+    __swig_getmethods__["GetActiveQuestNumber"] = lambda x: _BotInteractor.QuestManager_GetActiveQuestNumber
+    if _newclass:
+        GetActiveQuestNumber = staticmethod(_BotInteractor.QuestManager_GetActiveQuestNumber)
+    __swig_getmethods__["GetQuestJournalIndex"] = lambda x: _BotInteractor.QuestManager_GetQuestJournalIndex
+    if _newclass:
+        GetQuestJournalIndex = staticmethod(_BotInteractor.QuestManager_GetQuestJournalIndex)
+    __swig_getmethods__["EnumActiveQuests"] = lambda x: _BotInteractor.QuestManager_EnumActiveQuests
+    if _newclass:
+        EnumActiveQuests = staticmethod(_BotInteractor.QuestManager_EnumActiveQuests)
+    __swig_getmethods__["GetQuestIds"] = lambda x: _BotInteractor.QuestManager_GetQuestIds
+    if _newclass:
+        GetQuestIds = staticmethod(_BotInteractor.QuestManager_GetQuestIds)
+    __swig_getmethods__["GetQuest"] = lambda x: _BotInteractor.QuestManager_GetQuest
+    if _newclass:
+        GetQuest = staticmethod(_BotInteractor.QuestManager_GetQuest)
+    __swig_getmethods__["GetQuestBlob"] = lambda x: _BotInteractor.QuestManager_GetQuestBlob
+    if _newclass:
+        GetQuestBlob = staticmethod(_BotInteractor.QuestManager_GetQuestBlob)
+    __swig_getmethods__["SelectQuestInJournal"] = lambda x: _BotInteractor.QuestManager_SelectQuestInJournal
+    if _newclass:
+        SelectQuestInJournal = staticmethod(_BotInteractor.QuestManager_SelectQuestInJournal)
+QuestManager_swigregister = _BotInteractor.QuestManager_swigregister
+QuestManager_swigregister(QuestManager)
+
+def QuestManager_GetActiveQuestNumber():
+    return _BotInteractor.QuestManager_GetActiveQuestNumber()
+QuestManager_GetActiveQuestNumber = _BotInteractor.QuestManager_GetActiveQuestNumber
+
+def QuestManager_GetQuestJournalIndex(id):
+    return _BotInteractor.QuestManager_GetQuestJournalIndex(id)
+QuestManager_GetQuestJournalIndex = _BotInteractor.QuestManager_GetQuestJournalIndex
+
+def QuestManager_EnumActiveQuests():
+    return _BotInteractor.QuestManager_EnumActiveQuests()
+QuestManager_EnumActiveQuests = _BotInteractor.QuestManager_EnumActiveQuests
+
+def QuestManager_GetQuestIds():
+    return _BotInteractor.QuestManager_GetQuestIds()
+QuestManager_GetQuestIds = _BotInteractor.QuestManager_GetQuestIds
+
+def QuestManager_GetQuest(id):
+    return _BotInteractor.QuestManager_GetQuest(id)
+QuestManager_GetQuest = _BotInteractor.QuestManager_GetQuest
+
+def QuestManager_GetQuestBlob(id):
+    return _BotInteractor.QuestManager_GetQuestBlob(id)
+QuestManager_GetQuestBlob = _BotInteractor.QuestManager_GetQuestBlob
+
+def QuestManager_SelectQuestInJournal(id):
+    return _BotInteractor.QuestManager_SelectQuestInJournal(id)
+QuestManager_SelectQuestInJournal = _BotInteractor.QuestManager_SelectQuestInJournal
+
+class UnsignedVector(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, UnsignedVector, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, UnsignedVector, name)
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _BotInteractor.UnsignedVector_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self):
+        return _BotInteractor.UnsignedVector___nonzero__(self)
+
+    def __bool__(self):
+        return _BotInteractor.UnsignedVector___bool__(self)
+
+    def __len__(self):
+        return _BotInteractor.UnsignedVector___len__(self)
+
+    def __getslice__(self, i, j):
+        return _BotInteractor.UnsignedVector___getslice__(self, i, j)
+
+    def __setslice__(self, *args):
+        return _BotInteractor.UnsignedVector___setslice__(self, *args)
+
+    def __delslice__(self, i, j):
+        return _BotInteractor.UnsignedVector___delslice__(self, i, j)
+
+    def __delitem__(self, *args):
+        return _BotInteractor.UnsignedVector___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _BotInteractor.UnsignedVector___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _BotInteractor.UnsignedVector___setitem__(self, *args)
+
+    def pop(self):
+        return _BotInteractor.UnsignedVector_pop(self)
+
+    def append(self, x):
+        return _BotInteractor.UnsignedVector_append(self, x)
+
+    def empty(self):
+        return _BotInteractor.UnsignedVector_empty(self)
+
+    def size(self):
+        return _BotInteractor.UnsignedVector_size(self)
+
+    def swap(self, v):
+        return _BotInteractor.UnsignedVector_swap(self, v)
+
+    def begin(self):
+        return _BotInteractor.UnsignedVector_begin(self)
+
+    def end(self):
+        return _BotInteractor.UnsignedVector_end(self)
+
+    def rbegin(self):
+        return _BotInteractor.UnsignedVector_rbegin(self)
+
+    def rend(self):
+        return _BotInteractor.UnsignedVector_rend(self)
+
+    def clear(self):
+        return _BotInteractor.UnsignedVector_clear(self)
+
+    def get_allocator(self):
+        return _BotInteractor.UnsignedVector_get_allocator(self)
+
+    def pop_back(self):
+        return _BotInteractor.UnsignedVector_pop_back(self)
+
+    def erase(self, *args):
+        return _BotInteractor.UnsignedVector_erase(self, *args)
+
+    def __init__(self, *args):
+        this = _BotInteractor.new_UnsignedVector(*args)
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+
+    def push_back(self, x):
+        return _BotInteractor.UnsignedVector_push_back(self, x)
+
+    def front(self):
+        return _BotInteractor.UnsignedVector_front(self)
+
+    def back(self):
+        return _BotInteractor.UnsignedVector_back(self)
+
+    def assign(self, n, x):
+        return _BotInteractor.UnsignedVector_assign(self, n, x)
+
+    def resize(self, *args):
+        return _BotInteractor.UnsignedVector_resize(self, *args)
+
+    def insert(self, *args):
+        return _BotInteractor.UnsignedVector_insert(self, *args)
+
+    def reserve(self, n):
+        return _BotInteractor.UnsignedVector_reserve(self, n)
+
+    def capacity(self):
+        return _BotInteractor.UnsignedVector_capacity(self)
+    __swig_destroy__ = _BotInteractor.delete_UnsignedVector
+    __del__ = lambda self: None
+UnsignedVector_swigregister = _BotInteractor.UnsignedVector_swigregister
+UnsignedVector_swigregister(UnsignedVector)
+
 class ObjectManager(_object):
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, ObjectManager, name, value)
@@ -989,6 +1382,9 @@ class ObjectManager(_object):
     __swig_getmethods__["ClearAllLists"] = lambda x: _BotInteractor.ObjectManager_ClearAllLists
     if _newclass:
         ClearAllLists = staticmethod(_BotInteractor.ObjectManager_ClearAllLists)
+    __swig_getmethods__["GetTargetObject"] = lambda x: _BotInteractor.ObjectManager_GetTargetObject
+    if _newclass:
+        GetTargetObject = staticmethod(_BotInteractor.ObjectManager_GetTargetObject)
 
     def __init__(self):
         this = _BotInteractor.new_ObjectManager()
@@ -1041,118 +1437,122 @@ def ObjectManager_ClearAllLists():
     return _BotInteractor.ObjectManager_ClearAllLists()
 ObjectManager_ClearAllLists = _BotInteractor.ObjectManager_ClearAllLists
 
-class FooVector(_object):
+def ObjectManager_GetTargetObject():
+    return _BotInteractor.ObjectManager_GetTargetObject()
+ObjectManager_GetTargetObject = _BotInteractor.ObjectManager_GetTargetObject
+
+class UnitVector(_object):
     __swig_setmethods__ = {}
-    __setattr__ = lambda self, name, value: _swig_setattr(self, FooVector, name, value)
+    __setattr__ = lambda self, name, value: _swig_setattr(self, UnitVector, name, value)
     __swig_getmethods__ = {}
-    __getattr__ = lambda self, name: _swig_getattr(self, FooVector, name)
+    __getattr__ = lambda self, name: _swig_getattr(self, UnitVector, name)
     __repr__ = _swig_repr
 
     def iterator(self):
-        return _BotInteractor.FooVector_iterator(self)
+        return _BotInteractor.UnitVector_iterator(self)
     def __iter__(self):
         return self.iterator()
 
     def __nonzero__(self):
-        return _BotInteractor.FooVector___nonzero__(self)
+        return _BotInteractor.UnitVector___nonzero__(self)
 
     def __bool__(self):
-        return _BotInteractor.FooVector___bool__(self)
+        return _BotInteractor.UnitVector___bool__(self)
 
     def __len__(self):
-        return _BotInteractor.FooVector___len__(self)
+        return _BotInteractor.UnitVector___len__(self)
 
     def __getslice__(self, i, j):
-        return _BotInteractor.FooVector___getslice__(self, i, j)
+        return _BotInteractor.UnitVector___getslice__(self, i, j)
 
     def __setslice__(self, *args):
-        return _BotInteractor.FooVector___setslice__(self, *args)
+        return _BotInteractor.UnitVector___setslice__(self, *args)
 
     def __delslice__(self, i, j):
-        return _BotInteractor.FooVector___delslice__(self, i, j)
+        return _BotInteractor.UnitVector___delslice__(self, i, j)
 
     def __delitem__(self, *args):
-        return _BotInteractor.FooVector___delitem__(self, *args)
+        return _BotInteractor.UnitVector___delitem__(self, *args)
 
     def __getitem__(self, *args):
-        return _BotInteractor.FooVector___getitem__(self, *args)
+        return _BotInteractor.UnitVector___getitem__(self, *args)
 
     def __setitem__(self, *args):
-        return _BotInteractor.FooVector___setitem__(self, *args)
+        return _BotInteractor.UnitVector___setitem__(self, *args)
 
     def pop(self):
-        return _BotInteractor.FooVector_pop(self)
+        return _BotInteractor.UnitVector_pop(self)
 
     def append(self, x):
-        return _BotInteractor.FooVector_append(self, x)
+        return _BotInteractor.UnitVector_append(self, x)
 
     def empty(self):
-        return _BotInteractor.FooVector_empty(self)
+        return _BotInteractor.UnitVector_empty(self)
 
     def size(self):
-        return _BotInteractor.FooVector_size(self)
+        return _BotInteractor.UnitVector_size(self)
 
     def swap(self, v):
-        return _BotInteractor.FooVector_swap(self, v)
+        return _BotInteractor.UnitVector_swap(self, v)
 
     def begin(self):
-        return _BotInteractor.FooVector_begin(self)
+        return _BotInteractor.UnitVector_begin(self)
 
     def end(self):
-        return _BotInteractor.FooVector_end(self)
+        return _BotInteractor.UnitVector_end(self)
 
     def rbegin(self):
-        return _BotInteractor.FooVector_rbegin(self)
+        return _BotInteractor.UnitVector_rbegin(self)
 
     def rend(self):
-        return _BotInteractor.FooVector_rend(self)
+        return _BotInteractor.UnitVector_rend(self)
 
     def clear(self):
-        return _BotInteractor.FooVector_clear(self)
+        return _BotInteractor.UnitVector_clear(self)
 
     def get_allocator(self):
-        return _BotInteractor.FooVector_get_allocator(self)
+        return _BotInteractor.UnitVector_get_allocator(self)
 
     def pop_back(self):
-        return _BotInteractor.FooVector_pop_back(self)
+        return _BotInteractor.UnitVector_pop_back(self)
 
     def erase(self, *args):
-        return _BotInteractor.FooVector_erase(self, *args)
+        return _BotInteractor.UnitVector_erase(self, *args)
 
     def __init__(self, *args):
-        this = _BotInteractor.new_FooVector(*args)
+        this = _BotInteractor.new_UnitVector(*args)
         try:
             self.this.append(this)
         except Exception:
             self.this = this
 
     def push_back(self, x):
-        return _BotInteractor.FooVector_push_back(self, x)
+        return _BotInteractor.UnitVector_push_back(self, x)
 
     def front(self):
-        return _BotInteractor.FooVector_front(self)
+        return _BotInteractor.UnitVector_front(self)
 
     def back(self):
-        return _BotInteractor.FooVector_back(self)
+        return _BotInteractor.UnitVector_back(self)
 
     def assign(self, n, x):
-        return _BotInteractor.FooVector_assign(self, n, x)
+        return _BotInteractor.UnitVector_assign(self, n, x)
 
     def resize(self, *args):
-        return _BotInteractor.FooVector_resize(self, *args)
+        return _BotInteractor.UnitVector_resize(self, *args)
 
     def insert(self, *args):
-        return _BotInteractor.FooVector_insert(self, *args)
+        return _BotInteractor.UnitVector_insert(self, *args)
 
     def reserve(self, n):
-        return _BotInteractor.FooVector_reserve(self, n)
+        return _BotInteractor.UnitVector_reserve(self, n)
 
     def capacity(self):
-        return _BotInteractor.FooVector_capacity(self)
-    __swig_destroy__ = _BotInteractor.delete_FooVector
+        return _BotInteractor.UnitVector_capacity(self)
+    __swig_destroy__ = _BotInteractor.delete_UnitVector
     __del__ = lambda self: None
-FooVector_swigregister = _BotInteractor.FooVector_swigregister
-FooVector_swigregister(FooVector)
+UnitVector_swigregister = _BotInteractor.UnitVector_swigregister
+UnitVector_swigregister(UnitVector)
 
 class BotInteractor(_object):
     __swig_setmethods__ = {}

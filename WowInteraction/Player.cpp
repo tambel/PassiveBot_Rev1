@@ -9,9 +9,9 @@ Player::Player(unsigned base) :Unit(base)
 Player::~Player(void)
 {
 }
-wstring & Player::GetName(bool refresh)
+const wstring & Player::GetName(bool refresh)
 {
-	if (refresh)
+	if (name.length()==0 || refresh)
 	{
 		Guid128 tmp_guid = Guid128();
 		unsigned current = Process::ReadRel<unsigned>(WowOffsets::Player::PlayerNameCache);

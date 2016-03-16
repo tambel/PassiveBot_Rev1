@@ -45,6 +45,12 @@
     <CustomBuild Include="ObjectManager.i">
       <Filter>Interface files</Filter>
     </CustomBuild>
+    <CustomBuild Include="QuestManager.i">
+      <Filter>Interface files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Quest.i">
+      <Filter>Interface files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Area_wrap.cxx">

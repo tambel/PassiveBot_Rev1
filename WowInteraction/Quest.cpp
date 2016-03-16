@@ -104,7 +104,8 @@ bool Quest::Init(unsigned id)
 
 	unsigned result_addr = read_from_client(id);
 	_Quest result = Process::Read<_Quest>(result_addr);
-	id = result.id;
+	this->id = result.id;
+	this->title = result.Name;
 	if (result.Objective1)
 	{
 		_KillCreatureObjective _obj;
@@ -141,7 +142,7 @@ Quest::Quest(unsigned id)
 	{
 		throw(exception());
 	}
-	GetObjectivesBlobs();
+	//GetObjectivesBlobs();
 }
 
 Quest::~Quest()

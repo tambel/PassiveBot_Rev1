@@ -48,9 +48,28 @@ int main(int argc, wchar_t * argv[])
 	FrameManager::InitKnownFrames();
 
 	Player * p = ObjectManager::GetPlayer();
-	Quest q = QuestManager::GetQuest(14455);
-	bool y = q.kill_objective1->area.IsInArea(p->GetPosition().coords.To2D());
 
+	Unit * u=nullptr;
+	vector<wstring> vv;
+	for (auto unit : ObjectManager::GetUnitsList())
+	{
+		
+		if (unit->IsQuestGiver())
+		{
+			u = unit;
+			vv.push_back(unit->GetName());
+
+		}
+	}
+
+//	Quest q = QuestManager::GetQuest(14455);
+	//bool y = q.kill_objective1->area.IsInArea(p->GetPosition().coords.To2D());
+	if (u)
+	{
+		wcout << u->GetName();
+	}
+	Quest q = QuestManager::GetQuest(14449);
+	cout << q.GetTitle();
 	while (1)
 	{
 

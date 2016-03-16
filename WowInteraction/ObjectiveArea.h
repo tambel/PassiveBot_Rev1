@@ -1,6 +1,6 @@
 #pragma once
 #include "Utils.h"
-
+using namespace Utils;
 using   QuestAreaPoint = int[2];
 
 class ObjectiveArea

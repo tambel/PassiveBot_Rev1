@@ -9,6 +9,8 @@ public:
 	GameObject(unsigned base);
 	~GameObject(void);
 	wstring & GetName(bool refresh = false);
+	
+
 
 };
 

@@ -11,7 +11,7 @@ Unit::Unit(unsigned base) :WowObject(base)
 Unit::~Unit(void)
 {
 }
-wstring & Unit::GetName(bool refresh)
+const wstring & Unit::GetName(bool refresh)
 {
 	if (name.length() == 0 || refresh)
 	{
@@ -31,5 +31,11 @@ void Unit::DumpPosition()
 	Position position = GetPosition();
 	wcout << name << ":";
 	cout<< "X- " << position.coords.x << " Y- " << position.coords.y << " Z- " << position.coords.z << endl << "Rotation " << position.rotation.z << endl<<endl;
+}
+unsigned Unit::IsQuestGiver()
+{
+	return (Process::Read<unsigned>(Process::Read<unsigned>(base + 0x124) + 0x1B8) >> 1) & 1;
+	unsigned i = Process::Read<unsigned>(Process::Read<unsigned>(base + 0x124) + 0x1B8);
+	return 0;
 }
 

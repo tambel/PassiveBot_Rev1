@@ -9,10 +9,11 @@ class Unit : public WowObject
 {
 public:
 	Unit(unsigned base);
-	~Unit(void);
-	wstring & GetName(bool refresh = false);
+	virtual ~Unit(void);
+	virtual const wstring & GetName(bool refresh = false);
 	Position GetPosition();
 	void DumpPosition();
+	unsigned IsQuestGiver();
 };
 
 

@@ -24,7 +24,7 @@ unsigned WowObject::GetBase()
 {
 	return base;
 }
-char WowObject::GetType(bool refresh)
+const char WowObject::GetType(bool refresh)
 {
 	if (!type || refresh)
 	{
@@ -37,7 +37,7 @@ char WowObject::GetType_Static(unsigned base)
 {
 	return Process::Read<unsigned>(base + WowOffsets::Object::Type);
 }
-unsigned WowObject::GetID(bool refresh)
+const unsigned WowObject::GetID(bool refresh)
 {
 	if (!id || refresh)
 	{

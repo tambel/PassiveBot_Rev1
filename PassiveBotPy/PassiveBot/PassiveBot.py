@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from BotInteractor.BotInteractor import BotInteractor, Unit, ObjectManager
+from BotInteractor.BotInteractor import BotInteractor, Unit, ObjectManager,Player, Guid128, QuestManager
 
 
 class PassiveBot(object):
     BotInteractor = BotInteractor
     ObjectManager = ObjectManager
+    QuestManager = QuestManager
     def __init__(self):
         pass
 
