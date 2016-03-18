@@ -5,11 +5,7 @@
 
 #pragma once
 
-#include "targetver.h"
-
-#include <stdio.h>
-#include <tchar.h>
-
+#include "NetworkCommuniсation\NetworkCommunicatorClient.h"
 
 
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы

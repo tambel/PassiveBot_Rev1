@@ -66,6 +66,10 @@ struct WorldMapAreaRec {
 	unsigned m_levelRangeMax;
 };
 
+//struct AreaTableRec {
+//	char f[29][4];
+//};
+
 struct AreaTableRec {
 	unsigned m_ID;
 	unsigned m_ContinentID;

@@ -32,24 +32,15 @@ class MyWidget(QMainWindow):
 
     def init_quest_list(self):
 
-        def quest_list_item_changed(item):
-            print item
 
         self.bot.QuestManager.EnumActiveQuests()
         self.model=QStandardItemModel(self.quest_list)
-        self.model.insertColumn(1)
-        self.model.insertColumn(2)
-        self.quest_list.indexesMoved.connect(quest_list_item_changed)
         for quest in [self.bot.QuestManager.GetQuest(quest_id)for quest_id in self.bot.QuestManager.GetQuestIds()]:
             item=QStandardItem(quest.GetTitle())
             item.setEditable(False)
             self.model.appendRow(item)
-
         self.quest_list.setModel(self.model)
-        #model.itemChanged.connect(quest_list_item_changed)
-
         self.quest_list.connect(self.quest_list, SIGNAL('itemActivated(QModelIndex)'), self.quest_id_edit, SLOT('setText'))
-        #QListView().model().
 
 
     @QtCore.pyqtSlot("QModelIndex")
@@ -65,13 +56,8 @@ class MyWidget(QMainWindow):
                 self.quest_id_edit.setText(str(quest_id))
                 break
 
-
-
-
-
     def bot_thread_worker(self):
         self.bot.start()
-
         while 1:
             obj = ObjectManager.GetTargetObject()
             player = ObjectManager.GetPlayer()

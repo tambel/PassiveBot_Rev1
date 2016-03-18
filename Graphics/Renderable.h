@@ -5,14 +5,14 @@
 class Renderable
 {
 
-	Model * model;
+	Model * model=nullptr;
 	static unsigned long counter;
 	unsigned long id;
-	Ogre::SceneNode * scene;
+	Ogre::SceneNode * scene=nullptr;
 	void _move(Renderable & other);
 public:
 	bool to_kill;
-	Renderable() {}
+	Renderable();
 	Renderable(Model * model);
 
 	

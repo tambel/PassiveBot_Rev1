@@ -14,6 +14,8 @@
 #include <fstream>
 
 
+#include "NetworkCommuniñation\NetworkCommunicatorServer.h"
+
 using namespace std;
 using namespace Utils;
 using namespace Tools;
@@ -27,9 +29,10 @@ void init_static()
 
 
 
-//struct WoWClientDB;
+
 int main(int argc, wchar_t * argv[])
 {
+	
 
 	init_static();
 
@@ -41,38 +44,19 @@ int main(int argc, wchar_t * argv[])
 	BotInteractor::StartGame("lissek7@ya.ru", "lebmat2762066", L"Òåñòèðóåì");
 	WoWClientDB bd;
 
-	
+	NetworkCommunicatorServer server = NetworkCommunicatorServer();
 
 	//BotInteractor::GoToPoint(*ObjectManager::FindUnitByName(L"Òàê"));
 	QuestManager::EnumActiveQuests();
 	FrameManager::InitKnownFrames();
 
+	
 	Player * p = ObjectManager::GetPlayer();
-
-	Unit * u=nullptr;
-	vector<wstring> vv;
-	for (auto unit : ObjectManager::GetUnitsList())
-	{
-		
-		if (unit->IsQuestGiver())
-		{
-			u = unit;
-			vv.push_back(unit->GetName());
-
-		}
-	}
-
-//	Quest q = QuestManager::GetQuest(14455);
-	//bool y = q.kill_objective1->area.IsInArea(p->GetPosition().coords.To2D());
-	if (u)
-	{
-		wcout << u->GetName();
-	}
-	Quest q = QuestManager::GetQuest(14449);
-	cout << q.GetTitle();
 	while (1)
 	{
 
+		p->DumpPosition();
+		Sleep(500);
 	}
 
 

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-Ogre::Vector3 Vector3ToOgreVector(WowTypes::Vector3 vector)
+Ogre::Vector3 Vector3ToOgreVector(Vector3 vector)
 {
 	return Ogre::Vector3(vector.x,vector.y,vector.z);
 }

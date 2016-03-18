@@ -1,7 +1,7 @@
 #pragma once
 #include "WowInteraction\Player.h"
 #include "WowWorldsData\NavArea.h"
-#define DEBUG
+
 class BotInteractor
 {
 	static NavArea area;

@@ -8,6 +8,10 @@ void Renderable::_move(Renderable & other)
 	scene = other.scene;
 	other.scene = nullptr;
 }
+Renderable::Renderable()
+{
+
+}
 Renderable::Renderable(Model * model):model(model)
 {
 	to_kill=false;

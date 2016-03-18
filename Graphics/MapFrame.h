@@ -8,8 +8,11 @@ class MapFrame: public Window
 {
 	MutableArea * area;
 	vector<Renderable> rends;
-
+	Renderable player_renderable;
+	float m_smoothPath[2048 * 3];
+	Vector3 player_position;
 	
+
 public:
 	MapFrame(void);
 	~MapFrame(void);
@@ -20,5 +23,7 @@ public:
 	void CreateNavMesh();
 	void createRecastPathLine(int nPathSlot);
 	void UpdateScene();
+	void AddPlayer(Model & model);
+	inline void SetPlayerPosition(Vector3 & position) { player_position = position; }
 };
 
