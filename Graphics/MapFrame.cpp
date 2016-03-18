@@ -7,10 +7,12 @@
 void MapFrame::AddPlayer(Model & model)
 {
 	player_renderable = move(Renderable(&model));
-	Ogre::SceneNode * n = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-	player_position = Vector3(Metrics::MapMidPoint - player_position.y, -(Metrics::MapMidPoint - player_position.x), player_position.z);
-	n->setPosition(Vector3ToOgreVector(player_position));
-	player_renderable.CreateScene(n);
+	player_scene = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+	//player_position = Vector3(Metrics::MapMidPoint - player_position.y, -(Metrics::MapMidPoint - player_position.x), player_position.z);
+	old_player_position = player_position;
+	player_scene->setPosition(Vector3ToOgreVector(player_position));
+	player_renderable.CreateScene(player_scene);
+
 	
 
 }
@@ -40,11 +42,17 @@ void MapFrame::createScene()
 }
 void MapFrame::OnUpdate()
 {
+	if (to_update_player)
+	{
+		player_scene->setPosition(Vector3ToOgreVector(player_position));
+		to_update_player = false;
+	}
 	area->data_mutex.lock();
 	if (area->to_update)
 	{
 		rends.clear();
-		mSceneMgr->destroyAllManualObjects();
+		
+		//mSceneMgr->destroyAllManualObjects();
 		UpdateScene();
 		
 		CreateNavMesh();
@@ -265,4 +273,18 @@ void MapFrame::UpdateScene()
 		add_if_not_exist(&*wmo, rends, mSceneMgr);
 	for (auto &doodad : area->GetDoodads())
 		add_if_not_exist(&*doodad, rends, mSceneMgr);
+}
+
+void MapFrame::SetPlayerPosition(Vector3 & position)
+{
+	old_player_position = player_position;
+	player_position = Vector3(Metrics::MapMidPoint - position.y, -(Metrics::MapMidPoint - position.x), position.z);
+	if (old_player_position.To2D() != player_position.To2D() && !to_update_player)
+	{
+		to_update_player = true;
+	}
+	
+	//player_position = position;
+	
+
 }

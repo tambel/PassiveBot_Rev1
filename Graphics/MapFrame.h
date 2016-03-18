@@ -11,6 +11,9 @@ class MapFrame: public Window
 	Renderable player_renderable;
 	float m_smoothPath[2048 * 3];
 	Vector3 player_position;
+	Vector3 old_player_position;
+	Ogre::SceneNode * player_scene = nullptr;
+	bool to_update_player = false;
 	
 
 public:
@@ -24,6 +27,6 @@ public:
 	void createRecastPathLine(int nPathSlot);
 	void UpdateScene();
 	void AddPlayer(Model & model);
-	inline void SetPlayerPosition(Vector3 & position) { player_position = position; }
+	void SetPlayerPosition(Vector3 & position);
 };
 

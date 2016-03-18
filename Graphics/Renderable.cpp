@@ -42,23 +42,18 @@ Renderable::~Renderable()
 {
 	if (scene)
 	{
-		scene->detachAllObjects();
+		
+		if (manual_object)
+		scene->getCreator()->destroyManualObject(manual_object);
+		((Ogre::SceneNode*) scene->getParent())->detachAllObjects();
 		//scene->getCreator()->getRootSceneNode()->removeAndDestroyChild(to_string(id));
-		Ogre::SceneNode::ObjectIterator itObject = scene->getAttachedObjectIterator();
+
+		/*Ogre::SceneNode::ObjectIterator itObject = scene->getAttachedObjectIterator();
 
 		while (itObject.hasMoreElements())
 		{
 			Ogre::MovableObject* pObject = static_cast<Ogre::MovableObject*>(itObject.getNext());
 			scene->getCreator()->destroyMovableObject(pObject);
-		}
-
-		// Recurse to child SceneNodes
-		//Ogre::SceneNode::ChildNodeIterator itChild = scene->getChildIterator();
-
-		/*while (itChild.hasMoreElements())
-		{
-			Ogre::SceneNode* pChildNode = static_cast<SceneNode*>(itChild.getNext());
-			DestroyAllAttachedMovableObjects(pChildNode);
 		}*/
 		
 	}
@@ -71,27 +66,27 @@ void Renderable::CreateScene(Ogre::SceneNode * parent)
 	}
 	string name=to_string(GetID());
 	scene=parent->createChildSceneNode(name);
-	//Ogre::SceneNode * scene =parent_scene->createChildSceneNode();
-	Ogre::ManualObject * manual = scene->getCreator()->createManualObject();
-	manual->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_LIST);
+	//Ogre::ManualObject * manual = scene->getCreator()->createManualObject();
+	manual_object= scene->getCreator()->createManualObject();
+	manual_object->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_LIST);
 	for (unsigned vi = 0; vi < model->GetVertexCount() * 3; vi += 3)
 	{
-		manual->position(model->GetVertices()[vi], model->GetVertices()[vi + 2], model->GetVertices()[vi + 1]);
+		manual_object->position(model->GetVertices()[vi], model->GetVertices()[vi + 2], model->GetVertices()[vi + 1]);
 		if (vi % 9 == 0)
-			manual->colour(1, 1, 1, 1);
+			manual_object->colour(1, 1, 1, 1);
 		else if (vi % 6 == 0)
-			manual->colour(0, 0, 0, 0);
+			manual_object->colour(0, 0, 0, 0);
 		else
-			manual->colour(1, 1, 0, 1);
+			manual_object->colour(1, 1, 0, 1);
 	}
 	for (unsigned ii = 0; ii < model->GetIndexCount(); ii += 3)
 	{
-		manual->index(model->GetIndices()[ii + 2]);
-		manual->index(model->GetIndices()[ii + 1]);
-		manual->index(model->GetIndices()[ii] );
+		manual_object->index(model->GetIndices()[ii + 2]);
+		manual_object->index(model->GetIndices()[ii + 1]);
+		manual_object->index(model->GetIndices()[ii] );
 	}
-	manual->end();
-	parent->attachObject(manual);
+	manual_object->end();
+	parent->attachObject(manual_object);
 
 
 

@@ -62,11 +62,11 @@ namespace Utils
 		}
 		bool  operator==(const Vector3 &right)
 		{
-			return x == right.x && y == right.y;
+			return x == right.x && y == right.y && z==right.z;
 		}
 		bool  operator!=(const Vector3 &right)
 		{
-			return x != right.x || y != right.y;
+			return x != right.x || y != right.y || z != right.z;
 		}
 		Point2D<float> To2D()
 		{

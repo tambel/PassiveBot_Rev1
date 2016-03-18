@@ -10,6 +10,7 @@ class Renderable
 	unsigned long id;
 	Ogre::SceneNode * scene=nullptr;
 	void _move(Renderable & other);
+	Ogre::ManualObject * manual_object = nullptr;
 public:
 	bool to_kill;
 	Renderable();

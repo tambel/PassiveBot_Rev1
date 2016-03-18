@@ -25,9 +25,9 @@ int main(int argc, char* argv[])
 	while (1)
 	{
 		client.WaitForMessage();
-		cout << client.player_position.x << " " << client.player_position.y << endl;
 		//viewer.Update(Game::LocationBase::Get("Kalimdor"), WorldPositionToBlockCoords(client.player_position), WorldPositionToChunkCoords(client.player_position));
 		viewer.Update(client.player_position);
+
 	}
     return 0;
 }
