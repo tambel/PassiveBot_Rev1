@@ -43,8 +43,8 @@ Renderable::~Renderable()
 	if (scene)
 	{
 		
-		if (manual_object)
-		scene->getCreator()->destroyManualObject(manual_object);
+		/*if (manual_object)
+		scene->getCreator()->destroyManualObject(manual_object);*/
 		((Ogre::SceneNode*) scene->getParent())->detachAllObjects();
 		//scene->getCreator()->getRootSceneNode()->removeAndDestroyChild(to_string(id));
 

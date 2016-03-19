@@ -15,7 +15,11 @@ ADT * ADTCache::Find(Location & location, Point2D<int> coordinates)
 }
 void ADTCache::Clear()
 {
-	//item_list.clear();
+	for (auto adt : item_list)
+	{
+		delete adt;
+	}
+	item_list.clear();
 
 }
 void ADTCache::Add(ADT * adt)

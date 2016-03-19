@@ -30,6 +30,7 @@ Area::Area(Area && area)
 
 void Area::Update(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {
+	ADTWorker::Clear();
 	this->location = location;
 	this->block_coordinates = block_coordinates;
 	this->coordinates = coordinates;
@@ -80,7 +81,12 @@ void Area::Update(Location & location, Point2D<int> block_coordinates, Point2D<i
 		else
 			++it;
 	}
+	if (chunks.size() == 0)
+	{
+		throw(EmptyAreaException());
+	}
 	InitMapObjects();
+	
 }
 
 void Area::_move(Area & other)

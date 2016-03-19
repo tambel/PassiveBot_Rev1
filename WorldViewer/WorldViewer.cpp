@@ -3,6 +3,7 @@
 #include "stdafx.h"
 #include "Graphics\WorldViewer.h"
 #include <iostream>
+#include <conio.h>
 using namespace std;
 
 
@@ -15,20 +16,58 @@ void init_static()
 int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "Russian");
-	NetworkCommunicatorClient client = NetworkCommunicatorClient();
+	//NetworkCommunicatorClient client = NetworkCommunicatorClient();
 	init_static();
-	client.WaitForMessage();
-	//WorldViewer viewer = WorldViewer(Game::LocationBase::Get("Kalimdor"), WorldPositionToBlockCoords(client.player_position), WorldPositionToChunkCoords(client.player_position), 3);
-	WorldViewer viewer = WorldViewer(client.player_position);
-	//WorldViewer viewer = WorldViewer(Game::LocationBase::Get("Kalimdor"), Point2D<int>(34,31/*28, 40*/), Point2D<int>(2,16/*10, 2*/), 3);
+	//client.WaitForMessage();
+	//WorldViewer viewer = WorldViewer(client.player_position);
+	
+	WorldViewer viewer = WorldViewer(Game::LocationBase::Get("Kalimdor"), Point2D<int>(0,0/*28, 40*/), Point2D<int>(0,0/*10, 2*/),1);
+	
+	
+
+
+
+
 	viewer.ShowMap();
+	getch();
+	Point2D<int> block;
+	Point2D<int>chunk;
+	Point2D<int>ob, oc;
+	string s;
+	for (int i = 0; i < 1024; i++)
+	{
+		block.X = i / 16;
+		chunk.X = i - block.X * 16;
+		for (int j = 0; j < 1024; j++)
+		{
+			block.Y = j / 16;
+			chunk.Y = j - block.Y * 16;
+			try
+			{
+				//viewer.Update(Game::LocationBase::Get("Kalimdor"), block, chunk);
+				viewer.GetFrame().GetArea()->UpdateArea(Game::LocationBase::Get("Kalimdor"), block, chunk);
+			}
+			catch (EmptyAreaException & e)
+			{
+				cout << e.what() << endl;;
+			}
+			cout << block.X << " " << block.Y << endl << chunk.X << " " << chunk.Y << endl << "==========" << endl;
+			//cin >>s;
+			//getch();
+
+		}
+	}
+
+
+
 	while (1)
 	{
-		client.WaitForMessage();
-		//viewer.Update(Game::LocationBase::Get("Kalimdor"), WorldPositionToBlockCoords(client.player_position), WorldPositionToChunkCoords(client.player_position));
-		viewer.Update(client.player_position);
+		//client.WaitForMessage();
+		
+		//viewer.Update(client.player_position);
 
 	}
+
     return 0;
 }
 

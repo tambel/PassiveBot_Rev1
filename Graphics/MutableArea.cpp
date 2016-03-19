@@ -20,9 +20,16 @@ MutableArea & MutableArea::operator=(MutableArea && other)
 
 void MutableArea::Update(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {
-	data_mutex.lock();
-	NavArea::Update(location, block_coordinates, coordinates);
+	lock_guard<mutex> guard(data_mutex);
+	try
+	{
+		NavArea::Update(location, block_coordinates, coordinates);
+	}
+	catch (EmptyAreaException & e)
+	{
+		to_update = false;
+		throw e;
+	}
 	to_update = true;
-	data_mutex.unlock();
 }
 

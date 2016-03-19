@@ -17,6 +17,16 @@ using namespace Utils::Game;
 //	
 //	ChunkInfo(	Location * location, Point2D<int> block_coordinates,Point2D<int> coordinates,int radius);//:location(location),block_coordinates(block_coordinates),coordinates(coordinates){}
 //};
+
+class EmptyAreaException : exception
+{
+public:
+	virtual const char * what() const
+	{
+		return "Can not init area. It is empty";
+	}
+};
+
 class Area
 {
 protected:
