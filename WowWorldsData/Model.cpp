@@ -90,7 +90,7 @@ void Model::_move(Model & other)
 {
 	bounding_box = other.bounding_box;
 	vertices = other.vertices;
-	vertices = nullptr;
+	other.vertices = nullptr;
 	//vertices = other.vertices;
 	vertex_count = other.vertex_count;
 	//other.vertices = nullptr;

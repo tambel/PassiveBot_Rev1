@@ -23,10 +23,13 @@ Chunk::Chunk(Area * area,ChunkStreamInfo info, ChunkStreamInfo obj_info,  ADT * 
 	header=MCNK();
 	root_info=info;
 	root_reader=root_info.reader;
+	root_reader = &adt->GetRootReader();
 	this->obj_reader = obj_info.reader;
+	obj_reader = &adt->GetObjectReader();
 	//indices=ChunkModel::indices;
 	index_count=ChunkModel::index_count;
 	indices = new int[768];
+	vertices = new float[435];
 	vertex_count=ChunkModel::vertex_count;
 	//root_reader->GetStream()->seekg(root_info.start,ios::beg);
 	root_reader->SetPosition(root_info.start);
@@ -35,10 +38,10 @@ Chunk::Chunk(Area * area,ChunkStreamInfo info, ChunkStreamInfo obj_info,  ADT * 
 	//root_reader->GetStream()->read((char*)&header,sizeof(MCNK));
 	unsigned sig;
 	unsigned size;
-	while (root_reader->GetPosition()<=root_info.start+root_info.size-8)
+	while (root_reader->GetPosition() <= root_info.start + root_info.size - 8)
 	{
-		sig=root_reader->ReadUInt();
-		size=root_reader->ReadUInt();
+		sig = root_reader->ReadUInt();
+		size = root_reader->ReadUInt();
 		switch (sig)
 		{
 		case Utils::ChunkSignatures::ADTSignature::MCNKSignatures::Mcvt:
@@ -50,6 +53,7 @@ Chunk::Chunk(Area * area,ChunkStreamInfo info, ChunkStreamInfo obj_info,  ADT * 
 			break;
 		}
 	}
+
 	obj_reader->SetPosition(obj_info.start);
 	while (obj_reader->GetPosition() <= obj_info.start + obj_info.size-8)
 	{
@@ -78,6 +82,7 @@ Chunk::Chunk(Area * area,ChunkStreamInfo info, ChunkStreamInfo obj_info,  ADT * 
 }
 Chunk::~Chunk(void)
 {
+	
 }
 void Chunk::LoadMcvt()
 {
@@ -98,7 +103,7 @@ void Chunk::LoadMcvt()
 	int counter = 0;
 	int counter2 = 0;
 	//vertices=new Utils::Graphics::Vertex[145];
-	vertices = new float[435];
+	//vertices = new float[435];
 	for(int i = 0; i < 17; ++i)
 	{
 		for(int j = 0; j < (((i % 2) != 0) ? 8 : 9); ++j)

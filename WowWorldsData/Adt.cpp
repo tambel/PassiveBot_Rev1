@@ -8,17 +8,33 @@ ADT::ADT(Location & location,Point2D<int> coordinates)
 	this->coordinates=coordinates;
 	string terrian_path="World\\Maps\\";
 	path=Configuration::GetGameDataPath()+terrian_path+location.name+"\\"+location.name+"_"+std::to_string(coordinates.Y)+"_"+std::to_string(coordinates.X);
-	root_reader=BinaryReader(path+".adt");
-	if (!root_reader->IsFileExist())
-		throw exception("Adt file not exist");
+	try
+	{
+		root_reader = move(BinaryReader(path + ".adt"));
+	}
+	catch (BinaryReaderError & e)
+	{
+		throw_with_nested(ADTError("ADT initialization failure"));
+	}
+	//if (!root_reader.IsFileExist())
+	//	throw ADTFileNotExist(path);
 	for (int i=0;i<256;i++)
 	{
 		SeekChunk(root_reader,ChunkSignatures::ADTSignature::Mcnk);
-		unsigned chunk_size = root_reader->ReadUInt();
-		chunk_stream_infos[i/16][i%16]=ChunkStreamInfo(root_reader->GetPosition(),chunk_size,root_reader);
-		root_reader->MoveForward(chunk_stream_infos[i/16][i%16].size);
+		unsigned chunk_size = root_reader.ReadUInt();
+		chunk_stream_infos[i/16][i%16]=ChunkStreamInfo(root_reader.GetPosition(),chunk_size,&root_reader);
+		root_reader.MoveForward(chunk_stream_infos[i/16][i%16].size);
 	}
 	ReadObjects();
+}
+ADT::ADT(ADT && other)
+{
+	_move(other);
+}
+ADT & ADT::operator=(ADT && other)
+{
+	_move(other);
+	return *this;
 }
 ADT::~ADT()
 {
@@ -36,11 +52,11 @@ ADT::~ADT()
 	modfs = nullptr;
 	mddfs = nullptr;
 
-	delete root_reader;
-	root_reader=0;
+	//delete root_reader;
+	//root_reader=0;
 
-	delete obj_reader;
-	obj_reader = nullptr;
+	//delete obj_reader;
+	//obj_reader = nullptr;
 	m2_infos.clear();
 	wmo_infos.clear();
 }
@@ -56,17 +72,17 @@ bool ADT::operator==(const ADT & right)
 void ADT::ReadObjects(bool hight_detalization)
 {
 
-	obj_reader=new BinaryReader(path+"_obj"+to_string((int)hight_detalization)+".adt");
-	if (!obj_reader->IsFileExist()) return;
+	obj_reader=BinaryReader(path+"_obj"+to_string((int)hight_detalization)+".adt");
+	if (!obj_reader.IsFileExist()) return;
 
 	for (int i = 0; i<256; i++)
 	{
 		SeekChunk(obj_reader, ChunkSignatures::ADTSignature::Mcnk);
-		unsigned chunk_size = obj_reader->ReadUInt();
-		obj_chunk_stream_infos[i / 16][i % 16] = ChunkStreamInfo(obj_reader->GetPosition(), chunk_size, obj_reader);
-		obj_reader->MoveForward(obj_chunk_stream_infos[i / 16][i % 16].size);
+		unsigned chunk_size = obj_reader.ReadUInt();
+		obj_chunk_stream_infos[i / 16][i % 16] = ChunkStreamInfo(obj_reader.GetPosition(), chunk_size, &obj_reader);
+		obj_reader.MoveForward(obj_chunk_stream_infos[i / 16][i % 16].size);
 	}
-	obj_reader->MoveToBegining();
+	obj_reader.MoveToBegining();
 	ReadM2Models(hight_detalization);
 	ReadWMOModels();
 
@@ -80,26 +96,26 @@ void ADT::ReadM2Models(bool hight_detalization)
 	unsigned doodads_ids_length=0;
 	mddfs;
 	unsigned mddf_count=0;
-	if (!ChunkedData::SeekChunk(obj_reader,Utils::ChunkSignatures::ADTSignature::Mmdx,true))
+	if (ChunkedData::SeekChunk(obj_reader,Utils::ChunkSignatures::ADTSignature::Mmdx,true))
 	{
-		doodads_filenames_length=obj_reader->Read<unsigned>(); 
+		doodads_filenames_length=obj_reader.Read<unsigned>(); 
 		doodads_filenames=new char[doodads_filenames_length];
-		obj_reader->ReadArray<char>(doodads_filenames,doodads_filenames_length);
+		obj_reader.ReadArray<char>(doodads_filenames,doodads_filenames_length);
 	}
-	if (!ChunkedData::SeekChunk(obj_reader,Utils::ChunkSignatures::ADTSignature::Mmid,true))
+	if (ChunkedData::SeekChunk(obj_reader,Utils::ChunkSignatures::ADTSignature::Mmid,true))
 	{
-		doodads_ids_length=obj_reader->Read<unsigned>()/4; 
+		doodads_ids_length=obj_reader.Read<unsigned>()/4; 
 		doodads_ids=new unsigned[doodads_ids_length];
 		
 		
-		obj_reader->ReadArray<unsigned>(doodads_ids,doodads_ids_length);
+		obj_reader.ReadArray<unsigned>(doodads_ids,doodads_ids_length);
 	}
-	if (!ChunkedData::SeekChunk(obj_reader,Utils::ChunkSignatures::ADTSignature::Mddf,true))
+	if (ChunkedData::SeekChunk(obj_reader,Utils::ChunkSignatures::ADTSignature::Mddf,true))
 	{
-		unsigned size=obj_reader->Read<unsigned>();
+		unsigned size=obj_reader.Read<unsigned>();
 		mddf_count=size/sizeof(MDDF);
 		mddfs=new MDDF[mddf_count];
-		obj_reader->ReadArray<MDDF>(mddfs,mddf_count); 
+		obj_reader.ReadArray<MDDF>(mddfs,mddf_count); 
 	}
 	for (unsigned i=0;i<mddf_count;i++)
 	{
@@ -113,32 +129,32 @@ void ADT::ReadM2Models(bool hight_detalization)
 }
 void ADT::ReadWMOModels()
 {
-	obj_reader->MoveToBegining();
+	obj_reader.MoveToBegining();
 	wmo_infos = vector<WMOInfo>();
 	unsigned wmos_filenames_length = 0;
 	unsigned wmos_ids_length = 0;
 	unsigned modf_count = 0;
-	if (!ChunkedData::SeekChunk(obj_reader, Utils::ChunkSignatures::ADTSignature::Mwmo, true))
+	if (ChunkedData::SeekChunk(obj_reader, Utils::ChunkSignatures::ADTSignature::Mwmo, true))
 	{
-		wmos_filenames_length = obj_reader->Read<unsigned>();
+		wmos_filenames_length = obj_reader.Read<unsigned>();
 		wmos_filenames = new char[wmos_filenames_length];
 
-		obj_reader->ReadArray<char>(wmos_filenames, wmos_filenames_length);
+		obj_reader.ReadArray<char>(wmos_filenames, wmos_filenames_length);
 	}
-	if (!ChunkedData::SeekChunk(obj_reader, Utils::ChunkSignatures::ADTSignature::Mwid, true))
+	if (ChunkedData::SeekChunk(obj_reader, Utils::ChunkSignatures::ADTSignature::Mwid, true))
 	{
-		wmos_ids_length = obj_reader->Read<unsigned>() / 4;
+		wmos_ids_length = obj_reader.Read<unsigned>() / 4;
 		wmos_ids = new unsigned[wmos_ids_length];
 
 
-		obj_reader->ReadArray<unsigned>(wmos_ids, wmos_ids_length);
+		obj_reader.ReadArray<unsigned>(wmos_ids, wmos_ids_length);
 	}
-	if (!ChunkedData::SeekChunk(obj_reader, Utils::ChunkSignatures::ADTSignature::Modf, true))
+	if (ChunkedData::SeekChunk(obj_reader, Utils::ChunkSignatures::ADTSignature::Modf, true))
 	{
-		unsigned size = obj_reader->Read<unsigned>();
+		unsigned size = obj_reader.Read<unsigned>();
 		modf_count = size / sizeof(MODF);
 		modfs = new MODF[modf_count];
-		obj_reader->ReadArray<MODF>(modfs, modf_count);
+		obj_reader.ReadArray<MODF>(modfs, modf_count);
 	}
 	for (unsigned i = 0; i<modf_count; i++)
 	{
@@ -154,4 +170,37 @@ void ADT::ReadWMOModels()
 	//delete [] wmos_filenames;
 	//delete[] wmos_ids;
 	//delete[] modfs;
+}
+
+void ADT::_move(ADT & other)
+{
+	path = move(other.path);
+	root_reader = move(other.root_reader);
+	obj_reader = move(other.obj_reader);
+	memcpy(chunk_stream_infos, other.chunk_stream_infos,sizeof(chunk_stream_infos));
+	memcpy(obj_chunk_stream_infos, other.obj_chunk_stream_infos, sizeof(obj_chunk_stream_infos));
+	/*chunk_stream_infos = other.chunk_stream_infos;
+	other.chunk_stream_infos = nullptr;
+	obj_chunk_stream_infos = other.obj_chunk_stream_infos;
+	other.obj_chunk_stream_infos = nullptr;*/
+	location = other.location;
+	coordinates = other.coordinates;
+	doodads_filenames = other.doodads_filenames;
+	other.doodads_filenames = nullptr;
+	doodads_ids = other.doodads_ids;
+	other.doodads_ids = nullptr;
+	wmos_filenames = other.wmos_filenames;
+	other.wmos_filenames = nullptr;
+	wmos_ids = other.wmos_ids;
+	other.wmos_ids = nullptr;
+	m2_infos = move(other.m2_infos);
+	wmo_infos = move(other.wmo_infos);
+	mddfs = other.mddfs;
+	other.mddfs = nullptr;
+	modfs = other.modfs;
+	other.modfs = nullptr;
+	path = move(path);
+
+
+	
 }

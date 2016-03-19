@@ -85,6 +85,7 @@ void Area::Update(Location & location, Point2D<int> block_coordinates, Point2D<i
 	{
 		throw(EmptyAreaException());
 	}
+	chunks.shrink_to_fit();
 	InitMapObjects();
 	
 }

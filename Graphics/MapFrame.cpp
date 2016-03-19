@@ -53,6 +53,8 @@ void MapFrame::OnUpdate()
 		rends.clear();
 		
 		mSceneMgr->destroyAllManualObjects();
+		mSceneMgr->destroyAllEntities();
+		mSceneMgr->getRootSceneNode()->removeAndDestroyAllChildren();
 		UpdateScene();
 		AddPlayer(Doodad("E:\\Extracted\\Character\\Tauren\\Male\\TaurenMale.M2", 0, Position(), 1024));
 		CreateNavMesh();

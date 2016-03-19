@@ -1,14 +1,10 @@
 #pragma once
 #include <exception>
+#include <iostream>
 #include <string>
-using namespace  std;
-class MemoryReadException : exception
+using namespace std;
+namespace Tools
 {
-	unsigned address;
-public:
-	MemoryReadException(unsigned address) :address(address) {}
-	virtual const char * what()
-	{
-		return  string("Cant read memory at: " + to_string(address)).c_str();
-	}
-};
+	void print_exception(const std::exception& e, int level = 0);
+
+}

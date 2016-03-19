@@ -39,6 +39,17 @@ namespace Tools
 		WHEEL = 3
 	};
 	using namespace std;
+
+	class MemoryReadException : public runtime_error
+	{
+	public:
+		MemoryReadException(unsigned address):
+			runtime_error("Cant read process memory at "+address)
+		{
+
+		}
+	};
+
 	class  Process
 	{
 	protected:

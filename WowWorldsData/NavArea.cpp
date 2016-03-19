@@ -151,7 +151,7 @@ void NavArea::CleanUp()
 void NavArea::BuildAllTiles()
 {
 	//polys.clear();
-	//dtFreeNavMeshQuery(m_navQuery);
+	dtFreeNavMeshQuery(m_navQuery);
 	m_navQuery=dtAllocNavMeshQuery();
 	///m_navQuery = new dtNavMeshQuery();
 	
@@ -169,7 +169,7 @@ void NavArea::BuildAllTiles()
 	float m_tileBmin[3];
 	float m_tileBmax[3];
 	
-	//dtFreeNavMesh(m_navMesh);
+	dtFreeNavMesh(m_navMesh);
 	
 	m_navMesh = dtAllocNavMesh();
 	if (!m_navMesh)

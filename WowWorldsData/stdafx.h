@@ -12,6 +12,7 @@
 
 #include "Tools\Configuration.h"
 #include "Tools\BinaryReader.h"
+#include "Tools\Exceptions.h"
 #include "Adt.h"
 #include "ADTCache.h"
 #include "ADTStructs.h"

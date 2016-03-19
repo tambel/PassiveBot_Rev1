@@ -82,6 +82,7 @@
   <ItemGroup>
     <ClCompile Include="BinaryReader.cpp" />
     <ClCompile Include="Configuration.cpp" />
+    <ClCompile Include="Exceptions.cpp" />
     <ClCompile Include="Memory.cpp" />
     <ClCompile Include="MemoryWindows.cpp" />
     <ClCompile Include="stdafx.cpp">
