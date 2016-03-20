@@ -14,7 +14,7 @@
 #include <fstream>
 
 
-#include "NetworkCommuniñation\NetworkCommunicatorServer.h"
+#include "NetworkCommunication\NetworkCommunicatorServer.h"
 
 using namespace std;
 using namespace Utils;

@@ -137,6 +137,8 @@ void PathGenerator::Start(Location & location, Point2D<int> start_block, Point2D
 			try
 			{
 				area.UpdateArea(Game::LocationBase::Get("Kalimdor"), block, chunk);
+				LinkAllAreaChunks(area);
+				
 			}
 			catch (EmptyAreaException & e)
 			{
@@ -152,7 +154,21 @@ void PathGenerator::Start(Location & location, Point2D<int> start_block, Point2D
 	catch (...)
 	{
 		SaveState(location, block, chunk, end_block, end_chunk);
-		//throw(current_exception());
 
 	}
+}
+
+void PathGenerator::LinkAllAreaChunks(NavArea & area)
+{
+	auto get_chunk_center=[](Chunk * chunk)
+	{
+		return chunk->GetBoundingBox().up.To2D() + Point2D<float>(Metrics::ChunkSize / 2, Metrics::ChunkSize / 2);
+	};
+	vector<Point2D<float>> points;
+	for (auto &chunk : area.GetChunks())
+	{
+		points.push_back(get_chunk_center(&*chunk));
+	}
+	int k;
+	k = 10;
 }

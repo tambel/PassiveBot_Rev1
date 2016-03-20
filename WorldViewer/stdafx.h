@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "NetworkCommuniсation\NetworkCommunicatorClient.h"
+#include "NetworkCommunication\NetworkCommunicatorClient.h"
 
 
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы

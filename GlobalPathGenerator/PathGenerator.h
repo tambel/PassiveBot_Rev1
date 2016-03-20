@@ -30,5 +30,6 @@ public:
 	void StartNew(Location & location, Point2D<int> start_block, Point2D<int> start_chunk, Point2D<int> end_block=Point2D<int>(63,63), Point2D<int> end_chunk= Point2D<int>(15, 15));
 	void Continue();
 	void Start(Location & location, Point2D<int> start_block, Point2D<int> start_chunk, Point2D<int> end_block, Point2D<int> end_chunk);
+	static void LinkAllAreaChunks(NavArea & area);
 };
 
