@@ -46,7 +46,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Swig", "Swig\Swig.vcxproj",
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PassiveBotPy", "PassiveBotPy\PassiveBotPy.pyproj", "{AB059170-2CC4-45B2-ABE4-74B9F67817AF}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NetworkCommuniсation", "NetworkCommuniсation\NetworkCommuniсation.vcxproj", "{F6EBE1D0-62ED-4F87-AB1C-E019B44A3D38}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NetworkCommunication", "NetworkCommunication\NetworkCommunication.vcxproj", "{F6EBE1D0-62ED-4F87-AB1C-E019B44A3D38}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GlobalPathGenerator", "GlobalPathGenerator\GlobalPathGenerator.vcxproj", "{078F66D4-FD5C-4EC4-AED6-D65716137EE5}"
 	ProjectSection(ProjectDependencies) = postProject
