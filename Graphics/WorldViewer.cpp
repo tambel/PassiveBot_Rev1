@@ -9,7 +9,7 @@ void thread_func(MapFrame * frame)
 WorldViewer::WorldViewer(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius)
 {
 	frame = MapFrame();
-	area = MutableArea(location,block_coordinates,coordinates,radius);
+	area = MutableArea(radius);
 	frame.SetArea(&area);
 
 }
@@ -18,7 +18,9 @@ WorldViewer::WorldViewer(Vector3 & position)
 {
 	//WorldViewer(Game::LocationBase::Get("Kalimdor"), WorldPositionToBlockCoords(position), WorldPositionToChunkCoords(position), 3);
 	frame = MapFrame();
-	area = MutableArea(Game::LocationBase::Get("Kalimdor"), WorldPositionToBlockCoords(position), WorldPositionToChunkCoords(position), 3);
+	area = MutableArea(3);
+	area.UpdateArea(Game::LocationBase::Get("Kalimdor"), WorldPositionToBlockCoords(position), WorldPositionToChunkCoords(position));
+
 	frame.SetArea(&area);
 	frame.SetPlayerPosition(position);
 	

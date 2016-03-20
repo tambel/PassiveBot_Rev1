@@ -14,6 +14,8 @@ class MapFrame: public Window
 	Vector3 old_player_position;
 	Ogre::SceneNode * player_scene = nullptr;
 	bool to_update_player = false;
+	bool ready = false;
+	shared_ptr<mutex> frame_lock;
 	
 
 public:
@@ -22,6 +24,7 @@ public:
 	void createScene();
 	inline Area * GetArea() {return area;}
 	inline void SetArea(MutableArea * area) {this->area=area;}
+	void WaitForReady();
 	void OnUpdate();
 	void CreateNavMesh();
 	void createRecastPathLine(int nPathSlot);

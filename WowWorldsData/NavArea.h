@@ -28,7 +28,8 @@ protected:
 	void _move(NavArea & other);
 public:
 	NavArea();
-	NavArea(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius);
+	NavArea(int radius);
+	//NavArea(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius);
 	~NavArea();
 	NavArea & operator=(NavArea && right);
 	NavArea(NavArea && area);
@@ -39,7 +40,7 @@ public:
 
 	static NavConfig config;
 	//vector<unique_ptr<rcPolyMesh>> polys;
-	dtNavMeshQuery* m_navQuery;
+	dtNavMeshQuery* m_navQuery= nullptr;
 	dtNavMesh * m_navMesh=nullptr;
 	rcPolyMesh *  m_pmesh=nullptr;
 	rcPolyMeshDetail * m_dmesh=nullptr;

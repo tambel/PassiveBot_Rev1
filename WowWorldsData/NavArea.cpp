@@ -44,17 +44,22 @@ NavArea::NavArea() :Area()
 	//polys = vector<unique_ptr<rcPolyMesh>>();
 	m_navMesh = 0;
 }
-NavArea::NavArea(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius):
-	Area(location,block_coordinates,coordinates,radius)
+NavArea::NavArea(int radius):
+	Area(radius)
 {
-	//m_PathStore = unique_ptr<PATHDATA>(new PATHDATA);
-	//m_nsmoothPath = 0;
-	//polys = vector<unique_ptr<rcPolyMesh>>();
-	m_navMesh = nullptr;
-	m_navQuery = nullptr;
 	m_ctx = new rcContext();
-	InitNavigation();
 }
+//NavArea::NavArea(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius):
+//	Area(location,block_coordinates,coordinates,radius)
+//{
+//	//m_PathStore = unique_ptr<PATHDATA>(new PATHDATA);
+//	//m_nsmoothPath = 0;
+//	//polys = vector<unique_ptr<rcPolyMesh>>();
+//	m_navMesh = nullptr;
+//	m_navQuery = nullptr;
+//	m_ctx = new rcContext();
+//	//InitNavigation();
+//}
 
 
 NavArea::~NavArea()

@@ -23,14 +23,14 @@ class EmptyAreaException : exception
 public:
 	virtual const char * what() const
 	{
-		return "Can not init area. It is empty";
+		return "Can not update area. It is empty";
 	}
 };
 
 class Area
 {
 protected:
-
+	bool is_empty = false;
 	vector<unique_ptr<Doodad>> doodads;
 	vector<unique_ptr<WMO>> wmos;
 	vector<unique_ptr<Chunk>>chunks;
@@ -45,7 +45,8 @@ protected:
 public:
 	
 	Area();
-	Area(Location & location, Point2D<int> block_coordinates,Point2D<int> coordinates,int radius);
+	Area(int radius);
+	//Area(Location & location, Point2D<int> block_coordinates,Point2D<int> coordinates,int radius);
 	
 	virtual ~Area(void);
 	Area & operator=(Area && right);
@@ -63,6 +64,7 @@ public:
 	 vector<unique_ptr<Chunk>> & GetChunks() { return chunks; }
 	bool IsOutOfBounds(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	void InitMapObjects();
+	friend bool operator!(Area & area) { return area.is_empty; }
 	//virtual void CheckAndMoveImpl(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	
 	

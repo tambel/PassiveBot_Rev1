@@ -19,6 +19,8 @@ void MapFrame::AddPlayer(Model & model)
 MapFrame::MapFrame(void)
 {
 	rends = vector<Renderable>();
+	frame_lock = make_shared<mutex>();
+	frame_lock->lock();
 }
 
 
@@ -37,8 +39,14 @@ void MapFrame::createScene()
 	//createRecastPathLine(0);
 	mCamera->setPosition(Vector3ToOgreVector(area->GetChunks()[0]->GetRealPosition()));
 	area->data_mutex.unlock();
+	ready = true;
+	frame_lock->unlock();
 
-
+}
+void MapFrame::WaitForReady()
+{
+	frame_lock->lock();
+	frame_lock->unlock();
 }
 void MapFrame::OnUpdate()
 {
@@ -281,7 +289,7 @@ void MapFrame::SetPlayerPosition(Vector3 & position)
 {
 	old_player_position = player_position;
 	player_position = Vector3(Metrics::MapMidPoint - position.y, -(Metrics::MapMidPoint - position.x), position.z);
-	if (old_player_position.To2D() != player_position.To2D() && !to_update_player)
+	if (old_player_position != player_position && !to_update_player)
 	{
 		to_update_player = true;
 	}

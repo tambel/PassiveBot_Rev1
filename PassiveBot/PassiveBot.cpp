@@ -87,7 +87,7 @@ void DestructStatic()
 void foo()
 {
 	init_static();
-	NavArea area = NavArea(Game::LocationBase::Get("Kalimdor"), Point2D<int>(34, 31/*28, 40*/), Point2D<int>(2, 16), 3);
+	NavArea area = NavArea(3);
 	for (int i = 0; i < 1000; i++)
 	{
 		area.CheckAndUpdate(Game::LocationBase::Get("Kalimdor"), Point2D<int>(34, 31/*28, 40*/), Point2D<int>(7, 16));

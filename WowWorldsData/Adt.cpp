@@ -10,7 +10,7 @@ ADT::ADT(Location & location,Point2D<int> coordinates)
 	path=Configuration::GetGameDataPath()+terrian_path+location.name+"\\"+location.name+"_"+std::to_string(coordinates.Y)+"_"+std::to_string(coordinates.X);
 	try
 	{
-		root_reader = move(BinaryReader(path + ".adt"));
+		root_reader = BinaryReader(path + ".adt");
 	}
 	catch (BinaryReaderError & e)
 	{

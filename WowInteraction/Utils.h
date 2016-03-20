@@ -33,14 +33,6 @@ namespace Utils
 		{
 			return Point2D(this->X + right.X, this->Y + right.Y);
 		}
-		const string ToString()
-		{
-			return X + " " + Y;
-		}
-		string operator+(string & other)
-		{
-			return ToString();
-		}
 
 	};
 	struct Vector3

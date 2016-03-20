@@ -5,11 +5,16 @@
 Area::Area()
 {
 }
-Area::Area(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius) :location(location), block_coordinates(block_coordinates), coordinates(coordinates), radius(radius)
+Area::Area(int radius)
 {
+	this->radius = radius;
 	area_size = radius * 2 + 1;
-	this->Update(location,block_coordinates,coordinates);
 }
+//Area::Area(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius) :location(location), block_coordinates(block_coordinates), coordinates(coordinates), radius(radius)
+//{
+//	area_size = radius * 2 + 1;
+//	//this->Update(location,block_coordinates,coordinates);
+//}
 Area::~Area(void)
 {
 
@@ -83,9 +88,10 @@ void Area::Update(Location & location, Point2D<int> block_coordinates, Point2D<i
 	}
 	if (chunks.size() == 0)
 	{
+		is_empty = true;
+
 		throw(EmptyAreaException());
 	}
-	chunks.shrink_to_fit();
 	InitMapObjects();
 	
 }
