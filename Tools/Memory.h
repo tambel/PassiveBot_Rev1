@@ -44,7 +44,7 @@ namespace Tools
 	{
 	public:
 		MemoryReadException(unsigned address):
-			runtime_error("Cant read process memory at "+address)
+			runtime_error("Cant read process memory at "+to_string(address))
 		{
 
 		}

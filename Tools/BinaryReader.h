@@ -58,5 +58,6 @@ public:
 	unsigned long long GetPosition();
 	ifstream * GetStream();
 	bool IsFileExist();
+	inline bool IsEOF() { return stream.eof(); }
 };
 

@@ -30,7 +30,7 @@ void Unit::DumpPosition()
 {
 	Position position = GetPosition();
 	wcout << name << ":";
-	cout<< "X- " << position.coords.x << " Y- " << position.coords.y << " Z- " << position.coords.z << endl << "Rotation " << position.rotation.z << endl<<endl;
+	cout<< "X: " << position.coords.x << " Y: " << position.coords.y << " Z: " << position.coords.z << endl << "Rotation " << position.rotation.z << endl<<endl;
 }
 unsigned Unit::IsQuestGiver()
 {

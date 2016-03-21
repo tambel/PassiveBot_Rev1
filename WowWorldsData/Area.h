@@ -61,7 +61,9 @@ public:
 	inline vector<unique_ptr<WMO>> & GetWMOs() { return wmos; }
 	inline vector<unique_ptr<Doodad>> & GetDoodads() { return doodads; }
 	inline Location & GetLocation() { return location; }
-	 vector<unique_ptr<Chunk>> & GetChunks() { return chunks; }
+	Point2D<int> GetBlockCoordinates() { return block_coordinates; }
+	Point2D<int> GetChunkCoordinates() { return coordinates; }
+	inline vector<unique_ptr<Chunk>> & GetChunks() { return chunks; }
 	bool IsOutOfBounds(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	void InitMapObjects();
 	friend bool operator!(Area & area) { return area.is_empty; }

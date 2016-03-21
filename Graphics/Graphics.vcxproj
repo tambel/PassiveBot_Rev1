@@ -84,6 +84,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AdditionalRenderable.h" />
     <ClInclude Include="MapFrame.h" />
     <ClInclude Include="MutableArea.h" />
     <ClInclude Include="Renderable.h" />
@@ -93,6 +94,7 @@
     <ClInclude Include="WorldViewer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AdditionalRenderable.cpp" />
     <ClCompile Include="MapFrame.cpp" />
     <ClCompile Include="MutableArea.cpp" />
     <ClCompile Include="Renderable.cpp" />

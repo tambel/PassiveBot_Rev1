@@ -7,6 +7,7 @@
 #include "WowWorldsData\stdafx.h"
 #include "MapFrame.h"
 #include "Renderable.h"
+#include "AdditionalRenderable.h"
 #include "Utils.h"
 #include <OgreSceneManager.h>
 

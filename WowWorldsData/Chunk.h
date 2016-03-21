@@ -114,7 +114,6 @@ public:
 	unique_ptr<int> nav_indices;
 	unsigned long vert_count;
 	unsigned long ind_count;;
-	void InitNavigation();
 	
 	dtNavMeshQuery * m_navQuery = 0;;
 	float bmin[3];
@@ -138,7 +137,7 @@ public:
 	//Utils::Graphics::Vertice * GetVertices() {return vertices;}
 	bool operator==(const Chunk & right);
 	//static unsigned long* GetIndices() {return s_fileds.indices;}
-	Vector3 GetGamePosition() {return game_position;}
+	inline Vector3 GetGamePosition() {return game_position;}
 	void SetGamePosition(Vector3 position) {game_position=position;}
 	Vector3 GetRealPosition() {return real_position;}
 	void  SetRealPosition(Vector3 pos) {real_position=pos;}

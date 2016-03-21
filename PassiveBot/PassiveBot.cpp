@@ -44,20 +44,29 @@ int main(int argc, wchar_t * argv[])
 	BotInteractor::StartGame("lissek7@ya.ru", "lebmat2762066", L"Тестируем");
 	WoWClientDB bd;
 
-	NetworkCommunicatorServer server = NetworkCommunicatorServer();
 
-	//BotInteractor::GoToPoint(*ObjectManager::FindUnitByName(L"Так"));
-	QuestManager::EnumActiveQuests();
-	FrameManager::InitKnownFrames();
 
-	
+
+	//NetworkCommunicatorServer server = NetworkCommunicatorServer();
+
 	Player * p = ObjectManager::GetPlayer();
+
+	BotInteractor::GoToPoint(*ObjectManager::GetTargetObject());
 	while (1)
 	{
 
 		p->DumpPosition();
 		Sleep(500);
 	}
+
+	
+
+	//BotInteractor::GoToPoint(*ObjectManager::FindUnitByName(L"Так"));
+	QuestManager::EnumActiveQuests();
+	FrameManager::InitKnownFrames();
+
+	
+	
 
 
 	/*while (10)

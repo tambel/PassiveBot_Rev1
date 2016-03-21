@@ -16,17 +16,19 @@ void init_static()
 int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "Russian");
-	NetworkCommunicatorClient client = NetworkCommunicatorClient();
+	//NetworkCommunicatorClient client = NetworkCommunicatorClient();
 	init_static();
-	client.WaitForMessage();
-	WorldViewer viewer = WorldViewer(client.player_position);
+	//client.WaitForMessage();
+	//WorldViewer viewer = WorldViewer(client.player_position);
+	WorldViewer viewer = WorldViewer(Vector3(280.83, -4749.3f, 9.6f));
 	viewer.ShowMap();
 	//getchar();
 	while (1)
 	{
-		client.WaitForMessage();
-		cout << client.player_position.x << " " << client.player_position.y << endl;
-		viewer.Update(client.player_position);
+		//client.WaitForMessage();
+		//cout << client.player_position.x << " " << client.player_position.y << " "<< client.player_position.z<<endl;
+		viewer.Update(Vector3(280.83, -4749.3f, 9.6f));
+		//viewer.Update(client.player_position);
 
 	}
 

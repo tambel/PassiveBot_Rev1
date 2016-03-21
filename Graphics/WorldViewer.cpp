@@ -18,7 +18,7 @@ WorldViewer::WorldViewer(Vector3 & position)
 {
 	//WorldViewer(Game::LocationBase::Get("Kalimdor"), WorldPositionToBlockCoords(position), WorldPositionToChunkCoords(position), 3);
 	frame = MapFrame();
-	area = MutableArea(3);
+	area = MutableArea(1);
 	area.UpdateArea(Game::LocationBase::Get("Kalimdor"), WorldPositionToBlockCoords(position), WorldPositionToChunkCoords(position));
 
 	frame.SetArea(&area);

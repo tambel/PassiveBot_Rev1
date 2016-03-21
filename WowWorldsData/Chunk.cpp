@@ -96,7 +96,8 @@ void Chunk::LoadMcvt()
 	float posy = Metrics::MapMidPoint + header.position.x;
 	float posz = header.position.z;
 	*/
-	game_position= Vector3(-game_position.y,game_position.x,game_position.z);
+	
+	//game_position= Vector3(-game_position.y,game_position.x,game_position.z);
 				
 	//posx=0;
 	//posy=0;

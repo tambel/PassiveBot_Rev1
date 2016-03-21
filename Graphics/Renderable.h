@@ -9,8 +9,10 @@ class Renderable
 	static unsigned long counter;
 	unsigned long id;
 	Ogre::SceneNode * scene=nullptr;
-	void _move(Renderable & other);
+	
 	Ogre::ManualObject * manual_object = nullptr;
+protected:
+	void _move(Renderable & other);
 public:
 	bool to_kill;
 	Renderable();

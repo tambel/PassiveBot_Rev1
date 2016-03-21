@@ -6,21 +6,35 @@
 #include "DetourNavMeshQuery.h" 
 void MapFrame::AddPlayer(Model & model)
 {
-	player_renderable = move(Renderable(&model));
-	player_scene = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-	//player_position = Vector3(Metrics::MapMidPoint - player_position.y, -(Metrics::MapMidPoint - player_position.x), player_position.z);
-	old_player_position = player_position;
-	player_scene->setPosition(Vector3ToOgreVector(player_position));
-	player_renderable.CreateScene(player_scene);
-
-	
-
+	player_renderable = AdditionalRenderable(&model);
+	player_renderable.CreateScene(mSceneMgr->getRootSceneNode());
+}
+void MapFrame::_move(MapFrame & other)
+{
+	player_renderable = move(other.player_renderable);
+	draw_paths_network = other.draw_paths_network;
+	area = other.area;
+	other.area = nullptr;
+	ready = other.ready;
+	rends = move(other.rends);
+	map_points = move(other.map_points);
 }
 MapFrame::MapFrame(void)
 {
 	rends = vector<Renderable>();
-	frame_lock = make_shared<mutex>();
-	frame_lock->lock();
+	//frame_lock = shared_ptr<mutex>(new mutex());
+
+}
+
+MapFrame::MapFrame(MapFrame && other)
+{
+	_move(other);
+}
+
+MapFrame & MapFrame::operator=(MapFrame && other)
+{
+	_move(other);
+	return *this;
 }
 
 
@@ -30,40 +44,48 @@ MapFrame::~MapFrame(void)
 }
 void MapFrame::createScene()
 {
-	
-	area->data_mutex.lock();
-	UpdateScene();
+	//DrawPathPoints();
 	AddPlayer(Doodad("E:\\Extracted\\Character\\Tauren\\Male\\TaurenMale.M2", 0, Position(), 1024));
+	DrawGlobalPaths();
+	area->data_mutex.lock();
+	
+	UpdateScene();
+	
 	CreateNavMesh();
 
 	//createRecastPathLine(0);
 	mCamera->setPosition(Vector3ToOgreVector(area->GetChunks()[0]->GetRealPosition()));
 	area->data_mutex.unlock();
 	ready = true;
-	frame_lock->unlock();
 
 }
 void MapFrame::WaitForReady()
 {
-	frame_lock->lock();
-	frame_lock->unlock();
+	while (!ready)
+		Sleep(1);
 }
 void MapFrame::OnUpdate()
 {
-	if (to_update_player)
+	player_renderable.UpdatePosition();
+	//if (to_update_player)
 	{
-		player_scene->setPosition(Vector3ToOgreVector(player_position));
-		to_update_player = false;
+
+		//player_scene->setPosition(Vector3ToOgreVector(player_position));
+
+	//	to_update_player = false;
 	}
 	area->data_mutex.lock();
 	if (area->to_update)
 	{
+		
 		rends.clear();
 		
 		mSceneMgr->destroyAllManualObjects();
 		mSceneMgr->destroyAllEntities();
 		mSceneMgr->getRootSceneNode()->removeAndDestroyAllChildren();
 		UpdateScene();
+		DrawGlobalPaths();
+		DrawPathPoints();
 		AddPlayer(Doodad("E:\\Extracted\\Character\\Tauren\\Male\\TaurenMale.M2", 0, Position(), 1024));
 		CreateNavMesh();
 		
@@ -287,14 +309,133 @@ void MapFrame::UpdateScene()
 
 void MapFrame::SetPlayerPosition(Vector3 & position)
 {
-	old_player_position = player_position;
+
+	player_renderable.SetPosition(position,true);
+
+	/*old_player_position = player_position;
 	player_position = Vector3(Metrics::MapMidPoint - position.y, -(Metrics::MapMidPoint - position.x), position.z);
 	if (old_player_position != player_position && !to_update_player)
 	{
 		to_update_player = true;
-	}
+	}*/
 	
 	//player_position = position;
+	
+
+}
+
+void MapFrame::DrawPathPoints()
+{
+
+	ifstream file;
+	file.open("test.csv");
+	MapPoint point;
+	vector<MapPoint> points;
+	while (!file.eof())
+	{
+		file.read(reinterpret_cast<char*>(&point),sizeof(MapPoint));
+		points.push_back(point);
+	}
+	Doodad model=Doodad("E:\\Extracted\\Character\\Tauren\\Male\\TaurenMale.M2", 0, Position(), 1024);
+	for (int i = 0; i < points.size()-1;i++)
+	{
+		MapPoint point = points[i];
+		AdditionalRenderable rend = move(AdditionalRenderable(&model));
+		rend.SetPosition(point.position, true);
+		rend.CreateScene(mSceneMgr->getRootSceneNode());
+		rend.UpdatePosition();
+		map_points.push_back(move(rend));
+
+	/*	Ogre::SceneNode * scene= mSceneMgr->getRootSceneNode()->createChildSceneNode();
+
+
+		Renderable * rend = new Renderable(new Doodad("E:\\Extracted\\Character\\Tauren\\Male\\TaurenMale.M2", 0, Position(), 1024));
+		
+		Vector3 pos = Vector3(Metrics::MapMidPoint - point.position.y, -(Metrics::MapMidPoint - point.position.x), point.position.z);
+		cout << pos.x << " " << pos.y << " " << pos.z << endl;
+		
+		scene->setPosition(Vector3ToOgreVector(pos));
+		rend->CreateScene(scene);*/
+		
+
+	}
+}
+void MapFrame::DrawChunksLinks()
+{
+	struct MapPoint
+	{
+		Vector3 position;
+		unsigned location_id;
+		Point2D<int> block;
+		Point2D<int> chunk;
+	};
+
+	struct Path
+	{
+		Vector3 points[500];
+		unsigned points_number;
+	};
+
+	struct ChunksLink
+	{
+		MapPoint chunk1;
+		MapPoint chunk2;
+		Path path;
+
+	};
+
+	std::ifstream file;
+	ChunksLink links[8];
+	file.open("links.bin",ios::binary);
+	file.read(reinterpret_cast<char*>(links), sizeof(ChunksLink) * 8);
+
+
+}
+
+void MapFrame::DrawGlobalPaths()
+{
+	struct MapPoint
+	{
+		Vector3 position;
+		unsigned location_id;
+		Point2D<int> block;
+		Point2D<int> chunk;
+	};
+
+	struct Path
+	{
+		Vector3 points[500];
+		unsigned points_number;
+	};
+
+	struct ChunksLink
+	{
+		MapPoint chunk1;
+		MapPoint chunk2;
+		Path path;
+
+	};
+
+	std::ifstream file;
+	ChunksLink links[10];
+	file.open("links.bin", ios::binary);
+	file.read(reinterpret_cast<char*>(links), sizeof(ChunksLink) * 8);
+	Ogre::SceneNode*      m_pRecastSN = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+	
+	for (int li = 0; li < 8; li++)
+	{
+		Ogre::ManualObject* m_pRecastMOPath = mSceneMgr->createManualObject("RecastMOPath"+to_string(li));
+		m_pRecastMOPath->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_STRIP);
+		Vector3 * path = links[li].path.points;
+		//if (li==3)
+		for (int i = 0; i < links[li].path.points_number; i ++)
+		{
+			m_pRecastMOPath->position(path[i].x, path[i].z, path[i].y + 2.0f);
+			m_pRecastMOPath->colour(1, 0, 0);
+		}
+		m_pRecastMOPath->end();
+		m_pRecastSN->attachObject(m_pRecastMOPath);
+	}
 	
 
 }

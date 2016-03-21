@@ -77,16 +77,16 @@ void BotInteractor::StartGame(string login, string password,wstring char_name)
 	ObjectManager::Initialize();
 	ObjectManager::EnumAllVisibleObjects();
 	Player * player = ObjectManager::GetPlayer();
-	//area=move(NavArea(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords), 3));
+	area=NavArea(3);
 
 }
 
 void BotInteractor::GoToPoint(Vector3 & point)
 {
-	if (area.IsOutOfBounds(area.GetLocation(), Utils::WorldPositionToBlockCoords(point), Utils::WorldPositionToChunkCoords(point)))
+	if (area.IsOutOfBounds(LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(point), Utils::WorldPositionToChunkCoords(point)))
 	{
 		Player * player = ObjectManager::GetPlayer();
-		area.UpdateArea(area.GetLocation(), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords));
+		area.UpdateArea(LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords));
 		cout << "UPDATED!!!!!!!" << endl;
 		cout << "UPDATED!!!!!!!" << endl;
 		cout << "UPDATED!!!!!!!" << endl;
