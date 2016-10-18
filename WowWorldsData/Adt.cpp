@@ -8,7 +8,7 @@ ADT::ADT(Location & location,Point2D<int> coordinates)
 	this->coordinates=coordinates;
 	string terrian_path="World\\Maps\\";
 	path=Configuration::GetGameDataPath()+terrian_path+location.name+"\\"+location.name+"_"+std::to_string(coordinates.Y)+"_"+std::to_string(coordinates.X);
-	root_reader=BinaryReader(path+".adt");
+	root_reader=new BinaryReader(path+".adt");
 	if (!root_reader->IsFileExist())
 		throw exception("Adt file not exist");
 	for (int i=0;i<256;i++)
