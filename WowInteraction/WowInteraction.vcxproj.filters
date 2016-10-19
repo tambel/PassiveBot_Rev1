@@ -84,6 +84,9 @@
     <ClInclude Include="QuestManager.h">
       <Filter>Заголовочные файлы\Quest</Filter>
     </ClInclude>
+    <ClInclude Include="Offsets2.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

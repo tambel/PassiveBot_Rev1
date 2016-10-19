@@ -1,5 +1,6 @@
 #include "stdafx.h"
 using namespace Tools;
+
 vector<Frame*> FrameManager::frames = vector<Frame*>();
 float FrameManager::screen_heigth = 0;
 float FrameManager::screen_width = 0;
@@ -13,7 +14,7 @@ void FrameManager::InitKnownFrames()
 	ClearFrames();
 	try
 	{
-		base_frame = Process::ReadRel<unsigned>(WowOffsets::FrameManager::FrameBase);
+		base_frame = Process::ReadRel<unsigned>(WowOffsets2::FrameManager2::FrameBase);
 		current = Process::Read<unsigned>(base_frame + WowOffsets::FrameManager::FirstFrame);
 	}
 	catch (MemoryReadException e)
@@ -59,32 +60,33 @@ void FrameManager::EnumAllFrames()
 	unsigned base_frame;
 	unsigned current;
 	ClearFrames();
-	try
-	{
-		base_frame = Process::ReadRel<unsigned>(WowOffsets::FrameManager::FrameBase);
-		current = Process::Read<unsigned>(base_frame + WowOffsets::FrameManager::FirstFrame);
-	}
-	catch (MemoryReadException e)
-	{
-		throw FrameEnumerationException();
-	}
-	while (current)
-	{
 		try
 		{
-			Frame * frame = new Frame(current);
-			if (frame->GetName() == "QuestScrollFrame")
-			{
-				QuestScrollFrame = *frame;
-			}
-			frames.push_back(frame);
-			current = Process::Read<unsigned>(current + Process::Read<unsigned>(base_frame + WowOffsets::FrameManager::NextFrame) + 4);
+			base_frame = Process::ReadRel<unsigned>(WowOffsets2::FrameManager2::FrameBase);
+			current = Process::Read<unsigned>(base_frame + WowOffsets2::FrameManager2::FirstFrame);
+
 		}
 		catch (MemoryReadException e)
 		{
-			break;
+			throw FrameEnumerationException();
 		}
-	}
+		while (current)
+		{
+			try
+			{
+				Frame * frame = new Frame(current);
+				if (frame->GetName() == "QuestScrollFrame")
+				{
+					QuestScrollFrame = *frame;
+				}
+				frames.push_back(frame);
+				current = Process::Read<unsigned>(current + WowOffsets2::FrameManager2::NextFrame);
+			}
+			catch (MemoryReadException e)
+			{
+				break;
+			}
+		}
 }
 void FrameManager::DumpAllFramesNames()
 {

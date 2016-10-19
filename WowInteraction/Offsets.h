@@ -36,7 +36,7 @@ namespace WowOffsets
 		Visible1 = 0x1A,
 		Visible2 = 1,
 		LabelText = 0xF8,
-		Name = 0x1C,
+		Name = 0x14,
 
 		ButtonEnabledPointer = 0x1F4,   //Assumed Good
 		ButtonEnabledMask = 0xF,        //Assumed Good

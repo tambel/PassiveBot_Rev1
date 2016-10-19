@@ -26,6 +26,7 @@
 #include "Exceptions.h"
 
 #include "Offsets.h"
+#include "Offsets2.h"
 #include "Utils.h"
 #include <iostream>
 #include <vector>

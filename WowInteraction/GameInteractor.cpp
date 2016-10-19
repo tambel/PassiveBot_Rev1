@@ -1,5 +1,6 @@
 #include "stdafx.h"
 using namespace Tools;
+using namespace WowOffsets2;
 
 GameInteractor::GameInteractor(void)
 {
@@ -11,7 +12,7 @@ bool GameInteractor::Login(string & login, string  & password)
 {
 	cout << "Logging in" << endl;
 	FrameManager::EnumAllFrames();
-	Frame * email_frame = FrameManager::FindFrameByName("AccountLoginAccountEdit");
+	Frame * email_frame = FrameManager::FindFrameByName("AccountLogin");
 	if (!email_frame)
 	{
 		cout << "Email frame not found";
@@ -256,6 +257,17 @@ bool GameInteractor::Start(GameStartParam * param)
 	int c = 0;
 	while (1)
 	{
+		Login(param->login, param->password);
+		if (!Process::ReadRel<bool>(WowOffsets2::Client::Connecting) && !Process::ReadRel<bool>(WowOffsets2::Client::CharSelecting))
+		{
+			Login(param->login, param->password);
+		}
+		if (Process::ReadRel<bool>(WowOffsets2::Client::Connecting) && !Process::ReadRel<bool>(WowOffsets2::Client::CharSelecting))
+		{
+			cout << "CONNECTING" << endl;
+		}
+		Sleep(100);
+		/*
 		if (IsInWorld())
 		{
 			while (isWorldLoading())
@@ -285,7 +297,7 @@ bool GameInteractor::Start(GameStartParam * param)
 				}
 				continue;
 			}
-		Sleep(100);
+		*/
 	}
 }
 void GameInteractor::Close()

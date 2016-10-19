@@ -43,7 +43,7 @@ int main(int argc, wchar_t * argv[])
 
 	BotInteractor::StartGame("lissek7@ya.ru", "lebmat2762066", L"Тестируем");
 	WoWClientDB bd;
-
+	/*
 	NetworkCommunicatorServer server = NetworkCommunicatorServer();
 
 	//BotInteractor::GoToPoint(*ObjectManager::FindUnitByName(L"Так"));
@@ -52,12 +52,14 @@ int main(int argc, wchar_t * argv[])
 
 	
 	Player * p = ObjectManager::GetPlayer();
+	
 	while (1)
 	{
 
 		p->DumpPosition();
 		Sleep(500);
 	}
+	*/
 
 
 	/*while (10)

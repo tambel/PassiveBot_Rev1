@@ -26,7 +26,7 @@ string & Frame::GetName(bool refresh)
 	{
 		try
 		{
-			name = Process::ReadASCII(Process::Read<unsigned>(base + WowOffsets::FrameManager::Name), 0);
+			name = Process::ReadASCII(Process::Read<unsigned>(base + WowOffsets2::FrameManager2::FrameName), 0);
 		}
 		catch (MemoryReadException e)
 		{

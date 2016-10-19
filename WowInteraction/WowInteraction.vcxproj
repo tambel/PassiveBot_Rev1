@@ -94,6 +94,7 @@
     <ClInclude Include="ObjectiveArea.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Offsets.h" />
+    <ClInclude Include="Offsets2.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Quest.h" />
     <ClInclude Include="QuestManager.h" />
