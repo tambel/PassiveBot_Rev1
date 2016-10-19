@@ -1,5 +1,5 @@
 #pragma once
-
+using namespace Tools;
 class Frame
 {
 	unsigned base=0;
@@ -10,6 +10,7 @@ class Frame
 	float top;
 	float left;
 	float right;
+	unsigned id;
 	vector<Frame*> children;
 public:
 	Frame();
@@ -25,9 +26,11 @@ public:
 	float GetRight(bool refresh = false);
 	inline Frame * GetParent();
 	void MoveMouseToFrame();
+	bool MoveMouseToFrameAndClick(unsigned delay = 0, MouseButton button=MouseButton::LEFT);
 	bool IsVisible();
 	bool WaitForFrameVisibility(unsigned long time = 0);
 	vector<Frame*> & GetChildren();
 	void PushToFrame();
+	unsigned GetID();
 };
 

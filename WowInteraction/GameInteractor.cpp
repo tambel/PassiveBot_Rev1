@@ -12,31 +12,25 @@ bool GameInteractor::Login(string & login, string  & password)
 {
 	cout << "Logging in" << endl;
 	FrameManager::EnumAllFrames();
-	Frame * email_frame = FrameManager::FindFrameByName("AccountLogin");
+	Frame * email_frame = FrameManager::FindFrameByBorders(0.220152885f, 0.243763477f, 0.372026503f, 0.499651313f);
 	if (!email_frame)
 	{
 		cout << "Email frame not found";
 		return false;
 	}
-
-	if (!email_frame->WaitForFrameVisibility() || !email_frame->IsVisible())
-	{
-		cout << "Email frame is not visible" << endl;
-		return false;
-	}
-	email_frame->MoveMouseToFrame();
-	Process::MouseClick(MouseButton::LEFT);
+	email_frame->MoveMouseToFrameAndClick(1000);
 	Process::MultipleKeyboardButtonPush(KeyboardButton::ARROW_RIGHT, 20, 50);
 	Process::MultipleKeyboardButtonPush(KeyboardButton::BACKSPACE, 40, 40);
+	Sleep(1000);
 	Process::SetLanguage(Language::ENGLISH);
+	Sleep(1000);
 	Process::TypeByKeyboard(login);
-	Frame * password_frame = FrameManager::FindFrameByName("AccountLoginPasswordEdit");
-	password_frame->MoveMouseToFrame();
-	Process::MouseClick(MouseButton::LEFT);
+	Process::PushKeyboardButton(KeyboardButton::TAB);
+	Sleep(1000);
 	Process::TypeByKeyboard(password);
+	Sleep(1000);
 	Process::PressKeyboardButton(KeyboardButton::ENTER);
-	WaitForAuthentification();
-
+	Sleep(1000);
 	return true;
 }
 bool GameInteractor::StartClient()
@@ -88,25 +82,24 @@ bool GameInteractor::IsCharacterSelecting()
 	return true;
 
 }
-bool GameInteractor::IsLoggingIn()
+bool GameInteractor::WaitWhileConnecting()
 {
-	if (isWorldLoading())
-		return false;
-	FrameManager::EnumAllFrames();
-	Frame * email_frame = FrameManager::FindFrameByName("AccountLoginAccountEdit");
-	if (!email_frame)
+	while (Process::ReadRel<bool>(WowOffsets2::Client::Connecting) && !Process::ReadRel<bool>(WowOffsets2::Client::CharSelecting))
 	{
-		return false;
+		cout << "CONNECTING" << endl;
+		Sleep(100);
 	}
-	if (!email_frame->IsVisible())
+	if (Process::ReadRel<bool>(WowOffsets2::Client::Connecting) && Process::ReadRel<bool>(WowOffsets2::Client::CharSelecting))
 	{
-		return false;
-	}
-	if (!IsCharacterSelecting() && !IsInWorld() && IsLoaded())
-	{
+		cout << "Connection succesfull!" << endl;
 		return true;
 	}
-	return false;
+	else
+	{
+		cout << "Connection failed!" << endl;
+		return false;
+
+	}
 }
 bool GameInteractor::WaitUntilClientLoad()
 {
@@ -255,16 +248,20 @@ bool GameInteractor::Start(GameStartParam * param)
 	cout << "Starting game" << endl;
 	StartClient();
 	int c = 0;
+	bool no_login_error_messages = true;
 	while (1)
 	{
-		Login(param->login, param->password);
 		if (!Process::ReadRel<bool>(WowOffsets2::Client::Connecting) && !Process::ReadRel<bool>(WowOffsets2::Client::CharSelecting))
 		{
+			if (no_login_error_messages);
+				
+			else;
+
 			Login(param->login, param->password);
-		}
-		if (Process::ReadRel<bool>(WowOffsets2::Client::Connecting) && !Process::ReadRel<bool>(WowOffsets2::Client::CharSelecting))
-		{
-			cout << "CONNECTING" << endl;
+			Sleep(1);
+			if (!WaitWhileConnecting())
+				no_login_error_messages = false;
+
 		}
 		Sleep(100);
 		/*

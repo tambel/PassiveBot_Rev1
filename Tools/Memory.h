@@ -29,7 +29,8 @@ namespace Tools
 		LSHIFT = 140,
 		ALT = 141,
 		CONTROL = 142,
-		ENTER = 160
+		ENTER = 160,
+		TAB=143
 
 	};
 	enum MouseButton

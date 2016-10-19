@@ -41,7 +41,7 @@ int main(int argc, wchar_t * argv[])
 
 
 
-	BotInteractor::StartGame("lissek7@ya.ru", "lebmat2762066", L"Тестируем");
+	BotInteractor::StartGame("arttambel@gmail.com", "archi911", L"Тестируем");
 	WoWClientDB bd;
 	/*
 	NetworkCommunicatorServer server = NetworkCommunicatorServer();

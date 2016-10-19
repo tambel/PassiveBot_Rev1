@@ -15,7 +15,7 @@ void FrameManager::InitKnownFrames()
 	try
 	{
 		base_frame = Process::ReadRel<unsigned>(WowOffsets2::FrameManager2::FrameBase);
-		current = Process::Read<unsigned>(base_frame + WowOffsets::FrameManager::FirstFrame);
+		current = Process::Read<unsigned>(base_frame + WowOffsets2::FrameManager2::FirstFrame);
 	}
 	catch (MemoryReadException e)
 	{
@@ -31,7 +31,7 @@ void FrameManager::InitKnownFrames()
 				QuestScrollFrame = *frame;
 			}
 			frames.push_back(frame);
-			current = Process::Read<unsigned>(current + Process::Read<unsigned>(base_frame + WowOffsets::FrameManager::NextFrame) + 4);
+			current = Process::Read<unsigned>(current + Process::Read<unsigned>(base_frame + WowOffsets2::FrameManager2::NextFrame) + 4);
 		}
 		catch (MemoryReadException e)
 		{
@@ -75,6 +75,12 @@ void FrameManager::EnumAllFrames()
 			try
 			{
 				Frame * frame = new Frame(current);
+				frame->GetBottom();
+				frame->GetTop();
+				frame->GetLeft();
+				frame->GetRight();
+				frame->GetID();
+				frame->GetParent();
 				if (frame->GetName() == "QuestScrollFrame")
 				{
 					QuestScrollFrame = *frame;
@@ -112,7 +118,7 @@ void FrameManager::FindParents()
 	{
 		for (auto frame2 : frames)
 		{
-			parent_ptr = Process::Read<unsigned>(frame->GetBase() + WowOffsets::FrameManager::ParentFrame);
+			parent_ptr = Process::Read<unsigned>(frame->GetBase() + WowOffsets2::FrameManager2::FrameParent);
 			if (parent_ptr == frame2->GetBase())
 			{
 				frame->SetParent(frame2);
@@ -125,7 +131,7 @@ float FrameManager::GetScreenWidth(bool refresh)
 {
 	if (!screen_width || refresh)
 	{
-		screen_width = Process::ReadRel<float>(WowOffsets::FrameManager::ScrWidth);
+		screen_width = Process::ReadRel<float>(WowOffsets2::FrameManager2::ScreenWidth);
 	}
 	return screen_width;
 }
@@ -133,7 +139,7 @@ float FrameManager::GetScreenHeigth(bool refresh)
 {
 	if (!screen_heigth || refresh)
 	{
-		screen_heigth = Process::ReadRel<float>(WowOffsets::FrameManager::ScrHeight);
+		screen_heigth = Process::ReadRel<float>(WowOffsets2::FrameManager2::ScreenHeight);
 	}
 	return screen_heigth;
 }
@@ -160,5 +166,17 @@ Frame * FrameManager::FindFrameByAddress(unsigned address)
 		}
 	}
 	return 0;
+}
+
+Frame * FrameManager::FindFrameByBorders(float bottom, float top, float left, float right)
+{
+	for (auto frame : frames)
+	{
+		if (bottom == frame->GetBottom() && top == frame->GetTop() && left == frame->GetLeft() && right == frame->GetRight())
+		{
+			return frame;
+		}
+	}
+	return nullptr;
 }
 

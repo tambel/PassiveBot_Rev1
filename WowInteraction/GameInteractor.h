@@ -24,7 +24,7 @@ public:
 	static bool Login(string & login, string & password);
 	static bool StartClient();
 	static bool IsLoaded();
-	static bool IsLoggingIn();
+	static bool WaitWhileConnecting();
 	static bool IsCharacterSelecting();
 	static bool IsInWorld();
 	static bool WaitUntilClientLoad();

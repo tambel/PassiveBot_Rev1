@@ -324,6 +324,8 @@ namespace Tools
 		case KeyboardButton::ENTER:
 			key=VK_RETURN;
 			break;
+		case KeyboardButton::TAB:
+			key = VK_TAB;
 		}
 		return key;
 	}

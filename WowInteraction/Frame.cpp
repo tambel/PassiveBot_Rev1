@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-using namespace Tools;
+
 
 Frame::Frame()
 {
@@ -14,6 +14,7 @@ Frame::Frame(unsigned base)
 	top = -0xFFFF;
 	left = -0xFFFF;
 	right = -0xFFFF;
+	id = 0;
 }
 
 
@@ -55,7 +56,7 @@ float Frame::GetBottom(bool refresh)
 {
 	if (bottom == -0xFFFF || refresh)
 	{
-		bottom = Process::Read<float>(base + WowOffsets::FrameManager::FrameBottom);
+		bottom = Process::Read<float>(base + WowOffsets2::FrameManager2::FrameBottom);
 	}
 	return bottom;
 }
@@ -63,7 +64,7 @@ float Frame::GetTop(bool refresh)
 {
 	if (top == -0xFFFF || refresh)
 	{
-		top = Process::Read<float>(base + WowOffsets::FrameManager::FrameTop);
+		top = Process::Read<float>(base + WowOffsets2::FrameManager2::FrameTop);
 	}
 	return top;
 }
@@ -71,7 +72,7 @@ float Frame::GetLeft(bool refresh)
 {
 	if (left == -0xFFFF || refresh)
 	{
-		left = Process::Read<float>(base + WowOffsets::FrameManager::FrameLeft);
+		left = Process::Read<float>(base + WowOffsets2::FrameManager2::FrameLeft);
 	}
 	return left;
 }
@@ -79,7 +80,7 @@ float Frame::GetRight(bool refresh)
 {
 	if (right == -0xFFFF || refresh)
 	{
-		right = Process::Read<float>(base + WowOffsets::FrameManager::FrameRight);
+		right = Process::Read<float>(base + WowOffsets2::FrameManager2::FrameRight);
 	}
 	return right;
 }
@@ -89,7 +90,7 @@ inline Frame * Frame::GetParent()
 	{
 		try
 		{
-			unsigned parent_ptr = Process::Read<unsigned>(base + WowOffsets::FrameManager::ParentFrame);
+			unsigned parent_ptr = Process::Read<unsigned>(base + WowOffsets2::FrameManager2::FrameParent);
 			parent = FrameManager::FindFrameByAddress(parent_ptr);
 		}
 		catch (MemoryReadException e)
@@ -104,6 +105,8 @@ void Frame::MoveMouseToFrame()
 {
 	int sw = 65536;
 	int sh = 65536;
+	float ssh = FrameManager::GetScreenHeigth();
+	float ssw = FrameManager::GetScreenWidth();
 	float b = GetBottom()*sh / FrameManager::GetScreenHeigth();
 	float t = GetTop()*sh / FrameManager::GetScreenHeigth();
 	float l = GetLeft()*sw / FrameManager::GetScreenWidth();
@@ -113,6 +116,14 @@ void Frame::MoveMouseToFrame()
 	float x = l + w / 2;
 	float y = sh - t + h / 2;
 	Process::MoveMouse((unsigned)x, (unsigned)y);
+}
+bool Frame::MoveMouseToFrameAndClick(unsigned delay, MouseButton button)
+{
+	this->MoveMouseToFrame();
+	Sleep(delay);
+	Process::MouseClick(button);
+
+	return true;
 }
 bool Frame::IsVisible()
 {
@@ -167,4 +178,17 @@ void Frame::PushToFrame()
 	MoveMouseToFrame();
 	Sleep(100);
 	AU3_MouseClick(L"Left");
+}
+
+unsigned Frame::GetID()
+{
+	try
+	{
+		this->id= Process::Read<unsigned>(this->base + WowOffsets2::FrameManager2::FrameId);
+		return this->id;
+	}
+	catch (MemoryReadException e)
+	{
+		return 0;
+	}
 }

@@ -1,10 +1,16 @@
 from collections import OrderedDict
 names=OrderedDict()
 names["Client"]=['Connecting','LoggedIn','CharSelecting']
-names["FrameManager"]=['FrameBase',
-                       ('FrameName',0x14, 'БЛАБЛАБЛА'),
-                       ('FirstFrame', 0x684),
-                       ('NextFrame',0x150)
+names["FrameManager"]=['FrameBase','ScreenWidth','ScreenHeight',
+                       ('FrameName',0x14, 'Frame__GetName'),
+                       ('FirstFrame', 0x684,'Script__EnumerateFrames+0x69'),
+                       ('NextFrame',0x150,'Script__EnumerateFrames+0x88'),
+                       ('FrameBottom', 0x4C,'Script__Frame_GetBottom+0x3B + GetFrameSize'),
+                       ('FrameLeft',0x50,'Script__Frame_GetLeft+0x3B + GetFrameSize'),
+                       ('FrameTop',0x54,'Script__Frame_GetTop+0x3B + GetFrameSize'),
+                       ('FrameRight',0x58,'Script__Frame_GetRight+0x3B + GetFrameSize'),
+                       ('FrameId',0x94,'Script__Frame_GetID+016'),
+                       ('FrameParent', 0x84, 'Frame__GetParent')
                        ]
 
 

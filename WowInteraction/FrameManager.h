@@ -25,6 +25,7 @@ public:
 	static Frame QuestScrollFrame;
 	static Frame AllQuestButtonFrame;
 	static Frame QuestListFrame;
+	static Frame * FindFrameByBorders(float bottom, float top, float left, float right);
 
 
 };
