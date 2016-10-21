@@ -196,8 +196,8 @@ unsigned Frame::GetID()
 vector<Region> &  Frame::GetRegions()
 {
 	this->regions.clear();
-	unsigned current_region = Process::Read<unsigned>(this->base + 0x130);
-	unsigned regions_offset = Process::Read<unsigned>(this->base + 0x128);
+	unsigned current_region = Process::Read<unsigned>(this->base + WowOffsets2::FrameManager2::FirstRegion);
+	unsigned regions_offset = Process::Read<unsigned>(this->base + WowOffsets2::FrameManager2::NextRegion);
 
 	while (current_region)
 	{
@@ -228,7 +228,7 @@ string & Region::GetText(bool refresh)
 	{
 		try
 		{
-			this->text = Process::ReadASCII(Process::Read<unsigned>(this->base + 0xE4), 0);
+			this->text = Process::ReadASCII(Process::Read<unsigned>(this->base + WowOffsets2::FrameManager2::FontStringRegionText), 0);
 		}
 		catch (MemoryReadException e)
 		{

@@ -5,12 +5,15 @@ names["FrameManager"]=['FrameBase','ScreenWidth','ScreenHeight',
                        ('FrameName',0x14, 'Frame__GetName'),
                        ('FirstFrame', 0x684,'Script__EnumerateFrames+0x69'),
                        ('NextFrame',0x150,'Script__EnumerateFrames+0x88'),
-                       ('FrameBottom', 0x4C,'Script__Frame_GetBottom+0x3B + GetFrameSize'),
-                       ('FrameLeft',0x50,'Script__Frame_GetLeft+0x3B + GetFrameSize'),
-                       ('FrameTop',0x54,'Script__Frame_GetTop+0x3B + GetFrameSize'),
-                       ('FrameRight',0x58,'Script__Frame_GetRight+0x3B + GetFrameSize'),
+                       ('FrameBottom', 0x4C,'(P)Script__Frame_GetBottom+13 :+ (P)GetFrameSize+10'),
+                       ('FrameLeft',0x50,'(P)Script__Frame_GetLeft+13 :+ (P)GetFrameSize+11'),
+                       ('FrameTop',0x54,'(P)Script__Frame_GetTop+13 :+ (P)GetFrameSize+13'),
+                       ('FrameRight',0x58,'(P)Script__Frame_GetRight+13 :+ (P)GetFrameSize+14'),
                        ('FrameId',0x94,'Script__Frame_GetID+016'),
-                       ('FrameParent', 0x84, 'Frame__GetParent')
+                       ('FrameParent', 0x84, 'Frame__GetParent'),
+                       ('FirstRegion', 0x130, '(P)GetFrameRegions+19'),
+                       ('NextRegion', 0x128, '(P)GetFrameRegions+25'),
+                       ('FontStringRegionText', 0xE4, '(P)GetRegionText+7'),
                        ]
                   
 
@@ -55,7 +58,15 @@ for node_key,node in offsets.items():
         couter+=1
     enums+="    };\n"
 
-result_string="#pragma once\nnamespace WowOffsets2\n{\n"+enums+"\n}\n"
+legend_string = "/*" \
+                "Determined offsets comments:\n" \
+                "   -If <FUNCTION_NAME> looks like <FUNCTION_NAME + LINE_OFFSET> then offset is in function address + LINE_OFFSET.\n" \
+                "    LINE_OFFSET is decimal when its in pseudocode.\n" \
+                "   -(P)<FUNCTION_NAME> - watch pseudocode of the function.\n" \
+                "   -<FUNCTION_NAME1>:+<FUNCTION_NAME2> -  final offset is a sum of other offsets in <FUNCTION_NAME1> and <FUNCTION_NAME2>.\n" \
+                "*/\n\n"
+
+result_string = legend_string+"#pragma once\nnamespace WowOffsets2\n{\n"+enums+"\n}\n"
 
 output.write(result_string)
 output.close()
