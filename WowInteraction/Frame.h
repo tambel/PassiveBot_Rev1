@@ -1,13 +1,25 @@
 #pragma once
+#include "stdafx.h"
+#include <memory>
 using namespace Tools;
 using namespace std;
+
+enum RegionType {
+	FONT_STRING,
+	TEXTURE,
+	NONE
+};
 class Region
 {
+	
 	unsigned base;
 	string text;
+	RegionType type;
 public:
 	Region(unsigned base);
 	string & GetText(bool refresh=false);
+	RegionType GetType();
+
 
 };
 
@@ -23,7 +35,8 @@ class Frame
 	float right;
 	unsigned id;
 	vector<Frame*> children;
-	vector<Region> regions;
+	vector<shared_ptr<Region>> regions;
+	vector<shared_ptr<Region>> font_strings;
 public:
 	Frame();
 	Frame(unsigned base);
@@ -44,7 +57,9 @@ public:
 	vector<Frame*> & GetChildren();
 	void PushToFrame();
 	unsigned GetID();
-	vector<Region> & GetRegions();
+	vector<shared_ptr<Region>> & GetRegions(bool refresh=false);
+	vector<shared_ptr<Region>> & GetFontStrings(bool refresh = false);
+	
 
 };
 

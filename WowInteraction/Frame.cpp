@@ -1,5 +1,5 @@
+#include "Frame.h"
 #include "stdafx.h"
-
 
 
 Frame::Frame()
@@ -193,16 +193,19 @@ unsigned Frame::GetID()
 	}
 }
 
-vector<Region> &  Frame::GetRegions()
+vector<shared_ptr<Region>> &  Frame::GetRegions(bool refresh)
 {
-	this->regions.clear();
+	if (this->regions.size() > 0)
+	{
+		return regions;
+	}
 	unsigned current_region = Process::Read<unsigned>(this->base + WowOffsets2::FrameManager2::FirstRegion);
 	unsigned regions_offset = Process::Read<unsigned>(this->base + WowOffsets2::FrameManager2::NextRegion);
 
 	while (current_region)
 	{
 		
-		this->regions.push_back(Region(current_region));
+		this->regions.push_back(std::make_shared<Region>(current_region));
 		try
 		{
 			current_region = Process::Read<unsigned>(current_region + regions_offset + 4);
@@ -216,6 +219,22 @@ vector<Region> &  Frame::GetRegions()
 	}
 	return this->regions;
 }
+
+vector<shared_ptr<Region>>& Frame::GetFontStrings(bool refresh)
+{
+	if (font_strings.size() == 0)
+	{
+		for (auto & region : GetRegions())
+		{
+			if (region->GetType() == RegionType::FONT_STRING)
+			{
+				this->font_strings.push_back(region);
+			}
+		}
+	}
+	return font_strings;
+}
+
 
 Region::Region(unsigned base)
 {
@@ -238,3 +257,25 @@ string & Region::GetText(bool refresh)
 	return this->text;
 
 }
+
+RegionType Region::GetType()
+{
+	unsigned func_addr = 0;
+
+	try
+	{
+		func_addr = Process::GetProcessBase()+ WowOffsets2::FrameManager2::GetRegionType_FontString;
+		if (func_addr== Process::Read<unsigned>(Process::Read<unsigned>(base) + WowOffsets2::FrameManager2::GetRegionTypeVTableOffset))
+		{
+			this->type = RegionType::FONT_STRING;
+		}
+		else
+			this->type = RegionType::NONE;
+	}
+	catch (MemoryReadException e)
+	{
+		this->type = RegionType::NONE;
+	}
+	return this->type;
+}
+

@@ -179,18 +179,8 @@ void GameInteractor::CheckForPromoFrames()
 }
 void GameInteractor::Test()
 {
-	unsigned frame_addr = 0x2D524744;
-	unsigned current_region = Process::Read<unsigned>(frame_addr + 0x130);
-	unsigned regions_offset = Process::Read<unsigned>(frame_addr + 0x128);
-	for (int i = 0; i < 3; i++)
-	{
-		current_region = Process::Read<unsigned>(current_region + regions_offset + 4);
-		
-	}
-	string text = Process::ReadASCII(Process::Read<unsigned>(current_region+0xe4), 0);
-	frame_addr = frame_addr;
 }
-bool GameInteractor::SelectCharacter(wstring & name)
+bool GameInteractor::SelectCharacterAlternative(wstring & name)
 {
 
 	
@@ -216,6 +206,25 @@ bool GameInteractor::SelectCharacter(wstring & name)
 	cout << "Character selecting failed" << endl;
 	return false;
 
+
+}
+bool GameInteractor::SelectCharacter(wstring & name)
+{
+	FrameManager::EnumAllFrames();
+	vector<string> v;
+	for (int i = 1; i <= 12; i++)
+	{
+		string button_frame_name = "CharSelectCharacterButton" + to_string(i) + "ButtonText";
+		Frame * fr = FrameManager::FindFrameByName(button_frame_name);
+		
+		for (auto & r : fr->GetFontStrings())
+		{
+			v.push_back(r->GetText());
+		}
+		
+
+	}
+	return true;
 
 }
 bool GameInteractor::IsInWorld()
@@ -244,24 +253,6 @@ bool GameInteractor::Start(GameStartParam * param)
 	StartClient();
 	int c = 0;
 	bool no_login_error_messages = true;
-	FrameManager::EnumAllFrames();
-	Frame * fr = FrameManager::FindFrameByName("QuestFrameDeclineButton"/*"CharSelectCharacterButton1ButtonText"*/);
-	Region r = fr->GetRegions()[3];
-	string text = r.GetText();
-	vector<string> v = vector<string>();
-	for (auto rr : fr->GetRegions())
-	{
-		//cout << rr.GetText() << endl;
-		v.push_back(rr.GetText());
-	}
-	fr->GetChildren();
-	for (auto cf : fr->GetChildren())
-	{
-		cf->GetChildren();
-		cf->MoveMouseToFrame();
-		Sleep(1000);
-	}
-
 	while (1)
 	{
 		if (!Process::ReadRel<bool>(WowOffsets2::Client::Connecting) && !Process::ReadRel<bool>(WowOffsets2::Client::CharSelecting))

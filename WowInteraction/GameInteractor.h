@@ -31,6 +31,7 @@ public:
 	static bool WaitForAuthentification();
 	static void CheckForPromoFrames();
 	static void Test();
+	static bool SelectCharacterAlternative(wstring & name);
 	static bool SelectCharacter(wstring & name);
 	static bool Start(GameStartParam * param);
 	static void Close();
