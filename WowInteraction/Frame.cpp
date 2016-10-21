@@ -192,3 +192,49 @@ unsigned Frame::GetID()
 		return 0;
 	}
 }
+
+vector<Region> &  Frame::GetRegions()
+{
+	this->regions.clear();
+	unsigned current_region = Process::Read<unsigned>(this->base + 0x130);
+	unsigned regions_offset = Process::Read<unsigned>(this->base + 0x128);
+
+	while (current_region)
+	{
+		
+		this->regions.push_back(Region(current_region));
+		try
+		{
+			current_region = Process::Read<unsigned>(current_region + regions_offset + 4);
+		}
+		catch (MemoryReadException e)
+		{
+			current_region = 0;
+		}
+		
+
+	}
+	return this->regions;
+}
+
+Region::Region(unsigned base)
+{
+	this->base = base;
+}
+
+string & Region::GetText(bool refresh)
+{
+	if (this->text.length()==0 || refresh)
+	{
+		try
+		{
+			this->text = Process::ReadASCII(Process::Read<unsigned>(this->base + 0xE4), 0);
+		}
+		catch (MemoryReadException e)
+		{
+			this->text = "No Text";
+		}
+	}
+	return this->text;
+
+}

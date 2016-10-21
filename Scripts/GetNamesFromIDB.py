@@ -1,6 +1,6 @@
 from collections import OrderedDict
 names=OrderedDict()
-names["Client"]=['Connecting','LoggedIn','CharSelecting']
+names["Client"]=['Connecting','LoggedIn','CharSelecting','CharacterNumber','CharacterOffset']
 names["FrameManager"]=['FrameBase','ScreenWidth','ScreenHeight',
                        ('FrameName',0x14, 'Frame__GetName'),
                        ('FirstFrame', 0x684,'Script__EnumerateFrames+0x69'),
@@ -12,6 +12,7 @@ names["FrameManager"]=['FrameBase','ScreenWidth','ScreenHeight',
                        ('FrameId',0x94,'Script__Frame_GetID+016'),
                        ('FrameParent', 0x84, 'Frame__GetParent')
                        ]
+                  
 
 
 

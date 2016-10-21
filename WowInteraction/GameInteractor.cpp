@@ -12,7 +12,9 @@ bool GameInteractor::Login(string & login, string  & password)
 {
 	cout << "Logging in" << endl;
 	FrameManager::EnumAllFrames();
+
 	Frame * email_frame = FrameManager::FindFrameByBorders(0.220152885f, 0.243763477f, 0.372026503f, 0.499651313f);
+
 	if (!email_frame)
 	{
 		cout << "Email frame not found";
@@ -86,7 +88,10 @@ bool GameInteractor::WaitWhileConnecting()
 {
 	while (Process::ReadRel<bool>(WowOffsets2::Client::Connecting) && !Process::ReadRel<bool>(WowOffsets2::Client::CharSelecting))
 	{
-		cout << "CONNECTING" << endl;
+		
+
+			
+		cout << "CONNECTING..."<<'\r' << flush;
 		Sleep(100);
 	}
 	if (Process::ReadRel<bool>(WowOffsets2::Client::Connecting) && Process::ReadRel<bool>(WowOffsets2::Client::CharSelecting))
@@ -147,6 +152,7 @@ void GameInteractor::CheckForPromoFrames()
 {
 	cout << "Checking for promo frames" << endl;
 	FrameManager::EnumAllFrames();
+	
 	Frame *starter = FrameManager::FindFrameByName("StarterEditionPopUpExitButton");
 	unsigned attempts = 0;
 	if (!starter)
@@ -173,47 +179,36 @@ void GameInteractor::CheckForPromoFrames()
 }
 void GameInteractor::Test()
 {
-	FrameManager::EnumAllFrames();
-	vector<Frame*>  frames = FrameManager::GetFrames();
-	Frame *frame1 = FrameManager::FindFrameByName("CharSelectCharacterButton1");
-	vector<wchar_t*> names = vector<wchar_t*>();
-	vector<unsigned> u = vector<unsigned>();
-	vector<unsigned> u2 = vector<unsigned>();
-	for (unsigned i = 0; i < 1000; i += 4)
+	unsigned frame_addr = 0x2D524744;
+	unsigned current_region = Process::Read<unsigned>(frame_addr + 0x130);
+	unsigned regions_offset = Process::Read<unsigned>(frame_addr + 0x128);
+	for (int i = 0; i < 3; i++)
 	{
-		u.push_back(Process::Read<unsigned>(frame1->GetBase() + i));
+		current_region = Process::Read<unsigned>(current_region + regions_offset + 4);
+		
 	}
-	Sleep(7000);
-	for (unsigned i = 0; i < 1000; i += 4)
-	{
-		u2.push_back(Process::Read<unsigned>(frame1->GetBase() + i));
-	}
-	Frame *frame2 = FrameManager::FindFrameByName("CharSelectAccountUpgradePanelFeature3");
-	Frame *frame3 = FrameManager::FindFrameByName("StarterEditionPopUpFeature2");
-	Frame *frame4 = FrameManager::FindFrameByName("StarterEditionPopUpFeature3");
-	Frame *frame5 = FrameManager::FindFrameByName("StarterEditionPopUpExitButton");
-	Sleep(5000);
-	frame1->MoveMouseToFrame();
-	bool y = frame5->IsVisible();
-
+	string text = Process::ReadASCII(Process::Read<unsigned>(current_region+0xe4), 0);
+	frame_addr = frame_addr;
 }
 bool GameInteractor::SelectCharacter(wstring & name)
 {
+
+	
 	CheckForPromoFrames();
 	FrameManager::EnumAllFrames();
 	cout << "Selecting character" << endl;
 	__int64 v1 = 0;
-	unsigned long characters_number = Process::ReadRel<unsigned>(WowOffsets::Client::CharactersNumber);
+	unsigned long characters_number = Process::ReadRel<unsigned>(WowOffsets2::Client::CharacterNumber);
 	for (unsigned i = 0; i < characters_number; i++)
 	{
-		*((int*)&v1 + 1) = Process::ReadRel<unsigned>(WowOffsets::Client::CharactersOffset) + 464 * i;
+		*((int*)&v1 + 1) = Process::ReadRel<unsigned>(WowOffsets2::Client::CharacterOffset) + 0x1d8 * i;
 		wstring nm = Process::ReadString_UTF8((v1 + 0x1000000000i64) >> 32, 0);
 		if (name == nm)
 		{
 			string frame_name = "CharSelectCharacterButton" + to_string(i + 1);
 			Frame * frame = FrameManager::FindFrameByName(frame_name.c_str());
-			frame->MoveMouseToFrame();
-			Process::DoubleClick(MouseButton::LEFT);
+			frame->MoveMouseToFrameAndClick(1000);
+			Process::PushKeyboardButton(KeyboardButton::ENTER);
 			return true;
 		}
 
@@ -249,6 +244,24 @@ bool GameInteractor::Start(GameStartParam * param)
 	StartClient();
 	int c = 0;
 	bool no_login_error_messages = true;
+	FrameManager::EnumAllFrames();
+	Frame * fr = FrameManager::FindFrameByName("QuestFrameDeclineButton"/*"CharSelectCharacterButton1ButtonText"*/);
+	Region r = fr->GetRegions()[3];
+	string text = r.GetText();
+	vector<string> v = vector<string>();
+	for (auto rr : fr->GetRegions())
+	{
+		//cout << rr.GetText() << endl;
+		v.push_back(rr.GetText());
+	}
+	fr->GetChildren();
+	for (auto cf : fr->GetChildren())
+	{
+		cf->GetChildren();
+		cf->MoveMouseToFrame();
+		Sleep(1000);
+	}
+
 	while (1)
 	{
 		if (!Process::ReadRel<bool>(WowOffsets2::Client::Connecting) && !Process::ReadRel<bool>(WowOffsets2::Client::CharSelecting))
@@ -264,6 +277,9 @@ bool GameInteractor::Start(GameStartParam * param)
 
 		}
 		Sleep(100);
+		wstring name = L"Testorc";
+		SelectCharacter(name);
+		Sleep(10000000);
 		/*
 		if (IsInWorld())
 		{

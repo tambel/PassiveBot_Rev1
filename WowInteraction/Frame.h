@@ -1,5 +1,16 @@
 #pragma once
 using namespace Tools;
+using namespace std;
+class Region
+{
+	unsigned base;
+	string text;
+public:
+	Region(unsigned base);
+	string & GetText(bool refresh=false);
+
+};
+
 class Frame
 {
 	unsigned base=0;
@@ -12,6 +23,7 @@ class Frame
 	float right;
 	unsigned id;
 	vector<Frame*> children;
+	vector<Region> regions;
 public:
 	Frame();
 	Frame(unsigned base);
@@ -32,5 +44,7 @@ public:
 	vector<Frame*> & GetChildren();
 	void PushToFrame();
 	unsigned GetID();
+	vector<Region> & GetRegions();
+
 };
 

@@ -5,7 +5,9 @@ namespace WowOffsets2
     {
         Connecting=0xF3A200,// 15966720
         LoggedIn=0xECA9C0,// 15509952
-        CharSelecting=0xD39398// 13865880
+        CharSelecting=0xD39398,// 13865880
+        CharacterNumber=0xD393AC,// 13865900
+        CharacterOffset=0xD393B0// 13865904
     };
     enum FrameManager2
     {
