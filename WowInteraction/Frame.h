@@ -13,12 +13,14 @@ class Region
 {
 	
 	unsigned base;
-	string text;
+	wstring text;
 	RegionType type;
+	string name;
 public:
 	Region(unsigned base);
-	string & GetText(bool refresh=false);
+	wstring & GetText(bool refresh=false);
 	RegionType GetType();
+	string & GetName(bool refresh = false);
 
 
 };
@@ -59,7 +61,6 @@ public:
 	unsigned GetID();
 	vector<shared_ptr<Region>> & GetRegions(bool refresh=false);
 	vector<shared_ptr<Region>> & GetFontStrings(bool refresh = false);
-	
 
 };
 

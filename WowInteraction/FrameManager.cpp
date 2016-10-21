@@ -143,9 +143,10 @@ float FrameManager::GetScreenHeigth(bool refresh)
 	}
 	return screen_heigth;
 }
-Frame * FrameManager::FindFrameByName(const string &  name)
+Frame * FrameManager::FindFrameByName(const string &  name, bool refresh)
 {
-	//EnumAllFrames();
+	if (frames.size()==0 ||  refresh)
+		EnumAllFrames();
 	for (auto frame : frames)
 	{
 		if (frame->GetName() == name)

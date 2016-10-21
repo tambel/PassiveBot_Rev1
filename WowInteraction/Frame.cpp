@@ -241,17 +241,17 @@ Region::Region(unsigned base)
 	this->base = base;
 }
 
-string & Region::GetText(bool refresh)
+wstring & Region::GetText(bool refresh)
 {
 	if (this->text.length()==0 || refresh)
 	{
 		try
 		{
-			this->text = Process::ReadASCII(Process::Read<unsigned>(this->base + WowOffsets2::FrameManager2::FontStringRegionText), 0);
+			this->text = Process::ReadString_UTF8(Process::Read<unsigned>(this->base + WowOffsets2::FrameManager2::FontStringRegionText), 0);
 		}
 		catch (MemoryReadException e)
 		{
-			this->text = "No Text";
+			this->text = L"No Text";
 		}
 	}
 	return this->text;
@@ -279,3 +279,18 @@ RegionType Region::GetType()
 	return this->type;
 }
 
+string & Region::GetName(bool refresh)
+{
+	if (name.length() == 0 || refresh)
+	{
+		try
+		{
+			name = Process::ReadASCII(Process::Read<unsigned>(base + WowOffsets2::FrameManager2::FrameName), 0);
+		}
+		catch (MemoryReadException e)
+		{
+			name = "";
+		}
+	}
+	return name;
+}

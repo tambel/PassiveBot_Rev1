@@ -13,6 +13,7 @@ struct GameStartParam
 	string  login;
 	string  password;
 	wstring  char_name;
+	int (*working_func)();
 };
 class GameInteractor
 {
@@ -20,19 +21,13 @@ class GameInteractor
 public:
 	GameInteractor(void);
 	~GameInteractor(void);
-	static bool isWorldLoading();
 	static bool Login(string & login, string & password);
 	static bool StartClient();
-	static bool IsLoaded();
 	static bool WaitWhileConnecting();
-	static bool IsCharacterSelecting();
 	static bool IsInWorld();
-	static bool WaitUntilClientLoad();
-	static bool WaitForAuthentification();
 	static void CheckForPromoFrames();
-	static void Test();
-	static bool SelectCharacterAlternative(wstring & name);
-	static bool SelectCharacter(wstring & name);
+	static bool SelectCharacterAlternative(wstring & character_name);
+	static bool SelectCharacter(wstring & character_name);
 	static bool Start(GameStartParam * param);
 	static void Close();
 };

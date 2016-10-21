@@ -71,7 +71,7 @@ void ObjectManager::EnumAllVisibleObjects()
 void ObjectManager::Initialize()
 {
 
-	base = Process::Read<unsigned>(Process::ReadRel<unsigned>(WowOffsets::ObjectManager::ObjectPanagerPtr) + WowOffsets::ObjectManager::ObjectManagerOffset);
+	base = Process::Read<unsigned>(Process::ReadRel<unsigned>(WowOffsets::ObjectManager::ObjectManagerPtr) + WowOffsets::ObjectManager::ObjectManagerOffset);
 }
 
 vector<GameObject*> &ObjectManager::GetGameObjectsList()

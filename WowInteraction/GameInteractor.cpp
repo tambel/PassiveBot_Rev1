@@ -57,30 +57,6 @@ bool GameInteractor::StartClient()
 		cout << "Attempts limit is reached" << endl;
 		return false;
 	}
-	if (!WaitUntilClientLoad())
-	{
-		return false;
-	}
-	return true;
-
-}
-bool GameInteractor::IsLoaded()
-{
-	return Process::ReadRel<char>(WowOffsets::Client::Loaded) != 0;
-}
-bool GameInteractor::IsCharacterSelecting()
-{
-	FrameManager::EnumAllFrames();
-	Frame * char_select = FrameManager::FindFrameByName("CharSelectCharacterButton1");
-
-	if (!char_select)
-	{
-		return false;
-	}
-	if (!char_select->IsVisible())
-	{
-		return false;
-	}
 	return true;
 
 }
@@ -88,9 +64,6 @@ bool GameInteractor::WaitWhileConnecting()
 {
 	while (Process::ReadRel<bool>(WowOffsets2::Client::Connecting) && !Process::ReadRel<bool>(WowOffsets2::Client::CharSelecting))
 	{
-		
-
-			
 		cout << "CONNECTING..."<<'\r' << flush;
 		Sleep(100);
 	}
@@ -104,48 +77,6 @@ bool GameInteractor::WaitWhileConnecting()
 		cout << "Connection failed!" << endl;
 		return false;
 
-	}
-}
-bool GameInteractor::WaitUntilClientLoad()
-{
-	cout << "Waiting for client load..." << endl;
-	unsigned attempts = 0;
-	while (!IsLoaded() && attempts < 6000)
-	{
-		Sleep(10);
-		attempts++;
-	}
-	if (IsLoaded())
-	{
-		cout << "Done" << endl;
-		return true;
-	}
-	else
-	{
-		cout << "Client not loaded" << endl;
-		return false;
-	}
-
-}
-bool GameInteractor::WaitForAuthentification()
-{
-	cout << "Waiting for client authentification..." << endl;
-	unsigned attempts = 0;
-	while (Process::ReadRel<char>(WowOffsets::Client::Unavalible) && attempts < 6000)
-	{
-		Sleep(10);
-		attempts++;
-	}
-	Sleep(10000);
-	if (!Process::ReadRel<char>(WowOffsets::Client::Unavalible))
-	{
-		cout << "Done" << endl;
-		return true;
-	}
-	else
-	{
-		cout << "Authentification failed" << endl;
-		return false;
 	}
 }
 void GameInteractor::CheckForPromoFrames()
@@ -177,9 +108,6 @@ void GameInteractor::CheckForPromoFrames()
 		return;
 	}
 }
-void GameInteractor::Test()
-{
-}
 bool GameInteractor::SelectCharacterAlternative(wstring & name)
 {
 
@@ -208,43 +136,52 @@ bool GameInteractor::SelectCharacterAlternative(wstring & name)
 
 
 }
-bool GameInteractor::SelectCharacter(wstring & name)
+bool GameInteractor::SelectCharacter(wstring & character_name)
 {
 	FrameManager::EnumAllFrames();
 	vector<string> v;
+	string name;
+	Frame * character_frame = nullptr;
 	for (int i = 1; i <= 12; i++)
 	{
 		string button_frame_name = "CharSelectCharacterButton" + to_string(i) + "ButtonText";
+		string button_frame_region_charname = "CharSelectCharacterButton" + to_string(i) + "ButtonTextName";
 		Frame * fr = FrameManager::FindFrameByName(button_frame_name);
 		
 		for (auto & r : fr->GetFontStrings())
 		{
-			v.push_back(r->GetText());
+			name = r->GetName();
+			if (name == button_frame_region_charname)
+			{
+				if (r->GetText() == character_name)
+				{
+					character_frame = fr;
+					break;
+				}
+			}
 		}
-		
-
+		if (character_frame)
+			break;
 	}
+	if (!character_frame)
+	{
+	}
+	character_frame->MoveMouseToFrameAndClick(1000);
+	Process::PushKeyboardButton(KeyboardButton::ENTER);
 	return true;
 
 }
 bool GameInteractor::IsInWorld()
 {
-	unsigned result;
-	result = Process::ReadRel<unsigned>(WowOffsets::Client::InWorld);
-	if (result == 1)
+	try
 	{
-		return true;
+		return Process::ReadRel<bool>(WowOffsets2::Client::InWorld);
 	}
-	return false;
-}
-bool GameInteractor::isWorldLoading()
-{
-	unsigned result = Process::ReadRel<unsigned>(WowOffsets::Client::InWorld);
-	if (result == 256)
+	catch (MemoryReadException e)
 	{
-		return true;
+		return false;
 	}
-	return false;
+	
 }
 bool GameInteractor::Start(GameStartParam * param)
 {
@@ -257,54 +194,36 @@ bool GameInteractor::Start(GameStartParam * param)
 	{
 		if (!Process::ReadRel<bool>(WowOffsets2::Client::Connecting) && !Process::ReadRel<bool>(WowOffsets2::Client::CharSelecting))
 		{
-			if (no_login_error_messages);
-				
+			if (no_login_error_messages)
+				Login(param->login, param->password);
 			else;
-
-			Login(param->login, param->password);
-			Sleep(1);
+				
+			
 			if (!WaitWhileConnecting())
+			{
+				no_login_error_messages = true;
+			}
+			else
+			{
+				Sleep(5000);
 				no_login_error_messages = false;
-
+			}
+		}
+		else if (!Process::ReadRel<bool>(WowOffsets2::Client::Connecting) && Process::ReadRel<bool>(WowOffsets2::Client::CharSelecting))
+		{
+			SelectCharacter(param->char_name);
+		}
+		else if (Process::ReadRel<bool>(WowOffsets2::Client::InWorld))
+		{
+			Sleep(5000);
+			cout << "InWorld" << endl;
+			int result=param->working_func();
 		}
 		Sleep(100);
-		wstring name = L"Testorc";
-		SelectCharacter(name);
-		Sleep(10000000);
-		/*
-		if (IsInWorld())
-		{
-			while (isWorldLoading())
-			{
-				Sleep(10);
-			}
-			loading_world = false;
-			cout << "Already in world" << endl;
-			return true;
-		}
-		if (!loading_world)
-			if (IsCharacterSelecting())
-			{
-				if (!SelectCharacter(param->char_name))
-				{
-					return false;
-				}
-				loading_world = true;
-				continue;
-			}
-		if (!loading_world)
-			if (IsLoggingIn())
-			{
-				if (!Login(param->login, param->password))
-				{
-					return false;
-				}
-				continue;
-			}
-		*/
 	}
+
 }
 void GameInteractor::Close()
 {
-
+	FrameManager::ClearFrames();
 }

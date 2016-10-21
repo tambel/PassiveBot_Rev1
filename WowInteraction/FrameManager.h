@@ -19,7 +19,7 @@ public:
 	static void ClearFrames();
 	static float GetScreenWidth(bool refresh = false);
 	static float GetScreenHeigth(bool refresh = false);
-	static Frame * FindFrameByName(const string & name);
+	static Frame * FindFrameByName(const string & name, bool refresh=false);
 	static Frame * FindFrameByAddress(unsigned address);
 	static vector<Frame*> FindAllChildren(Frame * frame);
 	static Frame QuestScrollFrame;

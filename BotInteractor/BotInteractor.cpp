@@ -4,6 +4,7 @@
 using namespace std;
 
 NavArea BotInteractor::area;
+working_func BotInteractor::func;
 bool BotInteractor::FindPath(Vector3 & start, Vector3 & end)
 {
 	Vector3 coords = start;
@@ -12,7 +13,7 @@ bool BotInteractor::FindPath(Vector3 & start, Vector3 & end)
 	ucoords = Vector3(Metrics::MapMidPoint - end.y, -(Metrics::MapMidPoint - end.x), end.z);
 	//int r = area.FindPath(Vector3(coords.x, coords.z, coords.y), Vector3(ucoords.x, ucoords.z, ucoords.y), 0);
 
-	if (area.FindPath(Vector3(coords.x, coords.z, coords.y), Vector3(ucoords.x, ucoords.z, ucoords.y), 0)<0)
+	if (area.FindPath(Vector3(coords.x, coords.z, coords.y), Vector3(ucoords.x, ucoords.z, ucoords.y), 0) < 0)
 	{
 		return false;
 	}
@@ -20,8 +21,8 @@ bool BotInteractor::FindPath(Vector3 & start, Vector3 & end)
 }
 void BotInteractor::PulseCheck()
 {
-		Player * player = ObjectManager::GetPlayer();
-		area.CheckAndUpdate(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords));
+	Player * player = ObjectManager::GetPlayer();
+	area.CheckAndUpdate(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords));
 }
 void BotInteractor::Init()
 {
@@ -35,6 +36,27 @@ void BotInteractor::Init()
 }
 void BotInteractor::CleanUp()
 {
+	Utils::Geometry::Transformer3D::Transformer3D();
+	Game::LocationBase::Clear();
+	NavArea::InitNavConfig();
+	ADTWorker::Clear();
+	ChunkModel::Clear();
+	ObjectManager::ClearAllLists();
+}
+
+int BotInteractor::_Start()
+{
+	int result;
+	Init();
+	//init navigation
+	//ObjectManager::Initialize();
+	//ObjectManager::EnumAllVisibleObjects();
+	//Player * player = ObjectManager::GetPlayer();
+	//area=move(NavArea(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords), 3));
+	//start
+	result = func();
+	CleanUp();
+	return result;
 }
 
 bool BotInteractor::FindPlayerPath(Vector3 & end)
@@ -58,26 +80,29 @@ void BotInteractor::GoThroughPath()
 		while (GameManager::GetPlayerDistanceToPoint(point)>3.0f)*/
 		if (GameManager::GetPlayerDistanceToPoint(point) < 4.0) continue;
 		GameManager::RotatePlayer(point);
-		while (GameManager::GetPlayerDistanceToPoint(point)>4.0f)
+		while (GameManager::GetPlayerDistanceToPoint(point) > 4.0f)
 		{
 			Sleep(1);
 		}
 	}
-	
+
 	AU3_MouseUp(L"Right");
 	AU3_Send(L"{NUMLOCK}");
 }
-void BotInteractor::StartGame(string login, string password,wstring char_name)
+
+
+
+
+void BotInteractor::StartGame(string login, string password, wstring char_name, int(*w_func)())
 {
 	GameStartParam  param = GameStartParam();
 	param.char_name = char_name;
 	param.login = login;
 	param.password = password;
+	func = w_func;
+	param.working_func = reinterpret_cast<working_func>(_Start);
 	GameInteractor::Start(&param);
-	ObjectManager::Initialize();
-	ObjectManager::EnumAllVisibleObjects();
-	Player * player = ObjectManager::GetPlayer();
-	//area=move(NavArea(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords), 3));
+
 
 }
 

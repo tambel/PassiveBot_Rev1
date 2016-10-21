@@ -52,7 +52,7 @@ namespace WowOffsets
 	};
 	enum ObjectManager
 	{
-		ObjectPanagerPtr = 0xFEFA58,
+		ObjectManagerPtr = 0xFEFA58,
 		ObjectManagerOffset = 0x62C,
 		FirstObject = 0xD8,
 		NextObject = 0x3C,

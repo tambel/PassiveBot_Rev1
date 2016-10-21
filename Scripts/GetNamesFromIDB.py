@@ -1,7 +1,7 @@
 from collections import OrderedDict
 names=OrderedDict()
-names["Client"]=['Connecting','LoggedIn','CharSelecting','CharacterNumber','CharacterOffset']
-names["FrameManager"]=['FrameBase','ScreenWidth','ScreenHeight','GetRegionType_FontString',
+names["Client"]=['Connecting','LoggedIn','InWorld','CharSelecting','CharacterNumber','CharacterOffset']
+names["FrameManager2"]=['FrameBase','ScreenWidth','ScreenHeight','GetRegionType_FontString',
                        ('FrameName',0x14, 'Frame__GetName'),
                        ('FirstFrame', 0x684,'Script__EnumerateFrames+0x69'),
                        ('NextFrame',0x150,'Script__EnumerateFrames+0x88'),
