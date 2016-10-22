@@ -15,6 +15,8 @@ using namespace Tools;
 
 int bot_activity()
 {
+
+	ObjectManager::EnumAllVisibleObjects();
 	while (1)
 	{
 		cout << "WORKING" << endl;

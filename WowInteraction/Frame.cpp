@@ -205,7 +205,7 @@ vector<shared_ptr<Region>> &  Frame::GetRegions(bool refresh)
 	while (current_region)
 	{
 		
-		this->regions.push_back(std::make_shared<Region>(current_region));
+		this->regions.push_back(std::make_shared<Region>(current_region,this));
 		try
 		{
 			current_region = Process::Read<unsigned>(current_region + regions_offset + 4);
@@ -236,26 +236,43 @@ vector<shared_ptr<Region>>& Frame::GetFontStrings(bool refresh)
 }
 
 
-Region::Region(unsigned base)
+Region::Region(unsigned base, Frame * parent)
 {
 	this->base = base;
+	this->parent = parent;
 }
 
-wstring & Region::GetText(bool refresh)
+wstring & Region::GetWText(bool refresh)
 {
-	if (this->text.length()==0 || refresh)
+	if (this->wtext.length()==0 || refresh)
 	{
 		try
 		{
-			this->text = Process::ReadString_UTF8(Process::Read<unsigned>(this->base + WowOffsets2::FrameManager2::FontStringRegionText), 0);
+			this->wtext = Process::ReadString_UTF8(Process::Read<unsigned>(this->base + WowOffsets2::FrameManager2::FontStringRegionText), 0);
 		}
 		catch (MemoryReadException e)
 		{
-			this->text = L"No Text";
+			this->wtext = L"No Text";
+		}
+	}
+	return this->wtext;
+
+}
+
+string & Region::GetText(bool refresh)
+{
+	if (this->text.length() == 0 || refresh)
+	{
+		try
+		{
+			this->text = Process::ReadASCII(Process::Read<unsigned>(this->base + WowOffsets2::FrameManager2::FontStringRegionText), 0);
+		}
+		catch (MemoryReadException e)
+		{
+			this->text = "No Text";
 		}
 	}
 	return this->text;
-
 }
 
 RegionType Region::GetType()

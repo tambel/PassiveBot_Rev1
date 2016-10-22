@@ -26,6 +26,7 @@ public:
 	static Frame AllQuestButtonFrame;
 	static Frame QuestListFrame;
 	static Frame * FindFrameByBorders(float bottom, float top, float left, float right);
+	static shared_ptr<Region> FindRegionWithText(wstring text);
 
 
 };

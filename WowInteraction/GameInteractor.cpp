@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <codecvt>
 using namespace Tools;
 using namespace WowOffsets2;
 
@@ -12,25 +13,41 @@ bool GameInteractor::Login(string & login, string  & password)
 {
 	cout << "Logging in" << endl;
 	FrameManager::EnumAllFrames();
+	
 
-	Frame * email_frame = FrameManager::FindFrameByBorders(0.220152885f, 0.243763477f, 0.372026503f, 0.499651313f);
-
-	if (!email_frame)
-	{
-		cout << "Email frame not found";
-		return false;
-	}
-	email_frame->MoveMouseToFrameAndClick(1000);
-	Process::MultipleKeyboardButtonPush(KeyboardButton::ARROW_RIGHT, 20, 50);
-	Process::MultipleKeyboardButtonPush(KeyboardButton::BACKSPACE, 40, 40);
+	Frame * email_frame = nullptr;
+	Frame * password_frame = nullptr;
+	Frame * f1 = new Frame(Process::ReadRel<unsigned>(WowOffsets2::FrameManager2::CurrentKeyBoardFocusFrame));
 	Sleep(1000);
-	Process::SetLanguage(Language::ENGLISH);
-	Sleep(1000);
-	Process::TypeByKeyboard(login);
 	Process::PushKeyboardButton(KeyboardButton::TAB);
 	Sleep(1000);
-	Process::TypeByKeyboard(password);
-	Sleep(1000);
+	Frame * f2 = new Frame(Process::ReadRel<unsigned>(WowOffsets2::FrameManager2::CurrentKeyBoardFocusFrame));
+	if (f1->GetTop() < f2->GetTop())
+	{
+		email_frame = f2;
+		password_frame = f1;
+	}
+	else
+	{
+		email_frame = f1;
+		password_frame = f2;
+	}
+	auto enter_text_and_push=[](Frame * frame, string text)
+	{
+		frame->MoveMouseToFrameAndClick();
+		Process::MultipleKeyboardButtonPush(KeyboardButton::ARROW_RIGHT, 20, 50);
+		Sleep(1000);
+		Process::MultipleKeyboardButtonPush(KeyboardButton::BACKSPACE, 40, 40);
+		Sleep(1000);
+		Process::SetLanguage(Language::ENGLISH);
+		Sleep(1000);
+		Process::TypeByKeyboard(text);
+		Sleep(1000);
+		Process::PushKeyboardButton(KeyboardButton::TAB);
+		Sleep(1000);
+	};
+	enter_text_and_push(email_frame,login);
+	enter_text_and_push(password_frame, password);
 	Process::PressKeyboardButton(KeyboardButton::ENTER);
 	Sleep(1000);
 	return true;
@@ -153,7 +170,7 @@ bool GameInteractor::SelectCharacter(wstring & character_name)
 			name = r->GetName();
 			if (name == button_frame_region_charname)
 			{
-				if (r->GetText() == character_name)
+				if (r->GetWText() == character_name)
 				{
 					character_frame = fr;
 					break;
@@ -209,9 +226,10 @@ bool GameInteractor::Start(GameStartParam * param)
 				no_login_error_messages = false;
 			}
 		}
-		else if (!Process::ReadRel<bool>(WowOffsets2::Client::Connecting) && Process::ReadRel<bool>(WowOffsets2::Client::CharSelecting))
+		else if (Process::ReadRel<bool>(WowOffsets2::Client::Connecting) && Process::ReadRel<bool>(WowOffsets2::Client::CharSelecting))
 		{
 			SelectCharacter(param->char_name);
+			Sleep(5000);
 		}
 		else if (Process::ReadRel<bool>(WowOffsets2::Client::InWorld))
 		{

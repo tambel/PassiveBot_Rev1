@@ -49,7 +49,7 @@ int BotInteractor::_Start()
 	int result;
 	Init();
 	//init navigation
-	//ObjectManager::Initialize();
+	ObjectManager::Initialize();
 	//ObjectManager::EnumAllVisibleObjects();
 	//Player * player = ObjectManager::GetPlayer();
 	//area=move(NavArea(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords), 3));

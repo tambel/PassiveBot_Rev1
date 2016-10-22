@@ -23,9 +23,10 @@ namespace WowOffsets2
         ScreenWidth=0xBAA48C,// 12231820
         ScreenHeight=0xBAA490,// 12231824
         GetRegionType_FontString=0xCDAA3,// 842403
+        CurrentKeyBoardFocusFrame=0xCB5F14,// 13328148
         FrameName=0x14,// Frame__GetName
-        FirstFrame=0x684,// Script__EnumerateFrames+0x69
-        NextFrame=0x150,// Script__EnumerateFrames+0x88
+        FirstFrame=0x684,// Script_EnumerateFrames+0x69
+        NextFrame=0x150,// Script_EnumerateFrames+0x88
         FrameBottom=0x4c,// (P)Script__Frame_GetBottom+13 :+ (P)GetFrameSize+10
         FrameLeft=0x50,// (P)Script__Frame_GetLeft+13 :+ (P)GetFrameSize+11
         FrameTop=0x54,// (P)Script__Frame_GetTop+13 :+ (P)GetFrameSize+13
@@ -36,6 +37,12 @@ namespace WowOffsets2
         NextRegion=0x128,// (P)GetFrameRegions+25
         FontStringRegionText=0xe4,// (P)GetRegionText+7
         GetRegionTypeVTableOffset=0x20// (P)GetRegionType+9
+    };
+    enum ObjectManager2
+    {
+        ObjectManager=0xD4E578,// 13952376
+        FirstObject=0xd8,// (P)ClntObjMgrEnumVisibleObjectsPtr+11
+        NextObject=0xd0// (P)ClntObjMgrEnumVisibleObjectsPtr+17
     };
 
 }

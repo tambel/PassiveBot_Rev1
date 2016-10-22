@@ -181,3 +181,19 @@ Frame * FrameManager::FindFrameByBorders(float bottom, float top, float left, fl
 	return nullptr;
 }
 
+shared_ptr<Region> FrameManager::FindRegionWithText(wstring text)
+{
+	for (auto frame : frames)
+	{
+		for (auto & region : frame->GetRegions())
+		{
+			if (region->GetWText() == text)
+			{
+				return region;
+			}
+		}
+	}
+	return nullptr;
+}
+
+

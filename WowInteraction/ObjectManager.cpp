@@ -11,7 +11,8 @@ vector<WowObject*> ObjectManager::all_objects = vector<WowObject*>();
 void ObjectManager::EnumAllVisibleObjects()
 {
 	ClearAllLists();
-	unsigned curobject = Process::Read<unsigned>(base + WowOffsets::ObjectManager::FirstObject);
+	unsigned next = Process::Read<unsigned>(base + WowOffsets2::ObjectManager2::NextObject);
+	unsigned curobject = Process::Read<unsigned>(base + WowOffsets2::ObjectManager2::FirstObject);
 	int count = 0;
 	while (curobject != 0)
 	{
@@ -62,16 +63,15 @@ void ObjectManager::EnumAllVisibleObjects()
 		{
 			break;
 		}
-
-		curobject = Process::Read<unsigned>(curobject + WowOffsets::ObjectManager::NextObject);
+		curobject = Process::Read<unsigned>(curobject + next +4);
 		count++;
 	}
 
 }
 void ObjectManager::Initialize()
 {
-
-	base = Process::Read<unsigned>(Process::ReadRel<unsigned>(WowOffsets::ObjectManager::ObjectManagerPtr) + WowOffsets::ObjectManager::ObjectManagerOffset);
+	base = Process::ReadRel<unsigned>(WowOffsets2::ObjectManager2::ObjectManager);
+	//base = Process::Read<unsigned>(Process::ReadRel<unsigned>(WowOffsets::ObjectManager::ObjectManagerPtr) + WowOffsets::ObjectManager::ObjectManagerOffset);
 }
 
 vector<GameObject*> &ObjectManager::GetGameObjectsList()

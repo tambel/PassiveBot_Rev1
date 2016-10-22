@@ -4,6 +4,8 @@
 using namespace Tools;
 using namespace std;
 
+class Frame;
+
 enum RegionType {
 	FONT_STRING,
 	TEXTURE,
@@ -13,14 +15,20 @@ class Region
 {
 	
 	unsigned base;
-	wstring text;
+	wstring wtext;
+	string text;
 	RegionType type;
 	string name;
+
+	Frame * parent;
 public:
-	Region(unsigned base);
-	wstring & GetText(bool refresh=false);
+	Region(unsigned base, Frame * parent);
+	wstring & GetWText(bool refresh=false);
+	string & GetText(bool refresh = false);
 	RegionType GetType();
 	string & GetName(bool refresh = false);
+	Frame * GetParent() { return this->parent; }
+	
 
 
 };
@@ -61,6 +69,7 @@ public:
 	unsigned GetID();
 	vector<shared_ptr<Region>> & GetRegions(bool refresh=false);
 	vector<shared_ptr<Region>> & GetFontStrings(bool refresh = false);
+	friend bool operator==(const Frame & left, const Frame & right) { return left.base == right.base; }
 
 };
 

@@ -1,10 +1,10 @@
 from collections import OrderedDict
 names=OrderedDict()
 names["Client"]=['Connecting','LoggedIn','InWorld','CharSelecting','CharacterNumber','CharacterOffset']
-names["FrameManager2"]=['FrameBase','ScreenWidth','ScreenHeight','GetRegionType_FontString',
+names["FrameManager2"]=['FrameBase','ScreenWidth','ScreenHeight','GetRegionType_FontString', 'CurrentKeyBoardFocusFrame',
                        ('FrameName',0x14, 'Frame__GetName'),
-                       ('FirstFrame', 0x684,'Script__EnumerateFrames+0x69'),
-                       ('NextFrame',0x150,'Script__EnumerateFrames+0x88'),
+                       ('FirstFrame', 0x684,'Script_EnumerateFrames+0x69'),
+                       ('NextFrame',0x150,'Script_EnumerateFrames+0x88'),
                        ('FrameBottom', 0x4C,'(P)Script__Frame_GetBottom+13 :+ (P)GetFrameSize+10'),
                        ('FrameLeft',0x50,'(P)Script__Frame_GetLeft+13 :+ (P)GetFrameSize+11'),
                        ('FrameTop',0x54,'(P)Script__Frame_GetTop+13 :+ (P)GetFrameSize+13'),
@@ -16,6 +16,10 @@ names["FrameManager2"]=['FrameBase','ScreenWidth','ScreenHeight','GetRegionType_
                        ('FontStringRegionText', 0xE4, '(P)GetRegionText+7'),
                        ('GetRegionTypeVTableOffset', 0x20, '(P)GetRegionType+9'),
                        ]
+names["ObjectManager2"]=['ObjectManager',
+                        ('FirstObject',0xD8, '(P)ClntObjMgrEnumVisibleObjectsPtr+11'),
+                        ('NextObject', 0xD0, '(P)ClntObjMgrEnumVisibleObjectsPtr+17'),
+                        ]
                   
 
 

@@ -54,8 +54,8 @@ namespace WowOffsets
 	{
 		ObjectManagerPtr = 0xFEFA58,
 		ObjectManagerOffset = 0x62C,
-		FirstObject = 0xD8,
-		NextObject = 0x3C,
+		FirstObject = 0xC,
+		NextObject = 0x44,
 		LocalPlayer = 0xE379B0,
 		TargetGUID=0xEAEED0
 
@@ -63,8 +63,8 @@ namespace WowOffsets
 	};
 	enum Object
 	{
-		Type = 0xC,
-		Descriptors = 0x4,
+		Type = 0x10,
+		Descriptors = 0x8,
 		GUID = 0x0,
 		EntityID = 0x24
 
