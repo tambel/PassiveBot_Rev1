@@ -17,9 +17,17 @@ int bot_activity()
 {
 
 	ObjectManager::EnumAllVisibleObjects();
+	Player * p = ObjectManager::GetPlayer();
+	for (auto u:ObjectManager::GetUnitsList())
+	{
+		
+		u->DumpPosition();
+		wcout << u->GetName() <<endl;
+	}
 	while (1)
 	{
-		cout << "WORKING" << endl;
+		p->DumpPosition();
+		Sleep(50);
 	}
 	return 0;
 }

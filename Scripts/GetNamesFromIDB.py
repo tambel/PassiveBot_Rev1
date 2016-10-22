@@ -16,11 +16,29 @@ names["FrameManager2"]=['FrameBase','ScreenWidth','ScreenHeight','GetRegionType_
                        ('FontStringRegionText', 0xE4, '(P)GetRegionText+7'),
                        ('GetRegionTypeVTableOffset', 0x20, '(P)GetRegionType+9'),
                        ]
-names["ObjectManager2"]=['ObjectManager',
+names["ObjectManager2"]=['ObjectManager','ActivePlayer',
                         ('FirstObject',0xD8, '(P)ClntObjMgrEnumVisibleObjectsPtr+11'),
                         ('NextObject', 0xD0, '(P)ClntObjMgrEnumVisibleObjectsPtr+17'),
                         ]
-                  
+names["Unit2"]=[
+                ('UnitCache', 0xC80,'(P)CGUnit_C__GetUnitName+203'),
+                ('UnitCacheName', 0x80, '(P)CGUnit_C__GetUnitNameAux+9'),
+                ('Position',0x124, 'CGUnit_C__GetPosition+2'),
+                ('Coordinates',0x18, 'CGUnit_C__GetPosition+2'),
+                ('Rotation', 0x28),
+                ]
+names["Player2"]=[ ('PlayerNameCache', 0xD10834),
+                 ('PlayerNameCacheNext', 0x00),
+                 ('PlayerNameCacheGuid', 0x10),
+                 ('PlayerNameCacheName', 0x21),
+                 ('PlayerNameCacheRace', 0x70),
+                 ('PlayerNameCacheClass', 0x78),
+                 ]
+names["GameObject2"]=[('ObjectCache', 0x26C),
+                    ('ObjectName', 0xB4),
+                    ]
+
+		
 
 
 
@@ -34,9 +52,9 @@ for k,v in names.items():
     for n in v:
         if type(n)==tuple:
             if len(n)==3:
-                offsets[k][n[0]] =(hex(n[1]),n[2])
+                offsets[k][n[0]] =(hex(n[1]).upper().replace('X','x'),n[2])
             else:
-                offsets[k][n[0]] =hex(n[1])
+                offsets[k][n[0]] =hex(n[1]).upper().replace('X','x')
         else:
             addr_string=hex(idc.LocByName(n)-idaapi.get_imagebase())
             addr_string=addr_string.replace('L','').upper().replace('X','x')

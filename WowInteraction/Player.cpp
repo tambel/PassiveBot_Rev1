@@ -14,14 +14,14 @@ const wstring & Player::GetName(bool refresh)
 	if (name.length()==0 || refresh)
 	{
 		Guid128 tmp_guid = Guid128();
-		unsigned current = Process::ReadRel<unsigned>(WowOffsets::Player::PlayerNameCache);
-		Process::ReadRaw(current + WowOffsets::PlayerNameCacheGuid, &tmp_guid, 16);
+		unsigned current = Process::ReadRel<unsigned>(WowOffsets2::Player2::PlayerNameCache);
+		Process::ReadRaw(current + WowOffsets2::Player2::PlayerNameCacheGuid, &tmp_guid, 16);
 		while (*GetGuid() != tmp_guid)
 		{
-			current = Process::Read<unsigned>(current + WowOffsets::Player::PlayerNameCacheNext);
-			Process::ReadRaw(current + WowOffsets::PlayerNameCacheGuid, &tmp_guid, 16);
+			current = Process::Read<unsigned>(current + WowOffsets2::Player2::PlayerNameCacheNext);
+			Process::ReadRaw(current + WowOffsets2::Player2::PlayerNameCacheGuid, &tmp_guid, 16);
 		}
-		name = Process::ReadString_UTF8(current + WowOffsets::PlayerNameCacheName, 0);
+		name = Process::ReadString_UTF8(current + WowOffsets2::Player2::PlayerNameCacheName, 0);
 
 	}
 	return name;

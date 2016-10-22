@@ -83,13 +83,14 @@ namespace WowOffsets
 	{
 		UnitNameCache = 0xC38,
 		UnitNameOffset = 0x7C,
-		UnitPosition = 0xAC0,
+		//UnitPosition = 0xAC0,
+		UnitPosition = 0x124,
 		UnitRotation = 0xAD0
 	};
 	enum Player
 	{
 		//PlayerNameCache = 0xD7BF14,
-		PlayerNameCache = 0xD7BF94,
+		PlayerNameCache = 0xD10834,
 		PlayerNameCacheNext = 0x00,
 		PlayerNameCacheGuid = 0x10,
 		PlayerNameCacheName = 0x21,

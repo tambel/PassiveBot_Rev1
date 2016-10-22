@@ -14,9 +14,9 @@ GameObject::~GameObject(void)
 }
 wstring &  GameObject::GetName(bool refresh)
 {
-	if (refresh)
+	if (name.length()==0 || refresh )
 	{
-		name = Process::ReadString_UTF8(Process::Read<unsigned>(Process::Read<unsigned>(base + WowOffsets::GameObject::GameObjectNameCache) + WowOffsets::GameObject::GameObjectNameOffset), 0);
+		name = Process::ReadString_UTF8(Process::Read<unsigned>(Process::Read<unsigned>(base + WowOffsets2::GameObject2::ObjectCache) + WowOffsets2::GameObject2::ObjectName), 0);
 	}
 	return name;
 }

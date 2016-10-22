@@ -15,15 +15,15 @@ const wstring & Unit::GetName(bool refresh)
 {
 	if (name.length() == 0 || refresh)
 	{
-		name = Process::ReadString_UTF8(Process::Read<unsigned>(Process::Read<unsigned>(base + WowOffsets::Unit::UnitNameCache) + WowOffsets::Unit::UnitNameOffset), 0);
+		name = Process::ReadString_UTF8(Process::Read<unsigned>(Process::Read<unsigned>(base + WowOffsets2::Unit2::UnitCache) + WowOffsets2::Unit2::UnitCacheName), 0);
 	}
 	return name;
 }
 Position Unit::GetPosition()
 {
 	Position pos = Position();
-	Process::ReadRaw(base + WowOffsets::Unit::UnitPosition, &pos, 12);
-	pos.rotation.z = Process::Read<float>(base + WowOffsets::Unit::UnitRotation);
+	Process::ReadRaw(Process::Read<unsigned>(base + WowOffsets2::Unit2::Position)+WowOffsets2::Unit2::Coordinates, &pos.coords, 12);
+	Process::ReadRaw(Process::Read<unsigned>(base + WowOffsets2::Unit2::Position) + WowOffsets2::Unit2::Rotation, &pos.rotation, 12);
 	return pos;
 }
 void Unit::DumpPosition()

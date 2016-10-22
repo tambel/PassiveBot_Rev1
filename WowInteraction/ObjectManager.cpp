@@ -161,7 +161,7 @@ Player * ObjectManager::GetPlayer()
 {
 	for (auto player : players)
 	{
-		if (player->GetBase() == Process::ReadRel<unsigned>(WowOffsets::ObjectManager::LocalPlayer))
+		if (player->GetBase() == Process::ReadRel<unsigned>(WowOffsets2::ObjectManager2::ActivePlayer))
 		{
 			return player;
 		}
