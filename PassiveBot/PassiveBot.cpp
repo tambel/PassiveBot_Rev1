@@ -23,6 +23,7 @@ int bot_activity()
 		
 		u->DumpPosition();
 		wcout << u->GetName() <<endl;
+		Sleep(5000);
 		BotInteractor::GoToPoint(*u);
 	}
 	while (1)

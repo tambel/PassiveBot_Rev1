@@ -97,23 +97,6 @@ void ObjectManager::ClearAllLists()
 		delete object;
 		object = nullptr;
 	}
-	for (auto game_object : game_objects)
-	{
-		delete game_object;
-	}
-	for (auto item : items)
-	{
-		delete item;
-	}
-	int i = 0;
-	for (auto unit : units)
-	{
-		delete unit;
-	}
-	for (auto player : players)
-	{
-		delete player;
-	}
 	all_objects.clear();
 	players.clear();
 	game_objects.clear();

@@ -23,7 +23,7 @@ Position Unit::GetPosition()
 {
 	Position pos = Position();
 	Process::ReadRaw(Process::Read<unsigned>(base + WowOffsets2::Unit2::Position)+WowOffsets2::Unit2::Coordinates, &pos.coords, 12);
-	Process::ReadRaw(Process::Read<unsigned>(base + WowOffsets2::Unit2::Position) + WowOffsets2::Unit2::Rotation, &pos.rotation, 12);
+	Process::ReadRaw(Process::Read<unsigned>(base + WowOffsets2::Unit2::Position) + WowOffsets2::Unit2::Rotation, &pos.rotation.z, 4);
 	return pos;
 }
 void Unit::DumpPosition()
