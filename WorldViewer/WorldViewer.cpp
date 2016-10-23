@@ -21,7 +21,8 @@ int main(int argc, char* argv[])
 	//client.WaitForMessage();
 	//WorldViewer viewer = WorldViewer(client.player_position);
 	
-	WorldViewer viewer = WorldViewer(Game::LocationBase::Get("Kalimdor"), Point2D<int>(0,0/*28, 40*/), Point2D<int>(0,0/*10, 2*/),1);
+
+	WorldViewer viewer = WorldViewer(Game::LocationBase::Get("Kalimdor"), Point2D<int>(28, 40), Point2D<int>(10, 2),3);
 	
 	
 

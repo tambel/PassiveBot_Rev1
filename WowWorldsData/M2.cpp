@@ -5,10 +5,34 @@ M2::M2(string filename):filename(filename)
 {
 	this->filename = filename;
 	BinaryReader * reader=new  BinaryReader(filename);
+	if (!reader->IsFileExist())
+	{
+		return;
+	}
+	string magic = reader->ReadString(4);
+	if (magic == "MD21")
+	{
+		reader->Read<unsigned>();
+		//magic = reader.ReadString(4);
+	}
+
+	M2Header_Legion header;
+	header = reader->Read<M2Header_Legion>();
+	vertex_count = header.vertices.number;
+	vertices = new M2Vertex[vertex_count];
+	reader->ReadArrayAbs<M2Vertexx>(vertices, header.vertices.offset_elements + 8, vertex_count);
+	/*
 	header=reader->Read<M2Header>();
+	char * s[10];
+
+	reader->ReadArray<char>(s, 4);
+	
+
+
 	vertex_count=header.NVertices;
 	vertices=new M2Vertex[vertex_count];
 	reader->ReadArrayAbs<M2Vertex>(vertices,header.OfsVertices,vertex_count);
+	*/
 	if (vertex_count == 0)
 	{
 		vertex_count = vertex_count;
@@ -58,3 +82,4 @@ void M2::LoadSkinFile(int index)
 		delete skin_reader;
 	}
 }
+

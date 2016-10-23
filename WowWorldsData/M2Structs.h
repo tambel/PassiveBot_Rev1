@@ -41,3 +41,5 @@ struct SkinHeader {
 	unsigned ofsTextureUnits;
 	unsigned LOD;
 };
+
+

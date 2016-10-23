@@ -3,6 +3,7 @@
 
 MutableArea::MutableArea() :NavArea()
 {
+
 	to_update = false;
 }
 

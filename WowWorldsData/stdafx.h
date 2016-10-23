@@ -30,6 +30,7 @@
 #include "WMO.h"
 #include "WMOPart.h"
 #include "WMOStructs.h"
+#include "M2l.h"
 
 
 

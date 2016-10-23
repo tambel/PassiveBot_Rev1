@@ -14,6 +14,7 @@
     <ProjectGuid>{A8E79958-0EAE-46DC-8161-143F33F1DB40}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>WowWorldsData</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -39,7 +40,12 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <CodeAnalysisRuleSet>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <CodeAnalysisRuleSet>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -99,6 +105,7 @@
     <ClInclude Include="M2.h" />
     <ClInclude Include="M2Cache.h" />
     <ClInclude Include="M2Header.h" />
+    <ClInclude Include="M2l.h" />
     <ClInclude Include="M2Structs.h" />
     <ClInclude Include="MapArea.h" />
     <ClInclude Include="MapObject.h" />
@@ -125,6 +132,8 @@
     <ClCompile Include="Exceptions.cpp" />
     <ClCompile Include="M2.cpp" />
     <ClCompile Include="M2Cache.cpp" />
+    <ClCompile Include="M2l.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="MapArea.cpp" />
     <ClCompile Include="MapObject.cpp" />
     <ClCompile Include="Model.cpp" />

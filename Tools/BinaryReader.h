@@ -38,6 +38,7 @@ public:
 	void MoveForward(unsigned long offset);
 	//void MoveBackward(unsigned long offset);
 	void SetPosition(unsigned long long position);
+	string ReadString(unsigned count);
 	unsigned long long GetPosition();
 	ifstream * GetStream();
 	bool IsFileExist();

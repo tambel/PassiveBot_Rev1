@@ -6,6 +6,7 @@ BinaryReader::BinaryReader(ifstream * stream)
 BinaryReader::BinaryReader(string path)
 {
 	this->stream=new ifstream(path, ios::binary);
+
 }
 
 BinaryReader::~BinaryReader(void)
@@ -52,6 +53,16 @@ ifstream * BinaryReader::GetStream()
 void BinaryReader::SetPosition(unsigned long long position)
 {
 	stream->seekg(position,ios::beg);
+}
+string BinaryReader::ReadString(unsigned count)
+{
+	char * buff = new char[count+1];
+	ReadArray<char>(buff,count);
+	if (buff[count] != 0)
+	{
+		buff[count] = 0;
+	}
+	return string(buff);
 }
 unsigned long long BinaryReader::GetPosition()
 { 
