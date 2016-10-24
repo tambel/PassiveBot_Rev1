@@ -9,7 +9,7 @@ ChunkedData::~ChunkedData(void)
 {
 }
 
-bool ChunkedData::SeekChunk(BinaryReader * reader,unsigned int signature,bool begin)
+bool ChunkedData::SeekChunk(CascReader * reader,unsigned int signature,bool begin)
 {
 
 	if (begin)
@@ -17,15 +17,15 @@ bool ChunkedData::SeekChunk(BinaryReader * reader,unsigned int signature,bool be
 		reader->MoveToBegining();
 	}
 	unsigned int sig;
-	sig=reader->ReadUInt();
+	sig=reader->Read<unsigned>();
 	
-	while (!reader->GetStream()->eof() && sig!=signature)
+	while (!reader->IsEOF() && sig!=signature)
 	{
 		unsigned long long pos = reader->GetPosition();
-		unsigned int size=reader->ReadUInt();
+		unsigned int size=reader->Read<unsigned>();
 		reader->MoveForward(size);
 		//reader->GetStream()->seekg(size,ios::cur);
-		sig=reader->ReadUInt();
+		sig=reader->Read<unsigned>();
 	}
 	return 0;
 	

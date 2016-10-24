@@ -52,14 +52,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir);$(RECASTDETOUR)\Recast\Include;$(RECASTDETOUR)\Detour\Include;$(RECASTDETOUR)\DebugUtils\Include;$(RECASTDETOUR)\Sample\Include;$(AUTOIT)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(BOOST_ROOT);$(SolutionDir);$(RECASTDETOUR)\Recast\Include;$(RECASTDETOUR)\Detour\Include;$(RECASTDETOUR)\DebugUtils\Include;$(RECASTDETOUR)\Sample\Include;$(AUTOIT)\Include;C:\Users\laptop\Documents\Visual Studio 2015\Projects\CascLib\src;C:\Users\laptop\Documents\Visual Studio 2015\Projects\CascLib\src\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zm1000 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration)\;$(BOOST_ROOT)\stage\lib;$(OGRE_HOME)\lib\$(Configuration);$(RECASTDETOUR)\Recast\lib\$(Configuration);$(RECASTDETOUR)\Detour\lib\$(Configuration);$(AUTOIT)\Lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Detour.lib;WowInteraction.lib;WowWorldsData.lib;Tools.lib;BotInteractor.lib;NetworkCommuniсation.lib;AutoItX3_DLL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Detour.lib;WowInteraction.lib;WowWorldsData.lib;Tools.lib;BotInteractor.lib;NetworkCommuniсation.lib;AutoItX3_DLL.lib;CascLibDUD.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <HeapReserveSize>10000000</HeapReserveSize>
       <HeapCommitSize>10000000</HeapCommitSize>
     </Link>

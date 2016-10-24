@@ -5,13 +5,14 @@ WMOGroup::WMOGroup(string filename) :filename(std::move(filename))
 {
 	indices = 0;
 	vertices = 0;
-	BinaryReader reader = BinaryReader(this->filename);
-	if (!reader.IsFileExist())
-		throw exception((this->filename + "\nWMO file not exist").c_str());
+	//BinaryReader reader = BinaryReader(this->filename);
+	CascReader * reader = new  CascReader(this->filename);
+	//if (!reader.IsFileExist())
+		//throw exception((this->filename + "\nWMO file not exist").c_str());
 	MOGP header;
 	if (!ChunkedData::SeekChunk(reader, ChunkSignatures::WMOSignature::GroupSignatures::Mogp))
 		return;
-	unsigned chunk_size = reader.Read<unsigned>() - sizeof(MOGP);
+	unsigned chunk_size = reader->Read<unsigned>() - sizeof(MOGP);
 	header = reader.Read<MOGP>();
 	unsigned long long end_pos = reader.GetPosition() + chunk_size;
 	while (reader.GetPosition() < end_pos)

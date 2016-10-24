@@ -16,6 +16,7 @@ using namespace Tools;
 int bot_activity()
 {
 
+	M2 m2 = M2("Character\\Tauren\\Male\\TaurenMale.M2");
 	ObjectManager::EnumAllVisibleObjects();
 	Player * p = ObjectManager::GetPlayer();
 	for (auto u:ObjectManager::GetUnitsList())
@@ -36,6 +37,7 @@ int bot_activity()
 
 int main(int argc, wchar_t * argv[])
 {
+	
 	Sleep(5000);
 	BotInteractor::StartGame("arttambel@gmail.com", "archi911", L"Testintauenr", bot_activity);
 	return 0;

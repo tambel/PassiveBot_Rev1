@@ -12,6 +12,7 @@ void init_static()
 	Utils::Geometry::Transformer3D::Transformer3D();
 	Game::LocationBase::Init();
 	NavArea::InitNavConfig();
+	CascReader::OpenStorage();
 }
 int main(int argc, char* argv[])
 {
