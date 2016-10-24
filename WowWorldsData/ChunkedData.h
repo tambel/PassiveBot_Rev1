@@ -19,7 +19,7 @@ class ChunkedData
 public:
 	ChunkedData(void);
 	~ChunkedData(void);
-	static bool SeekChunk(CascReader * reader, unsigned int signature, bool begin=false);
+	static bool SeekChunk(BinaryReader * reader, unsigned int signature, bool begin=false);
 	static bool SeekChunk(BinaryReader & reader, unsigned int signature, bool begin = false);
 };
 

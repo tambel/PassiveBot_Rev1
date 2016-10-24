@@ -31,7 +31,7 @@ void MapFrame::createScene()
 	
 	area->data_mutex.lock();
 	UpdateScene();
-	AddPlayer(Doodad("Character\\Tauren\\Male\\TaurenMale.M2", 0, Position(), 1024));
+	AddPlayer(Doodad("E:\\Extracted\\Character\\Tauren\\Male\\TaurenMale.M2", 0, Position(), 1024));
 	CreateNavMesh();
 
 	//createRecastPathLine(0);

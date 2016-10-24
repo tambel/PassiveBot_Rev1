@@ -29,7 +29,6 @@ void BotInteractor::Init()
 #ifdef DEBUG
 	setlocale(LC_ALL, "Russian");
 #endif // DEBUG
-	CascReader::OpenStorage();
 	Utils::Geometry::Transformer3D::Transformer3D();
 	Game::LocationBase::Init();
 	NavArea::InitNavConfig();
@@ -42,7 +41,6 @@ void BotInteractor::CleanUp()
 	ADTWorker::Clear();
 	ChunkModel::Clear();
 	ObjectManager::ClearAllLists();
-	CascReader::CloseStorage();
 }
 
 int BotInteractor::_Start()

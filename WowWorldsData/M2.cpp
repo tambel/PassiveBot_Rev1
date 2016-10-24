@@ -4,10 +4,7 @@ using namespace std;
 M2::M2(string filename):filename(filename)
 {
 	this->filename = filename;
-	CascReader * reader = new CascReader(filename);
-
-	//BinaryReader  * reader = new BinaryReader(c_reader->GetStream());
-	//BinaryReader  * reader = new BinaryReader(filename);
+	BinaryReader  * reader = new BinaryReader(filename);
 	string magic = reader->ReadString(4);
 	if (magic == "MD21")
 	{
@@ -61,9 +58,8 @@ void M2::LoadSkinFile(int index)
 	string skin_path = filename;
 	SkinHeader m2_skin;
 	skin_path = skin_path.erase(skin_path.length() - 3, 3) + "0" + to_string(index) + ".skin";
-	CascReader *  skin_reader = new  CascReader(skin_path);
-	//BinaryReader * skin_reader=new BinaryReader(c_skin_reader->GetStream());
-	//BinaryReader * skin_reader = new BinaryReader(skin_path);
+	
+	BinaryReader * skin_reader = new BinaryReader(skin_path);
 
 	skin_reader->MoveToBegining();
 	skin_reader->MoveForward(0);

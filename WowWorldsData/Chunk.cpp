@@ -135,7 +135,7 @@ void Chunk::LoadMcrd(unsigned long size)
 	{
 		
 		MDDF mddf = adt->GetMDDFs()[doodads_refs.get()[i]];
-		M2Info info = M2Info(/*Configuration::GetGameDataPath() +*/(adt->GetDoodadsFilenames() + adt->GetDoodadsIds()[mddf.Mmid]),mddf);
+		M2Info info = M2Info(Configuration::GetGameDataPath() +(adt->GetDoodadsFilenames() + adt->GetDoodadsIds()[mddf.Mmid]),mddf);
 		doodad_infos.push_back(info);
 	//	doodad_uuids.push_back(mddf.UniqueId);
 	//	mddfs.push_back(mddf);
