@@ -1,6 +1,7 @@
 #pragma once
 #include "Quest.h"
-#include <vector>
+
+
 using namespace std;
 class Quest;
 struct _KillCreatureObjective

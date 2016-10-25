@@ -1,13 +1,10 @@
-#include <d3dx11.h>
-#include <math.h>
-#include "stdafx.h"
-#include <d3d11.h>
 #pragma once
+#include "stdafx.h"
+#include "GameManager.h"
+#include <d3dx11.h>
+#include <d3d11.h>
 #include <DirectXMath.h>
 #include <D3dx9math.h>
-#include "boost\geometry\geometry.hpp"
-#include "boost\numeric\ublas\matrix.hpp"
-#include "boost\numeric\ublas\vector.hpp"
 
 #define _USE_MATH_DEFINES
 

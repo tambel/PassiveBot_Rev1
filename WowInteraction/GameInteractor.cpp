@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "GameInteractor.h"
 #include <codecvt>
 using namespace Tools;
 using namespace WowOffsets2;

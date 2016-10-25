@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#include "Memory.h"
+
 namespace Tools
 {
 	vector<unsigned short> Process::pressed_buttons=vector<unsigned short>();

@@ -1,9 +1,8 @@
 #include "stdafx.h"
-#include <TlHelp32.h>
-#include <iostream>
-#include <memory>
+#include "Memory.h"
+
 using namespace std;
-using namespace std;
+
 namespace Tools
 {
 

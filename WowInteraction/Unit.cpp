@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Unit.h"
 using namespace std;
 using namespace Tools;
 using namespace Utils;

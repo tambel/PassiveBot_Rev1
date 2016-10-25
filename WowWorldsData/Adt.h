@@ -6,9 +6,7 @@
 #include "WMORoot.h"
 #include "Area.h"
 //#include <string>
-using namespace Utils;
-using namespace std;
-using namespace Game;
+
 
 
 class Chunk;

@@ -1,7 +1,7 @@
 #pragma once
 #include "QuestManager.h"
 #include "ObjectiveArea.h"
-#include <memory>
+
 using namespace std;
 struct _Quest;
 

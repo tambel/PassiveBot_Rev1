@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "BinaryReader.h"
 BinaryReader::BinaryReader(ifstream * stream)
 {
 	this->stream=stream;

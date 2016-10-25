@@ -5,6 +5,7 @@ using namespace std;
 
 
 
+
 //ModelVertBase::ModelVertBase(ModelVertBase && right)
 //{
 //	rvertices = right.rvertices;

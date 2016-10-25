@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Player.h"
 using namespace Tools;
 
 Player::Player(unsigned base) :Unit(base)

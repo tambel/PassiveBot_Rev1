@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Camera.h"
 using namespace Tools; 
 
 	Camera::Camera(unsigned base)

@@ -5,7 +5,16 @@
 
 #pragma once
 #include <string>
-#define WIN32_LEAN_AND_MEAN             // Исключите редко используемые компоненты из заголовков Windows
+#include <vector>
+#include <memory>
+#include <fstream>
+#include <iostream>
+#include "tins\tins.h"
+#include "tins\network_interface.h"
+#include "Tools\Tools.h"
+#include "WowInteraction\WowInteraction.h"
+#include "WowWorldsData\WowWorldsData.h"
+            // Исключите редко используемые компоненты из заголовков Windows
 
 
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы

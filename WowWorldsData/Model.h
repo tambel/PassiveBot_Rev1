@@ -1,8 +1,7 @@
 #pragma once
 #include "Utils.h"
-
 using namespace Utils;
-
+using namespace Utils::Graphics;
 
 //class ModelVertBase
 //{
@@ -66,7 +65,6 @@ using namespace Utils;
 //};
 class Model
 {
-	
 
 
 	void _move(Model & other);
@@ -87,7 +85,7 @@ public:
 	virtual void Rescale(float scale);
 	virtual int * GetIndices() { return indices; }
 	virtual unsigned long GetIndexCount() { return index_count; }
-	Utils::Graphics::BoundingBox bounding_box;
+	BoundingBox bounding_box;
 	Model();
 	Model(Utils::Graphics::BoundingBox bounding_box);
 	~Model();

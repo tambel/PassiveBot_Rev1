@@ -2,6 +2,9 @@
 #include <algorithm>
 #include "Area.h"
 
+using namespace Utils;
+using namespace Utils::Game;
+
 Area::Area()
 {
 }

@@ -1,6 +1,9 @@
 #pragma once
 #include "Utils.h"
 #include "Camera.h"
+#include "WowObject.h"
+#include "ObjectManager.h"
+
 using namespace Utils;
 
 class GameManager

@@ -1,4 +1,6 @@
 #include "stdafx.h"
+
+#include "FrameManager.h"
 using namespace Tools;
 
 vector<Frame*> FrameManager::frames = vector<Frame*>();

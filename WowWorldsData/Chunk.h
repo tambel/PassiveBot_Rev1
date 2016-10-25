@@ -6,7 +6,7 @@
 #include "WMO.h"
 #include "ADTStructs.h"
 #include "Adt.h"
-#include "Tools\Configuration.h"
+//#include "Tools\Configuration.h"
 
 #include "Recast.h"
 
@@ -15,7 +15,7 @@
 #include "DetourNavMeshBuilder.h"
 #include "DetourNavMeshQuery.h"
 #include "DetourCommon.h"
-using namespace Utils;
+
 using namespace Game;
 class Area;
 struct ChunkAdditionalData

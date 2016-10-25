@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "ObjectManager.h"
 using namespace Tools;
 //using namespace WowOffsets;
 

@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "ChunkCache.h"
+
+using namespace Utils;
+
 vector<Chunk*> ChunkCache::item_list=vector<Chunk*>();
 unsigned long ChunkCache::list_size_limit=2304;
 Chunk * ChunkCache::Find(Location & location, Point2D<int> block_coordinates, Point2D<int>coordinates)

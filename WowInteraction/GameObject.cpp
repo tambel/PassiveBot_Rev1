@@ -1,5 +1,5 @@
-
 #include "stdafx.h"
+#include "GameObject.h"
 using namespace Tools;
 using namespace std;
 

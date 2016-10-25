@@ -1,6 +1,6 @@
-#include "Frame.h"
 #include "stdafx.h"
-
+#include "Frame.h"
+#include "Tools\Memory.h"
 
 Frame::Frame()
 {

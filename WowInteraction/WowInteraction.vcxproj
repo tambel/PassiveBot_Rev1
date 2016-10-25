@@ -101,6 +101,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Unit.h" />
     <ClInclude Include="Utils.h" />
+    <ClInclude Include="WowInteraction.h" />
     <ClInclude Include="WowObject.h" />
   </ItemGroup>
   <ItemGroup>

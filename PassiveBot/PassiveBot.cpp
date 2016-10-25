@@ -1,13 +1,7 @@
 // PassiveBot.cpp: определяет точку входа для консольного приложения.
 //
 #include "stdafx.h"
-#include <iostream>
-#include "AutoItX3_DLL.h"
-#include <thread>
-#include <random>
-#include "WowInteraction\DBCReader.h"
-#include <fstream>
-#include "NetworkCommuniсation\NetworkCommunicatorServer.h"
+
 using namespace std;
 using namespace Utils;
 using namespace Tools;

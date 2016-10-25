@@ -2,7 +2,7 @@
 #include "Cache.h"
 #include "Chunk.h"
 #include "Utils.h"
-using namespace Utils;
+
 
 class Chunk;
 

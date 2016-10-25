@@ -1,6 +1,6 @@
 #pragma once
-#include "stdafx.h"
-#include <memory>
+#include "FrameManager.h"
+#include "Tools\Memory.h"
 using namespace Tools;
 using namespace std;
 

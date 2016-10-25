@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "Adt.h"
+using namespace Utils;
+using namespace Game;
 using namespace std;
 using namespace ChunkSignatures;
 

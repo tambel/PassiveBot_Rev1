@@ -5,8 +5,7 @@
 #include "WMO.h"
 #include "Doodad.h"
 #include "Chunk.h"
-using namespace Utils;
-using namespace Utils::Game;
+
 
 //struct ChunkInfo
 //{

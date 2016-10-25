@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Item.h"
 using namespace Tools;
 
 Item::Item(unsigned base) :WowObject(base)

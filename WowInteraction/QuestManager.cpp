@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "QuestManager.h"
+#include "FrameManager.h"
 using namespace Tools;
 
 vector<unsigned> QuestManager::quest_ids;

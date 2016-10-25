@@ -1,15 +1,14 @@
 #pragma once
 #include "WowInteraction\Utils.h"
-#include <math.h>
-#include <string>
-#include <vector>
 #include "boost\geometry\geometry.hpp"
-#include "boost\numeric\ublas\matrix.hpp"
-#include "boost\numeric\ublas\vector.hpp"
+using namespace Utils;
+
 using Vector3F = boost::geometry::model::point<float, 3, boost::geometry::cs::cartesian>;
 using namespace std;
+
 namespace Utils
 {
+
 	namespace Geometry
 	{
 		enum class  Axis
@@ -157,6 +156,7 @@ namespace Utils
 
 	namespace Graphics
 	{
+		
 		struct Triangle
 		{
 			unsigned short indices[3];

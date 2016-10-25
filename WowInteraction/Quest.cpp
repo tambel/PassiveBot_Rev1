@@ -1,7 +1,8 @@
-#include "Quest.h"
 #include "stdafx.h"
+#include "Quest.h"
 
 using namespace Tools;
+
 void Quest::GetObjectivesBlobs()
 {
 	QuestManager::SelectQuestInJournal(id);

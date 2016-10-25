@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "NetworkCommunicatorServer.h"
-
+#include "Tools\Tools.h"
 #include <ctime>
 #include <iostream>
 #include <string>

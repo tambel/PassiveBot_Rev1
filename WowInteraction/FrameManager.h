@@ -1,7 +1,10 @@
 #pragma once
 #include "Frame.h"
 using namespace std;
+class FrameEnumerationException : exception {};
 
+class Frame;
+class Region;
 class FrameManager
 {
 	static vector <Frame*>  frames;

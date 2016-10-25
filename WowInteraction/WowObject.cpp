@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "WowObject.h"
 using namespace std;
 using namespace Tools;
 

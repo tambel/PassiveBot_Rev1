@@ -1,6 +1,6 @@
 #pragma once
 #include "WMO.h"
-#include "Tools\BinaryReader.h"
+//#include "Tools\BinaryReader.h"
 #include "WMOStructs.h"
 #include "ChunkedData.h"
 

@@ -88,6 +88,7 @@
     <ClInclude Include="Memory.h" />
     <ClInclude Include="MemoryWindows.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Tools.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BinaryReader.cpp" />

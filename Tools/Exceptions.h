@@ -1,6 +1,5 @@
 #pragma once
-#include <exception>
-#include <string>
+
 using namespace  std;
 class MemoryReadException : exception
 {

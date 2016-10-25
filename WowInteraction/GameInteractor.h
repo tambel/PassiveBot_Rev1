@@ -1,5 +1,6 @@
 #pragma once
-
+#include "FrameManager.h"
+#include "AutoItX3_DLL.h"
 /*struct GameStartParam
 {
 	bool debug;
