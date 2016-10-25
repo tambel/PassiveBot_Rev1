@@ -1,6 +1,5 @@
 #include "stdafx.h"
-#include <Windows.h>
-
+#include "Chunk.h"
 int * ChunkModel::indices=ChunkModel::Init();
 
 Chunk::Chunk(void)

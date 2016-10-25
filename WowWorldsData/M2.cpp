@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "M2.h"
 #include "Tools\BinaryReader.h"
 using namespace std;
 M2::M2(string filename):filename(filename)

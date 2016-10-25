@@ -5,6 +5,8 @@
 #include "Doodad.h"
 #include "WMO.h"
 #include "ADTStructs.h"
+#include "Adt.h"
+#include "Tools\Configuration.h"
 
 #include "Recast.h"
 

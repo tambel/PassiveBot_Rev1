@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Model.h"
 #include "WMO.h"
 
 class WMO;

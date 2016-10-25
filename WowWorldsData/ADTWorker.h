@@ -1,8 +1,13 @@
 #pragma once
 #include "ADTCache.h"
 #include "ChunkCache.h"
-#include <vector>
+#include "Area.h"
 using namespace std;
+
+
+class Chunk;
+
+class Area;
 class ADTWorker
 {
 	static vector <shared_ptr<ADT>> adts;

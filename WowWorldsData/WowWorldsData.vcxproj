@@ -120,6 +120,7 @@
     <ClInclude Include="WMOPart.h" />
     <ClInclude Include="WMORoot.h" />
     <ClInclude Include="WMOStructs.h" />
+    <ClInclude Include="WowWorldsData.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Adt.cpp" />

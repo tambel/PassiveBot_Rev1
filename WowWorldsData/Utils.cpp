@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Utils.h"
 namespace Utils
 {
 	Point2D<int> WorldPositionToBlockCoords(Vector3 position)

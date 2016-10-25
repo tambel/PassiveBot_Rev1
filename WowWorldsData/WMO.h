@@ -1,6 +1,7 @@
 #pragma once
 #include "MapObject.h"
 #include "WMOPart.h"
+#include "WMORoot.h"
 class WMO :public MapObject,public Model
 {
 	unsigned long uuid;

@@ -4,12 +4,8 @@
 //
 
 #pragma once
-#include "WowInteraction\stdafx.h"
-#include "WowWorldsData\stdafx.h"
-#include "BotInteractor.h"
 #include <string>
 #define WIN32_LEAN_AND_MEAN             // Исключите редко используемые компоненты из заголовков Windows
-
 
 
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы

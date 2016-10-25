@@ -2,8 +2,12 @@
 #include <vector>
 #include "Adt.h"
 #include "Cache.h"
+#include "Utils.h"
 using namespace std;
+using namespace Game;
+class ADT;
 /*
+
 class ADTCache
 {
 static vector<ADT*> adt_list;

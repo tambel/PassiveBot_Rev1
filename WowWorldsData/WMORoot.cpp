@@ -1,5 +1,5 @@
-#include "WMORoot.h"
 #include "stdafx.h"
+#include "WMORoot.h"
 
 
 

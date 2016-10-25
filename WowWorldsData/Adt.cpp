@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Adt.h"
 using namespace std;
 using namespace ChunkSignatures;
 

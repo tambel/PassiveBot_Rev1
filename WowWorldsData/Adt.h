@@ -1,15 +1,17 @@
 #pragma once
 #include "Utils.h"
-#include "ChunkedData.h"
 #include "Chunk.h"
+#include "ChunkedData.h"
 #include "ADTStructs.h"
 #include "WMORoot.h"
+#include "Area.h"
 //#include <string>
 using namespace Utils;
 using namespace std;
 using namespace Game;
 
 
+class Chunk;
 
 class ADT:public ChunkedData
 {

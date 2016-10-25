@@ -3,7 +3,6 @@
 #include <math.h>
 #include <string>
 #include <vector>
-//using namespace boost::geometry;
 #include "boost\geometry\geometry.hpp"
 #include "boost\numeric\ublas\matrix.hpp"
 #include "boost\numeric\ublas\vector.hpp"

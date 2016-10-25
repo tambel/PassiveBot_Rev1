@@ -380,6 +380,11 @@ namespace Tools
 		result.width=rc.right-rc.left;
 		return result;
 	}
+	unsigned Process::GetPID()
+	{
+
+		return GetProcessId(process);
+	}
 	Language Process::GetCurrentLanguage()
 	{
 		HKL l = GetKeyboardLayout(thread_id);

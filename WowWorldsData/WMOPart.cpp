@@ -1,13 +1,13 @@
 #include "stdafx.h"
 #include "WMOPart.h"
-
+#include "WMOGroup.h"
 
 WMOPart::WMOPart(WMOGroup & group, WMO & wmo)
 {
 	this->filename = move(group.filename);
 	this->position = wmo.GetPosition();
 	//vertex_count = group.vertex_count;
-	index_count = group.index_count;
+	index_count = group.GetIndexCount();
 	//vertices = new Utils::Graphics::Vertex[vertex_count];
 	//for (unsigned long i = 0; i < vertex_count; i++)
 	//{
@@ -19,7 +19,7 @@ WMOPart::WMOPart(WMOGroup & group, WMO & wmo)
 	indices = new int[index_count];
 	for (unsigned i = 0; i < index_count; i++)
 	{
-		indices[i] = group.indices[i];
+		indices[i] = group.GetIndices()[i];
 	}
 	//indices = group.indices;
 	//group.indices = nullptr;

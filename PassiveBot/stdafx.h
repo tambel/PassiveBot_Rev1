@@ -4,10 +4,12 @@
 //
 
 #pragma once
+#include "BotInteractor\stdafx.h"
+
 
 #include "WowInteraction\stdafx.h"
 #include "WowWorldsData\stdafx.h"
-#include "BotInteractor\stdafx.h"
+
 
 
 

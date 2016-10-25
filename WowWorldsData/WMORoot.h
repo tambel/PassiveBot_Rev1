@@ -1,7 +1,9 @@
 #pragma once
-#include "WMOStructs.h"
 #include "WMOGroup.h"
-#include <vector>
+#include "Tools\BinaryReader.h"
+#include "ADTStructs.h"
+#include "WMOStructs.h"
+#include "WMO.h"
 struct WMOInfo
 {
 	string filename;
@@ -22,7 +24,8 @@ public:
 	vector<WMOGroup> & GetWMOGroups() { return wmo_groups; }
 	WMORoot(string  & filename);
 	~WMORoot();
-	friend WMO::WMO(string filename, unsigned uuid, Position & position);
-	friend WMO::~WMO();
+	vector<WMOGroup> & GetGroups() { return wmo_groups; }
+	//friend WMO::WMO(string filename, unsigned uuid, Position & position);
+	//friend WMO::~WMO();
 };
 

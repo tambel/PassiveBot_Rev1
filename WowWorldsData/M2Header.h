@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Utils.h"
+using namespace Utils;
 struct M2Header
 {
 	unsigned Magic;

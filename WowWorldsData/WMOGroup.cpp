@@ -1,6 +1,5 @@
-#include "WMOGroup.h"
 #include "stdafx.h"
-
+#include "WMOGroup.h"
 WMOGroup::WMOGroup(string filename) :filename(std::move(filename))
 {
 	indices = 0;

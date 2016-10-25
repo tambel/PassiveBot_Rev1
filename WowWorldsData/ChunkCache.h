@@ -3,6 +3,9 @@
 #include "Chunk.h"
 #include "Utils.h"
 using namespace Utils;
+
+class Chunk;
+
 class ChunkCache
 {
 	static vector<Chunk*> item_list;

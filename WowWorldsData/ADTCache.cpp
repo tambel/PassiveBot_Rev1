@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "ADTCache.h"
 vector<ADT*> ADTCache::item_list=vector<ADT*>();
 unsigned long ADTCache::list_size_limit=100;
 ADT * ADTCache::Find(Location & location, Point2D<int> coordinates)

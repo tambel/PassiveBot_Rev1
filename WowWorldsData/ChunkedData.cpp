@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "ChunkedData.h"
 
 ChunkedData::ChunkedData(void)
 {

@@ -1,5 +1,5 @@
 #include "stdafx.h"
-
+#include "ADTWorker.h"
 vector<shared_ptr<ADT>> ADTWorker::adts;
 
 Chunk * ADTWorker::GetChunk(Area * area,Location & location, Point2D<int> block_coordinates, Point2D<int>coordinates,bool save)

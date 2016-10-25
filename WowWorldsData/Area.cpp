@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include <algorithm>
-
+#include "Area.h"
 
 Area::Area()
 {

@@ -116,6 +116,7 @@ namespace Tools
 		static bool FindExistingProcess();
 		static bool LaunchProcess();
 		static Rect GetClientSize();
+		static unsigned GetPID();
 
 
 

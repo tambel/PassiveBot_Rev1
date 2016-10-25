@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "MapArea.h"
 
 MapArea::MapArea(void)
 {
