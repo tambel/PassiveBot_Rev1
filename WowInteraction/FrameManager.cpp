@@ -77,16 +77,6 @@ void FrameManager::EnumAllFrames()
 			try
 			{
 				Frame * frame = new Frame(current);
-				frame->GetBottom();
-				frame->GetTop();
-				frame->GetLeft();
-				frame->GetRight();
-				frame->GetID();
-				frame->GetParent();
-				if (frame->GetName() == "QuestScrollFrame")
-				{
-					QuestScrollFrame = *frame;
-				}
 				frames.push_back(frame);
 				current = Process::Read<unsigned>(current + WowOffsets2::FrameManager2::NextFrame);
 			}

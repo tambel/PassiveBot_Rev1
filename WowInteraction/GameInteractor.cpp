@@ -164,7 +164,13 @@ bool GameInteractor::SelectCharacter(wstring & character_name)
 	{
 		string button_frame_name = "CharSelectCharacterButton" + to_string(i) + "ButtonText";
 		string button_frame_region_charname = "CharSelectCharacterButton" + to_string(i) + "ButtonTextName";
+
 		Frame * fr = FrameManager::FindFrameByName(button_frame_name);
+		if (!fr)
+		{
+			cout << "Character button not found" << endl;
+			return false;
+		}
 		
 		for (auto & r : fr->GetFontStrings())
 		{

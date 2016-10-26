@@ -10,38 +10,38 @@ namespace WowOffsets2
 {
     enum Client
     {
-        Connecting=0xF3A200,// 15966720
-        LoggedIn=0xECA9C0,// 15509952
-        InWorld=0xE5BD19,// 15056153
-        CharSelecting=0xD39398,// 13865880
-        CharacterNumber=0xD393AC,// 13865900
-        CharacterOffset=0xD393B0// 13865904
+        Connecting=0xF89EC8,// 16293576
+        LoggedIn=0xF1A314,// 15835924
+        InWorld=0xEAB6D9,// 15382233
+        CharSelecting=0xD82F24,// 14167844
+        CharacterNumber=0xD82F38,// 14167864
+        CharacterOffset=0xD82F3C// 14167868
     };
     enum FrameManager2
     {
-        FrameBase=0xCC2218,// 13378072
-        ScreenWidth=0xBAA48C,// 12231820
-        ScreenHeight=0xBAA490,// 12231824
-        GetRegionType_FontString=0xCDAA3,// 842403
-        CurrentKeyBoardFocusFrame=0xCB5F14,// 13328148
+        FrameBase=0xD0ADA8,// 13675944
+        ScreenWidth=0xBF23D4,// 12526548
+        ScreenHeight=0xBF23D8,// 12526552
+        GetRegionType_FontString=0xDFED3,// 917203
+        CurrentKeyBoardFocusFrame=0xCFEA10,// 13625872
         FrameName=0x14,// Frame__GetName
-        FirstFrame=0x684,// Script_EnumerateFrames+0x69
-        NextFrame=0x150,// Script_EnumerateFrames+0x88
+        FirstFrame=0x6C0,// (P)Script_EnumerateFrames+12
+        NextFrame=0x138,// (P)Script_EnumerateFrames+29
         FrameBottom=0x4C,// (P)Script__Frame_GetBottom+13 :+ (P)GetFrameSize+10
         FrameLeft=0x50,// (P)Script__Frame_GetLeft+13 :+ (P)GetFrameSize+11
         FrameTop=0x54,// (P)Script__Frame_GetTop+13 :+ (P)GetFrameSize+13
         FrameRight=0x58,// (P)Script__Frame_GetRight+13 :+ (P)GetFrameSize+14
         FrameId=0x94,// Script__Frame_GetID+016
         FrameParent=0x84,// Frame__GetParent
-        FirstRegion=0x130,// (P)GetFrameRegions+19
-        NextRegion=0x128,// (P)GetFrameRegions+25
+        FirstRegion=0x118,// (P)GetFrameRegions+17
+        NextRegion=0x110,// (P)GetFrameRegions+23
         FontStringRegionText=0xE4,// (P)GetRegionText+7
-        GetRegionTypeVTableOffset=0x20// (P)GetRegionType+9
+        GetRegionTypeVTableOffset=0x18// (P)GetRegionType+9
     };
     enum ObjectManager2
     {
-        ObjectManager=0xD4E578,// 13952376
-        ActivePlayer=0xDE565C,// 14571100
+        ObjectManager=0xD98168,// 14254440
+        ActivePlayer=0xE34860,// 14895200
         FirstObject=0xD8,// (P)ClntObjMgrEnumVisibleObjectsPtr+11
         NextObject=0xD0// (P)ClntObjMgrEnumVisibleObjectsPtr+17
     };
@@ -49,8 +49,8 @@ namespace WowOffsets2
     {
         UnitCache=0xC80,// (P)CGUnit_C__GetUnitName+203
         UnitCacheName=0x80,// (P)CGUnit_C__GetUnitNameAux+9
-        Position=0x124,// CGUnit_C__GetPosition+2
-        Coordinates=0x18,// CGUnit_C__GetPosition+2
+        Position=0x124,// (P)CGUnit_C__GetPosition+2
+        Coordinates=0x18,// (P)CGUnit_C__GetPosition+2
         Rotation=0x28// 40
     };
     enum Player2
