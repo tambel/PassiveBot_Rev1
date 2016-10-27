@@ -67,7 +67,7 @@ void NetworkCommunicatorClient::WaitForMessage()
 		//std::cout.write(buf.data(), len);
 		player_position = *reinterpret_cast<Vector3*>(buf.data());
 		cout << player_position.x << " " << player_position.y << endl;
-		socket->write_some(boost::asio::buffer(buf), error);
+		socket->write_some(boost::asio::buffer("CLIENT"), error);
 
 
 	}

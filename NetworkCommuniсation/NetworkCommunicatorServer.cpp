@@ -25,8 +25,6 @@ void NetworkCommunicatorServer::InitServer()
 	
 		while(1)
 		{
-			try
-			{
 
 
 				tcp::socket socket(io_service);
@@ -40,22 +38,16 @@ void NetworkCommunicatorServer::InitServer()
 					boost::asio::write(socket, boost::asio::buffer((char*)&p, 12), boost::asio::transfer_all(), ignored_error);
 					string message = make_daytime_string();
 					//boost::asio::write(socket, boost::asio::buffer(message),boost::asio::transfer_all(), ignored_error);
-
-
-
 					//boost::asio::write(socket, boost::asio::buffer(reinterpret_cast<char*>(&p),12), ignored_error);
 					char b[12] = {};
 					//boost::asio::read(socket, boost::asio::buffer(b));
 					boost::array<char, 12> buf;
-					boost::asio::read(socket, boost::asio::buffer(buf), ignored_error);
+					socket.read_some(boost::asio::buffer(buf));
+					//boost::asio::read(socket, boost::asio::buffer(buf), ignored_error);
 					cout << "SENT" << endl;
 					Sleep(100);
 				}
-			}
-			catch (...)
-			{
 
-			}
 		}
 	}
 	catch (std::exception& e)
