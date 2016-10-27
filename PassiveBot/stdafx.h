@@ -4,7 +4,9 @@
 //
 
 #pragma once
+#include "NetworkCommuniñation\NetworkCommunicatorServer.h"
 #include "BotInteractor\BotInteractor.h"
+
 
 
 //#include "WowInteraction\stdafx.h"

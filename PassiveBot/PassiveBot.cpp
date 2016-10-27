@@ -7,12 +7,14 @@ using namespace Utils;
 using namespace Tools;
 
 
+
 int bot_activity()
 {
 
-	M2 m2 = M2("Character\\Tauren\\Male\\TaurenMale.M2");
 	ObjectManager::EnumAllVisibleObjects();
 	Player * p = ObjectManager::GetPlayer();
+	NetworkCommunicatorServer server = NetworkCommunicatorServer();
+	
 	for (auto u:ObjectManager::GetUnitsList())
 	{
 		

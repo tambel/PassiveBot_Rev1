@@ -48,6 +48,7 @@ void NetworkCommunicatorServer::InitServer()
 					//boost::asio::read(socket, boost::asio::buffer(b));
 					boost::array<char, 12> buf;
 					boost::asio::read(socket, boost::asio::buffer(buf), ignored_error);
+					cout << "SENT" << endl;
 					Sleep(100);
 				}
 			}
