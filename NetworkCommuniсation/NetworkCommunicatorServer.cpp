@@ -59,6 +59,8 @@ void NetworkCommunicatorServer::InitServer()
 
 NetworkCommunicatorServer::NetworkCommunicatorServer()
 {
+
+	///buffer = new char[1000];
 	InitServer();
 }
 

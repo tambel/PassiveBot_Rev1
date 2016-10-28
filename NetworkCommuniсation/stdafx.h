@@ -8,5 +8,6 @@
 #define WIN32_LEAN_AND_MEAN             // Исключите редко используемые компоненты из заголовков Windows
 
 #include "boost\asio.hpp"
-
+#include "boost\array.hpp"
+#include "WowInteraction\WowInteraction.h"
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы

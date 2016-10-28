@@ -4,6 +4,7 @@ class NetworkCommunicatorServer
 {
 
 	void InitServer();
+
 public:
 	NetworkCommunicatorServer();
 	~NetworkCommunicatorServer();

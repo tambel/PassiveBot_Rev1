@@ -12,6 +12,7 @@ public:
 	Vector3 player_position;
 	NetworkCommunicatorClient();
 	~NetworkCommunicatorClient();
+
 	void WaitForMessage();
 };
 

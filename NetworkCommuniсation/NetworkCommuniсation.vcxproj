@@ -128,13 +128,17 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="NetworkCommunicatior.h" />
     <ClInclude Include="NetworkCommunicatorClient.h" />
     <ClInclude Include="NetworkCommunicatorServer.h" />
+    <ClInclude Include="Packets.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="NetworkCommunicatior.cpp" />
     <ClCompile Include="NetworkCommunicatorClient.cpp" />
     <ClCompile Include="NetworkCommunicatorServer.cpp" />
+    <ClCompile Include="Packets.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
