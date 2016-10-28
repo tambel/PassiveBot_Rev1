@@ -1,18 +1,13 @@
 #pragma once
-#include "stdafx.h"
-#include "BotInteractor\stdafx.h"
-#include <boost/array.hpp>
-using boost::asio::ip::tcp;
-class NetworkCommunicatorClient
-{
-	boost::asio::io_service * io_service;
-	tcp::socket * socket;
-	void InitClient();
-public:
-	Vector3 player_position;
-	NetworkCommunicatorClient();
-	~NetworkCommunicatorClient();
+#include "NetworkCommunicator.h" 
 
-	void WaitForMessage();
+
+using boost::asio::ip::tcp;
+class NetworkCommunicatorClient:public NetworkCommunicator
+{
+public:
+	NetworkCommunicatorClient(string address, unsigned short port);
+	~NetworkCommunicatorClient();
+	void Connect();
 };
 

@@ -9,5 +9,6 @@
 
 #include "boost\asio.hpp"
 #include "boost\array.hpp"
+#include <iostream>
 #include "WowInteraction\WowInteraction.h"
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы

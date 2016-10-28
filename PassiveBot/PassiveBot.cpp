@@ -12,9 +12,16 @@ int bot_activity()
 {
 
 	ObjectManager::EnumAllVisibleObjects();
-	Player * p = ObjectManager::GetPlayer();
-	NetworkCommunicatorServer server = NetworkCommunicatorServer();
-	
+	Player * player = ObjectManager::GetPlayer();
+	shared_ptr<RemoteControl> remote_control= make_shared<RemoteControl>();
+	remote_control->Start();
+	while (1)
+	{
+		
+		remote_control->ProcessRequest();
+		Sleep(100);
+	}
+
 	for (auto u:ObjectManager::GetUnitsList())
 	{
 		
@@ -23,17 +30,19 @@ int bot_activity()
 		Sleep(5000);
 		BotInteractor::GoToPoint(*u);
 	}
-	while (1)
-	{
-		p->DumpPosition();
-		Sleep(50);
-	}
-	return 0;
 }
 
 int main(int argc, wchar_t * argv[])
 {
-	
+	shared_ptr<RemoteControl> remote_control = make_shared<RemoteControl>();
+	remote_control->Start();
+	while (1)
+	{
+
+		remote_control->ProcessRequest();
+		cout <<"WAIT"<< endl;
+		Sleep(1);
+	}
 	Sleep(5000);
 	BotInteractor::StartGame("arttambel@gmail.com", "archi911", L"Testintauenr", bot_activity);
 	return 0;

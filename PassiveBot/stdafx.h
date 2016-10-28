@@ -4,8 +4,11 @@
 //
 
 #pragma once
-#include "NetworkCommuniñation\NetworkCommunicatorServer.h"
+#include "NetworkCommuniñation\RemoteControl.h"
 #include "BotInteractor\BotInteractor.h"
+
+
+
 
 
 

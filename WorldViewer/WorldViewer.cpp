@@ -16,19 +16,26 @@ void init_static()
 int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "Russian");
-	NetworkCommunicatorClient client = NetworkCommunicatorClient();
+	NetworkCommunicatorClient client = NetworkCommunicatorClient("127.0.0.1", 8001);
+	client.Connect();
 	init_static();
-	client.WaitForMessage();
-	WorldViewer viewer = WorldViewer(client.player_position);
+	RequestPacket<1> p;
+	//pr.Pack();
+	client.SendPacket<RequestPacket<1>>(p);
+	PlayerPositionReply * rep = reinterpret_cast<PlayerPositionReply*>(client.RecievePacket());
+	WorldViewer viewer = WorldViewer(rep->position);
+	delete rep;
 	viewer.ShowMap();
 
 	//WorldViewer viewer = WorldViewer(Game::LocationBase::Get("Kalimdor"), Point2D<int>(28, 40), Point2D<int>(10, 2),3);
 	
 	while (1)
 	{
-		client.WaitForMessage();
+		client.SendPacket<RequestPacket<1>>(p);
+		rep = reinterpret_cast<PlayerPositionReply*>(client.RecievePacket());
 		//WorldViewer viewer = WorldViewer(client.player_position);
-		viewer.Update(client.player_position);
+		viewer.Update(rep->position);
+		delete rep;
 
 	}
 
