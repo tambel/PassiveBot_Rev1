@@ -17,9 +17,10 @@ int bot_activity()
 	remote_control->Start();
 	while (1)
 	{
-		
+		Unit * p = reinterpret_cast<Unit*>(ObjectManager::GetTargetObject());
+		wcout<<p->GetName()<<endl;
 		remote_control->ProcessRequest();
-		Sleep(100);
+		Sleep(1);
 	}
 
 	for (auto u:ObjectManager::GetUnitsList())
@@ -34,15 +35,15 @@ int bot_activity()
 
 int main(int argc, wchar_t * argv[])
 {
-	shared_ptr<RemoteControl> remote_control = make_shared<RemoteControl>();
-	remote_control->Start();
-	while (1)
-	{
+	//shared_ptr<RemoteControl> remote_control = make_shared<RemoteControl>();
+	//remote_control->Start();
+	//while (1)
+	//{
 
-		remote_control->ProcessRequest();
-		cout <<"WAIT"<< endl;
-		Sleep(1);
-	}
+	//	remote_control->ProcessRequest();
+	//	//cout <<"WAIT"<< endl;
+	//	Sleep(1);
+	//}
 	Sleep(5000);
 	BotInteractor::StartGame("arttambel@gmail.com", "archi911", L"Testintauenr", bot_activity);
 	return 0;

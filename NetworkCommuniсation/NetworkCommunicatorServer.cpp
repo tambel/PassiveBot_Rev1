@@ -46,12 +46,13 @@ void NetworkCommunicatorServer::Start(RemoteControl * parent_rm)
 			while (1)
 			{
 
-				UnkPacket * rp = RecievePacket(socket);
-				UnkPacket * sp = parent_rm->ProcessPacket(rp);
-				SendPacket(socket,*sp);
-				delete sp;
-				sp = nullptr;
-				//delete rp;
+				//UnkPacket * rp = RecievePacket(socket);
+				char * rp = RecievePacket(socket);
+				unsigned size = 0;
+				char ** sp = parent_rm->ProcessPacket(rp,size);
+				SendPacket(socket,*sp, size);
+				delete [] *sp;
+				*sp = nullptr;
 
 			}
 		}

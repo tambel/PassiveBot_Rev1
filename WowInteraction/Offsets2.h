@@ -43,7 +43,9 @@ namespace WowOffsets2
         ObjectManager=0xD98168,// 14254440
         ActivePlayer=0xE34860,// 14895200
         FirstObject=0xD8,// (P)ClntObjMgrEnumVisibleObjectsPtr+11
-        NextObject=0xD0// (P)ClntObjMgrEnumVisibleObjectsPtr+17
+        NextObject=0xD0,// (P)ClntObjMgrEnumVisibleObjectsPtr+17
+        MouseGuid=0xEAC500,// Search by hand
+        TargetGuid=0xF09C00// Search by hand
     };
     enum Unit2
     {
