@@ -59,10 +59,13 @@ int BotInteractor::_Start()
 	if (!AddonInteractor::Inject())
 	{
 		GameInteractor::ManualLogout();
-		//GameInteractor::Logout();
 		return ExitCode::LoggedOut;
 	}
-	GameInteractor::Logout();
+	Sleep(1000);
+	/*if (AddonInteractor::Logout())
+	{
+		return ExitCode::LoggedOut;
+	}*/
 	//init navigation
 	if (Configuration::IsNavigationEnabled())
 		area=move(NavArea(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords), 3));

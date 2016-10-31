@@ -117,6 +117,14 @@ WowObject * ObjectManager::GetTargetObject()
 	}
 	return nullptr;
 }
+bool ObjectManager::IsResting()
+{
+
+	
+	unsigned pl = Process::Read<unsigned>(ObjectManager::GetPlayer()->GetBase());
+	bool y= pl && (Process::Read<unsigned>(Process::Read<unsigned>(pl + 6796) + 48) >> 17) & 1;
+	return false;
+}
 void ObjectManager::DumpAllObjectNames()
 {
 	cout << "Game Objects" << endl;

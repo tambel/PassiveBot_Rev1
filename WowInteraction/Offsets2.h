@@ -36,7 +36,8 @@ namespace WowOffsets2
         FirstRegion=0x118,// (P)GetFrameRegions+17
         NextRegion=0x110,// (P)GetFrameRegions+23
         FontStringRegionText=0xE4,// (P)GetRegionText+7
-        GetRegionTypeVTableOffset=0x18// (P)GetRegionType+9
+        GetRegionTypeVTableOffset=0x18,// (P)GetRegionType+9
+        FrameIsShown=0x80// 
     };
     enum ObjectManager2
     {
@@ -45,7 +46,8 @@ namespace WowOffsets2
         FirstObject=0xD8,// (P)ClntObjMgrEnumVisibleObjectsPtr+11
         NextObject=0xD0,// (P)ClntObjMgrEnumVisibleObjectsPtr+17
         MouseGuid=0xEAC500,// Search by hand
-        TargetGuid=0xF09C00// Search by hand
+        TargetGuid=0xF09C00,// Search by hand
+        IsResting=0x0// Script_IsResting
     };
     enum Unit2
     {

@@ -15,12 +15,14 @@ names["FrameManager2"]=['FrameBase','ScreenWidth','ScreenHeight','GetRegionType_
                        ('NextRegion', 272, '(P)GetFrameRegions+23'),
                        ('FontStringRegionText', 228, '(P)GetRegionText+7'),
                        ('GetRegionTypeVTableOffset', 24, '(P)GetRegionType+9'),
+                       ('FrameIsShown', 128,''),
                        ]
 names["ObjectManager2"]=['ObjectManager','ActivePlayer',
                         ('FirstObject',0xD8, '(P)ClntObjMgrEnumVisibleObjectsPtr+11'),
                         ('NextObject', 0xD0, '(P)ClntObjMgrEnumVisibleObjectsPtr+17'),
                         ('MouseGuid', 0xEAC500, "Search by hand"),
                         ('TargetGuid', 0xF09C00, "Search by hand"),
+                        ('IsResting' ,0x0, 'Script_IsResting'),
                         ]
 names["Unit2"]=[
                 ('UnitCache', 0xC80,'(P)CGUnit_C__GetUnitName+203'),

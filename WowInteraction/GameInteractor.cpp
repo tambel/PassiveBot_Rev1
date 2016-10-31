@@ -20,7 +20,8 @@ bool GameInteractor::Login(string & login, string  & password)
 	Frame * password_frame = nullptr;
 	Frame * f1 = new Frame(Process::ReadRel<unsigned>(WowOffsets2::FrameManager2::CurrentKeyBoardFocusFrame));
 	Sleep(1000);
-	Process::PushKeyboardButton(KeyboardButton::TAB);
+	//Process::PushKeyboardButton(KeyboardButton::TAB);
+	AU3_Send(L"{TAB}");
 	Sleep(1000);
 	Frame * f2 = new Frame(Process::ReadRel<unsigned>(WowOffsets2::FrameManager2::CurrentKeyBoardFocusFrame));
 	if (f1->GetTop() < f2->GetTop())
@@ -44,7 +45,8 @@ bool GameInteractor::Login(string & login, string  & password)
 		Sleep(1000);
 		Process::TypeByKeyboard(text);
 		Sleep(1000);
-		Process::PushKeyboardButton(KeyboardButton::TAB);
+		//Process::PushKeyboardButton(KeyboardButton::TAB);
+		AU3_Send(L"{TAB}");
 		Sleep(1000);
 	};
 	enter_text_and_push(email_frame,login);

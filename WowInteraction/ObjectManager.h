@@ -29,6 +29,7 @@ public:
 	static Unit * FindUnitByName(const wstring & name);
 	static void ClearAllLists();
 	static WowObject * GetTargetObject();
+	static bool IsResting();
 };
 
 
