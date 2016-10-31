@@ -82,6 +82,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AddonInteractor.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DBCReader.h" />
     <ClInclude Include="Exceptions.h" />
@@ -105,6 +106,7 @@
     <ClInclude Include="WowObject.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AddonInteractor.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DBCReader.cpp" />
     <ClCompile Include="Exceptions.cpp" />

@@ -1,40 +1,58 @@
 from struct import *
 import collections
 
+OBJECT_TYPES = {'ITEM': 1,
+                'CONTAINER': 2,
+                'UNIT': 3,
+                'PLAYER': 4,
+                'GAMEOBJECT': 5,
+                'DYNAMICOBJECT': 6,
+                'CORPSE': 7,
+                'AiGroup': 8,
+                'AreaTrigger': 9}
+
 
 class Field(object):
-    def __init__(self,type,size=None):
-        self.value=None
-        self.type=type
-        self.size=size
+    def __init__(self, type, size=None):
+        self.value = None
+        self.type = type
+        self.size = size
+
 
 class Simple(object):
-    TYPE =None
+    TYPE = None
+
     def __init__(self, data):
-        self.value=data
+        self.value = data
 
     def __str__(self):
         return str(self.value)
 
+
 class Char(Simple):
-     TYPE=("B",)
+    TYPE = ("B",)
+
 
 class Unsigned(Simple):
-    TYPE=("I",)
+    TYPE = ("I",)
+
 
 def gen_filler(size):
     class f(Filler):
         pass
-    f.TYPE=("{}s".format(size),size)
+
+    f.TYPE = ("{}s".format(size), size)
     return f
 
+
 class Filler(object):
-    def __init__(self,data):
+    def __init__(self, data):
         pass
 
 
 class Vector3(object):
     TYPE = ("12s",)
+
     def __init__(self, data=None, x=0, y=0, z=0):
         if data is not None:
             x, y, z = unpack("fff", data)
@@ -43,7 +61,7 @@ class Vector3(object):
         self.z = z
 
     def __str__(self):
-        return "x: {}, y: {}, z: {}".format(self.x, self.y, self.z)
+        return "x:{}\ny: {}\nz: {}\n".format(self.x, self.y, self.z)
 
 
 class Position(object):
@@ -68,18 +86,16 @@ class GUID(object):
         self.high, self.low = unpack("QQ", data)
 
     def __str__(self):
-        return "high: {}, low: {}".format(self.high,self.low)
+        return "high: {}, low: {}".format(self.high, self.low)
 
 
 class SmallString(object):
-    TYPE=("260s",)
-    def __init__(self,data):
-        self.length,data=unpack("I256s",data)
-        data=data[:self.length]
-        self.text=data.decode('utf-16')
-        a=10
+    TYPE = ("260s",)
+
+    def __init__(self, data):
+        self.length, data = unpack("I256s", data)
+        data = data[:self.length]
+        self.text = data.decode('utf-16')
+
     def __unicode__(self):
         return self.text
-
-
-

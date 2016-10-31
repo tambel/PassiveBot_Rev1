@@ -325,6 +325,10 @@ namespace Tools
 			break;
 		case KeyboardButton::TAB:
 			key = VK_TAB;
+			break;
+		case KeyboardButton::ESC:
+			key = VK_ESCAPE;
+			break;
 		}
 		return key;
 	}
@@ -401,6 +405,49 @@ namespace Tools
 			break;
 		}
 		return lang;
+	}
+	vector<unsigned> Process::FindInMemory(double value)
+	{
+		int result;
+		int error;
+		SIZE_T read = 0;
+		unsigned start = Process::base_address;
+		unsigned end = 0;
+		size_t length = 0;
+		MEMORY_BASIC_INFORMATION mbi;
+		vector<unsigned>found = vector<unsigned>();
+		char * buffer;
+		do
+		{
+			memset(&mbi, 0, sizeof(mbi));
+			result = VirtualQueryEx(process, (LPCVOID)start, &mbi, sizeof(mbi));
+			if (result)
+			{
+				end = start + mbi.RegionSize;
+				if (mbi.State == MEM_COMMIT && mbi.Protect == PAGE_READWRITE)
+				{
+					buffer = new char[mbi.RegionSize];
+					result = ReadProcessMemory(process, (LPCVOID)mbi.BaseAddress, buffer, mbi.RegionSize, &read);
+					if (result && read == mbi.RegionSize)
+					{
+						unsigned addr = reinterpret_cast<unsigned>(mbi.BaseAddress);
+						for (char * p = buffer; p < buffer + mbi.RegionSize; p++)
+						{
+							if (value == *reinterpret_cast<double*>(p))
+							{
+								found.push_back(addr);
+							}
+							addr++;
+						}
+					}
+					delete[] buffer;
+				}
+
+			}
+			start = end + 1;
+		} while (result);
+		error = GetLastError();
+		return found;
 	}
 #endif
 

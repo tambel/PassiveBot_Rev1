@@ -235,6 +235,11 @@ vector<shared_ptr<Region>>& Frame::GetFontStrings(bool refresh)
 	return font_strings;
 }
 
+bool Frame::IsShown()
+{
+	return Process::Read<unsigned>(base + 128)>>18 & 1;
+}
+
 
 Region::Region(unsigned base, Frame * parent)
 {

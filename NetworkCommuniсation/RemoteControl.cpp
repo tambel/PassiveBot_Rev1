@@ -1,4 +1,3 @@
-#pragma pack
 #include "stdafx.h"
 #include "RemoteControl.h"
 
@@ -62,7 +61,7 @@ char * RemoteControl::ProcessRequest(char * packet)
 	char * reply = nullptr;
 	switch (type)
 	{
-	case Requests::PlayerPosition:
+	case Request::PlayerPosition:
 	{
 		PlayerPositionReply * rp = new PlayerPositionReply;
 		rp->header.size = sizeof(*rp);
@@ -73,7 +72,7 @@ char * RemoteControl::ProcessRequest(char * packet)
 		packet_to_send_size = rp->header.size;
 		break;
 	}
-	case Requests::TargetObjectInfo:
+	case Request::TargetInfo:
 	{
 		TargetObjectInfoReply * rp = new TargetObjectInfoReply;
 		rp->header.size = sizeof(*rp);
@@ -82,8 +81,17 @@ char * RemoteControl::ProcessRequest(char * packet)
 		rp->guid = *obj->GetGuid();
 		wstring  name = obj->GetName();
 		rp->name.length = name.size() * 2;
-		memcpy(rp->name.str, name.c_str(), (name.size()+1)*2);
+		memcpy(rp->name.str, name.c_str(), (name.size() + 1) * 2);
 		rp->position = obj->GetPosition();
+		reply = reinterpret_cast<char*>(rp);
+		packet_to_send_size = rp->header.size;
+		break;
+	}
+	case Request::Logout:
+	{
+		BoolRequestResult * rp = new BoolRequestResult;
+		rp->header.size = sizeof(*rp);
+		rp->result = AddonInteractor::Logout();
 		reply = reinterpret_cast<char*>(rp);
 		packet_to_send_size = rp->header.size;
 		break;

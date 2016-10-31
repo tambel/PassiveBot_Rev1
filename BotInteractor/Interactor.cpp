@@ -49,12 +49,23 @@ int BotInteractor::_Start()
 {
 	int result;
 	Init();
-	//init navigation
+	
+	
 	ObjectManager::Initialize();
 	ObjectManager::EnumAllVisibleObjects();
 
 	Player * player = ObjectManager::GetPlayer();
-	area=move(NavArea(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords), 3));
+	Sleep(5000);
+	if (!AddonInteractor::Inject())
+	{
+		GameInteractor::ManualLogout();
+		//GameInteractor::Logout();
+		return ExitCode::LoggedOut;
+	}
+	GameInteractor::Logout();
+	//init navigation
+	if (Configuration::IsNavigationEnabled())
+		area=move(NavArea(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords), 3));
 	//start
 	result = func();
 	CleanUp();

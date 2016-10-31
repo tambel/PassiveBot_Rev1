@@ -3,11 +3,6 @@
 #include "WowInteraction\WowInteraction.h"
 #define PREAMBULE 0xDEADBEEF
 
-enum Requests
-{
-	PlayerPosition=1,
-	TargetObjectInfo=2
-};
 
 
 struct PacketHeader
@@ -61,4 +56,20 @@ struct TargetObjectInfoReply
 	Position position;
 	SmallStringField name;
 };
+#pragma pack(pop)
+
+#pragma pack(push, 1)
+
+struct BasePacket
+{
+	PacketHeader header;
+};
+
+struct BoolRequestResult:BasePacket
+{
+	unsigned result;
+};
+
+
+
 #pragma pack(pop)

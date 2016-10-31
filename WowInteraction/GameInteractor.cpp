@@ -191,7 +191,8 @@ bool GameInteractor::SelectCharacter(wstring & character_name)
 	{
 	}
 	character_frame->MoveMouseToFrameAndClick(1000);
-	Process::PushKeyboardButton(KeyboardButton::ENTER);
+	AU3_Send(L"{ENTER}");
+	//Process::PushKeyboardButton(KeyboardButton::ENTER);
 	return true;
 
 }
@@ -209,6 +210,7 @@ bool GameInteractor::IsInWorld()
 }
 bool GameInteractor::Start(GameStartParam * param)
 {
+	int result;
 	bool loading_world = false;
 	cout << "Starting game" << endl;
 	StartClient();
@@ -242,7 +244,16 @@ bool GameInteractor::Start(GameStartParam * param)
 		{
 			Sleep(5000);
 			cout << "InWorld" << endl;
-			int result=param->working_func();
+			result=param->working_func();
+			if (result == ExitCode::LoggedOut)
+			{
+				while (IsInWorld())
+				{
+					Sleep(50);
+					cout << "1111" << endl;
+				}
+			}
+			Sleep(5000);
 		}
 		Sleep(100);
 	}
@@ -251,4 +262,24 @@ bool GameInteractor::Start(GameStartParam * param)
 void GameInteractor::Close()
 {
 	FrameManager::ClearFrames();
+}
+
+bool GameInteractor::ManualLogout()
+{
+	Frame * frame = FrameManager::FindFrameByName("GameMenuFrame");
+	while (!frame->IsShown())
+	{
+		
+		//Process::PushKeyboardButton(KeyboardButton::ESC);
+		AU3_Send(L"{ESC}");
+		Sleep(1000);
+	}
+	Sleep(1000);
+	frame = FrameManager::FindFrameByName("GameMenuButtonLogout");
+	if (frame)
+	{
+		Sleep(1000);
+		frame->MoveMouseToFrameAndClick(100);
+	}
+	return false;
 }

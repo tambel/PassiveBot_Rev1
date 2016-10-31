@@ -13,5 +13,6 @@
 #include "QuestManager.h"
 #include "Exceptions.h"
 #include "Utils.h"
+#include "AddonInteractor.h"
 
 using namespace Utils;

@@ -1,11 +1,22 @@
 #pragma once
-#pragma pack
 #include <mutex>
 #include "NetworkCommunicatorServer.h"
 #include <thread>
 #include "WowInteraction\WowInteraction.h"
 //using up_cast= dynamic_cast<UnkPacket*>
 #define up_cast reinterpret_cast<UnkPacket*>
+
+
+
+enum Request
+{
+	PlayerPosition = 1,
+	TargetInfo = 2,
+	Logout = 3
+};
+
+
+
 
 
 class RemoteControl

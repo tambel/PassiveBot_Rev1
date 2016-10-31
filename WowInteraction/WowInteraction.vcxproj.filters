@@ -90,6 +90,9 @@
     <ClInclude Include="WowInteraction.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="AddonInteractor.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -142,6 +145,9 @@
     </ClCompile>
     <ClCompile Include="ObjectiveArea.cpp">
       <Filter>Файлы исходного кода\Quest</Filter>
+    </ClCompile>
+    <ClCompile Include="AddonInteractor.cpp">
+      <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

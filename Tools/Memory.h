@@ -30,7 +30,8 @@ namespace Tools
 		ALT = 141,
 		CONTROL = 142,
 		ENTER = 160,
-		TAB=143
+		TAB=143,
+		ESC=170
 
 	};
 	enum MouseButton
@@ -117,6 +118,16 @@ namespace Tools
 		static bool LaunchProcess();
 		static Rect GetClientSize();
 		static unsigned GetPID();
+		static vector<unsigned> FindInMemory(double value);
+		template <typename T>
+		static bool Write(T value, unsigned address)
+		{
+			SIZE_T wrote=0;
+			bool result = WriteProcessMemory(process, (LPVOID)address,&value, sizeof(T), &wrote);
+			if (!result || wrote != sizeof(T))
+				return false;
+			return true;
+		}
 
 
 

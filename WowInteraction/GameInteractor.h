@@ -1,13 +1,15 @@
 #pragma once
-#include "FrameManager.h"
+//#include "FrameManager.h"
 #include "AutoItX3_DLL.h"
-/*struct GameStartParam
+#include "AddonInteractor.h"
+
+
+
+enum ExitCode
 {
-	bool debug;
-	char * login;
-	char * password;
-	wchar_t * char_name;
-};*/
+	LoggedOut=1
+};
+
 struct GameStartParam
 {
 	bool debug;
@@ -16,6 +18,7 @@ struct GameStartParam
 	wstring  char_name;
 	int (*working_func)();
 };
+
 class GameInteractor
 {
 
@@ -31,6 +34,8 @@ public:
 	static bool SelectCharacter(wstring & character_name);
 	static bool Start(GameStartParam * param);
 	static void Close();
+	static bool Logout() { return AddonInteractor::Logout(); }
+	static bool ManualLogout();
 };
 
 

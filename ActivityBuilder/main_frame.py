@@ -37,13 +37,13 @@ class Builder(wx.Frame):
 
     def background_communication(self):
         while not self.stop_thread.is_set():
-            '''
+
             packet = RequestPacket(1)
             self.com.send(packet)
             self.player_position = PlayerPositionReply(self.com.recieve())
             time.sleep(0.05)
             if self.quest_editor.IsShown() and not self.stop_thread.is_set():
-                self.quest_editor.player_position_label.SetLabelText("Player position: {}".format(self.player_position.fields["position"].value))
-                self.quest_editor.player_rotation_label.SetLabelText("Player rotation: {}".format(self.player_position.fields["rotation"].value.z))
-            '''
+                self.quest_editor.player_position_label.SetLabelText("Player position:\n{}".format(self.player_position.fields["position"]))
+                self.quest_editor.player_rotation_label.SetLabelText("Player rotation: {}".format(self.player_position.fields["rotation"].z))
+
         self.thread_stopped.set()

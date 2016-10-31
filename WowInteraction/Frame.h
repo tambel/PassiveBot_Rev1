@@ -70,6 +70,7 @@ public:
 	vector<shared_ptr<Region>> & GetRegions(bool refresh=false);
 	vector<shared_ptr<Region>> & GetFontStrings(bool refresh = false);
 	friend bool operator==(const Frame & left, const Frame & right) { return left.base == right.base; }
+	bool IsShown();
 
 };
 
