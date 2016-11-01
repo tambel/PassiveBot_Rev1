@@ -18,8 +18,8 @@ int bot_activity()
 	while (1)
 	{
 		Unit * p = reinterpret_cast<Unit*>(ObjectManager::GetTargetObject());
-		if (p)
-			wcout<<p->GetName()<<endl;
+		//if (p)
+			//wcout<<p->GetName()<<endl;
 		remote_control->ProcessRequest();
 		Sleep(1);
 	}

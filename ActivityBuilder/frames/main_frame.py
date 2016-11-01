@@ -7,7 +7,7 @@ from threading import Thread
 
 class Builder(BaseFrame):
     def __init__(self):
-        BaseFrame.__init__(self, None,name= 'Activity Builder', pos=(300, 100), size=(400, 400))
+        BaseFrame.__init__(self, None,name= 'Activity Builder', pos=(500, 200), size=(400, 400))
         self.open_quest_button = wx.Button(self.panel, id=-1, label='QuestEditor', pos=(8, 8), size=(100, 40))
         self.open_quest_button.Bind(wx.EVT_BUTTON, self.open_quest_button_click)
         self.com = NetworkCommunicator(("127.0.0.1", 8001))

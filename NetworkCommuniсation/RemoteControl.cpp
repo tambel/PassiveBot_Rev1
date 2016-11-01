@@ -38,10 +38,10 @@ char ** RemoteControl::ProcessPacket(char * packet,unsigned & size)
 	recieved_packet = packet;
 	on_receive_mutex.unlock();
 	bool release = false;
-	while (!release)
+	while (!release )
 	{
 		on_receive_mutex.lock();
-		if (packet_to_send)
+		if (!recieved_packet)
 		{
 			release = true;
 		}
@@ -77,12 +77,20 @@ char * RemoteControl::ProcessRequest(char * packet)
 		TargetObjectInfoReply * rp = new TargetObjectInfoReply;
 		rp->header.size = sizeof(*rp);
 		WowObject * obj = ObjectManager::GetTargetObject();
-		rp->type = obj->GetType();
-		rp->guid = *obj->GetGuid();
-		wstring  name = obj->GetName();
-		rp->name.length = name.size() * 2;
-		memcpy(rp->name.str, name.c_str(), (name.size() + 1) * 2);
-		rp->position = obj->GetPosition();
+		if (obj)
+		{
+			rp->type = obj->GetType();
+			rp->guid = *obj->GetGuid();
+			wstring  name = obj->GetName();
+			rp->name.length = name.size() * 2;
+			memcpy(rp->name.str, name.c_str(), (name.size() + 1) * 2);
+			rp->position = obj->GetPosition();
+			
+		}
+		else
+		{
+			rp->type = 0;
+		}
 		reply = reinterpret_cast<char*>(rp);
 		packet_to_send_size = rp->header.size;
 		break;

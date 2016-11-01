@@ -10,14 +10,19 @@ class QuestFrame(BaseFrame):
         :type parent_frame: Builder
         :return:
         """
-        BaseFrame.__init__(self, parent_frame, name='Quest Editor',pos=(500, 200), size=(600, 400))
+        BaseFrame.__init__(self, parent_frame, name='Quest Editor',pos=(400, 200), size=(600, 400))
         self.add_quest_button = wx.Button(self.panel, id=-1, label='Add Quest',pos=(300, 300), size=(100, 50))
         self.add_quest_button.Bind(wx.EVT_BUTTON, self.add_quest_button_click)
+        self.quest_giver_box=wx.StaticText(self.panel, label="Quest Giver", pos=(10,10),size=(200,200))
         self.com=self.parent.com
         self.current_target=None
         self.start_bg_communication()
 
     def add_quest_button_click(self,event):
+        qg_dialog=SelectQuestGiverFrame(self)
+        if qg_dialog.ShowModal()==wx.ID_OK:
+            pass
+
         '''
         packet =RequestPacket(2)
         self.com.send(packet)
@@ -32,7 +37,6 @@ class QuestFrame(BaseFrame):
     def on_close(self):
         self.parent.open_quest_button.Enable()
 
-    def add_quest(self):
 
 
     def get_quest_giver_info(self):

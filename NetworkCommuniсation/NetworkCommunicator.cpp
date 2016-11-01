@@ -29,12 +29,21 @@ char * NetworkCommunicator::RecievePacket(tcp::socket & socket)
 	bool is_begin = true;
 	size_t read = 0;
 
-	do
+	//do
 	{
 		read = socket.read_some(boost::asio::buffer(buf));
 		cout << "REC!!!" << read << endl;
-		if (!read)
-			continue;
+		if (*reinterpret_cast<unsigned*>(buf.data()) == PREAMBULE && read == *reinterpret_cast<unsigned*>(buf.data() + 4))
+		{
+			char * rb = new char[read];
+			memcpy(rb, buf.data(), read);
+			//return reinterpret_cast<UnkPacket*>(rb-4);
+			return rb;
+		}
+		else
+		{
+			return nullptr;
+		}
 		memcpy(buffer.data() + current_buffer_lenght, buf.data(), read);
 		current_buffer_lenght += read;
 		unsigned packet_size = *reinterpret_cast<unsigned*>(buffer.data() + 4);
@@ -47,7 +56,7 @@ char * NetworkCommunicator::RecievePacket(tcp::socket & socket)
 			//return reinterpret_cast<UnkPacket*>(rb-4);
 			return rb;
 		}
-	} while (1);
+	}// while (1);
 }
 
 
