@@ -1,0 +1,15 @@
+DROP TABLE IF EXISTS quest;
+CREATE TABLE quest (id  INT, giver_id INT);
+
+DROP TABLE IF EXISTS object;
+CREATE TABLE object (guid INT, type INT , PRIMARY KEY(id) PRIMARY KEY(guid));
+
+DROP TABLE IF EXISTS guid;
+CREATE TABLE guid (id  INT, high BIGINT, low BIGINT);
+
+DROP TABLE IF EXISTS Vector3;
+CREATE TABLE Vector3 (id INT, x FLOAT, y FLOAT, z FLOAT, PRIMARY KEY(id));
+
+
+DROP TABLE IF EXISTS unit;
+CREATE TABLE unit (guid INT, pos INT, rot INT,PRIMARY KEY(guid));
