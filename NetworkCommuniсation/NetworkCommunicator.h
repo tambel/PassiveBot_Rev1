@@ -27,7 +27,7 @@ public:
 	char *  RecievePacket(tcp::socket & socket);
 	template <typename T>
 	bool SendPacket(tcp::socket & socket,T & packet);
-	bool SendPacket(tcp::socket & socket,void * packer_ptr, unsigned size);
+	void SendPacket(tcp::socket & socket,void * packer_ptr, unsigned size);
 	void Start();
 };
 

@@ -11,18 +11,22 @@ class Base(object):
             self.com=parent.com
         self.stop_thread = Event()
         self.thread_stopped = Event()
+        self.stopped=True
 
     def start_bg_communication(self):
         self.thread.start()
+        self.thread_stopped.clear()
+        self.thread_stopped.clear()
+        self.stopped=False
 
     def stop_bg_communication(self):
         self.stop_thread.set()
-        self.thread_stopped.wait()
+        self.stopped=True
 
     def _background_communication(self):
-        while not self.stop_thread.is_set():
+        while not self.stop_thread.wait(0.05) and not self.stopped:
             self.background_communication()
-            time.sleep(0.05)
+        self.stop_thread.clear()
         self.thread_stopped.set()
 
     def background_communication(self):
@@ -56,8 +60,13 @@ class BaseFrame(Base,wx.Frame):
 class BaseDialog(Base, wx.Dialog):
     def __init__(self,parent, name, pos=None, size=None):
         Base.__init__(self,parent)
-        wx.Dialog.__init__(self,parent,title="Do you really want to close this application?", name="Confirm Exit",pos=pos,size=size)
+        wx.Dialog.__init__(self,parent,title="Quest giver selection", name="Confirm Exit",pos=pos,size=size)
         #wx.MessageDialog(parent,"Do you really want to close this application?", "Confirm Exit", wx.OK|wx.CANCEL|wx.ICON_QUESTION).ShowModal()
         self.parent=parent
         self.panel=wx.Panel(self)
+
+    def ShowModal(self,*args, **kwargs):
+        self.start_bg_communication()
+        return wx.Dialog.ShowModal(self,*args,**kwargs)
+
 

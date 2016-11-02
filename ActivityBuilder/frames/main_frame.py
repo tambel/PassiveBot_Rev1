@@ -13,7 +13,7 @@ class Builder(BaseFrame):
         self.com = NetworkCommunicator(("127.0.0.1", 8001))
         self.com.start()
         self.player_position = None
-        self.start_bg_communication()
+        #self.start_bg_communication()
 
     def open_quest_button_click(self, event):
         quest_editor = QuestFrame(self)

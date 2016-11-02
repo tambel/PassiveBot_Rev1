@@ -7,7 +7,7 @@
 
 struct PacketHeader
 {
-	const unsigned preambule = PREAMBULE;
+	//const unsigned preambule = PREAMBULE;
 	unsigned size;
 	unsigned type;
 	//PacketHeader(unsigned type) :type(type) {}

@@ -57,7 +57,7 @@ char ** RemoteControl::ProcessPacket(char * packet,unsigned & size)
 char * RemoteControl::ProcessRequest(char * packet)
 {
 	//unsigned type = packet->type;
-	unsigned type = *reinterpret_cast<unsigned*>(packet + 8);
+	unsigned type = *reinterpret_cast<unsigned*>(packet + 4);
 	char * reply = nullptr;
 	switch (type)
 	{
