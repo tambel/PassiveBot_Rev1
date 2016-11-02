@@ -37,6 +37,10 @@ class Unsigned(Simple):
     TYPE = ("I",)
 
 
+class Unsigned(Simple):
+    TYPE = ("I",)
+
+
 def gen_filler(size):
     class f(Filler):
         pass

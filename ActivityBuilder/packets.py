@@ -3,6 +3,14 @@ import collections
 from struct import *
 from game_types import *
 
+
+class Requests(object):
+    PlayerPosition = 1
+    TargetInfo = 2
+    Logout = 3
+    TargetQuestGiverQuestList=4
+
+
 class Packet(object):
 
     def __init__(self,type=0):
@@ -43,9 +51,6 @@ class PlayerPositionReply(Packet):
         self.unpack(data)
 
 
-
-
-
 class TargerObjevtInfoReply(Packet):
     def __init__(self,data):
         Packet.__init__(self)
@@ -53,5 +58,13 @@ class TargerObjevtInfoReply(Packet):
         self.fields['type']=Char
         self.fields['position']=Position
         self.fields['name']=SmallString
+        self.unpack(data)
+
+class TargetQuestGiverQuestListReply(Packet):
+    def __init__(self,data):
+        Packet.__init__(self)
+        self.fields['count']=Unsigned
+        for i in range(0,20):
+            self.fields['name{}'.format(i)]=SmallString
         self.unpack(data)
 

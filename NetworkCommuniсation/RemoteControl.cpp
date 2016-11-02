@@ -104,6 +104,24 @@ char * RemoteControl::ProcessRequest(char * packet)
 		packet_to_send_size = rp->header.size;
 		break;
 	}
+	case Request::TargetQuestGiverQuestList:
+	{
+		TargerQuestGiverQuestList * rp = new TargerQuestGiverQuestList;
+		rp->header.size = sizeof(*rp);
+		vector<GossipQuestInfo> infos= AddonInteractor::GetCurrentInteractionQuests();
+		rp->count = infos.size();
+		if (rp->count)
+		{
+			for (int i = 0; i < infos.size(); i++)
+			{
+				rp->list[i].name.length = infos[i].title.size() * 2;
+				memcpy(rp->list[i].name.str, infos[i].title.c_str(), (infos[i].title.size() + 1) * 2);
+			}
+		}
+		reply = reinterpret_cast<char*>(rp);
+		packet_to_send_size = rp->header.size;
+		break;
+	}
 	}
 	return reply;
 }

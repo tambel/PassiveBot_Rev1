@@ -58,7 +58,7 @@ class BaseFrame(Base,wx.Frame):
         pass
 
 class BaseDialog(Base, wx.Dialog):
-    def __init__(self,parent, name, pos=None, size=None):
+    def __init__(self,parent, name, pos=(500, 150), size=(400, 300)):
         Base.__init__(self,parent)
         wx.Dialog.__init__(self,parent,title="Quest giver selection", name="Confirm Exit",pos=pos,size=size)
         #wx.MessageDialog(parent,"Do you really want to close this application?", "Confirm Exit", wx.OK|wx.CANCEL|wx.ICON_QUESTION).ShowModal()

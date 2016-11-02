@@ -1,6 +1,6 @@
 import wx
 from frames.base_frame import BaseFrame, BaseDialog
-from packets import TargerObjevtInfoReply,RequestPacket
+from packets import TargerObjevtInfoReply,RequestPacket, Requests, TargetQuestGiverQuestListReply
 
 
 class SelectQuestGiverFrame(BaseDialog):
@@ -11,7 +11,7 @@ class SelectQuestGiverFrame(BaseDialog):
         :type parent_frame: QuestFrame
         :return:
         """
-        BaseDialog.__init__(self, parent_frame, name="Select Quest Giver",pos=(500, 150), size=(400, 300))
+        BaseDialog.__init__(self, parent_frame, name="Select Quest Giver")
         self.okButton = wx.Button(self.panel, wx.ID_OK, "OK", pos=(140, 200),size=(100,40))
         self.okButton.Bind(wx.EVT_BUTTON,self.select_current_target_button_click)
         self.com=self.parent.com
@@ -35,9 +35,32 @@ class SelectQuestGiverFrame(BaseDialog):
         else:
             self.EndModal(wx.ID_CANCEL)
 
-    def ShowModal(self,*args, **kwargs):
-        self.start_bg_communication()
-        return wx.Dialog.ShowModal(self,*args,**kwargs)
+
+class SelectQuestDialog(BaseDialog):
+    def __init__(self, parent):
+        BaseDialog.__init__(self,parent,"Select Quest")
+        self.okButton = wx.Button(self.panel, wx.ID_OK, "OK", pos=(140, 200),size=(100,40))
+        self.okButton.Bind(wx.EVT_BUTTON,self.select_current_target_button_click)
+        self.com=self.parent.com
+        self.quest_list=None
+        packet =RequestPacket(Requests.TargetQuestGiverQuestList)
+        self.com.send(packet)
+        self.quest_list = TargetQuestGiverQuestListReply(self.com.receive())
+        a=10
+        #self.target_label=wx.StaticText(self.panel,label=u"Name: {}\nGUID: {}\nType: {}\nPosition: {}".format("None", 0,0,0),pos=(10, 0), size=(100, 50))
+
+
+    def select_current_target_button_click(self,event):
+        self.stop_bg_communication()
+        if self.quest_list is not None:
+            self.EndModal(wx.ID_OK)
+        else:
+            self.EndModal(wx.ID_CANCEL)
+
+
+
+
+
 
 
 
