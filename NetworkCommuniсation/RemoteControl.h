@@ -13,7 +13,8 @@ enum Request
 	PlayerPosition = 1,
 	TargetInfo = 2,
 	Logout = 3,
-	TargetQuestGiverQuestList=4
+	TargetQuestGiverQuestList=4,
+	SelectQuestFromList=5
 
 };
 

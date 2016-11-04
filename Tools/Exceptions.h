@@ -11,3 +11,9 @@ public:
 		return  string("Cant read memory at: " + to_string(address)).c_str();
 	}
 };
+
+class MemoryWriteException : runtime_error
+{
+public:
+	MemoryWriteException(unsigned address) : runtime_error("Cant read memory at: "+to_string(address)){}
+};

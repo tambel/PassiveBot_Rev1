@@ -70,7 +70,7 @@ struct BoolRequestResult:BasePacket
 	unsigned result;
 };
 
-struct TargerQuestGiverQuestList :BasePacket
+struct TargerQuestGiverQuestListReply :BasePacket
 {
 	unsigned count;
 	struct {
@@ -78,6 +78,12 @@ struct TargerQuestGiverQuestList :BasePacket
 	}list[20];
 };
 
+
+struct SelectFromQuestListReply : BasePacket
+{
+	unsigned id;
+	SmallStringField name;
+};
 
 
 #pragma pack(pop)

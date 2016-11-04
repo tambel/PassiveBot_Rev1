@@ -106,7 +106,7 @@ char * RemoteControl::ProcessRequest(char * packet)
 	}
 	case Request::TargetQuestGiverQuestList:
 	{
-		TargerQuestGiverQuestList * rp = new TargerQuestGiverQuestList;
+		TargerQuestGiverQuestListReply * rp = new TargerQuestGiverQuestListReply;
 		rp->header.size = sizeof(*rp);
 		vector<GossipQuestInfo> infos= AddonInteractor::GetCurrentInteractionQuests();
 		rp->count = infos.size();
@@ -118,6 +118,17 @@ char * RemoteControl::ProcessRequest(char * packet)
 				memcpy(rp->list[i].name.str, infos[i].title.c_str(), (infos[i].title.size() + 1) * 2);
 			}
 		}
+		reply = reinterpret_cast<char*>(rp);
+		packet_to_send_size = rp->header.size;
+		break;
+	}
+	case Request::SelectQuestFromList:
+	{
+		SelectFromQuestListReply *rp = new SelectFromQuestListReply;
+		rp->header.size = sizeof(*rp);
+		SelectedGossipQuestInfo info= AddonInteractor::GetSelectedQuest();
+		rp->id = info.id;
+		memcpy(rp->name.str, info.title.c_str(), (info.title.size() + 1) * 2);
 		reply = reinterpret_cast<char*>(rp);
 		packet_to_send_size = rp->header.size;
 		break;

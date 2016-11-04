@@ -9,10 +9,10 @@ class Requests(object):
     TargetInfo = 2
     Logout = 3
     TargetQuestGiverQuestList=4
+    SelectQuestFromList=5
 
 
 class Packet(object):
-
     def __init__(self,type=0):
         self.size=0
         self.type=type
@@ -66,5 +66,13 @@ class TargetQuestGiverQuestListReply(Packet):
         self.fields['count']=Unsigned
         for i in range(0,20):
             self.fields['name{}'.format(i)]=SmallString
+        self.unpack(data)
+
+
+class SelectFromQuestListReply(Packet):
+    def __init__(self,data):
+        Packet.__init__(self)
+        self.fields['id']=Unsigned
+        self.fields['title']=SmallString
         self.unpack(data)
 

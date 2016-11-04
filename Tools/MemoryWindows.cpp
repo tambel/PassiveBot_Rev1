@@ -156,8 +156,7 @@ namespace Tools
 		{
 			throw MemoryReadException(address);
 		}
-		wstring res = wstring(result.get());
-		return res;
+		return wstring(result.get());
 
 	}	
 	bool Process::ReadRaw(unsigned address, void * buffer,unsigned long length)

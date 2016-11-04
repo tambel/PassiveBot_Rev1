@@ -120,13 +120,12 @@ namespace Tools
 		static unsigned GetPID();
 		static vector<unsigned> FindInMemory(double value);
 		template <typename T>
-		static bool Write(T value, unsigned address)
+		static void Write(T value, unsigned address)
 		{
 			SIZE_T wrote=0;
 			bool result = WriteProcessMemory(process, (LPVOID)address,&value, sizeof(T), &wrote);
 			if (!result || wrote != sizeof(T))
-				return false;
-			return true;
+				throw MemoryWriteException(address);
 		}
 
 

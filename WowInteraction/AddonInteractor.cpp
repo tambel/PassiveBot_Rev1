@@ -34,39 +34,75 @@ vector<wstring> parse_string(wstring & str)
 unsigned AddonInteractor::status_address = 0;
 unsigned AddonInteractor::result_address = 0;
 unsigned AddonInteractor::command_address = 0;
+unsigned AddonInteractor::event_address = 0;
 
-
-unsigned AddonInteractor::Read(unsigned delay)
+unsigned AddonInteractor::ReadByProgressStatus(unsigned delay)
 {
 	unsigned result;
 	unsigned status;
-	char attempts = 3;
-	do
+	char attempts = 10;
+	try
 	{
-		Sleep(delay);
-		status = Process::Read<double>(status_address);
-		if (status)
+		do
 		{
-			result=Process::Read<double>(result_address);
-		}
-		attempts--;
-	} while (!status && attempts);
-
-	if (!status)
-		throw AddonError("Addon not responding");
-
+			Sleep(delay);
+			status = Process::Read<double>(status_address);
+			if (status)
+			{
+				result = Process::Read<double>(result_address);
+			}
+			attempts--;
+		} while (status == Status::IN_PROCESS && attempts);
+	}
+	catch (MemoryReadException & e)
+	{
+		throw_with_nested(AddonError("ReadByProgressStatus failed. Cant read memory"));
+	}
+	if (!status || !attempts)
+		throw AddonError("ReadByProgressStatus failed. Status not changing");
 	return result;
 }
 
-bool AddonInteractor::Write(unsigned value)
+void AddonInteractor::Write(unsigned value)
 {
 	return Write(static_cast<double>(value));
 }
 
-bool AddonInteractor::Write(double value)
+void AddonInteractor::Write(double value)
 {
-	return Process::Write<double>(value, command_address);
-	Sleep(100);
+		Process::Write<double>(value, command_address);
+		Sleep(100);
+}
+
+void  AddonInteractor::WriteStatus(unsigned value)
+{
+	Process::Write<double>(static_cast<double>(value), status_address);
+}
+
+unsigned AddonInteractor::ExecuteRegularCommand(Command command)
+{
+	try
+	{
+		WriteStatus(Status::IN_PROCESS);
+		Write(command);
+		return ReadByProgressStatus();
+	}
+	catch (runtime_error & e)
+	{
+		throw_with_nested(AddonError("ExecuteRegularCommand function failed"));
+	}
+}
+
+wstring AddonInteractor::ReadEvents()
+{
+	try
+	{
+		return Process::ReadString_UTF8(Process::Read<unsigned>(event_address) + 20, 0);
+	}
+	catch (MemoryReadException & e)
+	{
+		throw_with_nested(AddonError("\"ReadEvents\" function failed. Cant read string"));
+	}
 }
 
 AddonInteractor::AddonInteractor()
@@ -95,9 +131,9 @@ bool AddonInteractor::Inject()
 		return false;
 	button->MoveMouseToFrameAndClick(100);
 
-	
+
 	attempts = 3;
-	while (attempts && (!status_address || !result_address))
+	while (attempts && (!status_address || !result_address || !command_address || !event_address))
 	{
 		Sleep(1000);
 		for (auto f : found)
@@ -114,12 +150,31 @@ bool AddonInteractor::Inject()
 			{
 				command_address = f;
 			}
-			
+			if (Process::Read<double>(f) == EVENT_LINK_ADDRESS && !event_address)
+			{
+				event_address = f;
+			}
+
 		}
 		attempts--;
 	}
 
-	return status_address && result_address && command_address;
+	if (status_address && result_address && command_address && event_address)
+	{
+		try
+		{
+			ExecuteRegularCommand(Command::INJECTED);
+			return true;
+		}
+		catch (AddonError & e)
+		{
+			throw_with_nested(AddonError("Cant inject to addon. \"INJECTED\" command execution failed."));
+		}
+	}
+	else
+	{
+
+	}
 }
 
 bool AddonInteractor::Logout()
@@ -145,8 +200,83 @@ wstring AddonInteractor::GetPlayerName()
 	 
 }
 
+vector<wstring> AddonInteractor::WaitForEvents(vector<wstring>& event_names, bool infinite)
+{
+	bool in_brackets = false;
+	unsigned position = 0;
+	unsigned name_start = 0;
+	unsigned name_end = 0;
+	unsigned data_start;
+	unsigned data_end;
+	wstring events_string = L"";
+	vector<wstring> result = vector<wstring>();
+	unsigned max_wait = 10;
+	unsigned count = 0;
+	try
+	{
+		ClearEvents();
+		do
+		{
+			Sleep(500);
+			result.clear();
+			do
+			{
+				Sleep(50);
+				events_string = move(ReadEvents());
+			} while (events_string.length() == 0 || events_string ==L"None");
+			wstring event_name = L"";
+			wstring event_data = L"";
+			const wchar_t * str = events_string.c_str();
+			for (int i = 0; i < events_string.length(); i++)
+			{
+				if (i == 0 || (i > 0 && str[i - 1] == ']'))
+					name_start = i;
+				if (str[i] == '[')
+				{
+					name_end = i - 1;
+					data_start = i + 1;
+				}
+				if (str[i] == ']')
+				{
+					data_end = i - 1;
+					event_name = events_string.substr(name_start, name_end - name_start+1);
+					event_data = events_string.substr(data_start, data_end - data_start+1);
+					for (auto es : event_names)
+					{
+						if (es == event_name)
+						{
+							result.push_back(event_name);
+							result.push_back(event_data);
+							return result;
+						}
+					}
+				}
+			}
+			count++;
+		} while (count<max_wait || infinite);
+		throw(AddonError("\"WiatForEvents\" function failed. Wait time left"));
+	}
+	catch (AddonError & e)
+	{
+		throw_with_nested(AddonError("\"WiatForEvents\" function failed. Cant read events"));
+	}
+}
+
+void AddonInteractor::ClearEvents()
+{
+	try
+	{
+		ExecuteRegularCommand(Command::CLEAR_EVENTS);
+	}
+	catch (AddonError & e)
+	{
+		throw_with_nested(AddonError("ClearEvents error"));
+	}
+}
+
 void AddonInteractor::GetCurrentInteractionQuestInfo()
 {
+	/*
 	Write(Command::WaitingForEvent_QUEST_DETAIL);
 	Sleep(100);
 	unsigned result;
@@ -158,41 +288,63 @@ void AddonInteractor::GetCurrentInteractionQuestInfo()
 
 	unsigned id = Process::Read<double>(Process::Read<unsigned>(Process::Read<unsigned>(result_address)+0x14));
 	wstring n = Process::ReadString_UTF8(Process::Read<unsigned>(Process::Read<unsigned>(Process::Read<unsigned>(result_address) + 0x14) + 0x28) + 0x14,0);
-
+	*/
 
 }
 
 vector<GossipQuestInfo> AddonInteractor::GetCurrentInteractionQuests()
 {
-	Write(Command::WaitingForEvent_GOSSIP_SHOW);
-	Sleep(100);
-	unsigned result;
-	do
+	wstring_list ev = wstring_list();
+	vector<GossipQuestInfo> result = vector<GossipQuestInfo>();
+	try
 	{
-		result = Read();
-	} while (result == 2);
+		ev = WaitForEvents(wstring_list({ L"GOSSIP_SHOW", L"QUEST_DETAIL" }), true);
+	}
+	catch (AddonError & e)
+	{
+		throw_with_nested(AddonError("\"GetCurrentInteractionQuests\" function failed. Event wait failed"));
+	}
+	wstring_list vres = move(parse_string(ev[1]));
+	if (ev[0] == L"GOSSIP_SHOW")
+	{
 
+		for (int i = 0; i < vres.size(); i += 7)
+		{
+			GossipQuestInfo info = GossipQuestInfo();
+			info.title = vres[i];
+			result.push_back(info);
+		}
 
-	wstring res = Process::ReadString_UTF8(Process::Read<unsigned>(result_address) + 0x14,0);
-	vector<wstring> vres = parse_string(res);
-	int type = stoi(vres[0]);
-	vector<GossipQuestInfo> infos = vector<GossipQuestInfo>();
-	if (type==1)
+	}
+	else if (ev[0] == L"QUEST_DETAIL")
 	{
 		GossipQuestInfo info = GossipQuestInfo();
 		info.id = stoi(vres[1]);
 		info.title = vres[2];
-		infos.push_back(info);
+		result.push_back(info);
 	}
-	if (type == 2)
-	{
-		for (int i = 1; i < vres.size(); i+=7)
-		{
-			GossipQuestInfo info = GossipQuestInfo();
-			info.title = vres[i];
-			infos.push_back(info);
-		}
-	}
+	return result;
+}
 
-	return infos;
+SelectedGossipQuestInfo AddonInteractor::GetSelectedQuest()
+{
+	wstring_list ev = wstring_list();
+	vector<GossipQuestInfo> result = vector<GossipQuestInfo>();
+	try
+	{
+		ev = WaitForEvents(wstring_list({L"QUEST_DETAIL" }), true);
+	}
+	catch (AddonError & e)
+	{
+		throw_with_nested(AddonError("\"GetSelectedQuest\" function failed. Event wait failed"));
+	}
+	if (ev[0] == L"QUEST_DETAIL")
+	{
+		wstring_list vres = move(parse_string(ev[1]));
+		SelectedGossipQuestInfo info;
+		info.id = stoi(vres[0]);
+		info.title = vres[1];
+		return info;
+	}
+	throw AddonError("\"GetSelectedQuest\" function failed. Wrong result string");
 }

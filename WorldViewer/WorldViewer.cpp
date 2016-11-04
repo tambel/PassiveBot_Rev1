@@ -14,7 +14,7 @@ void init_static()
 	NavArea::InitNavConfig();
 }
 int main(int argc, char* argv[])
-{
+{/*
 	setlocale(LC_ALL, "Russian");
 	NetworkCommunicatorClient client = NetworkCommunicatorClient("127.0.0.1", 8001);
 	client.Connect();
@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
 
 
 
-
+	*/
     return 0;
 }
 
