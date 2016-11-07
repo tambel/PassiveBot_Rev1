@@ -21,6 +21,5 @@ public:
 	NetworkCommunicatorServer(string address, unsigned short port);
 	~NetworkCommunicatorServer();
 	void Start(RemoteControl * parent_rm);
-	void PacketRecievedCallback(UnkPacket & packets);
 };
 

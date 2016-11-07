@@ -62,10 +62,3 @@ void NetworkCommunicatorServer::Start(RemoteControl * parent_rm)
 		}
 	}
 }
-
-void NetworkCommunicatorServer::PacketRecievedCallback(UnkPacket & packets)
-{
-
-
-	
-}

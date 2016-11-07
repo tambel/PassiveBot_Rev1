@@ -20,7 +20,6 @@ struct TypedPacket :PacketHeader
 	TypedPacket() :PacketHeader(type_number) {}
 };
 template<unsigned type_number>
-using RequestPacket = TypedPacket<type_number>;
 
 struct UnkPacket :TypedPacket<0>
 {
@@ -61,9 +60,19 @@ struct TargetObjectInfoReply
 
 #pragma pack(push, 1)
 
+
 struct BasePacket
 {
 	PacketHeader header;
+};
+
+struct RequestPacket :BasePacket
+{
+	RequestPacket(unsigned type)
+	{
+		this->header.type = type;
+		this->header.size = sizeof(RequestPacket);
+	}
 };
 
 struct BoolRequestResult:BasePacket

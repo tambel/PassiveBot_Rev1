@@ -35,6 +35,7 @@ class RemoteControl
 
 public:
 	RemoteControl();
+	RemoteControl(string address, unsigned short port);
 	~RemoteControl();
 	void ProcessRequest();
 	char ** ProcessPacket(char * packet, unsigned & size);
@@ -42,5 +43,11 @@ public:
 	void Start();
 
 
+};
+
+class ViewerCommunication : public RemoteControl
+{
+public:
+	ViewerCommunication() :RemoteControl("127.0.0.1", 8002) { }
 };
 

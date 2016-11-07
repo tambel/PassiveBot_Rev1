@@ -14,13 +14,16 @@ int bot_activity()
 	ObjectManager::EnumAllVisibleObjects();
 	Player * player = ObjectManager::GetPlayer();
 	shared_ptr<RemoteControl> remote_control= make_shared<RemoteControl>();
+	shared_ptr<ViewerCommunication> viewer = make_shared<ViewerCommunication>();
 	remote_control->Start();
+	viewer->Start();
 	while (1)
 	{
 		Unit * p = reinterpret_cast<Unit*>(ObjectManager::GetTargetObject());
 		//if (p)
 			//wcout<<p->GetName()<<endl;
 		remote_control->ProcessRequest();
+		viewer->ProcessRequest();
 		Sleep(1);
 	}
 

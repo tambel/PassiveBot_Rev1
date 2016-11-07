@@ -54,7 +54,7 @@ void MapFrame::OnUpdate()
 		
 		mSceneMgr->destroyAllManualObjects();
 		UpdateScene();
-		AddPlayer(Doodad("Character\\Tauren\\Male\\TaurenMale.M2", 0, Position(), 1024));
+		AddPlayer(Doodad("E:\\Extracted\\Character\\Tauren\\Male\\TaurenMale.M2", 0, Position(), 1024));
 		CreateNavMesh();
 		
 		area->to_update = false;

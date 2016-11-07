@@ -2,13 +2,18 @@
 #include "RemoteControl.h"
 
 
-RemoteControl::RemoteControl()
+RemoteControl::RemoteControl():RemoteControl("127.0.0.1", 8001)
 {
-	server = NetworkCommunicatorServer("127.0.0.1", 8001);
+	
+
+}
+
+RemoteControl::RemoteControl(string address, unsigned short port)
+{
+	server = NetworkCommunicatorServer(address,port);
 	recieved_packet = nullptr;
 	packet_to_send = nullptr;
 	packet_to_send_size = 0;
-
 }
 
 
