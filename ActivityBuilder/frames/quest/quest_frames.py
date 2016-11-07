@@ -1,7 +1,7 @@
 import wx
 from frames.base_frame import BaseFrame, BaseDialog
-from packets import TargetObjectInfoReply, RequestPacket, Requests, TargetQuestGiverQuestListReply, \
-    SelectFromQuestListReply, PlayerPositionReply, TargetEntityIdReply
+from packets import TargetObjectInfo, RequestPacket, Requests, TargetQuestGiverQuestList, \
+    SelectFromQuestList, PlayerPosition, TargetEntityId
 
 from quest.quest import Path
 import time
@@ -28,7 +28,7 @@ class SelectQuestGiverFrame(BaseDialog):
     def background_communication(self):
         packet = RequestPacket(2)
         self.com.send(packet)
-        self.current_target = TargetObjectInfoReply(self.com.receive())
+        self.current_target = TargetObjectInfo(self.com.receive())
         self.target_label.SetLabelText(u"Name: {}\nGUID: {}\nType: {}\nPosition: {}".format(
             *(self.current_target.fields[f] for f in "name,guid,type,position".split(','))))
 
@@ -67,14 +67,14 @@ class SelectQuestDialog(BaseDialog):
         self.quest_list_box.Clear()
         packet = RequestPacket(Requests.TargetQuestGiverQuestList)
         self.com.send(packet)
-        self.quest_list = TargetQuestGiverQuestListReply(self.com.receive())
+        self.quest_list = TargetQuestGiverQuestList(self.com.receive())
         for i in range(0, self.quest_list.fields["count"].value):
             self.quest_list_box.Append(self.quest_list.fields["name{}".format(i)].text)
 
     def select_quest(self):
         packet = RequestPacket(Requests.SelectQuestFromList)
         self.com.send(packet)
-        self.quest_info = SelectFromQuestListReply(self.com.receive())
+        self.quest_info = SelectFromQuestList(self.com.receive())
         self.quest_list_box.Hide()
 
         self.select_quest_label.SetLabelText(
@@ -104,17 +104,16 @@ class QuestObjectiveDialog(BaseDialog):
 
     def start_record_path_button_click(self, event):
         self.path_to_objective_recording = not self.path_to_objective_recording
-        self.start_bg_communication()
 
 
     def background_communication(self):
         if self.path_to_objective_recording:
-            packet = RequestPacket(Requests.PlayerPosition)
+            packet = RequestPacket(Requests[PlayerPosition])
             self.com.send(packet)
-            player_position = self.com.receive(PlayerPositionReply)
+            player_position = self.com.receive(PlayerPosition)
             self.path = Path(player_position.position, player_position.rotation)
             while self.path_to_objective_recording:
-                self.path.add_point(self.com.repeat_last_packet(PlayerPositionReply))
+                self.path.add_point(self.com.repeat_last_packet(PlayerPosition))
                 self.path_to_objective_label.SetLabelText("Path points count: {}".format(len(self.path.points)))
                 time.sleep(0.09)
 
@@ -185,6 +184,6 @@ class CompleteQuestObjectiveDialog(QuestObjectiveDialog):
         self.completer_label=wx.StaticText(self.panel,label="<Select completer>",pos=(130, 50), size=(100, 40))
 
     def select_completer_button_click(self,event):
-        self.completer = self.com.send_receive(Requests.TargetInfo, TargetObjectInfoReply)
+        self.completer = self.com.send_receive(TargetObjectInfo)
         self.completer_label.SetLabelText(u"Completer:\nName: {}\nID: {}".format(self.completer.name.text, self.completer.entity_id))
 

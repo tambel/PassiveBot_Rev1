@@ -1,7 +1,7 @@
 import socket
 import time
 import struct
-from packets import RequestPacket
+from packets import RequestPacket, Packet, Requests, Structures
 
 
 class NetworkCommunicator(object):
@@ -36,23 +36,24 @@ class NetworkCommunicator(object):
                 self.connected = False
                 self.start()
 
-    def receive(self, packet_class=None):
+    def receive(self , packet_structure=None):
         if self.connected:
             try:
                 size, = struct.unpack("I", self.sock.recv(4))
                 data = self.sock.recv(size - 4)
+                if packet_structure is not None:
+                    return Packet(packet_structure, data=(size,data))
+                else:
+                    return size, data
             except:
                 self.connected = False
                 self.start()
-            if packet_class is None:
-                return size, data
-            else:
-                return packet_class((size, data))
 
-    def send_receive(self, request, packet_class):
-        self.send(RequestPacket(request))
-        return packet_class(self.receive())
 
-    def repeat_last_packet(self, packet_class):
+    def send_receive(self, request):
+        self.send(RequestPacket(Requests[request]))
+        return Packet(request, data=self.receive())
+
+    def repeat_last_packet(self, packet_structure):
         self.send()
-        return self.receive(packet_class=packet_class)
+        return self.receive(packet_structure)
