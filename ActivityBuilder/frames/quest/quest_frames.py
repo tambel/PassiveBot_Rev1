@@ -1,7 +1,9 @@
 import wx
 from frames.base_frame import BaseFrame, BaseDialog
-from packets import TargerObjevtInfoReply, RequestPacket, Requests, TargetQuestGiverQuestListReply, \
+from packets import TargetObjectInfoReply, RequestPacket, Requests, TargetQuestGiverQuestListReply, \
     SelectFromQuestListReply, PlayerPositionReply, TargetEntityIdReply
+
+from quest.quest import Path
 import time
 import math
 
@@ -26,7 +28,7 @@ class SelectQuestGiverFrame(BaseDialog):
     def background_communication(self):
         packet = RequestPacket(2)
         self.com.send(packet)
-        self.current_target = TargerObjevtInfoReply(self.com.receive())
+        self.current_target = TargetObjectInfoReply(self.com.receive())
         self.target_label.SetLabelText(u"Name: {}\nGUID: {}\nType: {}\nPosition: {}".format(
             *(self.current_target.fields[f] for f in "name,guid,type,position".split(','))))
 
@@ -90,20 +92,41 @@ class SelectQuestDialog(BaseDialog):
 def calc_distance(v1, v2):
     return math.sqrt((v1.x - v2.x) ** 2 + (v1.y - v2.y) ** 2)
 
-class CompleteQuestObjectiveDialog(BaseDialog):
-    pass
+
+class QuestObjectiveDialog(BaseDialog):
+    def __init__(self, parent):
+        BaseDialog.__init__(self, parent, "Objective dialog")
+        self.path_to_objective_recording = False
+        self.path = None
+        self.start_record_path_button = wx.Button(self.panel, label="Start record path", pos=(10, 10), size=(100, 30))
+        self.start_record_path_button.Bind(wx.EVT_BUTTON, self.start_record_path_button_click)
+        self.path_to_objective_label = wx.StaticText(self.panel, label="None", pos=(130, 10), size=(100, 40))
+
+    def start_record_path_button_click(self, event):
+        self.path_to_objective_recording = not self.path_to_objective_recording
+        self.start_bg_communication()
 
 
+    def background_communication(self):
+        if self.path_to_objective_recording:
+            packet = RequestPacket(Requests.PlayerPosition)
+            self.com.send(packet)
+            player_position = self.com.receive(PlayerPositionReply)
+            self.path = Path(player_position.position, player_position.rotation)
+            while self.path_to_objective_recording:
+                self.path.add_point(self.com.repeat_last_packet(PlayerPositionReply))
+                self.path_to_objective_label.SetLabelText("Path points count: {}".format(len(self.path.points)))
+                time.sleep(0.09)
 
-
+'''
 class QuestObjectiveDialog(BaseDialog):
     def __init__(self, parent):
         BaseDialog.__init__(self, parent, "Objective dialog")
         self.path_to_objective_recording = False
         self.objective_blob_recording = False
         self.path = None
-        self.blob=None
-        self.monster_to_kill_id=None
+        self.blob = None
+        self.monster_to_kill_id = None
         self.start_record_path_button = wx.Button(self.panel, label="Start record path", pos=(10, 10), size=(100, 30))
         self.start_record_path_button.Bind(wx.EVT_BUTTON, self.start_record_path_button_click)
         self.path_to_objective_label = wx.StaticText(self.panel, label="None", pos=(130, 10), size=(100, 40))
@@ -118,62 +141,50 @@ class QuestObjectiveDialog(BaseDialog):
 
     def start_record_path_button_click(self, event):
         self.path_to_objective_recording = not self.path_to_objective_recording
+        self.start_bg_communication()
 
     def start_record_blob_button_click(self, event):
         self.objective_blob_recording = not self.objective_blob_recording
 
-    def select_monster_to_kill_button_click(self,event):
+    def select_monster_to_kill_button_click(self, event):
         packet = RequestPacket(Requests.TargetEntityID)
         self.com.send(packet)
         monster_to_kill = TargetEntityIdReply(self.com.receive())
-        self.monster_to_kill_id=monster_to_kill.fields['id'].value
+        self.monster_to_kill_id = monster_to_kill.fields['id'].value
         self.select_monster_to_kill_label.SetLabelText("Monster ID: {}".format(self.monster_to_kill_id))
 
     def background_communication(self):
         if self.path_to_objective_recording:
-            self.path = []
             packet = RequestPacket(Requests.PlayerPosition)
             self.com.send(packet)
-            player_position = PlayerPositionReply(self.com.receive())
-            old_pos = player_position.fields["position"]
-            old_rot = player_position.fields["rotation"]
-            last_rotation = []
+            player_position = self.com.receive(PlayerPositionReply)
+            self.path = Path(player_position.position, player_position.rotation)
             while self.path_to_objective_recording:
-                packet = RequestPacket(Requests.PlayerPosition)
-                self.com.send(packet)
-                player_position = PlayerPositionReply(self.com.receive())
-                pos = player_position.fields["position"]
-                rot = player_position.fields["rotation"]
-                if old_rot != rot:
-                    last_rotation.append(pos)
-                else:
-                    if len(last_rotation):
-                        self.path.append(last_rotation[len(last_rotation) - 1])
-                        last_rotation = []
-                old_rot = rot
-                self.path_to_objective_label.SetLabelText("Path points count: {}".format(len(self.path)))
+                self.path.add_point(self.com.repeat_last_packet(PlayerPositionReply))
+                self.path_to_objective_label.SetLabelText("Path points count: {}".format(len(self.path.points)))
                 time.sleep(0.09)
 
         if self.objective_blob_recording:
-            self.path = []
             packet = RequestPacket(Requests.PlayerPosition)
             self.com.send(packet)
-            player_position = PlayerPositionReply(self.com.receive())
-            old_pos = player_position.fields["position"]
-            old_rot = player_position.fields["rotation"]
-            last_rotation = []
-            while self.objective_blob_recording:
-                packet = RequestPacket(Requests.PlayerPosition)
-                self.com.send(packet)
-                player_position = PlayerPositionReply(self.com.receive())
-                pos = player_position.fields["position"]
-                rot = player_position.fields["rotation"]
-                if old_rot != rot:
-                    last_rotation.append(pos)
-                else:
-                    if len(last_rotation):
-                        self.path.append(last_rotation[len(last_rotation) - 1])
-                        last_rotation = []
-                old_rot = rot
-                self.start_record_blob_label.SetLabelText("Path points count: {}".format(len(self.path)))
+            player_position = self.com.receive(PlayerPositionReply)
+            self.blob = Path(player_position.fields["position"], player_position.fields["rotation"])
+            while self.path_to_objective_recording:
+                self.path.add_point(self.com.repeat_last_packet(PlayerPositionReply))
+                self.path_to_objective_label.SetLabelText("Path points count: {}".format(len(self.path.points)))
                 time.sleep(0.09)
+
+'''
+
+class CompleteQuestObjectiveDialog(QuestObjectiveDialog):
+    def __init__(self, parent):
+        QuestObjectiveDialog.__init__(self, parent)
+        self.completer = None
+        self.select_completer_button = wx.Button(self.panel, label="Select completer", pos=(10, 50), size=(100, 30))
+        self.select_completer_button.Bind(wx.EVT_BUTTON, self.select_completer_button_click)
+        self.completer_label=wx.StaticText(self.panel,label="<Select completer>",pos=(130, 50), size=(100, 40))
+
+    def select_completer_button_click(self,event):
+        self.completer = self.com.send_receive(Requests.TargetInfo, TargetObjectInfoReply)
+        self.completer_label.SetLabelText(u"Completer:\nName: {}\nID: {}".format(self.completer.name.text, self.completer.entity_id))
+

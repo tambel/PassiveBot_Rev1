@@ -81,6 +81,7 @@ char * RemoteControl::ProcessRequest(char * packet)
 		{
 			rp->type = obj->GetType();
 			rp->guid = *obj->GetGuid();
+			rp->entity_id = obj->GetID();
 			wstring  name = obj->GetName();
 			rp->name.length = name.size() * 2;
 			memcpy(rp->name.str, name.c_str(), (name.size() + 1) * 2);

@@ -54,7 +54,7 @@ class QuestFrame(BaseFrame):
             self.quest_objectives_box.Enable()
 
     def add_quest_objective_button_click(self, event):
-        aq_dialog=QuestObjectiveDialog(self)
+        aq_dialog=CompleteQuestObjectiveDialog(self)
         aq_dialog.ShowModal()
 
     def on_close(self):

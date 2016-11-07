@@ -1,14 +1,13 @@
 import time
 from threading import Thread, Event
-
+from network_communication import NetworkCommunicator
 import wx
 
 class Base(object):
     def __init__(self,parent):
-
         self.thread = Thread(target=self._background_communication)
         if parent is not None:
-            self.com=parent.com
+            self.com = parent.com
         self.stop_thread = Event()
         self.thread_stopped = Event()
         self.stopped=True

@@ -52,6 +52,7 @@ struct TargetObjectInfoReply
 {
 	PacketHeader header;
 	Guid128 guid;
+	unsigned entity_id;
 	char type;
 	Position position;
 	SmallStringField name;
