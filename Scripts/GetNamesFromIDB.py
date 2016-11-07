@@ -42,6 +42,8 @@ names["GameObject2"]=[('ObjectCache', 0x26C),
                     ('ObjectName', 0xB4),
                     ]
 
+names["Object2"]=[('EntityID', 0x24)]
+
 		
 
 

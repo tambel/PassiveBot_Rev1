@@ -106,7 +106,7 @@ void ObjectManager::ClearAllLists()
 }
 WowObject * ObjectManager::GetTargetObject()
 {
-	//EnumAllVisibleObjects();
+	EnumAllVisibleObjects();
 	Guid128 target_guid = Process::ReadRel<Guid128>(WowOffsets2::ObjectManager2::TargetGuid);
 	for (auto object : all_objects)
 	{

@@ -133,6 +133,17 @@ char * RemoteControl::ProcessRequest(char * packet)
 		packet_to_send_size = rp->header.size;
 		break;
 	}
+	case Request::TargetEntityID:
+		TargetEntityIDReply * rp = new TargetEntityIDReply;
+		rp->header.size = sizeof(*rp);
+ 		WowObject * obj = ObjectManager::GetTargetObject();
+		if (obj)
+			rp->id = obj->GetID();
+		else
+			rp->id = 0;
+		reply = reinterpret_cast<char*>(rp);
+		packet_to_send_size = rp->header.size;
+		break;
 	}
 	return reply;
 }

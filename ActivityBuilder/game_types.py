@@ -67,6 +67,12 @@ class Vector3(object):
     def __str__(self):
         return "x:{}\ny: {}\nz: {}\n".format(self.x, self.y, self.z)
 
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y and self.z == other.z
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
 
 class Position(object):
     TYPE = ("24s",)

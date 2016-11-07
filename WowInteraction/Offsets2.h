@@ -71,5 +71,9 @@ namespace WowOffsets2
         ObjectCache=0x26C,// 620
         ObjectName=0xB4// 180
     };
+    enum Object2
+    {
+        EntityID=0x24// 36
+    };
 
 }

@@ -85,5 +85,9 @@ struct SelectFromQuestListReply : BasePacket
 	SmallStringField name;
 };
 
+struct TargetEntityIDReply :BasePacket
+{
+	unsigned id;
+};
 
 #pragma pack(pop)

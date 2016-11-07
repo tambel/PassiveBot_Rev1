@@ -14,7 +14,8 @@ enum Request
 	TargetInfo = 2,
 	Logout = 3,
 	TargetQuestGiverQuestList=4,
-	SelectQuestFromList=5
+	SelectQuestFromList=5,
+	TargetEntityID=6
 
 };
 

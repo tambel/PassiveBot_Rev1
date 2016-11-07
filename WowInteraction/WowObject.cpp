@@ -42,7 +42,7 @@ const unsigned WowObject::GetID(bool refresh)
 {
 	if (!id || refresh)
 	{
-		id = Process::Read<unsigned>(Process::Read<unsigned>(base + WowOffsets::Descriptors) + WowOffsets::Object::EntityID);
+		id = Process::Read<unsigned>(Process::Read<unsigned>(base + WowOffsets::Descriptors) + WowOffsets2::Object2::EntityID);
 	}
 	return id;
 }

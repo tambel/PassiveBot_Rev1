@@ -40,7 +40,7 @@ unsigned AddonInteractor::ReadByProgressStatus(unsigned delay)
 {
 	unsigned result;
 	unsigned status;
-	char attempts = 10;
+	unsigned attempts = 50;
 	try
 	{
 		do
@@ -291,17 +291,28 @@ void AddonInteractor::GetCurrentInteractionQuestInfo()
 	*/
 
 }
-
+void print_what(const std::runtime_error& e) {
+	std::cerr << e.what() << '\n';
+	try {
+		std::rethrow_if_nested(e);
+	}
+	catch (const std::runtime_error& nested) {
+		std::cerr << "nested: ";
+		print_what(nested);
+	}
+}
 vector<GossipQuestInfo> AddonInteractor::GetCurrentInteractionQuests()
 {
 	wstring_list ev = wstring_list();
 	vector<GossipQuestInfo> result = vector<GossipQuestInfo>();
 	try
 	{
+		
 		ev = WaitForEvents(wstring_list({ L"GOSSIP_SHOW", L"QUEST_DETAIL" }), true);
 	}
-	catch (AddonError & e)
+	catch (runtime_error & e)
 	{
+		print_what(e);
 		throw_with_nested(AddonError("\"GetCurrentInteractionQuests\" function failed. Event wait failed"));
 	}
 	wstring_list vres = move(parse_string(ev[1]));
