@@ -1,6 +1,5 @@
 #pragma once
 #include "Window.h"
-#include "WowInteraction\WowObject.h"
 #include "Utils.h"
 #include "Renderable.h"
 #include "MutableArea.h"
@@ -28,5 +27,6 @@ public:
 	void UpdateScene();
 	void AddPlayer(Model & model);
 	void SetPlayerPosition(Vector3 & position);
+	void AddPath(Vector3 * path, unsigned size);
 };
 

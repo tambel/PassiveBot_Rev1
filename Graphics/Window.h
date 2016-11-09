@@ -1,23 +1,5 @@
 #pragma once
-#include <OgreRoot.h>
-#include <OgreCamera.h>
-#include <OgreViewport.h>
-#include <OgreSceneManager.h>
-#include <OgreRenderWindow.h>
-#include <OgreConfigFile.h>
-#include <OgreException.h>
-#include <OgreEntity.h>
-#include <OgreFrameListener.h>
-#include <OgreWindowEventUtilities.h>
- 
-#include <OISEvents.h>
-#include <OISInputManager.h>
-#include <OISKeyboard.h>
-#include <OISMouse.h>
- 
 
- 
-#include <SdkCameraMan.h>
  
 class Window
   : public Ogre::WindowEventListener,

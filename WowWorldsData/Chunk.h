@@ -16,6 +16,7 @@
 #include "DetourNavMeshQuery.h"
 #include "DetourCommon.h"
 
+
 using namespace Game;
 class Area;
 struct ChunkAdditionalData

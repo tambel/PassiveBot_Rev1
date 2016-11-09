@@ -1,5 +1,5 @@
-//#include "Window.h"
 #include "stdafx.h"
+#include "Window.h"
 Window::Window()
 	: mShutdown(false),
 	mRoot(0),

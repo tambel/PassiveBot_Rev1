@@ -36,6 +36,8 @@ namespace Utils
 		}
 
 	};
+	using Point2DI = Point2D<int>;
+	using Point2DF = Point2D<float>;
 	struct Vector3
 	{
 		float x;

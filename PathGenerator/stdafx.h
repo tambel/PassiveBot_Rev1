@@ -5,15 +5,10 @@
 
 #pragma once
 
-//Graphics includes
+#include "targetver.h"
+#include <stdio.h>
+#include <tchar.h>
 
-
-#include "NetworkCommuniсation\NetworkCommunicatorClient.h"
-#include "Graphics\Graphics.h"
-#include "PathGenerator\Generator.h"
-
-#include <iostream>
-#include <conio.h>
 
 
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы

@@ -1,9 +1,6 @@
 #pragma once
 #include "MapFrame.h"
-#include "WowWorldsData\NavArea.h"
 #include "MutableArea.h"
-#include <thread>
-#include <mutex>
 using namespace std;
 
 

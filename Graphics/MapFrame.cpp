@@ -1,9 +1,11 @@
 #include "stdafx.h"
+#include "MapFrame.h"
 #include <algorithm>
 #include "Recast.h"
 #include "Sample.h"
 #include "DetourNavMesh.h" 
 #include "DetourNavMeshQuery.h" 
+
 void MapFrame::AddPlayer(Model & model)
 {
 	player_renderable = move(Renderable(&model));
@@ -286,5 +288,10 @@ void MapFrame::SetPlayerPosition(Vector3 & position)
 	
 	//player_position = position;
 	
+
+}
+
+void MapFrame::AddPath(Vector3 * path, unsigned size)
+{
 
 }

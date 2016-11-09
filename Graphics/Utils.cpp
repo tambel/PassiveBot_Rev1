@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Utils.h"
 
 Ogre::Vector3 Vector3ToOgreVector(Vector3 vector)
 {

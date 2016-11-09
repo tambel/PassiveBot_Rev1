@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Renderable.h"
 unsigned long Renderable::counter=0;
 void Renderable::_move(Renderable & other)
 {

@@ -1,6 +1,5 @@
 #pragma once
-#include <mutex>
-#include "WowWorldsData\NavArea.h"
+
 
 
 class MutableArea :public NavArea

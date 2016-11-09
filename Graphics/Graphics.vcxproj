@@ -85,6 +85,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Graphics.h" />
     <ClInclude Include="MapFrame.h" />
     <ClInclude Include="MutableArea.h" />
     <ClInclude Include="Renderable.h" />

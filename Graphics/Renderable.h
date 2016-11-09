@@ -1,7 +1,6 @@
 #pragma once
-#include "OgreSceneManager.h"
 #include "Utils.h"
-#include "WowWorldsData\Model.h"
+
 class Renderable
 {
 
