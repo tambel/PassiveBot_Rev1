@@ -9,11 +9,23 @@ BinaryReader::BinaryReader(string path)
 	try
 	{
 		this->stream = unique_ptr<ifstream>(new ifstream(path, ios::binary));
+		if (stream)
+		{
+			if (!stream->good())
+			{
+				throw(ifstream::failure("\"good\" function failed"));
+			}
+		}
 	}
 	catch (fstream::failure & e)
 	{
 		throw_with_nested(BinaryReaderError("BinaryReader initialization failed. Stream failure"));
 	}
+}
+
+BinaryReader::BinaryReader(BinaryReader && reader)
+{
+	this->stream =move(reader.stream);
 }
 
 BinaryReader::~BinaryReader(void)
@@ -29,37 +41,56 @@ BinaryReader::~BinaryReader(void)
 	}
 	
 }
-unsigned int BinaryReader::ReadUInt()
-{
-	unsigned int result;
-	stream->read((char*)&result,4);
-	return result;
-}
-unsigned int BinaryReader::ReadUInt(unsigned long abs_position)
-{
-	unsigned long long  old_position=stream->tellg();
-	unsigned int result;
-	stream->seekg (abs_position, stream->beg);
-	stream->read((char*)&result,4);
-	stream->seekg(old_position,ios::beg);
-	return result;
-}
-void BinaryReader::ReadBytes(char * buff,unsigned long abs_position,unsigned long length)
-{
-	unsigned long long  old_position=stream->tellg();
-	stream->seekg (abs_position, stream->beg);
-	stream->read(buff,length);
-	stream->seekg(old_position,ios::beg);
-}
+//unsigned int BinaryReader::ReadUInt()
+//{
+//	unsigned int result;
+//	stream->read((char*)&result,4);
+//	return result;
+//}
+//unsigned int BinaryReader::ReadUInt(unsigned long abs_position)
+//{
+//	unsigned long long  old_position=stream->tellg();
+//	unsigned int result;
+//	stream->seekg (abs_position, stream->beg);
+//	stream->read((char*)&result,4);
+//	stream->seekg(old_position,ios::beg);
+//	return result;
+//}
+//void BinaryReader::ReadBytes(char * buff,unsigned long abs_position,unsigned long length)
+//{
+//	unsigned long long  old_position=stream->tellg();
+//	stream->seekg (abs_position, stream->beg);
+//	stream->read(buff,length);
+//	stream->seekg(old_position,ios::beg);
+//}
 
 
 void BinaryReader::MoveToBegining()
 {
-	stream->seekg(0,stream->beg);
+	try
+	{
+		stream->seekg(0,stream->beg);
+	}
+	catch (fstream::failure & e)
+	{
+		throw_with_nested(BinaryReaderError("BinaryReader::MoveToBegining failed. Stream failure"));
+
+	}
+	
 }
 void BinaryReader::MoveForward(unsigned long offset)
 {
-	stream->seekg(offset,ios::cur);
+	
+	try
+	{
+		stream->seekg(offset, ios::cur);
+	}
+	catch (fstream::failure & e)
+	{
+		throw_with_nested(BinaryReaderError("BinaryReader::MoveForward failed. Stream failure"));
+
+	}
+
 }
 ifstream * BinaryReader::GetStream()
 {
@@ -67,28 +98,48 @@ ifstream * BinaryReader::GetStream()
 }
 void BinaryReader::SetPosition(unsigned long long position)
 {
-	stream->seekg(position,ios::beg);
+	
+	try
+	{
+		stream->seekg(position, ios::beg);
+	}
+	catch (fstream::failure & e)
+	{
+		throw_with_nested(BinaryReaderError("BinaryReader::SetPosition failed. Stream failure"));
+
+	}
 }
 string BinaryReader::ReadString(unsigned count)
 {
-	if (count == 0)
+	try
 	{
-		string result = "";
-		char c=0;
-		do
+		if (count == 0)
 		{
-			stream->read(&c, 1);
-			result += c;
-		} while (c);
-		return result;
+			string result = "";
+			char c = 0;
+			do
+			{
+				stream->read(&c, 1);
+				result += c;
+			} while (c);
+			return result;
+		}
+		unique_ptr<char>  buff = unique_ptr<char>(new char[count + 1]);
+		ReadArray<char>(buff.get(), count);
+		if (buff.get()[count] != 0)
+		{
+			buff.get()[count] = 0;
+		}
+		return string(buff.get());
 	}
-	char * buff = new char[count+1];
-	ReadArray<char>(buff,count);
-	if (buff[count] != 0)
+	catch (fstream::failure & e)
 	{
-		buff[count] = 0;
+		throw_with_nested(BinaryReaderError("BinaryReader::ReadString failed. Stream failure"));
 	}
-	return string(buff);
+	catch (BinaryReaderError & e)
+	{
+		throw(BinaryReaderError("BinaryReader::ReadString failed. " + string(e.what())));
+	}
 }
 unsigned long long BinaryReader::GetPosition()
 { 

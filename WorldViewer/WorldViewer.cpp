@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 {
 	init_static();
 
-	ClientDB::OpenDBFile("WorldMapArea");
+	ClientDB::GetWorldMapAreas();
 
 
 	ViewerClient client = ViewerClient();

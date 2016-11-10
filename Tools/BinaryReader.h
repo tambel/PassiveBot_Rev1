@@ -13,13 +13,14 @@ class BinaryReader
 	unique_ptr<ifstream> stream;
 public:
 	BinaryReader() {}
+	BinaryReader(BinaryReader && reader);
 	BinaryReader(ifstream * stream);
 	BinaryReader(string path);
 	~BinaryReader(void);
 	//Data reading
-	unsigned int ReadUInt();
-	unsigned int ReadUInt(unsigned long abs_position);
-	void ReadBytes(char * buff,unsigned long abs_position,unsigned long length);
+	//unsigned int ReadUInt();
+	//unsigned int ReadUInt(unsigned long abs_position);
+	//void ReadBytes(char * buff,unsigned long abs_position,unsigned long length);
 	template <class T>
 	void ReadArray(void * buff, unsigned long count=1)
 	{
