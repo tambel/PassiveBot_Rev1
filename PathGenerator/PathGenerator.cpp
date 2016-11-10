@@ -16,7 +16,7 @@ int main()
 {
 	init_static();
 	Generator gen;
-	gen.Generate(Point2DI(36, 32), Point2DI(7, 4));
+	gen.LinkChunkWithNeighbours(Point2DI(36, 32), Point2DI(7, 4));
     return 0;
 }
 

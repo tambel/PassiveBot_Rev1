@@ -11,6 +11,7 @@
 #include "NetworkCommuniñation\NetworkCommunicatorClient.h"
 #include "Graphics\Graphics.h"
 #include "PathGenerator\Generator.h"
+#include "WowWorldsData\ClientDB.h"
 
 #include <iostream>
 #include <conio.h>

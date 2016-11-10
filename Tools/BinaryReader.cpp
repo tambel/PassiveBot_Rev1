@@ -2,18 +2,32 @@
 #include "BinaryReader.h"
 BinaryReader::BinaryReader(ifstream * stream)
 {
-	this->stream=stream;
+	this->stream=unique_ptr<ifstream>(stream);
 }
 BinaryReader::BinaryReader(string path)
 {
-	this->stream=new ifstream(path, ios::binary);
-
+	try
+	{
+		this->stream = unique_ptr<ifstream>(new ifstream(path, ios::binary));
+	}
+	catch (fstream::failure & e)
+	{
+		throw_with_nested(BinaryReaderError("BinaryReader initialization failed. Stream failure"));
+	}
 }
 
 BinaryReader::~BinaryReader(void)
 {
-	this->stream->close();
-	delete this->stream;
+	try
+	{
+		this->stream->close();
+	}
+	catch (fstream::failure & e)
+	{
+		throw_with_nested(BinaryReaderError("BinaryReader destructor failed. Stream failure"));
+
+	}
+	
 }
 unsigned int BinaryReader::ReadUInt()
 {
@@ -49,7 +63,7 @@ void BinaryReader::MoveForward(unsigned long offset)
 }
 ifstream * BinaryReader::GetStream()
 {
-	return stream;
+	return &*stream;
 }
 void BinaryReader::SetPosition(unsigned long long position)
 {
@@ -57,6 +71,17 @@ void BinaryReader::SetPosition(unsigned long long position)
 }
 string BinaryReader::ReadString(unsigned count)
 {
+	if (count == 0)
+	{
+		string result = "";
+		char c=0;
+		do
+		{
+			stream->read(&c, 1);
+			result += c;
+		} while (c);
+		return result;
+	}
 	char * buff = new char[count+1];
 	ReadArray<char>(buff,count);
 	if (buff[count] != 0)

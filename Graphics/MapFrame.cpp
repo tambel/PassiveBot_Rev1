@@ -1,10 +1,6 @@
 #include "stdafx.h"
 #include "MapFrame.h"
-#include <algorithm>
-#include "Recast.h"
-#include "Sample.h"
-#include "DetourNavMesh.h" 
-#include "DetourNavMeshQuery.h" 
+
 
 void MapFrame::AddPlayer(Model & model)
 {
@@ -21,6 +17,7 @@ void MapFrame::AddPlayer(Model & model)
 MapFrame::MapFrame(void)
 {
 	rends = vector<Renderable>();
+	lines = vector<Renderable*>();
 }
 
 
@@ -275,6 +272,11 @@ void MapFrame::UpdateScene()
 		add_if_not_exist(&*wmo, rends, mSceneMgr);
 	for (auto &doodad : area->GetDoodads())
 		add_if_not_exist(&*doodad, rends, mSceneMgr);
+
+	for (auto &rend : lines)
+	{
+		rend->CreateScene(mSceneMgr->getRootSceneNode());
+	}
 }
 
 void MapFrame::SetPlayerPosition(Vector3 & position)
@@ -291,7 +293,10 @@ void MapFrame::SetPlayerPosition(Vector3 & position)
 
 }
 
-void MapFrame::AddPath(Vector3 * path, unsigned size)
+void MapFrame::AddPath(Path::Link * link)
 {
+
+	//LineStripRenderable rend = LineStripRenderable(path, size);
+	lines.push_back(new LineStripRenderable(link->points.get(), link->size));
 
 }

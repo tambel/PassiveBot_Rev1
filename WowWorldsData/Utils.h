@@ -6,6 +6,33 @@ using namespace Utils;
 using Vector3F = boost::geometry::model::point<float, 3, boost::geometry::cs::cartesian>;
 using namespace std;
 
+namespace Path
+{
+	struct Link;
+	struct Point
+	{
+		Vector3 position;
+		vector<Link*> links;
+	};
+	struct Link
+	{
+		Point * point1;
+		unique_ptr<Vector3> points;
+		unsigned size;
+		Point * point2;
+		Point * GetOppositePoint(Point * p)
+		{
+			return p == point1 ? point2 : point1;
+		}
+	};
+	struct Chunk
+	{
+		Point2DI block;
+		Point2DI coordinates;
+		vector<Point*> points;
+	};
+}
+
 namespace Utils
 {
 

@@ -3,7 +3,7 @@
 
 class Renderable
 {
-
+protected:
 	Model * model=nullptr;
 	static unsigned long counter;
 	unsigned long id;
@@ -23,11 +23,22 @@ public:
 	Renderable & operator=(Renderable &&);
 	
 	~Renderable();
-	void CreateScene(Ogre::SceneNode * parent);
+	virtual void CreateScene(Ogre::SceneNode * parent);
 	unsigned long GetID() {return id;}
 	Ogre::SceneNode * GetScene() {return scene;}
 	Model * GetModel() {return model;}
 	
 };
+
+class LineStripRenderable : public Renderable
+{
+	Vector3 * points = nullptr;
+	unsigned size = 0;
+public :
+	LineStripRenderable(LineStripRenderable && other);
+	LineStripRenderable(Vector3 * points, unsigned size);
+	virtual void CreateScene(Ogre::SceneNode * parent);
+};
+
 
 

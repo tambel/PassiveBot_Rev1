@@ -11,12 +11,12 @@ void Renderable::_move(Renderable & other)
 }
 Renderable::Renderable()
 {
-
+	
 }
 Renderable::Renderable(Model * model):model(model)
 {
-	to_kill=false;
-	id=counter;
+	to_kill = false;
+	id = counter;
 	counter++;
 }
 
@@ -109,4 +109,31 @@ void Renderable::CreateScene(Ogre::SceneNode * parent)
 	scene->attachObject(entity);
 	scene->getCreator()->destroyManualObject(manual);
 	return true;*/
+}
+
+LineStripRenderable::LineStripRenderable(LineStripRenderable && other)
+{
+	this->points = other.points;
+	this->size = other.size;
+}
+
+LineStripRenderable::LineStripRenderable(Vector3 * points, unsigned size)
+{
+	this->points = points;
+	this->size = size;
+}
+
+void LineStripRenderable::CreateScene(Ogre::SceneNode * parent)
+{
+	//string name = to_string(GetID());
+	Ogre::SceneNode * scene = parent->createChildSceneNode();
+	Ogre::ManualObject* m_pRecastMOPath = scene->getCreator()->createManualObject();
+	m_pRecastMOPath->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_STRIP);
+	for (int i = 0; i < size; i++)
+	{
+		m_pRecastMOPath->position(points[i].x, points[i].z, points[i].y + 2);
+		m_pRecastMOPath->colour(1, 0, 0);
+	}
+	m_pRecastMOPath->end();
+	scene->attachObject(m_pRecastMOPath);
 }

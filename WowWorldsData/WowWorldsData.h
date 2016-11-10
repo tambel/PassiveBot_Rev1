@@ -18,3 +18,4 @@
 #include "WMO.h"
 #include "WMOPart.h"
 #include "WMOStructs.h"
+#include "ClientDB.h"

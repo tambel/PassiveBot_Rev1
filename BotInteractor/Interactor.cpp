@@ -65,7 +65,7 @@ int BotInteractor::_Start()
 	*/
 	Sleep(1000);
 	//init navigation
-	if (Configuration::IsNavigationEnabled());
+	if (Configuration::IsNavigationEnabled())
 		area=move(NavArea(Game::LocationBase::Get("Kalimdor"), Utils::WorldPositionToBlockCoords(player->GetPosition().coords), Utils::WorldPositionToChunkCoords(player->GetPosition().coords), 3));
 	//start
 	result = func();

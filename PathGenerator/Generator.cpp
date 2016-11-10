@@ -47,31 +47,32 @@ float Generator::CalcDistance(Vector3 & point1, Vector3 point2)
 	return sqrtf(w*w + h*h);
 }
 
-bool Generator::IsPointsConnected(PathGeneration::Point * point1, PathGeneration::Point * point2)
+bool Generator::IsPointsConnected(Path::Point * point1, Path::Point * point2)
 {
-	return point1->GetOppositePoint()->point == point2->point;
+	return true;// point1->GetOppositePoint()->point == point2->point;
 }
 
-void Generator::ConnectPoints(PathGeneration::Point * point1, PathGeneration::Point * point2, Vector3 * path, unsigned path_size)
+void Generator::ConnectPoints(Path::Point * point1, Path::Point * point2, Vector3 * path, unsigned path_size)
 {
-	links.push_back(unique_ptr<PathGeneration::Link>(new PathGeneration::Link()));
-	PathGeneration::Link * link = links.back().get();
+	links.push_back(unique_ptr<Path::Link>(new Path::Link()));
+	Path::Link * link = links.back().get();
 	if (path_size > 2)
 	{
 		for (int i = 1; i < path_size - 1; i++)
 		{
-			link->medium_points.push_back(path[i]);
+			//link->points.push_back(path[i]);
 		}
 	}
-	point1->link = link;
-	point2->link = link;
-	link->point1 = point1;
-	link->point2 = point2;
+	//point1->link = link;
+	//point2->link = link;
+	///link->point1 = point1;
+	//link->point2 = point2;
 
 }
 
 Generator::Generator()
 {
+	area = nullptr;
 }
 
 
@@ -79,55 +80,48 @@ Generator::~Generator()
 {
 }
 
-void Generator::Generate(Point2D<int> start_block, Point2D<int> rect)
+void Generator::LinkChunkWithNeighbours(Point2D<int> block, Point2D<int> coordinates)
 {
 	init_order();
-	NavArea area;
-	vector<Chunk*> neighbour_chunks=vector<Chunk*>();
+	
+	vector<Chunk*> neighbour_chunks = vector<Chunk*>();
 	Chunk * center_chunk = nullptr;
 	Vector3 c1_point, c2_point;
 	bool path_found = false;
-	for (int bx = start_block.X; bx < start_block.X + rect.X; bx++);
+	if (area)
+		area->UpdateArea(Game::LocationBase::Get("Kalimdor"), block, coordinates);
+	else
+		area =new  NavArea(Game::LocationBase::Get("Kalimdor"), block, coordinates, 1);
+	//area.UpdateArea(Game::LocationBase::Get("Kalimdor"), block, coordinates);
+	for (auto & chunk : area->GetChunks())
 	{
-		for (int by = start_block.Y; by < start_block.Y + rect.Y; by++);
+		if (chunk->GetBlockCoordinates() == block && chunk->GetCoordinates() == coordinates)
 		{
-			for (int cx = 0; cx < 16; cx++);
-			{
-				for (int cy = 0; cy < 16; cy++);
-				{
-					area = NavArea(Game::LocationBase::Get("Kalimdor"), Point2D<int>(36, 32), Point2D<int>(7, 4), 1);
-					for (auto & chunk : area.GetChunks())
-					{
-						if (chunk->GetCoordinates() != Point2D<int>(7, 4))
-						{
-							neighbour_chunks.push_back(chunk.get());
-						}
-						else
-						{
-							center_chunk = chunk.get();
-						}
-					}
-					for (auto chunk : neighbour_chunks)
-					{
-						LinkToChunk(center_chunk, chunk, area);
-					}
-				}
-			}
+			center_chunk = chunk.get();
 		}
+		else
+		{
+			neighbour_chunks.push_back(chunk.get());
+		}
+	}
+	for (auto chunk : neighbour_chunks)
+	{
+		LinkTwoChunk(center_chunk, chunk, *area);
+
 	}
 	int a;
 	a = 10;
 }
 
-vector<unique_ptr<PathGeneration::Point>> * Generator::GetChunkPoints(Point2DI & block, Point2DI & coordinates)
+vector<Path::Point*> * Generator::GetChunkPoints(Point2DI & block, Point2DI & coordinates)
 {
-	PathGeneration::Chunk * chunk = GetChunk(block, coordinates);
+	Path::Chunk * chunk = GetChunk(block, coordinates);
 	if (chunk)
 		return &chunk->points;
 	return nullptr;
 }
 
-PathGeneration::Chunk * Generator::GetChunk(Point2DI & block, Point2DI & coordinates)
+Path::Chunk * Generator::GetChunk(Point2DI & block, Point2DI & coordinates)
 {
 	for (auto & chunk : chunks)
 	{
@@ -136,20 +130,21 @@ PathGeneration::Chunk * Generator::GetChunk(Point2DI & block, Point2DI & coordin
 			return chunk.get();
 		}
 	}
-	chunks.push_back(unique_ptr<PathGeneration::Chunk>(new PathGeneration::Chunk()));
+	chunks.push_back(unique_ptr<Path::Chunk>(new Path::Chunk()));
 	chunks.back()->block = block;
 	chunks.back()->coordinates = coordinates;
-	chunks.back()->points = vector<unique_ptr<PathGeneration::Point>>();
+	chunks.back()->points = vector<Path::Point*>();
 	return chunks.back().get();
 }
 
-void Generator::LinkToChunk(Chunk * c1, Chunk * c2, NavArea & area)
+void Generator::LinkTwoChunk(Chunk * c1, Chunk * c2, NavArea & area)
 {
-	Vector3 * c1_point, *c2_point, *path;
-	PathGeneration::Chunk * chunk1 = GetChunk(c1->GetBlockCoordinates(), c1->GetCoordinates());
-	PathGeneration::Chunk * chunk2 = GetChunk(c2->GetBlockCoordinates(), c2->GetCoordinates());
+	Vector3 * c1_point, *c2_point, * path;
+	Path::Chunk * chunk1 = GetChunk(c1->GetBlockCoordinates(), c1->GetCoordinates());
+	Path::Chunk * chunk2 = GetChunk(c2->GetBlockCoordinates(), c2->GetCoordinates());
 	bool is_connected = false;
 	bool stop_loop = false;
+	/*
 	if (chunk1 && chunk2)
 	{
 		for (auto & point : chunk1->points)
@@ -187,7 +182,7 @@ void Generator::LinkToChunk(Chunk * c1, Chunk * c2, NavArea & area)
 					path = reinterpret_cast<Vector3*>(area.m_smoothPath);
 					if (CalcPathDistance(path, area.m_nsmoothPath) > CalcDistance(*c1_point, *c2_point)*1.5)
 						continue;
-					chunk1->points.push_back(unique_ptr<PathGeneration::Point>(new PathGeneration::Point()));
+					chunk1->points.push_back(unique_ptr<Path::Point>(new Path::Point()));
 					chunk1->points.back()->point = *c1_point;
 					ConnectPoints(point.get(), chunk1->points.back().get(), path, area.m_nsmoothPath);
 					if (!is_connected)
@@ -200,6 +195,27 @@ void Generator::LinkToChunk(Chunk * c1, Chunk * c2, NavArea & area)
 				break;
 		}
 	}
+	*/
+	for (auto point : chunk1->points)
+	{
+		for (auto point2 : chunk2->points)
+		{
+			for (auto p2_link : point2->links)
+			{
+				if (p2_link->GetOppositePoint(point2) == point)
+				{
+					is_connected = true;
+					break;
+				}
+			}
+			if (is_connected)
+				break;
+		}
+		if (is_connected)
+			break;
+	}
+
+
 	stop_loop = false;
 	if (!is_connected)
 	{
@@ -209,39 +225,56 @@ void Generator::LinkToChunk(Chunk * c1, Chunk * c2, NavArea & area)
 			{
 				c1_point = reinterpret_cast<Vector3*>(c1->GetVertices()) + i1;
 				c2_point = reinterpret_cast<Vector3*>(c2->GetVertices()) + i2;
-				if (area.FindPath(*c1_point, *c2_point, 0))
+				Vector3 coords = *c1_point;
+				coords = Vector3(coords.x, coords.y, coords.z);
+				Vector3 ucoords = *c2_point;
+				ucoords = Vector3(ucoords.x, ucoords.y, ucoords.z);
+				
+				if (area.FindPath(coords, ucoords, 0)>=0)
 				{
 					path = reinterpret_cast<Vector3*>(area.m_smoothPath);
 					float ad = CalcPathDistance(path, area.m_nsmoothPath);
 					float d = CalcDistance(*c1_point, *c2_point);
-					if (CalcPathDistance(path, area.m_nsmoothPath) > CalcDistance(*c1_point, *c2_point)*1.5)
-						continue;
-					PathGeneration::Point * p1= new PathGeneration::Point();
-					PathGeneration::Point * p2 = new PathGeneration::Point();
-					p1->point = *c1_point;
-					p2->point = *c2_point;
-
-					chunk1->points.push_back(unique_ptr<PathGeneration::Point>(p1));
-					chunk1->points.push_back(unique_ptr<PathGeneration::Point>(p2));
-					ConnectPoints(p1, p2, path, area.m_nsmoothPath);
-
-					/*chunk1->points.push_back(PathGeneration::Point());
-					PathGeneration::Point * p1 = &chunk1->points.back();
-					chunk1->points.push_back(PathGeneration::Point());
-					PathGeneration::Point * p2 = &chunk1->points.back();
-					p1->point = *c1_point;
-					p2->point = *c2_point;*/
+					if (CalcPathDistance(path, area.m_nsmoothPath) > CalcDistance(*c1_point, *c2_point)*1.1);
+						//continue;
 					
-					if (!is_connected)
-						is_connected = true;
-					stop_loop = true;
+					Path::Point * p1 = new Path::Point();
+					Path::Point * p2 = new Path::Point();
+					Path::Link * link = new Path::Link();
+					link->point1 = p1;
+					link->point2 = p2;
+					p1->links.push_back(link);
+					p2->links.push_back(link);
+					
+					link->size = area.m_nsmoothPath;
+					p1->position = *path;
+					p2->position = *(path + link->size - 1);
+					if (link->size > 2)
+					{
+						link->points = unique_ptr<Vector3>(new Vector3[link->size]);
+						memcpy(link->points.get(), path, (link->size) * 12);
+					}
+					else
+						link->points = nullptr;
+					links.push_back(unique_ptr<Path::Link>(link));
+					points.push_back(unique_ptr<Path::Point>(p1));
+					points.push_back(unique_ptr<Path::Point>(p1));
+					chunk1->points.push_back(p1);
+					chunk2->points.push_back(p2);
+
+					is_connected = true;
 					break;
 				}
 			}
-			if (stop_loop)
+			if (is_connected)
 				break;
 		}
 	}
 
+}
+
+vector<unique_ptr<Path::Link>>& Generator::GetLinks()
+{
+	return links;
 }
 

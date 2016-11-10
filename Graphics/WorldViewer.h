@@ -22,5 +22,6 @@ public:
 	void Update(Vector3 & position);
 	WorldViewer & operator=(WorldViewer && other);
 	inline MapFrame & GetFrame() { return frame; }
+
 };
 

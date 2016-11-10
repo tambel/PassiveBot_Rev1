@@ -13,6 +13,7 @@ class MapFrame: public Window
 	Vector3 old_player_position;
 	Ogre::SceneNode * player_scene = nullptr;
 	bool to_update_player = false;
+	vector<Renderable*> lines;
 	
 
 public:
@@ -27,6 +28,6 @@ public:
 	void UpdateScene();
 	void AddPlayer(Model & model);
 	void SetPlayerPosition(Vector3 & position);
-	void AddPath(Vector3 * path, unsigned size);
+	void AddPath(Path::Link * link);
 };
 
