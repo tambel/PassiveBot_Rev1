@@ -37,8 +37,8 @@ Chunk::Chunk(Area * area,ChunkStreamInfo info, ChunkStreamInfo obj_info,  ADT * 
 	unsigned size;
 	while (root_reader->GetPosition()<=root_info.start+root_info.size-8)
 	{
-		sig=root_reader->ReadUInt();
-		size=root_reader->ReadUInt();
+		sig=root_reader->Read<unsigned>();
+		size=root_reader->Read<unsigned>();
 		switch (sig)
 		{
 		case Utils::ChunkSignatures::ADTSignature::MCNKSignatures::Mcvt:
@@ -53,8 +53,8 @@ Chunk::Chunk(Area * area,ChunkStreamInfo info, ChunkStreamInfo obj_info,  ADT * 
 	obj_reader->SetPosition(obj_info.start);
 	while (obj_reader->GetPosition() <= obj_info.start + obj_info.size-8)
 	{
-		sig = obj_reader->ReadUInt();
-		size = obj_reader->ReadUInt();
+		sig = obj_reader->Read<unsigned>();
+		size = obj_reader->Read<unsigned>();
 		switch (sig)
 		{
 		case Utils::ChunkSignatures::ADTSignature::MCNKSignatures::Mcrd:

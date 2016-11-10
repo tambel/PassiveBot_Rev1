@@ -39,14 +39,14 @@ bool ChunkedData::SeekChunk(BinaryReader & reader, unsigned int signature, bool 
 		reader.MoveToBegining();
 	}
 	unsigned int sig;
-	sig = reader.ReadUInt();
+	sig = reader.Read<unsigned>();
 
 	while (!reader.GetStream()->eof() && sig != signature)
 	{
-		unsigned int size = reader.ReadUInt();
+		unsigned int size = reader.Read<unsigned>();
 		reader.MoveForward(size);
 		//reader->GetStream()->seekg(size,ios::cur);
-		sig = reader.ReadUInt();
+		sig = reader.Read<unsigned>();
 	}
 	if (!reader.GetStream()->eof())
 		return true;
