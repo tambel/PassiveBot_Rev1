@@ -69,40 +69,12 @@ int main(int argc, char* argv[])
 	};
 
 	
-
-
 	WorldViewer viewer = WorldViewer(client.GetPlayerPosition().coords);
 	add_map("Mulgore", viewer.GetFrame());
+	add_map("SouthernBarrens", viewer.GetFrame());
 	add_map("Barrens", viewer.GetFrame());
 	add_map("Durotar", viewer.GetFrame());
-	WorldMapArea a = ClientDB::GetWorldMapArea("Durotar");
-	a = ClientDB::GetWorldMapArea("Barrens");
-	Vector3 points[5];
-	points[0].x = a.m_locTop;
-	points[0].z = a.m_locRight;
-	points[0].y = -250.0;
-
-	points[1].x = a.m_locBottom;
-	points[1].z = a.m_locRight;
-	points[1].y = -250.0;
-
-	points[2].x = a.m_locBottom;
-	points[2].z = a.m_locLeft;
-	points[2].y = -250.0;
-
-	points[3].x = a.m_locTop;
-	points[3].z = a.m_locLeft;
-	points[3].y = -250.0;
-
-	points[4].x = a.m_locTop;
-	points[4].z = a.m_locRight;
-	points[4].y = -250.0;
-	for (int i = 0; i < 5; i++)
-	{
-		Vector3 coords = points[i];
-		coords = Vector3(Metrics::MapMidPoint - coords.z, coords.y, -(Metrics::MapMidPoint - coords.x));
-		points[i] = coords;
-	}
+	add_map("Ashenvale", viewer.GetFrame());
 	//viewer.GetFrame()->AddStrip(points, 5);
 
 	for (auto & link : gen.GetLinks())
