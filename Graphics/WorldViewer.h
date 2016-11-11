@@ -21,7 +21,7 @@ public:
 	void Update(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	void Update(Vector3 & position);
 	WorldViewer & operator=(WorldViewer && other);
-	inline MapFrame & GetFrame() { return frame; }
+	inline MapFrame * GetFrame() { return &frame; }
 
 };
 

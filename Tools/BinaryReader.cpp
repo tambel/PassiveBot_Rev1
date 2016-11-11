@@ -115,13 +115,15 @@ string BinaryReader::ReadString(unsigned count)
 	{
 		if (count == 0)
 		{
-			string result = "";
+			string result;;
 			char c = 0;
-			do
+			stream->read(&c, 1);
+			while (c)
 			{
-				stream->read(&c, 1);
 				result += c;
-			} while (c);
+				stream->read(&c, 1);
+				
+			}
 			return result;
 		}
 		unique_ptr<char>  buff = unique_ptr<char>(new char[count + 1]);

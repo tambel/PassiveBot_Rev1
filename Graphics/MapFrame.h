@@ -29,5 +29,9 @@ public:
 	void AddPlayer(Model & model);
 	void SetPlayerPosition(Vector3 & position);
 	void AddPath(Path::Link * link);
+	inline void AddStrip(Vector3 * points, unsigned size)
+	{
+		lines.push_back(new LineStripRenderable(points, size));
+	}
 };
 

@@ -296,7 +296,9 @@ void MapFrame::SetPlayerPosition(Vector3 & position)
 void MapFrame::AddPath(Path::Link * link)
 {
 
-	//LineStripRenderable rend = LineStripRenderable(path, size);
-	lines.push_back(new LineStripRenderable(link->points.get(), link->size));
+	//lines.push_back(new LineStripRenderable(link->points.get(), link->size));
+	AddStrip(link->points.get(), link->size);
 
 }
+
+

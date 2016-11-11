@@ -132,6 +132,7 @@ void LineStripRenderable::CreateScene(Ogre::SceneNode * parent)
 	for (int i = 0; i < size; i++)
 	{
 		m_pRecastMOPath->position(points[i].x, points[i].z, points[i].y + 2);
+		//m_pRecastMOPath->position(points[i].x, points[i].y, points[i].z + 2);
 		m_pRecastMOPath->colour(1, 0, 0);
 	}
 	m_pRecastMOPath->end();
