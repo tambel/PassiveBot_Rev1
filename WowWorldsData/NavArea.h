@@ -47,7 +47,6 @@ public:
 	//virtual  void Fill(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	//virtual void CheckAndMove(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	//virtual void CheckAndMoveImpl(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
-	void InitAreaBoundingBox();
 
 	static NavConfig config;
 	//vector<unique_ptr<rcPolyMesh>> polys;

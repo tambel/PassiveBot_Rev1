@@ -65,7 +65,7 @@ void MapFrame::OnUpdate()
 
 void MapFrame::createRecastPathLine(int nPathSlot/*, PATHDATA *m_PathStore*/)
 {
-	Ogre::SceneNode*      m_pRecastSN = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+	/*Ogre::SceneNode*      m_pRecastSN = mSceneMgr->getRootSceneNode()->createChildSceneNode();
 	Ogre::ManualObject* m_pRecastMOPath = mSceneMgr->createManualObject("RecastMOPath");
 	m_pRecastMOPath->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_STRIP);
 	for (int i = 0; i < area->m_nsmoothPath * 3; i += 3)
@@ -74,7 +74,7 @@ void MapFrame::createRecastPathLine(int nPathSlot/*, PATHDATA *m_PathStore*/)
 		m_pRecastMOPath->colour(1, 0, 0);
 	}
 	m_pRecastMOPath->end();
-	m_pRecastSN->attachObject(m_pRecastMOPath);
+	m_pRecastSN->attachObject(m_pRecastMOPath);*/
 }
 
 void MapFrame::CreateNavMesh()

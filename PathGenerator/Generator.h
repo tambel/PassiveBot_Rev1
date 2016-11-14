@@ -1,5 +1,8 @@
 #pragma once
 #include "WowWorldsData\WowWorldsData.h" 
+#include "GlobalNavMesh.h"
+
+
 
 
 
@@ -21,6 +24,10 @@ class Generator
 	vector<unique_ptr<Path::Chunk>> chunks;
 	vector<unique_ptr<Path::Link>> links;
 	vector<unique_ptr<Path::Point>> points;
+
+	/////
+
+	GlobalNavMesh nm;
 	
 public:
 	vector<pt> paths;
@@ -34,5 +41,13 @@ public:
 	
 	void LinkTwoChunk(Chunk * c1,Chunk * c2, NavArea & area);
 	vector<unique_ptr<Path::Link>> & GetLinks();
+
+
+	/////////////////////////
+
+
+	void CreateContinentNavMesh();
+	void AddBlockTiles();
+
 };
 

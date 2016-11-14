@@ -18,7 +18,7 @@ public:
 	WorldViewer(WorldViewer && other);
 	~WorldViewer();
 	void ShowMap();
-	void Update(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates);
+	void Update(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates, bool force=false);
 	void Update(Vector3 & position);
 	WorldViewer & operator=(WorldViewer && other);
 	inline MapFrame * GetFrame() { return &frame; }

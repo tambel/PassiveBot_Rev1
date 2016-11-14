@@ -22,6 +22,11 @@ namespace Utils
 
 		return Point2D<int>(block_coordinates.X*16+coordinates.X,block_coordinates.Y+coordinates.Y);
 	}
+
+	Point2DI AbsPositionToBlockCoords(Vector3 & position)
+	{
+		return Point2DI((int)(position.x / Metrics::BlockSize*2), 64+ (int)(position.z / (Metrics::BlockSize*2)));
+	}
 	namespace Game
 	{
 		vector<Location> LocationBase::locations=vector<Location>();

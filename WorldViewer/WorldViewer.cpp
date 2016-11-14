@@ -13,18 +13,17 @@ void init_static()
 	Game::LocationBase::Init();
 	NavArea::InitNavConfig();
 }
-int main(int argc, char* argv[])
+int main2(int argc, char* argv[])
 {
 	init_static();
-
-	
+	Generator gen = Generator();
 
 
 	ViewerClient client = ViewerClient();
 
 	client.Connect();
 
-	Generator gen = Generator();
+	
 	Point2DI b = WorldPositionToBlockCoords(client.GetPlayerPosition().coords);
 	Point2DI c = WorldPositionToChunkCoords(client.GetPlayerPosition().coords);
 	//gen.LinkChunkWithNeighbours(b, c);
@@ -94,10 +93,35 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-int main2()
+int main()
 {
 	init_static();
-	WorldViewer viewer = WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(36, 32), Point2DI(7, 5),1);
+	Generator gen = Generator();
+	bool ne = false;
+	WorldViewer viewer= WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(1, 0), Point2DI(0, 0), 1);
+	int x = 63, y = 63;
+	while (!ne)
+	{
+		try
+		{
+			viewer.Update(LocationBase::Get("Kalimdor"), Point2DI(x, y), Point2DI(0, 0),true);
+			ne = true;
+		}
+		catch (EmptyAreaException & e)
+		{
+			ne = false;
+			if (y == 0)
+			{
+				x--;
+				y = 63;
+			}
+			else
+			{
+				y--;
+			}
+			cout << x << " " << y << endl;
+		}
+	}
 	viewer.ShowMap();
 	while (1)
 	{

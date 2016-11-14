@@ -20,7 +20,7 @@ public:
 	MapFrame(void);
 	~MapFrame(void);
 	void createScene();
-	inline Area * GetArea() {return area;}
+	inline MutableArea * GetArea() {return area;}
 	inline void SetArea(MutableArea * area) {this->area=area;}
 	void OnUpdate();
 	void CreateNavMesh();

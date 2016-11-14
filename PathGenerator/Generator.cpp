@@ -73,6 +73,8 @@ void Generator::ConnectPoints(Path::Point * point1, Path::Point * point2, Vector
 Generator::Generator()
 {
 	area = nullptr;
+	nm = GlobalNavMesh();
+	nm.Start(0,0);
 }
 
 
@@ -277,4 +279,13 @@ vector<unique_ptr<Path::Link>>& Generator::GetLinks()
 {
 	return links;
 }
+
+void Generator::AddBlockTiles()
+{
+}
+
+
+
+
+
 

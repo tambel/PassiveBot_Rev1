@@ -82,46 +82,6 @@ NavArea::NavArea(NavArea && area)
 {
 	_move(area);
 }
-void NavArea::InitAreaBoundingBox()
-{
-	vector<float> points = vector<float>();
-	auto add_point = [](vector<float> & points, Utils::Graphics::BoundingBox & bb)
-	{
-		points.push_back(bb.up.x);
-		points.push_back(bb.up.y);
-		points.push_back(bb.up.z);
-		points.push_back(bb.down.x);
-		points.push_back(bb.down.y);
-		points.push_back(bb.down.z);
-	};
-	for (auto &chunk : chunks)
-	{
-		add_point(points, chunk->GetBoundingBox());
-	}
-	rcCalcBounds(&points[0], points.size() / 3, bounding_box.GetArrayMin(), bounding_box.GetArrayMax());
-	points.clear();
-	for (auto &wmo : wmos)
-	{
-
-		add_point(points, wmo->GetBoundingBox());
-	}
-	for (auto &doodad : doodads)
-	{
-
-		add_point(points, doodad->GetBoundingBox());
-	}
-	//add_point(points, chunk->GetBoundingBox());
-
-
-	Utils::Graphics::BoundingBox bb;
-	if (points.size() > 0)
-	{
-		rcCalcBounds(&points[0], points.size() / 3, bb.GetArrayMin(), bb.GetArrayMax());
-		bounding_box.up.y = bb.up.y;
-		bounding_box.down.y = bb.down.y;
-	}
-
-}
 
 void NavArea::InitNavigation()
 {

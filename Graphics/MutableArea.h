@@ -1,8 +1,8 @@
 #pragma once
 
+#define area_type NavArea
 
-
-class MutableArea :public NavArea
+class MutableArea :public area_type
 {
 public:
 	//mutex data_mutex;

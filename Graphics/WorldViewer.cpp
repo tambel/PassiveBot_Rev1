@@ -18,7 +18,7 @@ WorldViewer::WorldViewer(Vector3 & position)
 {
 	//WorldViewer(Game::LocationBase::Get("Kalimdor"), WorldPositionToBlockCoords(position), WorldPositionToChunkCoords(position), 3);
 	frame = MapFrame();
-	area = MutableArea(Game::LocationBase::Get("Kalimdor"), WorldPositionToBlockCoords(position), WorldPositionToChunkCoords(position), 30);
+	area = MutableArea(Game::LocationBase::Get("Kalimdor"), WorldPositionToBlockCoords(position), WorldPositionToChunkCoords(position), 0);
 	frame.SetArea(&area);
 	
 	frame.SetPlayerPosition(position);
@@ -38,10 +38,12 @@ void WorldViewer::ShowMap()
 	frame_thread.detach();
 }
 
-void WorldViewer::Update(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates)
+void WorldViewer::Update(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates, bool force)
 {
-	
-	area.CheckAndUpdate(location, block_coordinates, coordinates);
+	if (force)
+		area.Update(location, block_coordinates, coordinates);
+	else
+		area.CheckAndUpdate(location, block_coordinates, coordinates);
 
 }
 void WorldViewer::Update(Vector3 & position)

@@ -13,6 +13,8 @@
 #include "PathGenerator\Generator.h"
 #include "WowWorldsData\ClientDB.h"
 
+#include "Recast.h"
+
 #include <iostream>
 #include <conio.h>
 

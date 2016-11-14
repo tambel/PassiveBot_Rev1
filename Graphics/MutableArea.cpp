@@ -1,21 +1,21 @@
 #include "stdafx.h"
 #include "MutableArea.h"
 
-MutableArea::MutableArea() :NavArea()
+MutableArea::MutableArea() :area_type()
 {
 
 	to_update = false;
 }
 
 MutableArea::MutableArea(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius) :
-	NavArea(location, block_coordinates, coordinates, radius) 
+	area_type(location, block_coordinates, coordinates, radius)
 {
 	to_update = false;
 }
 
 MutableArea & MutableArea::operator=(MutableArea && other)
 {
-	NavArea::operator=(move(other));
+	area_type::operator=(move(other));
 	return *this;
 }
 
@@ -24,7 +24,7 @@ void MutableArea::Update(Location & location, Point2D<int> block_coordinates, Po
 	lock_guard<mutex> guard(data_mutex);
 	try
 	{
-		NavArea::Update(location, block_coordinates, coordinates);
+		area_type::Update(location, block_coordinates, coordinates);
 	}
 	catch (EmptyAreaException & e)
 	{
