@@ -91,6 +91,7 @@ public:
 	~Model();
 	Model(Model&) = delete;
 	Model & operator=(Model &) = delete;
+	void Rotate(float angle);
 
 	Model & operator=(Model && right);
 	inline Utils::Graphics::BoundingBox & GetBoundingBox() {return bounding_box;}

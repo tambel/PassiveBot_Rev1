@@ -70,9 +70,10 @@ void Renderable::CreateScene(Ogre::SceneNode * parent)
 	//Ogre::ManualObject * manual = scene->getCreator()->createManualObject();
 	manual_object= scene->getCreator()->createManualObject();
 	manual_object->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_LIST);
-	for (unsigned vi = 0; vi < model->GetVertexCount() * 3; vi += 3)
+	Vector3 * vertices = reinterpret_cast<Vector3*>(model->GetVertices());
+	for (unsigned vi = 0; vi < model->GetVertexCount(); vi++)
 	{
-		manual_object->position(model->GetVertices()[vi], model->GetVertices()[vi + 2], model->GetVertices()[vi + 1]);
+		manual_object->position(vertices[vi].x, vertices[vi].y, vertices[vi].z);
 		if (vi % 9 == 0)
 			manual_object->colour(1, 1, 1, 1);
 		else if (vi % 6 == 0)
@@ -82,9 +83,9 @@ void Renderable::CreateScene(Ogre::SceneNode * parent)
 	}
 	for (unsigned ii = 0; ii < model->GetIndexCount(); ii += 3)
 	{
-		manual_object->index(model->GetIndices()[ii + 2]);
+		manual_object->index(model->GetIndices()[ii]);
 		manual_object->index(model->GetIndices()[ii + 1]);
-		manual_object->index(model->GetIndices()[ii] );
+		manual_object->index(model->GetIndices()[ii+2] );
 	}
 	manual_object->end();
 	parent->attachObject(manual_object);

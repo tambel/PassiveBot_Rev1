@@ -96,32 +96,8 @@ int main2(int argc, char* argv[])
 int main()
 {
 	init_static();
-	Generator gen = Generator();
-	bool ne = false;
-	WorldViewer viewer= WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(1, 0), Point2DI(0, 0), 1);
-	int x = 63, y = 63;
-	while (!ne)
-	{
-		try
-		{
-			viewer.Update(LocationBase::Get("Kalimdor"), Point2DI(x, y), Point2DI(0, 0),true);
-			ne = true;
-		}
-		catch (EmptyAreaException & e)
-		{
-			ne = false;
-			if (y == 0)
-			{
-				x--;
-				y = 63;
-			}
-			else
-			{
-				y--;
-			}
-			cout << x << " " << y << endl;
-		}
-	}
+	//Generator gen = Generator();
+	WorldViewer viewer= WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(36, 32), Point2DI(0, 0), 1);
 	viewer.ShowMap();
 	while (1)
 	{

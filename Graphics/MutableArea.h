@@ -1,6 +1,6 @@
 #pragma once
 
-#define area_type NavArea
+#define area_type Area
 
 class MutableArea :public area_type
 {

@@ -84,8 +84,10 @@ void Chunk::LoadMcvt()
 	
 	float * heights=new float[145];
 	root_reader->ReadArray<float>((char*)heights,145);
-	position.coords=Vector3(0,0,header.position.z);
+	position.coords = header.position;
 	real_position=Vector3(Metrics::MapMidPoint - header.position.y,-(Metrics::MapMidPoint - header.position.x),header.position.z);
+	real_position = Vector3(Metrics::MapMidPoint - header.position.x, (Metrics::MapMidPoint - header.position.y), header.position.z);
+
 	/*
 	float posx = Metrics::MapMidPoint - header.position.y;
 	float posy = Metrics::MapMidPoint + header.position.x;
@@ -98,29 +100,28 @@ void Chunk::LoadMcvt()
 	int counter = 0;
 	int counter2 = 0;
 	//vertices=new Utils::Graphics::Vertex[145];
+	float x, y;
 	vertices = new float[435];
 	for(int i = 0; i < 17; ++i)
 	{
+		x = (0.5f * Metrics::UnitSize)*i;
 		for(int j = 0; j < (((i % 2) != 0) ? 8 : 9); ++j)
 		{
-			float height = position.coords.z + heights[counter];
-			float x = position.coords.x + j * Metrics::UnitSize;
+			y = j * Metrics::UnitSize;
 			if ((i % 2) != 0)
-				x += 0.5f * Metrics::UnitSize;
-			float y = position.coords.y - i * Metrics::UnitSize * 0.5f;
-
-			//vertices[counter].position =Vector3(x, y, heights[counter]);
+				y += 0.5f * Metrics::UnitSize;
 			vertices[counter2++] = x + real_position.x;
-			vertices[counter2++] = heights[counter] + real_position.z;
 			vertices[counter2++] = y + real_position.y;
+			vertices[counter2++] = heights[counter] + real_position.z; 
 			++counter;
 		}
+
 	}
 	for (unsigned i = 0; i < index_count; i += 3)
 	{
-		indices[i] = ChunkModel::indices[i+2];
-		indices[i+1] = ChunkModel::indices[i + 1];
-		indices[i+2] = ChunkModel::indices[i];
+		indices[i] = ChunkModel::indices[i];
+		indices[i+1] = ChunkModel::indices[i+1];
+		indices[i+2] = ChunkModel::indices[i+2];
 	}
 	rcCalcBounds(vertices, vertex_count, reinterpret_cast<float*>(&bounding_box.up), reinterpret_cast<float*>(&bounding_box.down));
 

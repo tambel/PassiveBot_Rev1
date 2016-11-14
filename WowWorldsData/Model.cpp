@@ -176,3 +176,21 @@ void Model::Rescale(float scale)
 	}
 
 }
+
+void Model::Rotate( float angle)
+{
+	boost::numeric::ublas::vector<float> vertice(4);
+	Geometry::Transformer3D::SetRotationAngle(Geometry::Axis::Z, angle);
+	boost::numeric::ublas::matrix<float> rotZ = Geometry::Transformer3D::rotation_matrix_Z;
+	for (unsigned long i = 0; i < vertex_count * 3; i += 3)
+	{
+		vertice(0) = vertices[i];
+		vertice(2) = vertices[i + 2];
+		vertice(1) = vertices[i + 1];
+		vertice(3) = 1.0f;
+		vertice = boost::numeric::ublas::prod(vertice, rotZ);
+		vertices[i] = vertice(0);
+		vertices[i + 1] = vertice(2);
+		vertices[i + 2] = vertice(1);
+	}
+}
