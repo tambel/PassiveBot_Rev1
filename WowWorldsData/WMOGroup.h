@@ -21,7 +21,7 @@ public:
 	WMOGroup(WMOGroup && right);
 	unsigned long GetIndexCount() { return index_count; }
 	float  * GetVertices() { return vertices; }
-	unsigned long  GetVertexCount() { return vertex_count; }
+	inline unsigned long  GetVertexCount() { return vertex_count; }
 	unsigned short * GetIndices() { return indices; }
 	//friend WMO::WMO(string filename, unsigned uuid, Position & position);
 	

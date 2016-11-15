@@ -33,5 +33,6 @@ public:
 	{
 		lines.push_back(new LineStripRenderable(points, size));
 	}
+	void AddNavMesh(vector<rcPolyMesh*> & meshes);
 };
 

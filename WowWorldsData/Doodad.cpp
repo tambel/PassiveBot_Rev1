@@ -32,30 +32,28 @@ Doodad::Doodad(string filename, unsigned uuid, Position & position, short scale)
 	for (unsigned long i = 0; i < vertex_count; i++)
 	{
 		vertices[vc] = m2.vertices[i].position.x;
-		vertices[vc+1] = m2.vertices[i].position.y;
-		vertices[vc+2] = m2.vertices[i].position.z;
+		vertices[vc+1] = m2.vertices[i].position.z;
+		vertices[vc+2] = m2.vertices[i].position.y;
 		vc += 3;
 	}
 	index_count=m2.index_count;
-	indices = m2.indices;
-	m2.indices = 0;
+	indices = new int[index_count];
+	/*indices = m2.indices;
+	m2.indices = 0;*/
 	Rescale(this->scale);
 	Rotate();
 	for (unsigned long i = 0; i < vertex_count*3; i+=3)
 	{
 		vertices[i] +=this->position.coords.x;
-		vertices[i + 1] += this->position.coords.y;
-		vertices[i + 2] += this->position.coords.z;
+		vertices[i + 1] += this->position.coords.z;
+		vertices[i + 2] += this->position.coords.y;
 	}
 	rcCalcBounds(vertices, vertex_count, bounding_box.GetArrayMin(), bounding_box.GetArrayMax());
 	for (unsigned long i = 0; i < index_count; i += 3)
 	{
-		/*int i1= indices[i + 2];
-		int i2= indices[i + 1];
-		int i3 = indices[i];
-		indices[i] = i1;
-		indices[i + 1] = i2;
-		indices[i + 2] = i3;*/
+		indices[i] = m2.indices[i + 2];
+		indices[i + 1] = m2.indices[i + 1];
+		indices[i + 2] = m2.indices[i];
 	}
 }
 

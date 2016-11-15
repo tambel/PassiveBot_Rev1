@@ -73,7 +73,7 @@ void Renderable::CreateScene(Ogre::SceneNode * parent, Ogre::ColourValue & color
 	Vector3 * vertices = reinterpret_cast<Vector3*>(model->GetVertices());
 	for (unsigned vi = 0; vi < model->GetVertexCount(); vi++)
 	{
-		manual_object->position(vertices[vi].x, vertices[vi].y, vertices[vi].z);
+		manual_object->position(vertices[vi].x, vertices[vi].z, vertices[vi].y);
 		if (vi % 9 == 0)
 			manual_object->colour(1, 1, 1, 1);
 		else if (vi % 6 == 0)
@@ -84,9 +84,9 @@ void Renderable::CreateScene(Ogre::SceneNode * parent, Ogre::ColourValue & color
 	}
 	for (unsigned ii = 0; ii < model->GetIndexCount(); ii += 3)
 	{
-		manual_object->index(model->GetIndices()[ii]);
+		manual_object->index(model->GetIndices()[ii+2]);
 		manual_object->index(model->GetIndices()[ii + 1]);
-		manual_object->index(model->GetIndices()[ii+2] );
+		manual_object->index(model->GetIndices()[ii] );
 	}
 	manual_object->end();
 	parent->attachObject(manual_object);
@@ -139,4 +139,79 @@ void LineStripRenderable::CreateScene(Ogre::SceneNode * parent)
 	}
 	m_pRecastMOPath->end();
 	scene->attachObject(m_pRecastMOPath);
+}
+
+NavMeshRenderable::NavMeshRenderable(NavMeshRenderable && other)
+{
+	meshes = other.meshes;
+	other.meshes = nullptr;
+}
+
+NavMeshRenderable::NavMeshRenderable(vector<rcPolyMesh*> &  meshes)
+{
+	this->meshes = &meshes;
+}
+
+void NavMeshRenderable::CreateScene(Ogre::SceneNode * parent, Ogre::ColourValue & color)
+{
+	int count = 0;
+	scene = parent->createChildSceneNode();
+	for (auto mmesh : *meshes)
+	{
+		rcPolyMesh & mesh = *mmesh;
+		const int nvp = mesh.nvp;
+		const float cs = mesh.cs;
+		const float ch = mesh.ch;
+		const float* orig = mesh.bmin;
+
+		int m_flDataX = mesh.npolys;
+		int m_flDataY = mesh.nverts;
+
+		// create scenenodes
+		int nIndex = 0;
+		int m_nAreaCount = mesh.npolys;
+		if (m_nAreaCount)
+		{
+			// start defining the manualObject
+			Ogre::ManualObject *m_pRecastMOWalk = scene->getCreator()->createManualObject();
+			m_pRecastMOWalk->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_LIST);
+			for (int i = 0; i < mesh.npolys; ++i) // go through all polygons
+				if (mesh.areas[i] == 0)
+				{
+					const unsigned short* p = &mesh.polys[i*nvp * 2];
+
+					unsigned short vi[3];
+					for (int j = 2; j < nvp; ++j) // go through all verts in the polygon
+					{
+						if (p[j] == RC_MESH_NULL_IDX) break;
+						vi[0] = p[0];
+						vi[1] = p[j - 1];
+						vi[2] = p[j];
+						for (int k = 0; k < 3; ++k) // create a 3-vert triangle for each 3 verts in the polygon.
+						{
+							const unsigned short* v = &mesh.verts[vi[k] * 3];
+							const float x = orig[0] + v[0] * cs;
+							const float y = orig[1] + (v[1] + 1)*ch;
+							const float z = orig[2] + v[2] * cs;
+
+							m_pRecastMOWalk->position(x, z, y+10);
+							if (mesh.areas[i] == 0)
+								m_pRecastMOWalk->colour(0, 1, 0, 1);
+							else
+								m_pRecastMOWalk->colour(0, 1, 1, 1);
+
+						}
+						m_pRecastMOWalk->index(nIndex + 2);
+						m_pRecastMOWalk->index(nIndex + 1);
+						m_pRecastMOWalk->index(nIndex);
+						nIndex += 3;
+					}
+				}
+			m_pRecastMOWalk->end();
+
+
+			scene->attachObject(m_pRecastMOWalk);
+
+		}
+	}
 }

@@ -111,17 +111,17 @@ void Chunk::LoadMcvt()
 			if ((i % 2) != 0)
 				y += 0.5f * Metrics::UnitSize;
 			vertices[counter2++] = x + real_position.x;
-			vertices[counter2++] = y + real_position.y;
 			vertices[counter2++] = heights[counter] + real_position.z; 
+			vertices[counter2++] = y + real_position.y;
 			++counter;
 		}
 
 	}
 	for (unsigned i = 0; i < index_count; i += 3)
 	{
-		indices[i] = ChunkModel::indices[i];
+		indices[i] = ChunkModel::indices[i+2];
 		indices[i+1] = ChunkModel::indices[i+1];
-		indices[i+2] = ChunkModel::indices[i+2];
+		indices[i+2] = ChunkModel::indices[i];
 	}
 	rcCalcBounds(vertices, vertex_count, reinterpret_cast<float*>(&bounding_box.up), reinterpret_cast<float*>(&bounding_box.down));
 

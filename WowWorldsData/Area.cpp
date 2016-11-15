@@ -45,6 +45,7 @@ void Area::Update(Location & location, Point2D<int> block_coordinates, Point2D<i
 	std::for_each(chunks.begin(), chunks.end(), [](unique_ptr<Chunk> & chunk) {chunk->ToRemove(); });
 	UpdateCetralizedBlockScale(location, block_coordinates);
 
+
 	for (vector<unique_ptr<Chunk>>::iterator it = chunks.begin(); it != chunks.end();)
 	{
 		if ((*it)->IsRemoved())
@@ -248,7 +249,7 @@ void Area::UpdateCetralizedChunkScale(Location & location, Point2D<int> block_co
 void Area::InitAreaBoundingBox()
 {
 	vector<float> points = vector<float>();
-	auto add_point = [](vector<float> & points, Utils::Graphics::BoundingBox & bb)
+	auto add_point = [&points](Utils::Graphics::BoundingBox & bb)
 	{
 		points.push_back(bb.up.x);
 		points.push_back(bb.up.y);
@@ -259,19 +260,19 @@ void Area::InitAreaBoundingBox()
 	};
 	for (auto &chunk : chunks)
 	{
-		add_point(points, chunk->GetBoundingBox());
+		add_point(chunk->GetBoundingBox());
 	}
 	rcCalcBounds(&points[0], points.size() / 3, bounding_box.GetArrayMin(), bounding_box.GetArrayMax());
 	points.clear();
 	for (auto &wmo : wmos)
 	{
 
-		add_point(points, wmo->GetBoundingBox());
+		add_point(wmo->GetBoundingBox());
 	}
 	for (auto &doodad : doodads)
 	{
 
-		add_point(points, doodad->GetBoundingBox());
+		add_point(doodad->GetBoundingBox());
 	}
 	//add_point(points, chunk->GetBoundingBox());
 
@@ -280,8 +281,60 @@ void Area::InitAreaBoundingBox()
 	if (points.size() > 0)
 	{
 		rcCalcBounds(&points[0], points.size() / 3, bb.GetArrayMin(), bb.GetArrayMax());
-		bounding_box.up.y = bb.up.y;
-		bounding_box.down.y = bb.down.y;
+		bounding_box.up.y = bb.up.y>bounding_box.up.y? bounding_box.up.y: bb.up.y;
+		bounding_box.down.y = bb.down.y<bounding_box.down.y? bounding_box.down.y: bb.down.y;
 	}
 
+}
+
+void Area::ToMesh()
+{
+	ofstream file("area.obj");
+	unsigned offset = 0;
+	auto write_model_verices = [& file](Model * model)
+	{
+		unsigned vcount = model->GetVertexCount();
+		float * vert = model->GetVertices();
+		for (unsigned i = 0; i < vcount*3; i += 3)
+		{
+			file <<"v "<< vert[i] << " " << vert[i + 1] << " " << vert[i + 2]<<endl;
+		}
+	};
+	auto write_model_indices = [&offset, &file](Model * model)
+	{
+		unsigned vcount = model->GetVertexCount();
+		unsigned ind_count = model->GetIndexCount();
+		int * ind = model->GetIndices();
+		for (unsigned i = 0; i < ind_count; i += 3)
+		{
+			file <<"f "<< offset+ ind[i]+1 << " " << offset + ind[i + 1]+1 << " " << offset + ind[i+2]+1 << endl;
+		}
+		offset += vcount;
+	};
+	for (auto & chunk : chunks)
+	{
+		write_model_verices(&*chunk);
+	}
+	for (auto & wmo : wmos)
+	{
+		write_model_verices(&*wmo);
+	}
+	for (auto & doodad : doodads)
+	{
+		write_model_verices(&*doodad);
+	}
+
+	for (auto & chunk : chunks)
+	{
+		write_model_indices (&*chunk);
+	}
+	for (auto & wmo : wmos)
+	{
+		write_model_indices(&*wmo);
+	}
+	for (auto & doodad : doodads)
+	{
+		write_model_indices(&*doodad);
+	}
+	file.close();
 }

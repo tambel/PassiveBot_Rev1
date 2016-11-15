@@ -68,6 +68,7 @@ public:
 	 vector<unique_ptr<Chunk>> & GetChunks() { return chunks; }
 	bool IsOutOfBounds(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	void InitMapObjects();
+	void ToMesh();
 	//virtual void CheckAndMoveImpl(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	
 	

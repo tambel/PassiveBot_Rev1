@@ -28,10 +28,21 @@ WMO::WMO(string filename, unsigned uuid, Position & position):
 	unsigned vc = 0;
 	unsigned ic = 0;
 	unsigned offset = 0;
+	float * gvertices = nullptr;
 	for (auto &group : root.GetGroups())
 	{
-		//part.Rotate();
-		memcpy(vertices + offset, group.GetVertices(), group.GetVertexCount() * 12);
+		//memcpy(vertices + offset, group.GetVertices(), group.GetVertexCount() * 12);
+		gvertices = group.GetVertices();
+		for (unsigned i = 0; i < group.GetVertexCount()*3; i += 3)
+		{
+			vertices[offset+i] = gvertices[i];
+			vertices[offset+i+1] = gvertices[i+2];
+			vertices[offset+i+2] = gvertices[i+1];
+		}
+
+
+
+
 		offset += group.GetVertexCount() * 3;
 
 
@@ -48,17 +59,17 @@ WMO::WMO(string filename, unsigned uuid, Position & position):
 	for (unsigned i = 0; i < vertex_count * 3; i += 3)
 	{
 		vertices[i]+= this->position.coords.x;
-		vertices[i+1]+= this->position.coords.y;
-		vertices[i+2] += this->position.coords.z;
+		vertices[i+1]+= this->position.coords.z;
+		vertices[i+2] += this->position.coords.y;
 	}
 	unsigned vert_offset = 0;
 	for (auto &group : root.GetGroups())
 	{
 		for (unsigned long i = 0; i < group.GetIndexCount(); i += 3)
 		{
-			indices[ic] = group.GetIndices()[i] + vert_offset;
+			indices[ic] = group.GetIndices()[i+2] + vert_offset;
 			indices[ic + 1] = group.GetIndices()[i + 1] + vert_offset;
-			indices[ic + 2] = group.GetIndices()[i+2] + vert_offset;
+			indices[ic + 2] = group.GetIndices()[i] + vert_offset;
 			ic += 3;
 		}
 		vert_offset += group.GetVertexCount();

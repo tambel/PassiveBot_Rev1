@@ -97,7 +97,10 @@ int main()
 {
 	init_static();
 	//Generator gen = Generator();
-	WorldViewer viewer= WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(0, 0), Point2DI(0, 0), 2);
+	GlobalNavMesh nm = GlobalNavMesh();
+	nm.Start(35,35);
+	WorldViewer viewer= WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(33, 33), Point2DI(0, 0), 2);
+	viewer.GetFrame()->AddNavMesh(nm.GetPolyMeshes());
 	viewer.ShowMap();
 	while (1)
 	{
