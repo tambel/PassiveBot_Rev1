@@ -59,7 +59,7 @@ Renderable::~Renderable()
 		
 	}
 }
-void Renderable::CreateScene(Ogre::SceneNode * parent)
+void Renderable::CreateScene(Ogre::SceneNode * parent, Ogre::ColourValue & color)
 {
 	if (model->GetVertexCount() == 0)
 	{
@@ -79,7 +79,8 @@ void Renderable::CreateScene(Ogre::SceneNode * parent)
 		else if (vi % 6 == 0)
 			manual_object->colour(0, 0, 0, 0);
 		else
-			manual_object->colour(1, 1, 0, 1);
+			manual_object->colour(color);
+		
 	}
 	for (unsigned ii = 0; ii < model->GetIndexCount(); ii += 3)
 	{

@@ -37,8 +37,8 @@ void MapFrame::createScene()
 	//mCamera->setPosition(Vector3ToOgreVector(area->GetChunks()[0]->GetRealPosition()));
 	Vector3 & pos = area->GetChunks()[0]->GetRealPosition();
 	mCamera->setPosition(Ogre::Vector3(pos.x,pos.y,pos.z));
-	mCamera->setOrientation(Ogre::Quaternion(Ogre::Vector3(0, 0, 0), Ogre::Vector3(0, 0, 0), Ogre::Vector3(0, 0, 1)));
-	mCamera->rotate(Ogre::Vector3(0, 0, 1), Ogre::Radian(Ogre::Degree(90)));
+	//mCamera->setOrientation(Ogre::Quaternion(Ogre::Vector3(0, 0, 0), Ogre::Vector3(0, 0, 0), Ogre::Vector3(0, 0, 1)));
+	//mCamera->rotate(Ogre::Vector3(0, 0, 1), Ogre::Radian(Ogre::Degree(90)));
 	area->data_mutex.unlock();
 
 
@@ -258,7 +258,7 @@ void MapFrame::UpdateScene()
 		}
 	}
 
-	auto add_if_not_exist = [](Model * model, vector<Renderable> & rends, Ogre::SceneManager * mngr)
+	auto add_if_not_exist = [](Model * model, vector<Renderable> & rends, Ogre::SceneManager * mngr, Ogre::ColourValue & color)
 	{
 		bool exist = false;
 		for (auto &rend : rends)
@@ -269,16 +269,19 @@ void MapFrame::UpdateScene()
 			}
 		}
 		rends.push_back(move(Renderable(model)));
-		rends.back().CreateScene(mngr->getRootSceneNode());
+		rends.back().CreateScene(mngr->getRootSceneNode(), color);
 	};
+	Ogre::ColourValue color = Ogre::ColourValue(1, 1, 0, 1);
 	for (auto &chunk : area->GetChunks())
 	{
-		add_if_not_exist(&*chunk, rends, mSceneMgr);
+		add_if_not_exist(&*chunk, rends, mSceneMgr,color );
 	}
+	color = Ogre::ColourValue(0, 1, 0, 1);
 	for (auto &wmo : area->GetWMOs())
-		add_if_not_exist(&*wmo, rends, mSceneMgr);
+		add_if_not_exist(&*wmo, rends, mSceneMgr, color);
+	color = Ogre::ColourValue(1, 0, 0, 1);
 	for (auto &doodad : area->GetDoodads())
-		add_if_not_exist(&*doodad, rends, mSceneMgr);
+		add_if_not_exist(&*doodad, rends, mSceneMgr, color);
 
 	for (auto &rend : lines)
 	{

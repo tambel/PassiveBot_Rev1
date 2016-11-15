@@ -23,7 +23,7 @@ public:
 	Renderable & operator=(Renderable &&);
 	
 	~Renderable();
-	virtual void CreateScene(Ogre::SceneNode * parent);
+	virtual void CreateScene(Ogre::SceneNode * parent, Ogre::ColourValue & color = Ogre::ColourValue(1, 1, 0, 1));
 	unsigned long GetID() {return id;}
 	Ogre::SceneNode * GetScene() {return scene;}
 	Model * GetModel() {return model;}

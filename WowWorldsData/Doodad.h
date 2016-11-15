@@ -16,7 +16,7 @@ public:
 	float scale;
 	Doodad(void){};
 	Doodad(Doodad && right);
-	Doodad(string filename, unsigned uuid, Position position, short scale );
+	Doodad(string filename, unsigned uuid, Position & position, short scale );
 	~Doodad(void);
 	unsigned long GetUUID() {return uuid;}
 	//Vector3 GetGamePosition() {return game_position;}

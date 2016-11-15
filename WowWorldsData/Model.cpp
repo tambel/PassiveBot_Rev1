@@ -132,33 +132,45 @@ Model & Model::operator=(Model && right)
 
 void Model::Rotate()
 {
-
-	float angle_x = position.rotation.x *Utils::PI / 180.0f;
+	/*float angle_x = position.rotation.x *Utils::PI / 180.0f;
 	float angle_y = position.rotation.y *Utils::PI / 180.0f;
 	float angle_z = position.rotation.z * Utils::PI / 180.0f;
 	boost::numeric::ublas::vector<float> vertice(4);
-	Geometry::Transformer3D::SetRotationAngle(Geometry::Axis::X, angle_x );
+	Geometry::Transformer3D::SetRotationAngle(Geometry::Axis::X, angle_x);
 	Geometry::Transformer3D::SetRotationAngle(Geometry::Axis::Y, angle_z);
-	Geometry::Transformer3D::SetRotationAngle(Geometry::Axis::Z, angle_y -1.57f);
+	Geometry::Transformer3D::SetRotationAngle(Geometry::Axis::Z, angle_y - 1.57f);
+	boost::numeric::ublas::matrix<float> rotX = Geometry::Transformer3D::rotation_matrix_X;
+	boost::numeric::ublas::matrix<float> rotY = Geometry::Transformer3D::rotation_matrix_Y;
+	boost::numeric::ublas::matrix<float> rotZ = Geometry::Transformer3D::rotation_matrix_Z;*/
+
+
+	float angle_x = position.rotation.x *Utils::PI / 180.0f;
+	float angle_y = position.rotation.y *Utils::PI / 180.0f;
+	float angle_z = position.rotation.z *Utils::PI / 180.0f;
+	;
+	boost::numeric::ublas::vector<float> vertice(4);
+	Geometry::Transformer3D::SetRotationAngle(Geometry::Axis::X, angle_x);
+	Geometry::Transformer3D::SetRotationAngle(Geometry::Axis::Y, angle_y);
+	Geometry::Transformer3D::SetRotationAngle(Geometry::Axis::Z, angle_z);
 	boost::numeric::ublas::matrix<float> rotX = Geometry::Transformer3D::rotation_matrix_X;
 	boost::numeric::ublas::matrix<float> rotY = Geometry::Transformer3D::rotation_matrix_Y;
 	boost::numeric::ublas::matrix<float> rotZ = Geometry::Transformer3D::rotation_matrix_Z;
 
-	
-	for (unsigned long i = 0; i < vertex_count*3; i+=3)
+
+	for (unsigned long i = 0; i < vertex_count * 3; i += 3)
 	{
 		vertice(0) = vertices[i];
-		vertice(2) = vertices[i  + 2];
-		vertice(1) = vertices[i  + 1];
+		vertice(1) = vertices[i + 1];
+		vertice(2) = vertices[i + 2];
 		vertice(3) = 1.0f;
 		boost::numeric::ublas::matrix<float>tm = prod(rotY, rotZ);
 		tm = prod(rotX, tm);
 		vertice = boost::numeric::ublas::prod(vertice, tm);
-		vertices[i ] = vertice(0);
-		vertices[i  + 1] = vertice(2);
-		vertices[i  + 2] = vertice(1);
+		vertices[i] = vertice(0);
+		vertices[i + 1] = vertice(1);
+		vertices[i + 2] = vertice(2);
 	}
-	
+
 
 }
 

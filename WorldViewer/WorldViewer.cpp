@@ -97,7 +97,7 @@ int main()
 {
 	init_static();
 	//Generator gen = Generator();
-	WorldViewer viewer= WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(36, 32), Point2DI(0, 0), 1);
+	WorldViewer viewer= WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(0, 0), Point2DI(0, 0), 2);
 	viewer.ShowMap();
 	while (1)
 	{
