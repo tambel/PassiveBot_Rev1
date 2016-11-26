@@ -145,6 +145,9 @@ void Area::InitMapObjects()
 
 		}
 	}
+#ifdef BOTDEV
+	doodads.clear();
+#endif
 	for (auto &doodad : doodads)
 		doodad->ToRemove();
 
