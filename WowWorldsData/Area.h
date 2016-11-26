@@ -30,7 +30,11 @@ public:
 class Area
 {
 protected:
-
+#ifdef BOTDEV
+	float rx;
+	float ry;
+	float rz;
+#endif
 	vector<unique_ptr<Doodad>> doodads;
 	vector<unique_ptr<WMO>> wmos;
 	vector<unique_ptr<Chunk>>chunks;
@@ -68,7 +72,14 @@ public:
 	 vector<unique_ptr<Chunk>> & GetChunks() { return chunks; }
 	bool IsOutOfBounds(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	void InitMapObjects();
+
+
+#ifdef BOTDEV
+
 	void ToMesh();
+	void Rotate();
+#endif
+
 	//virtual void CheckAndMoveImpl(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	
 	

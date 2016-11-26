@@ -1,5 +1,7 @@
 // WorldViewer.cpp: определяет точку входа для консольного приложения.
 //
+#define BOTDEV 1
+
 #include "stdafx.h"
 #include "ViewerClient.h"
 
@@ -98,7 +100,7 @@ int main()
 	init_static();
 	//Generator gen = Generator();
 	GlobalNavMesh nm = GlobalNavMesh();
-	nm.Start(0,0);
+	nm.Start(0, 0);
 	nm.AddTile(Point2DI(0, 1));
 	nm.AddTile(Point2DI(0, 2));
 	nm.AddTile(Point2DI(1, 0));
@@ -106,12 +108,12 @@ int main()
 	///nm.AddTile(Point2DI(38, 36));
 	//nm.AddTile(Point2DI(37, 37));
 	//nm.AddTile(Point2DI(38, 37));
-	WorldViewer viewer= WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(36, 35), Point2DI(0, 0), 2);
+	WorldViewer viewer = WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(36, 35), Point2DI(7, 9), 5);
 	viewer.GetFrame()->AddNavMesh(nm.GetPolyMeshes());
 	viewer.ShowMap();
 	while (1)
 	{
-		//viewer.Update(Point2DI(36, 32), Point2DI(7, 4));
+		viewer.GetArea().Rotate();
 		Sleep(100);
 	}
 	return 0;

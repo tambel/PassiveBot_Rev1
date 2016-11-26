@@ -2,6 +2,10 @@
 #include <algorithm>
 #include "Area.h"
 
+#ifdef BOTDEV
+#include <conio.h>
+#endif
+
 using namespace Utils;
 using namespace Utils::Game;
 
@@ -62,6 +66,7 @@ void Area::Update(Location & location, Point2D<int> block_coordinates, Point2D<i
 
 	InitMapObjects();
 	InitAreaBoundingBox();
+	//ToMesh();
 	
 }
 
@@ -154,7 +159,13 @@ void Area::InitMapObjects()
 			}
 			if (!exist)
 			{
+#ifdef BOTDEV
+				Vector3 rot = doodad_info.mddf.Rotation;
+				rot = Vector3(rot.x + rx, rot.y + ry, rot.z + rz);
+				Doodad  * doodad = new Doodad(doodad_info.filename, doodad_info.mddf.UniqueId, Position(doodad_info.mddf.Position, rot), doodad_info.mddf.Scale);
+#else
 				Doodad  * doodad = new Doodad(doodad_info.filename, doodad_info.mddf.UniqueId, Position(doodad_info.mddf.Position, doodad_info.mddf.Rotation),doodad_info.mddf.Scale);
+#endif
 				doodads.push_back(unique_ptr<Doodad>(doodad));
 				doodads.back()->Prolong();
 			}
@@ -286,7 +297,7 @@ void Area::InitAreaBoundingBox()
 	}
 
 }
-
+#ifdef BOTDEV
 void Area::ToMesh()
 {
 	ofstream file("area.obj");
@@ -338,3 +349,57 @@ void Area::ToMesh()
 	}
 	file.close();
 }
+
+void Area::Rotate()
+{
+	axis = 0;
+	ang = 0;
+	while (1)
+	{
+		
+		int c = getch();
+		//cout << c << endl;
+		switch (c)
+		{
+		case 97:
+			axis = 1;
+			ang = -10.0;
+			break;
+		case 100:
+			axis = 1;
+			ang = 10.0;
+			break;
+		case 119:
+			axis = 2;
+			ang = -10.0;
+			break;
+		case 115:
+			axis = 2;
+			ang = 10.0;
+			break;
+		case 52:
+			axis = 0;
+			ang = -10.0;
+			break;
+		case 54:
+			axis = 0;
+			ang = 10.0;
+			break;
+		default:
+			break;
+		}
+		if (ang != 0)
+		{
+			if (axis == 0)
+				rx += angle;
+			else if (axis == 1)
+				ry += angle;
+			else
+				rz += angle;
+			Update(LocationBase::Get("Kalimdor"), Point2DI(36, 35), Point2DI(7, 9), true);
+		}
+	}
+	
+}
+
+#endif
