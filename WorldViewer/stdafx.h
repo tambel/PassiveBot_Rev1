@@ -5,8 +5,6 @@
 
 #pragma once
 
-#define BOTDEV
-
 //Graphics includes
 
 
