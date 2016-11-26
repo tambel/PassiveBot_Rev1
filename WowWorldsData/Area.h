@@ -18,6 +18,12 @@
 //	ChunkInfo(	Location * location, Point2D<int> block_coordinates,Point2D<int> coordinates,int radius);//:location(location),block_coordinates(block_coordinates),coordinates(coordinates){}
 //};
 
+enum AreaFormat
+{
+	fChunk,
+	fBlock
+};
+
 class EmptyAreaException : exception
 {
 public:
@@ -35,6 +41,8 @@ protected:
 	float ry;
 	float rz;
 #endif
+
+	AreaFormat format;
 	vector<unique_ptr<Doodad>> doodads;
 	vector<unique_ptr<WMO>> wmos;
 	vector<unique_ptr<Chunk>>chunks;
@@ -50,6 +58,7 @@ protected:
 	void _move(Area & other);
 	void AddChunk(Location & location, Point2D<int> & block_coordinates, Point2D<int> & coordinates);
 	void InitAreaBoundingBox();
+
 public:
 	
 	Area();
@@ -73,9 +82,7 @@ public:
 	bool IsOutOfBounds(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	void InitMapObjects();
 
-
 #ifdef BOTDEV
-
 	void ToMesh();
 	void Rotate();
 #endif

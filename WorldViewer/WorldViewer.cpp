@@ -1,6 +1,6 @@
 // WorldViewer.cpp: определяет точку входа для консольного приложения.
 //
-#define BOTDEV 1
+
 
 #include "stdafx.h"
 #include "ViewerClient.h"
@@ -113,7 +113,9 @@ int main()
 	viewer.ShowMap();
 	while (1)
 	{
-		viewer.GetArea().Rotate();
+#ifdef BOTDEV
+		dynamic_cast<Area*>(&viewer.GetArea())->Rotate();
+#endif
 		Sleep(100);
 	}
 	return 0;

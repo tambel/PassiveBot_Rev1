@@ -41,13 +41,18 @@ Area::Area(Area && area)
 
 void Area::Update(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {
+	format = AreaFormat::fChunk;
 	ADTWorker::Clear();
 	this->location = location;
 	this->block_coordinates = block_coordinates;
 	this->coordinates = coordinates;
 	area_size = radius * 2 + 1;
 	std::for_each(chunks.begin(), chunks.end(), [](unique_ptr<Chunk> & chunk) {chunk->ToRemove(); });
-	UpdateCetralizedBlockScale(location, block_coordinates);
+	if (format == AreaFormat::fBlock)
+		UpdateCetralizedBlockScale(location, block_coordinates);
+	else if (format == AreaFormat::fChunk)
+		UpdateCetralizedChunkScale(location, block_coordinates, coordinates);
+
 
 
 	for (vector<unique_ptr<Chunk>>::iterator it = chunks.begin(); it != chunks.end();)
@@ -352,8 +357,8 @@ void Area::ToMesh()
 
 void Area::Rotate()
 {
-	axis = 0;
-	ang = 0;
+	int axis = 0;
+	float angle = 0;
 	while (1)
 	{
 		
@@ -363,32 +368,32 @@ void Area::Rotate()
 		{
 		case 97:
 			axis = 1;
-			ang = -10.0;
+			angle = -10.0;
 			break;
 		case 100:
 			axis = 1;
-			ang = 10.0;
+			angle = 10.0;
 			break;
 		case 119:
 			axis = 2;
-			ang = -10.0;
+			angle = -10.0;
 			break;
 		case 115:
 			axis = 2;
-			ang = 10.0;
+			angle = 10.0;
 			break;
 		case 52:
 			axis = 0;
-			ang = -10.0;
+			angle = -10.0;
 			break;
 		case 54:
 			axis = 0;
-			ang = 10.0;
+			angle = 10.0;
 			break;
 		default:
 			break;
 		}
-		if (ang != 0)
+		if (angle != 0)
 		{
 			if (axis == 0)
 				rx += angle;
@@ -396,7 +401,7 @@ void Area::Rotate()
 				ry += angle;
 			else
 				rz += angle;
-			Update(LocationBase::Get("Kalimdor"), Point2DI(36, 35), Point2DI(7, 9), true);
+			Update(LocationBase::Get("Kalimdor"), Point2DI(36, 35), Point2DI(7, 9));
 		}
 	}
 	
