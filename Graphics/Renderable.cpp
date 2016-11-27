@@ -73,7 +73,7 @@ void Renderable::CreateScene(Ogre::SceneNode * parent, Ogre::ColourValue & color
 	Vector3 * vertices = reinterpret_cast<Vector3*>(model->GetVertices());
 	for (unsigned vi = 0; vi < model->GetVertexCount(); vi++)
 	{
-		manual_object->position(vertices[vi].x, vertices[vi].z, vertices[vi].y);
+		manual_object->position(vertices[vi].x, vertices[vi].y, -vertices[vi].z);
 		if (vi % 9 == 0)
 			manual_object->colour(1, 1, 1, 1);
 		else if (vi % 6 == 0)
@@ -194,7 +194,7 @@ void NavMeshRenderable::CreateScene(Ogre::SceneNode * parent, Ogre::ColourValue 
 							const float y = orig[1] + (v[1] + 1)*ch;
 							const float z = orig[2] + v[2] * cs;
 
-							m_pRecastMOWalk->position(x, z, y+10);
+							m_pRecastMOWalk->position(x, y+10, -z);
 							if (mesh.areas[i] == 0)
 								m_pRecastMOWalk->colour(0, 1, 0, 1);
 							else
