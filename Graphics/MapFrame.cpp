@@ -64,7 +64,7 @@ void MapFrame::OnUpdate()
 	}
 	area->data_mutex.unlock();
 	//mCamera->setOrientation(Ogre::Quaternion(&Ogre::Vector3(0, 0, -1)));
-	//cout <<"X: "<< mCamera->getPosition().x<<", Y: "<< mCamera->getPosition().y<<", Z: "<< mCamera->getPosition().z << endl;
+	cout <<"X: "<< mCamera->getPosition().x<<", Y: "<< mCamera->getPosition().y<<", Z: "<< mCamera->getPosition().z << endl;
 	//cout << "X: " << mCamera->getOrientation().x << ", Y: " << mCamera->getOrientation().y << ", Z: " << mCamera->getOrientation().z << endl;
 }
 
@@ -274,6 +274,12 @@ void MapFrame::UpdateScene()
 	Ogre::ColourValue color = Ogre::ColourValue(1, 1, 0, 1);
 	for (auto &chunk : area->GetChunks())
 	{
+		if (chunk->GetCoordinates()==Point2DI(0,0))
+			color= Ogre::ColourValue(1, 0, 0, 1);
+		else if (chunk->GetCoordinates() == Point2DI(0, 15))
+			color = Ogre::ColourValue(0, 1 , 1, 0);
+		else
+			color = Ogre::ColourValue(1, 1, 0, 1);
 		add_if_not_exist(&*chunk, rends, mSceneMgr,color );
 	}
 	color = Ogre::ColourValue(0, 1, 0, 1);

@@ -85,6 +85,7 @@ public:
 #ifdef BOTDEV
 	void ToMesh();
 	void Rotate();
+	void Rotate90();
 #endif
 
 	//virtual void CheckAndMoveImpl(Location * location, Point2D<int> block_coordinates, Point2D<int> coordinates);
