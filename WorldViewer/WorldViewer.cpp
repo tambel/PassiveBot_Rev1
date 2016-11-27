@@ -101,7 +101,7 @@ int main()
 	//Generator gen = Generator();
 	GlobalNavMesh nm = GlobalNavMesh();
 	nm.Start(0, 0);
-	//nm.AddTile(Point2DI(0, 1));
+	nm.AddTile(Point2DI(0, 1));
 	//nm.AddTile(Point2DI(0, 2));
 	//nm.AddTile(Point2DI(1, 0));
 	//nm.AddTile(Point2DI(1, 1));

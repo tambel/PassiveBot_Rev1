@@ -265,8 +265,6 @@ unsigned char * GlobalNavMesh::BuildTileMesh(int x, int y, const float* bmin, co
 	rcFilterLedgeSpans(m_ctx, m_cfg.walkableHeight, m_cfg.walkableClimb, *m_solid);
 	rcFilterWalkableLowHeightSpans(m_ctx, m_cfg.walkableHeight, *m_solid);
 
-	//unique_ptr<rcCompactHeightfield> m_chf_ptr = unique_ptr<rcCompactHeightfield>(rcAllocCompactHeightfield());
-	//rcCompactHeightfield * m_chf = m_chf_ptr.get();
 	m_chf = rcAllocCompactHeightfield();
 
 	if (!m_chf)
@@ -279,9 +277,6 @@ unsigned char * GlobalNavMesh::BuildTileMesh(int x, int y, const float* bmin, co
 		//m_ctx->log(RC_LOG_ERROR, "buildNavigation: Could not build compact data.");
 		return 0;
 	}
-
-	//rcFreeHeightField(m_solid);
-	//m_solid = 0;
 
 	if (!rcErodeWalkableArea(m_ctx, m_cfg.walkableRadius, *m_chf))
 	{
