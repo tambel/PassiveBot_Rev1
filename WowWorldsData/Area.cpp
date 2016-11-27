@@ -41,7 +41,7 @@ Area::Area(Area && area)
 
 void Area::Update(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {
-	format = AreaFormat::fChunk;
+	format = AreaFormat::fBlock;
 	ADTWorker::Clear();
 	this->location = location;
 	this->block_coordinates = block_coordinates;
@@ -365,47 +365,60 @@ void Area::Rotate()
 	while (1)
 	{
 		
-		int c = getch();
+		//int c = getch();
 		//cout << c << endl;
-		switch (c)
-		{
-		case 97:
-			axis = 1;
-			angle = -10.0;
-			break;
-		case 100:
-			axis = 1;
-			angle = 10.0;
-			break;
-		case 119:
-			axis = 2;
-			angle = -10.0;
-			break;
-		case 115:
-			axis = 2;
-			angle = 10.0;
-			break;
-		case 52:
-			axis = 0;
-			angle = -10.0;
-			break;
-		case 54:
-			axis = 0;
-			angle = 10.0;
-			break;
-		default:
-			break;
-		}
-		if (angle != 0)
-		{
-			if (axis == 0)
-				rx += angle;
-			else if (axis == 1)
-				ry += angle;
-			else
-				rz += angle;
-			Update(LocationBase::Get("Kalimdor"), Point2DI(36, 35), Point2DI(7, 9));
-		}
+		//switch (c)
+		//{
+		//case 97:
+		//	axis = 1;
+		//	angle = -90.0;
+		//	break;
+		//case 100:
+		//	axis = 1;
+		//	angle = 90.0;
+		//	break;
+		//case 119:
+		//	axis = 2;
+		//	angle = -90.0;
+		//	break;
+		//case 115:
+		//	axis = 2;
+		//	angle = 90.0;
+		//	break;
+		//case 52:
+		//	axis = 0;
+		//	angle = -90.0;
+		//	break;
+		//case 54:
+		//	axis = 0;
+		//	angle = 90.0;
+		//	break;
+		//default:
+		//	break;
+		//}
+		for (int x = 0; x < 8; x++)
+			for (int y = 0; y < 8; y++)
+				for (int z = 0; z < 8; z++)
+
+				{
+					getch();
+					rx = -360 + x * 90;
+					ry = -360 + y * 90;
+					rz = -360 + z * 90;
+					Update(LocationBase::Get("Kalimdor"), Point2DI(36, 35), Point2DI(7, 9));
+					cout << rx << " " << ry << " " << rz << endl;
+				}
+		//if (angle != 0)
+		//{
+		//	if (axis == 0)
+		//		rx += angle;
+		//	else if (axis == 1)
+		//		ry += angle;
+		//	else
+		//		rz += angle;
+		//	Update(LocationBase::Get("Kalimdor"), Point2DI(36, 35), Point2DI(7, 9));
+		//	cout << rx << " " << ry << " " << rz << endl;
+		//}
 	}
 	
 }

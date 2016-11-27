@@ -37,9 +37,9 @@ class Area
 {
 protected:
 #ifdef BOTDEV
-	float rx;
-	float ry;
-	float rz;
+	float rx=0.0;
+	float ry=0.0;
+	float rz=0.0;
 #endif
 
 	AreaFormat format;

@@ -150,9 +150,9 @@ void Model::Rotate()
 	float p = PI / 2;
 	;
 	boost::numeric::ublas::vector<float> vertice(4);
-	Geometry::Transformer3D::SetRotationAngle(Geometry::Axis::X, angle_x);
-	Geometry::Transformer3D::SetRotationAngle(Geometry::Axis::Y, angle_z);
-	Geometry::Transformer3D::SetRotationAngle(Geometry::Axis::Z, angle_y);
+	Geometry::Transformer3D::SetRotationAngle(Geometry::Axis::X, -angle_x-PI);
+	Geometry::Transformer3D::SetRotationAngle(Geometry::Axis::Y, angle_z+PI);
+	Geometry::Transformer3D::SetRotationAngle(Geometry::Axis::Z, angle_y-PI);
 	boost::numeric::ublas::matrix<float> rotX = Geometry::Transformer3D::rotation_matrix_X;
 	boost::numeric::ublas::matrix<float> rotY = Geometry::Transformer3D::rotation_matrix_Z;
 	boost::numeric::ublas::matrix<float> rotZ = Geometry::Transformer3D::rotation_matrix_Y;

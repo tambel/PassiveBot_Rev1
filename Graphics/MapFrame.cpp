@@ -37,8 +37,8 @@ void MapFrame::createScene()
 	//mCamera->setPosition(Vector3ToOgreVector(area->GetChunks()[0]->GetRealPosition()));
 	Vector3 & pos = area->GetChunks()[0]->GetRealPosition();
 	mCamera->setPosition(Ogre::Vector3(pos.x,pos.y,pos.z));
-	mCamera->setOrientation(Ogre::Quaternion(Ogre::Vector3(0, 0, 0), Ogre::Vector3(0, 0, 0), Ogre::Vector3(0, 0, 1)));
-	mCamera->rotate(Ogre::Vector3(0, 0, 1), Ogre::Radian(Ogre::Degree(90)));
+	//mCamera->setOrientation(Ogre::Quaternion(Ogre::Vector3(0, 0, 0), Ogre::Vector3(0, 0, 0), Ogre::Vector3(0, 0, 1)));
+	//mCamera->rotate(Ogre::Vector3(0, 0, 1), Ogre::Radian(Ogre::Degree(90)));
 	area->data_mutex.unlock();
 
 
@@ -64,8 +64,8 @@ void MapFrame::OnUpdate()
 	}
 	area->data_mutex.unlock();
 	//mCamera->setOrientation(Ogre::Quaternion(&Ogre::Vector3(0, 0, -1)));
-	cout <<"X: "<< mCamera->getPosition().x<<", Y: "<< mCamera->getPosition().y<<", Z: "<< mCamera->getPosition().z << endl;
-	cout << "X: " << mCamera->getOrientation().x << ", Y: " << mCamera->getOrientation().y << ", Z: " << mCamera->getOrientation().z << endl;
+	//cout <<"X: "<< mCamera->getPosition().x<<", Y: "<< mCamera->getPosition().y<<", Z: "<< mCamera->getPosition().z << endl;
+	//cout << "X: " << mCamera->getOrientation().x << ", Y: " << mCamera->getOrientation().y << ", Z: " << mCamera->getOrientation().z << endl;
 }
 
 
