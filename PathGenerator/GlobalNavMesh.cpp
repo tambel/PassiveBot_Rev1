@@ -29,7 +29,7 @@ inline unsigned int nextPow2(unsigned int v)
 GlobalNavMesh::GlobalNavMesh()
 {
 	poly_meshes = vector<rcPolyMesh*>();
-	area = new Area(2);
+	area = new Area(2, AreaFormat::fBlock);
 	bbox.up = Vector3(0.0, 0.0, 0.0);
 	bbox.down = Vector3(Metrics::MapSize, 0.0, Metrics::MapSize);
 	InitConfig();
@@ -47,7 +47,7 @@ GlobalNavMesh::GlobalNavMesh()
 	int polyBits = 22 - tileBits;
 	config.m_maxTiles = 1 << tileBits;
 	config.m_maxPolysPerTile = 1 << polyBits;
-	this->m_ctx= new CTX();
+	this->m_ctx= new CTX2();
 }
 
 

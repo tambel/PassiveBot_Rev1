@@ -24,6 +24,30 @@ enum AreaFormat
 	fBlock
 };
 
+
+class MMM
+{
+public:
+	int a;
+	MMM()
+	{
+		a = 10;
+	}
+	MMM(MMM && other)
+	{
+		a = other.a;
+		other.a = 0;
+	}
+	MMM & operator=(MMM & other)
+	{
+		a = other.a;
+		other.a = 0;
+		return *this;
+	}
+};
+
+
+
 class EmptyAreaException : exception
 {
 public:
@@ -58,16 +82,18 @@ protected:
 	void _move(Area & other);
 	void AddChunk(Location & location, Point2D<int> & block_coordinates, Point2D<int> & coordinates);
 	void InitAreaBoundingBox();
-
+	MMM a;
 public:
 	
 	Area();
-	Area(int radius);
+	Area(int radius, AreaFormat format);
 	Area(Location & location, Point2D<int> block_coordinates,Point2D<int> coordinates,int radius);
 	
 	virtual ~Area(void);
-	Area & operator=(Area && right);
-	Area(Area && area);
+	Area & operator=(const Area & right)=delete ;
+	Area(const Area & area) = delete;
+	Area & operator=(Area && right)=default;
+	Area(Area && area) = default;
 	
 	void CheckAndUpdate(Location & location, Point2D<int> block_coordinates,Point2D<int> coordinates);
 	inline void UpdateArea(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates) { this->Update(location, block_coordinates, coordinates); }

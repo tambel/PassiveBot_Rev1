@@ -13,14 +13,17 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Navigation">
-      <UniqueIdentifier>{5655f2ec-5a68-4d0b-ac07-44e00827d68a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Заголовочные файлы\Legion">
       <UniqueIdentifier>{903c08d7-4274-4129-9b2f-b8a631047cb4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Файлы исходного кода\Legion">
       <UniqueIdentifier>{af374a4d-f250-463d-8038-e4509edd8dde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\Navigation">
+      <UniqueIdentifier>{5be0b5e9-9257-4679-9815-a1051fa37df4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Navigation">
+      <UniqueIdentifier>{d6821a91-2669-401f-a06e-be4e14178262}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +120,12 @@
     <ClInclude Include="ClientDB.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="LocalAreaNavMesh.h">
+      <Filter>Заголовочные файлы\Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="NavMesh.h">
+      <Filter>Заголовочные файлы\Navigation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -199,6 +208,12 @@
     </ClCompile>
     <ClCompile Include="ClientDB.cpp">
       <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="LocalAreaNavMesh.cpp">
+      <Filter>Файлы исходного кода\Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="NavMesh.cpp">
+      <Filter>Файлы исходного кода\Navigation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

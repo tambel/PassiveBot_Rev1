@@ -176,7 +176,7 @@ void NavMeshRenderable::CreateScene(Ogre::SceneNode * parent, Ogre::ColourValue 
 			Ogre::ManualObject *m_pRecastMOWalk = scene->getCreator()->createManualObject();
 			m_pRecastMOWalk->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_TRIANGLE_LIST);
 			for (int i = 0; i < mesh.npolys; ++i) // go through all polygons
-				if (mesh.areas[i] == 0)
+				//if (mesh.areas[i] == 0)
 				{
 					const unsigned short* p = &mesh.polys[i*nvp * 2];
 

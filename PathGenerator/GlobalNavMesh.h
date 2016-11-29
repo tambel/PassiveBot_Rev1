@@ -2,10 +2,10 @@
 #include "WowWorldsData\WowWorldsData.h" 
 
 
-class CTX :public rcContext
+class CTX2 :public rcContext
 {
 public:
-	CTX() :rcContext() {}
+	CTX2() :rcContext() {}
 	virtual void doLog(const rcLogCategory category, const char* msg, const int len)
 	{
 		cout << msg << endl;
@@ -27,7 +27,7 @@ class GlobalNavMesh
 	rcPolyMesh* m_pmesh = nullptr;
 	rcPolyMeshDetail* m_dmesh = nullptr;
 	rcConfig m_cfg;
-	CTX * m_ctx = nullptr;
+	CTX2 * m_ctx = nullptr;
 	vector<rcPolyMesh*> poly_meshes;
 
 	Area * area;

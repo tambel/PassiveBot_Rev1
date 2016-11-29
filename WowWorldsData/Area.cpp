@@ -12,12 +12,14 @@ using namespace Utils::Game;
 Area::Area()
 {
 }
-Area::Area(int radius)
+Area::Area(int radius, AreaFormat format)
 {
 	this->radius = radius;
+	this->format = format;
 }
 Area::Area(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius) :location(location), block_coordinates(block_coordinates), coordinates(coordinates), radius(radius)
 {
+	a = MMM();
 	area_size = radius * 2 + 1;
 	this->Update(location,block_coordinates,coordinates);
 }
@@ -26,18 +28,18 @@ Area::~Area(void)
 
 }
 
-Area & Area::operator=(Area && right)
-{
-	_move(right);
-	
+//Area & Area::operator=(Area && right)
+//{
+//	_move(right);
+//	
+//
+//	return *this;
+//}
 
-	return *this;
-}
-
-Area::Area(Area && area)
-{
-	_move(area);
-}
+//Area::Area(Area && area)
+//{
+//	_move(area);
+//}
 
 void Area::Update(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {

@@ -144,6 +144,7 @@
     <ClInclude Include="ClientDB.h" />
     <ClInclude Include="Doodad.h" />
     <ClInclude Include="Exceptions.h" />
+    <ClInclude Include="LocalAreaNavMesh.h" />
     <ClInclude Include="M2.h" />
     <ClInclude Include="M2Cache.h" />
     <ClInclude Include="M2Header.h" />
@@ -154,6 +155,7 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="NavArea.h" />
     <ClInclude Include="Area.h" />
+    <ClInclude Include="NavMesh.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="WMO.h" />
@@ -176,6 +178,7 @@
     <ClCompile Include="ClientDB.cpp" />
     <ClCompile Include="Doodad.cpp" />
     <ClCompile Include="Exceptions.cpp" />
+    <ClCompile Include="LocalAreaNavMesh.cpp" />
     <ClCompile Include="M2.cpp" />
     <ClCompile Include="M2Cache.cpp" />
     <ClCompile Include="M2l.cpp" />
@@ -185,6 +188,7 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="NavArea.cpp" />
     <ClCompile Include="Area.cpp" />
+    <ClCompile Include="NavMesh.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
