@@ -117,13 +117,13 @@ int main()
 	nm.AddTile(Point2DI(37, 37));
 	nm.AddTile(Point2DI(38, 37));*/
 
-	LocalAreaNavMesh nm = LocalAreaNavMesh(LocationBase::Get("Kalimdor"), Point2DI(0, 0), Point2DI(7, 9));
-	nm.Build();
+	//LocalAreaNavMesh nm = LocalAreaNavMesh(LocationBase::Get("Kalimdor"), Point2DI(0, 0), Point2DI(7, 9));
+	//nm.Build();
 
-	WorldViewer viewer = WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(0, 0), Point2DI(7, 9), 1);
-	//WorldViewer viewer = WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(36, 34), Point2DI(7, 9), 2);
+	//WorldViewer viewer = WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(0, 0), Point2DI(7, 9), 10);
+	WorldViewer viewer = WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(36, 34), Point2DI(7, 9), 10);
 	
-	viewer.GetFrame()->AddNavMesh(nm.GetPolyMeshes());
+	//viewer.GetFrame()->AddNavMesh(nm.GetPolyMeshes());
 	
 	//viewer.GetFrame()->AddNavMesh(gnm.GetPolyMeshes());
 	viewer.ShowMap();

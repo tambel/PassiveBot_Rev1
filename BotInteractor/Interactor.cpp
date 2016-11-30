@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Interactor.h"
-#include "NetworkSniffer.h"
 
 
 using namespace std;
