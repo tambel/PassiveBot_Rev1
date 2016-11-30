@@ -25,7 +25,8 @@ Doodad::Doodad(string filename, unsigned uuid, Position & position, short scale)
 	this->position.coords=Vector3(position.coords.z,position.coords.x,position.coords.y);
 	this->position.rotation = Vector3(position.rotation.z, position.rotation.x, position.rotation.y);
 	vertex_count=m2.vertex_count;
-	
+	if (vertex_count == 0)
+		return;
 	unsigned vc = 0;
 	vertices = new float[vertex_count * 3];
 

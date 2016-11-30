@@ -70,7 +70,7 @@ class Model
 	void _move(Model & other);
 public:
 	unsigned long vertex_count=0;
-	int * indices;
+	int * indices=nullptr;
 	unsigned long index_count=0;
 	Position position;
 	float * vertices = 0;

@@ -19,7 +19,7 @@ public:
 	Doodad * dood;
 	M2Vertex * vertices;
 	unsigned long vertex_count;
-	int * indices;
+	int * indices=nullptr;
 	unsigned index_count;
 	string filename;
 	M2(string filename);

@@ -104,7 +104,7 @@ void Model::_move(Model & other)
 
 Model::Model()
 {
-
+	indices = nullptr;
 }
 
 Model::Model(Utils::Graphics::BoundingBox bounding_box):

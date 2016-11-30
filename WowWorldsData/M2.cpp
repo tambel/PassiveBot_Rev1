@@ -4,6 +4,7 @@
 using namespace std;
 M2::M2(string filename):filename(filename)
 {
+	indices = nullptr;
 	this->filename = filename;
 	BinaryReader  * reader = new BinaryReader(filename);
 	string magic = reader->ReadString(4);
@@ -38,7 +39,8 @@ M2::M2(string filename):filename(filename)
 	{
 		vertex_count = vertex_count;
 	}
-	LoadSkinFile(0);
+	if (vertex_count!=0)
+		LoadSkinFile(0);
 	delete reader;
 	//delete c_reader;
 
