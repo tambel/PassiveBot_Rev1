@@ -1,38 +1,24 @@
-#pragma once
-#include "Window.h"
-#include "Utils.h"
-#include "Renderable.h"
-#include "MutableArea.h"
-class MapFrame: public Window
+#include "GraphicsSystem.h"
+#include "SdlInputHandler.h"
+
+#include "OgreTimer.h"
+#include "Threading/OgreThreads.h"
+#include "OgreRenderWindow.h"
+
+#include "OgreRoot.h"
+#include "Compositor/OgreCompositorManager2.h"
+
+//Declares WinMain / main
+using namespace Demo;
+
+
+class MapFrame : public GraphicsSystem
 {
-	MutableArea * area;
-	vector<Renderable> rends;
-	Renderable player_renderable;
-	float m_smoothPath[2048 * 3];
-	Vector3 player_position;
-	Vector3 old_player_position;
-	Ogre::SceneNode * player_scene = nullptr;
-	bool to_update_player = false;
-	vector<Renderable*> lines;
-	
+	virtual Ogre::CompositorWorkspace* setupCompositor();
+
 
 public:
-	MapFrame(void);
-	~MapFrame(void);
-	void createScene();
-	inline MutableArea * GetArea() {return area;}
-	inline void SetArea(MutableArea * area) {this->area=area;}
-	void OnUpdate();
-	void CreateNavMesh();
-	void createRecastPathLine(int nPathSlot);
-	void UpdateScene();
-	void AddPlayer(Model & model);
-	void SetPlayerPosition(Vector3 & position);
-	void AddPath(Path::Link * link);
-	inline void AddStrip(Vector3 * points, unsigned size)
-	{
-		lines.push_back(new LineStripRenderable(points, size));
-	}
-	void AddNavMesh(vector<rcPolyMesh*> & meshes);
-};
+	MapFrame(GameState *gameState);
+	int go();
 
+};

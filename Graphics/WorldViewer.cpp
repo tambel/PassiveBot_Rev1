@@ -1,29 +1,32 @@
-#include "stdafx.h"
+#include "stdafx.h" 
 #include "WorldViewer.h"
+
+#include "MapState.h"
 
 void thread_func(MapFrame * frame)
 {
 	frame->go();
 }
- 
+
 WorldViewer::WorldViewer(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius)
 {
-	frame = MapFrame();
-	area = MutableArea(location,block_coordinates,coordinates,radius);
-	frame.SetArea(&area);
+	MapState state = MapState("STATE");
+	frame = new MapFrame(&state);
+	//area = MutableArea(location, block_coordinates, coordinates, radius);
+	//frame.SetArea(&area);
 
 }
 
 WorldViewer::WorldViewer(Vector3 & position)
 {
 	//WorldViewer(Game::LocationBase::Get("Kalimdor"), WorldPositionToBlockCoords(position), WorldPositionToChunkCoords(position), 3);
-	frame = MapFrame();
-	area = MutableArea(Game::LocationBase::Get("Kalimdor"), WorldPositionToBlockCoords(position), WorldPositionToChunkCoords(position), 0);
-	frame.SetArea(&area);
-	
-	frame.SetPlayerPosition(position);
+	//frame = new MapFrame();
+	//area = MutableArea(Game::LocationBase::Get("Kalimdor"), WorldPositionToBlockCoords(position), WorldPositionToChunkCoords(position), 0);
+	//frame.SetArea(&area);
 
-	
+	//frame.SetPlayerPosition(position);
+
+
 
 }
 
@@ -34,22 +37,22 @@ WorldViewer::~WorldViewer()
 
 void WorldViewer::ShowMap()
 {
-	frame_thread = thread(thread_func,&frame);
+	frame_thread = thread(thread_func, frame);
 	frame_thread.detach();
 }
 
 void WorldViewer::Update(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates, bool force)
 {
-	if (force)
-		area.Update(location, block_coordinates, coordinates);
-	else
-		area.CheckAndUpdate(location, block_coordinates, coordinates);
+	//if (force)
+	//	area.Update(location, block_coordinates, coordinates);
+	//else
+	//	area.CheckAndUpdate(location, block_coordinates, coordinates);
 
 }
 void WorldViewer::Update(Vector3 & position)
 {
 	Update(Game::LocationBase::Get("Kalimdor"), WorldPositionToBlockCoords(position), WorldPositionToChunkCoords(position));
-	frame.SetPlayerPosition(position);
+	//frame.SetPlayerPosition(position);
 }
 
 WorldViewer & WorldViewer::operator=(WorldViewer && other)
