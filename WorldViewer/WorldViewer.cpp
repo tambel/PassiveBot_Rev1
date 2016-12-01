@@ -117,16 +117,16 @@ int main()
 	nm.AddTile(Point2DI(37, 37));
 	nm.AddTile(Point2DI(38, 37));*/
 
-	LocalAreaNavMesh nm = LocalAreaNavMesh(LocationBase::Get("Kalimdor"), Point2DI(0, 0), Point2DI(7, 9));
+	LocalAreaNavMesh nm = LocalAreaNavMesh(LocationBase::Get("Kalimdor"), Point2DI(36, 34), Point2DI(7, 9));
 	nm.Build();
 
 
 	//Doodad dd = Doodad("D:\\Bot\\Extracted\\world\\kalimdor\\barrens\\passivedoodads\\fx\\barrens_regrow_fx.m2", 0, Position(), 1);
 	//WMO dd = WMO("D:\\Bot\\Extracted\\world\\wmo\\kalimdor\\collidabledoodads\\tanaris\\trolltent\\trolltentsand01.wmo", 0, Position());
 
-	WorldViewer viewer = WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(0, 0), Point2DI(7, 9), 1);
+	//WorldViewer viewer = WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(0, 0), Point2DI(7, 9), 1);
 
-	//WorldViewer viewer = WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(36, 34), Point2DI(7, 9), 3);
+	WorldViewer viewer = WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(36, 34), Point2DI(7, 9), 3);
 	
 	viewer.GetFrame()->AddNavMesh(nm.GetPolyMeshes());
 	

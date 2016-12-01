@@ -24,7 +24,6 @@ void NavMesh::RasterizeModel(Model * model)
 		float * verts = model->vertices;
 		const int* ctris = model->GetIndices();
 		const int nctris = model->GetIndexCount() / 3;
-		//m_tileTriCount += nctris;
 		m_triareas = new unsigned char[nctris];
 		rcMarkWalkableTriangles(m_ctx, m_cfg.walkableSlopeAngle, verts, vcount, ctris, nctris, m_triareas);
 		if (!rcRasterizeTriangles(m_ctx, verts, vcount, ctris, m_triareas, nctris, *m_solid, m_cfg.walkableClimb))
@@ -129,8 +128,6 @@ void NavMesh::BuildAllTiles()
 		//m_ctx->log(RC_LOG_ERROR, "buildTiledNavigation: Could not init Detour navmesh query");
 		return;
 	}
-	int c = 0;
-	int count = 0;
 	string name;
 	for (int y = 0; y < th; ++y)
 	{
@@ -146,8 +143,6 @@ void NavMesh::BuildAllTiles()
 			int dataSize = 0;
 			//unsigned char * data;
 			unsigned char* data = BuildTileMesh(x, y, m_tileBmin, m_tileBmax, dataSize);
-
-			if (!data) count++;
 			if (data)
 			{
 
@@ -160,7 +155,7 @@ void NavMesh::BuildAllTiles()
 					dtFree(data);
 
 			}
-			//Cleanup();
+			Cleanup();
 		}
 	}
 	//saveAll("all_tiles_navmesh.bin", m_navMesh);
@@ -175,7 +170,6 @@ void NavMesh::BuildAllTiles()
 unsigned char * NavMesh::BuildTileMesh(int x, int y, const float * bmin, const float * bmax, int & dataSize)
 {
 	//Cleanup();
-	//rcConfig m_cfg;
 	std::memset(&m_cfg, 0, sizeof(m_cfg));
 	m_cfg.cs = config.m_cellSize;
 	m_cfg.ch = config.m_cellHeight;

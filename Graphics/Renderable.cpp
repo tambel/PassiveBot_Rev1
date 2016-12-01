@@ -194,7 +194,7 @@ void NavMeshRenderable::CreateScene(Ogre::SceneNode * parent, Ogre::ColourValue 
 							const float y = orig[1] + (v[1] + 1)*ch;
 							const float z = orig[2] + v[2] * cs;
 
-							m_pRecastMOWalk->position(x, y+3, -z);
+							m_pRecastMOWalk->position(x, y, -z);
 							if (mesh.areas[i] == 0)
 								m_pRecastMOWalk->colour(1, 0.5, 0, 1);
 							else
