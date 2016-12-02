@@ -121,14 +121,19 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(BOOST)\;$(OGRE)\include;$(OGRE)\include\OIS;$(OGRE)\include\OGRE;$(OGRE)\Samples\Common\include;$(OGRE)\include\OGRE\Overlay;$(SolutionDir);$(RECASTDETOUR)\Recast\Include;$(RECASTDETOUR)\Detour\Include;$(RECASTDETOUR)\Sample\Include;$(RECASTDETOUR)\DebugUtils\Include;$(AUTOIT)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OGRE2)\Dependencies\src\zlib;$(OGRE2)\Dependencies\src\zziplib;$(OGRE2)\Dependencies\src\FreeImage\Source;$(OGRE2)\Dependencies\src\freetype\include\freetype;$(OGRE2)\Dependencies\src\freetype\include;$(OGRE2)\Dependencies\src\ois\includes;$(OGRE2)\Dependencies\src\ois;$(OGRE2)\Dependencies\src\Cg\include;$(OGRE2)\Dependencies\src\Cg;$(OGRE2)\OgreMain\include;$(OGRE2)\VCBuild\include;$(OGRE2);$(OGRE2)\OgreMain\include\Threading;$(OGRE2)\Samples\2.0\Common\include;$(OGRE2)\Components\Overlay\include;$(OGRE2)\Dependencies\src\SDL2\include;$(OGRE2)\Samples\2.0\ApiUsage\V1Interfaces\include;$(BOOST)\;$(SolutionDir);$(RECASTDETOUR)\Recast\Include;$(RECASTDETOUR)\Detour\Include;$(RECASTDETOUR)\Sample\Include;$(RECASTDETOUR)\DebugUtils\Include;$(AUTOIT)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BrowseInformation>false</BrowseInformation>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(BOOST)\stage\lib;$(Configuration);$(SolutionDir)$(Configuration)\;$(RECASTDETOUR)\Recast\lib\$(Configuration);$(RECASTDETOUR)\Detour\lib\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Tools.lib;Recast.lib;Detour.lib;WowWorldsData.lib;NetworkCommuniсation.lib;Graphics.lib;PathGenerator.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(BOOST)\stage\lib;$(Configuration);$(SolutionDir)$(Configuration)\;$(RECASTDETOUR)\Recast\lib\$(Configuration);$(RECASTDETOUR)\Detour\lib\$(Configuration);$(OGRE2)\lib\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Tools.lib;Recast.lib;Detour.lib;WowWorldsData.lib;NetworkCommuniсation.lib;Graphics.lib;PathGenerator.lib;OgreMain_d.lib;OgreHlmsUnlit_d.lib;OgreSamplesCommon_d.lib;OgreHlmsPbs_d.lib;OgreOverlay_d.lib;SDL2.lib;SDL2main.lib;freetype_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -151,7 +156,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(BOOST)\;$(OGRE)\include;$(OGRE)\include\OIS;$(OGRE)\include\OGRE;$(OGRE)\Samples\Common\include;$(OGRE)\include\OGRE\Overlay;$(SolutionDir);$(RECASTDETOUR)\Recast\Include;$(RECASTDETOUR)\Detour\Include;$(RECASTDETOUR)\Sample\Include;$(RECASTDETOUR)\DebugUtils\Include;$(AUTOIT)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OGRE2)\OgreMain\include;$(OGRE2)\VCBuild\include;$(OGRE2);$(OGRE2)\OgreMain\include\Threading;$(OGRE2)\Samples\2.0\Common\include;$(OGRE2)\Components\Overlay\include;$(OGRE2)\Dependencies\src\SDL2\include;$(OGRE2)\Samples\2.0\ApiUsage\V1Interfaces\include;$(BOOST)\;$(SolutionDir);$(RECASTDETOUR)\Recast\Include;$(RECASTDETOUR)\Detour\Include;$(RECASTDETOUR)\Sample\Include;$(RECASTDETOUR)\DebugUtils\Include;$(AUTOIT)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BrowseInformation>false</BrowseInformation>
     </ClCompile>
     <Link>
@@ -159,8 +164,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(BOOST)\stage\lib;$(Configuration);$(SolutionDir)$(Configuration)\;$(RECASTDETOUR)\Recast\lib\$(Configuration);$(RECASTDETOUR)\Detour\lib\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Tools.lib;Recast.lib;Detour.lib;WowWorldsData.lib;NetworkCommuniсation.lib;Graphics.lib;PathGenerator.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(BOOST)\stage\lib;$(Configuration);$(SolutionDir)$(Configuration)\;$(RECASTDETOUR)\Recast\lib\$(Configuration);$(RECASTDETOUR)\Detour\lib\$(Configuration);$(OGRE2)\lib\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Tools.lib;Recast.lib;Detour.lib;WowWorldsData.lib;NetworkCommuniсation.lib;Graphics.lib;PathGenerator.lib;OgreMain.lib;OgreHlmsUnlit.lib;OgreSamplesCommon.lib;OgreHlmsPbs.lib;OgreOverlay.lib;SDL2.lib;SDL2main.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelDev|Win32'">
@@ -171,7 +176,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;BOTDEV;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(BOOST)\;$(OGRE)\include;$(OGRE)\include\OIS;$(OGRE)\include\OGRE;$(OGRE)\Samples\Common\include;$(OGRE)\include\OGRE\Overlay;$(SolutionDir);$(RECASTDETOUR)\Recast\Include;$(RECASTDETOUR)\Detour\Include;$(RECASTDETOUR)\Sample\Include;$(RECASTDETOUR)\DebugUtils\Include;$(AUTOIT)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OGRE2)\OgreMain\include;$(OGRE2)\VCBuild\include;$(OGRE2);$(OGRE2)\OgreMain\include\Threading;$(OGRE2)\Samples\2.0\Common\include;$(OGRE2)\Components\Overlay\include;$(OGRE2)\Dependencies\src\SDL2\include;$(OGRE2)\Samples\2.0\ApiUsage\V1Interfaces\include;$(BOOST)\;$(SolutionDir);$(RECASTDETOUR)\Recast\Include;$(RECASTDETOUR)\Detour\Include;$(RECASTDETOUR)\Sample\Include;$(RECASTDETOUR)\DebugUtils\Include;$(AUTOIT)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BrowseInformation>false</BrowseInformation>
     </ClCompile>
     <Link>

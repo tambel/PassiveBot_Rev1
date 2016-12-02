@@ -11,13 +11,11 @@ Ogre::CompositorWorkspace * MapFrame::setupCompositor()
 MapFrame::MapFrame(GameState * gameState):
 	GraphicsSystem(gameState)
 {
+	game_state = gameState;
 }
 
 int MapFrame::go()
 {
-
-	//v1InterfacesGameState._notifyGraphicsSystem(&graphicsSystem);
-
 	initialize("Using V1 interfaces directly");
 
 	if (getQuit())

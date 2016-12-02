@@ -25,7 +25,7 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
@@ -61,16 +61,21 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(BOOST)\;$(OGRE)\include;$(OGRE)\include\OIS;$(OGRE)\include\OGRE;$(OGRE)\Samples\Common\include;$(OGRE)\include\OGRE\Overlay;$(SolutionDir);$(RECASTDETOUR)\Recast\Include;$(RECASTDETOUR)\Detour\Include;$(RECASTDETOUR)\Sample\Include;$(RECASTDETOUR)\DebugUtils\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OGRE2)\Dependencies\src\zlib;$(OGRE2)\Dependencies\src\zziplib;$(OGRE2)\Dependencies\src\FreeImage\Source;$(OGRE2)\Dependencies\src\freetype\include\freetype;$(OGRE2)\Dependencies\src\freetype\include;$(OGRE2)\Dependencies\src\ois\includes;$(OGRE2)\Dependencies\src\ois;$(OGRE2)\Dependencies\src\Cg\include;$(OGRE2)\Dependencies\src\Cg;$(OGRE2)\OgreMain\include;$(OGRE2)\VCBuild\include;$(OGRE2);$(OGRE2)\OgreMain\include\Threading;$(OGRE2)\Samples\2.0\Common\include;$(OGRE2)\Components\Overlay\include;$(OGRE2)\Dependencies\src\SDL2\include;$(OGRE2)\Samples\2.0\ApiUsage\V1Interfaces\include;$(BOOST)\;$(SolutionDir);$(RECASTDETOUR)\Recast\Include;$(RECASTDETOUR)\Detour\Include;$(RECASTDETOUR)\Sample\Include;$(RECASTDETOUR)\DebugUtils\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zm1000 %(AdditionalOptions)</AdditionalOptions>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>$(BOOST)\stage\lib;$(OGRE)\lib\$(Configuration);$(SolutionDir)$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>WowWorldsData.lib;OgreMain_d.lib;OIS_d.lib;OgreOverlay_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(BOOST)\stage\lib;$(SolutionDir)$(Configuration)\;$(OGRE2)\lib\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>WowWorldsData.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -81,8 +86,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(BOOST)\;$(OGRE)\include;$(OGRE)\include\OIS;$(OGRE)\include\OGRE;$(OGRE)\Samples\Common\include;$(OGRE)\include\OGRE\Overlay;$(SolutionDir);$(RECASTDETOUR)\Recast\Include;$(RECASTDETOUR)\Detour\Include;$(RECASTDETOUR)\Sample\Include;$(RECASTDETOUR)\DebugUtils\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OGRE2)\OgreMain\include;$(OGRE2)\VCBuild\include;$(OGRE2);$(OGRE2)\OgreMain\include\Threading;$(OGRE2)\Samples\2.0\Common\include;$(OGRE2)\Components\Overlay\include;$(OGRE2)\Dependencies\src\SDL2\include;$(OGRE2)\Samples\2.0\ApiUsage\V1Interfaces\include;$(BOOST)\;$(SolutionDir);$(RECASTDETOUR)\Recast\Include;$(RECASTDETOUR)\Detour\Include;$(RECASTDETOUR)\Sample\Include;$(RECASTDETOUR)\DebugUtils\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zm1000 %(AdditionalOptions)</AdditionalOptions>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -91,8 +97,8 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>$(BOOST)\stage\lib;$(OGRE)\lib\$(Configuration);$(SolutionDir)$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>WowWorldsData.lib;OgreMain.lib;OIS.lib;OgreOverlay.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(BOOST)\stage\lib;$(OGRE)\lib\$(Configuration)1;$(SolutionDir)$(Configuration)\;$(OGRE2)\lib\$(Configuration)1</AdditionalLibraryDirectories>
+      <AdditionalDependencies>WowWorldsData.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelDev|Win32'">
@@ -103,7 +109,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;BOTDEV;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(BOOST)\;$(OGRE)\include;$(OGRE)\include\OIS;$(OGRE)\include\OGRE;$(OGRE)\Samples\Common\include;$(OGRE)\include\OGRE\Overlay;$(SolutionDir);$(RECASTDETOUR)\Recast\Include;$(RECASTDETOUR)\Detour\Include;$(RECASTDETOUR)\Sample\Include;$(RECASTDETOUR)\DebugUtils\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OGRE2)\OgreMain\include;$(OGRE2)\VCBuild\include;$(OGRE2);$(OGRE2)\OgreMain\include\Threading;$(OGRE2)\Samples\2.0\Common\include;$(OGRE2)\Components\Overlay\include;$(OGRE2)\Dependencies\src\SDL2\include;$(OGRE2)\Samples\2.0\ApiUsage\V1Interfaces\include;$(BOOST)\;$(SolutionDir);$(RECASTDETOUR)\Recast\Include;$(RECASTDETOUR)\Detour\Include;$(RECASTDETOUR)\Sample\Include;$(RECASTDETOUR)\DebugUtils\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zm1000 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -123,6 +129,7 @@
   <ItemGroup>
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="MapFrame.h" />
+    <ClInclude Include="MapState.h" />
     <ClInclude Include="MutableArea.h" />
     <ClInclude Include="Renderable.h" />
     <ClInclude Include="stdafx.h" />
@@ -132,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MapFrame.cpp" />
+    <ClCompile Include="MapState.cpp" />
     <ClCompile Include="MutableArea.cpp" />
     <ClCompile Include="Renderable.cpp" />
     <ClCompile Include="stdafx.cpp">

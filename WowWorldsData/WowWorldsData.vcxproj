@@ -70,6 +70,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(RECASTDETOUR)d;$(SolutionDir);$(BOOST);$(RECASTDETOUR)\Recast\Include;$(RECASTDETOUR)\Detour\Include;$(RECASTDETOUR)\Sample\Include;$(RECASTDETOUR)\DebugUtils\Include</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -168,21 +169,16 @@
   <ItemGroup>
     <ClCompile Include="Adt.cpp" />
     <ClCompile Include="ADTCache.cpp" />
-    <ClCompile Include="ADTStructs.cpp" />
     <ClCompile Include="ADTWorker.cpp" />
     <ClCompile Include="Cache.cpp" />
-    <ClCompile Include="CascReader.cpp" />
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="ChunkCache.cpp" />
     <ClCompile Include="ChunkedData.cpp" />
-    <ClCompile Include="ClientDB.cpp" />
     <ClCompile Include="Doodad.cpp" />
     <ClCompile Include="Exceptions.cpp" />
     <ClCompile Include="LocalAreaNavMesh.cpp" />
     <ClCompile Include="M2.cpp" />
     <ClCompile Include="M2Cache.cpp" />
-    <ClCompile Include="M2l.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="MapArea.cpp" />
     <ClCompile Include="MapObject.cpp" />
     <ClCompile Include="Model.cpp" />

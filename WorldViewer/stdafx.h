@@ -7,11 +7,9 @@
 
 //Graphics includes
 
-
+#define SDL_MAIN_HANDLED
 #include "NetworkCommuniñation\NetworkCommunicatorClient.h"
-#include "Graphics\Graphics.h"
-#include "PathGenerator\Generator.h"
-#include "WowWorldsData\ClientDB.h"
+
 
 #include "Recast.h"
 

@@ -59,8 +59,5 @@
     <ClCompile Include="Configuration.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="DataBase.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

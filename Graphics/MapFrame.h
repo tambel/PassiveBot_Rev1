@@ -1,3 +1,4 @@
+#pragma once
 #include "GraphicsSystem.h"
 #include "SdlInputHandler.h"
 
@@ -8,12 +9,16 @@
 #include "OgreRoot.h"
 #include "Compositor/OgreCompositorManager2.h"
 
+#include "MapState.h"
+
+
 //Declares WinMain / main
 using namespace Demo;
 
 
 class MapFrame : public GraphicsSystem
 {
+	GameState * game_state;
 	virtual Ogre::CompositorWorkspace* setupCompositor();
 
 
