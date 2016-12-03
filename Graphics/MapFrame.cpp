@@ -1,6 +1,8 @@
 #include "stdafx.h" 
 #include "MapFrame.h"
 
+
+#include "OgreConfigFile.h"
 Ogre::CompositorWorkspace * MapFrame::setupCompositor()
 {
 	Ogre::CompositorManager2 *compositorManager = mRoot->getCompositorManager2();
@@ -12,6 +14,28 @@ MapFrame::MapFrame(GameState * gameState):
 	GraphicsSystem(gameState)
 {
 	game_state = gameState;
+}
+
+
+void MapFrame::setupResources(void)
+{
+	GraphicsSystem::setupResources();
+
+	Ogre::ConfigFile cf;
+
+	cf.load(mResourcePath + "resources2.cfg");
+
+	Ogre::String dataFolder = cf.getSetting("DoNotUseAsResource", "Hlms", "");
+
+	if (dataFolder.empty())
+		dataFolder = "./";
+	else if (*(dataFolder.end() - 1) != '/')
+		dataFolder += "/";
+
+	dataFolder += "2.0/scripts/materials/simple";
+
+	addResourceLocation(dataFolder, "FileSystem", "General");
+
 }
 
 int MapFrame::go()

@@ -201,6 +201,11 @@ void Area::InitMapObjects()
 	}
 }
 
+Vector3 Area::GetCenter()
+{
+	return Vector3(bounding_box.up.x + (bounding_box.down.x - bounding_box.up.x) / 2, bounding_box.up.y + (bounding_box.down.y - bounding_box.up.y) / 2, bounding_box.up.z + (bounding_box.down.z - bounding_box.up.z) / 2);
+}
+
 void Area::UpdateCetralizedBlockScale(Location & location, Point2D<int> block_coordinates)
 {
 	for (int x = block_coordinates.X - radius; x <= block_coordinates.X + radius; x++)

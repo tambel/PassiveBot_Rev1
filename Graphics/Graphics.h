@@ -6,6 +6,14 @@
 #include <WowWorldsData\Utils.h>
 
 #include <mutex>
+#include "OgreVector3.h"
+#include "OgreSceneManager.h"
+
+#include "OgrePrerequisites.h"
+#include "TutorialGameState.h"
+#include "GraphicsSystem.h"
+#include "CameraController.h"
+
 
 #include "MapFrame.h"
 #include "MapState.h"

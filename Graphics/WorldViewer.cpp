@@ -11,10 +11,11 @@ void thread_func(MapFrame * frame)
 WorldViewer::WorldViewer(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius)
 {
 	MapState * state = new MapState("STATE");
+	area = Area(location, block_coordinates, coordinates, radius);
+	state->SetArea(&area);
+
 	frame = new MapFrame(state);
 	state->_notifyGraphicsSystem(frame);
-	//area = MutableArea(location, block_coordinates, coordinates, radius);
-	//frame.SetArea(&area);
 
 }
 

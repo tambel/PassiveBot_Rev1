@@ -90,8 +90,8 @@ public:
 	Area(Location & location, Point2D<int> block_coordinates,Point2D<int> coordinates,int radius);
 	
 	virtual ~Area(void);
-	Area & operator=(const Area & right)=delete ;
-	Area(const Area & area) = delete;
+	//Area & operator=(const Area &)=delete ;
+	//Area(const Area &) = delete;
 	Area & operator=(Area && right)=default;
 	Area(Area && area) = default;
 	
@@ -107,6 +107,7 @@ public:
 	 vector<unique_ptr<Chunk>> & GetChunks() { return chunks; }
 	bool IsOutOfBounds(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	void InitMapObjects();
+	Vector3 GetCenter();
 
 #ifdef BOTDEV
 	void ToMesh();
