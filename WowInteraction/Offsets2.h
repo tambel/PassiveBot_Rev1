@@ -10,20 +10,20 @@ namespace WowOffsets2
 {
     enum Client
     {
-        Connecting=0xF89EC8,// 16293576
-        LoggedIn=0xF1A314,// 15835924
-        InWorld=0xEAB6D9,// 15382233
-        CharSelecting=0xD82F24,// 14167844
-        CharacterNumber=0xD82F38,// 14167864
-        CharacterOffset=0xD82F3C// 14167868
+        Connecting=0x101F058,// 16904280
+        LoggedIn=0xFACD40,// 16436544
+        InWorld=0xF3DEEE,// 15982318
+        CharSelecting=0xDF254C,// 14624076
+        CharacterNumber=0xDF2A6C,// 14625388
+        CharacterOffset=0xDF2A70// 14625392
     };
     enum FrameManager2
     {
-        FrameBase=0xD0ADA8,// 13675944
-        ScreenWidth=0xBF23D4,// 12526548
-        ScreenHeight=0xBF23D8,// 12526552
-        GetRegionType_FontString=0xDFED3,// 917203
-        CurrentKeyBoardFocusFrame=0xCFEA10,// 13625872
+        FrameBase=0xD82BD0,// 14166992
+        ScreenWidth=0xC6B3FC,// 13022204
+        ScreenHeight=0xC6B400,// 13022208
+        GetRegionType_FontString=0xD8ADF,// 887519
+        CurrentKeyBoardFocusFrame=0xD76808,// 14116872
         FrameName=0x14,// Frame__GetName
         FirstFrame=0x6C0,// (P)Script_EnumerateFrames+12
         NextFrame=0x138,// (P)Script_EnumerateFrames+29
@@ -41,8 +41,8 @@ namespace WowOffsets2
     };
     enum ObjectManager2
     {
-        ObjectManager=0xD98168,// 14254440
-        ActivePlayer=0xE34860,// 14895200
+        ObjectManager=0xE0A97C,// 14723452
+        ActivePlayer=0xEC4E94,// 15486612
         FirstObject=0xD8,// (P)ClntObjMgrEnumVisibleObjectsPtr+11
         NextObject=0xD0,// (P)ClntObjMgrEnumVisibleObjectsPtr+17
         MouseGuid=0xEAC500,// Search by hand

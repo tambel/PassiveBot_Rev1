@@ -1,4 +1,5 @@
 from collections import OrderedDict
+import os
 names=OrderedDict()
 names["Client"]=['Connecting','LoggedIn','InWorld','CharSelecting','CharacterNumber','CharacterOffset']
 names["FrameManager2"]=['FrameBase','ScreenWidth','ScreenHeight','GetRegionType_FontString', 'CurrentKeyBoardFocusFrame',
@@ -66,7 +67,10 @@ for k,v in names.items():
             addr_string=addr_string.replace('L','').upper().replace('X','x')
             offsets[k][n] =addr_string
 
-output=open("C:\Users\laptop\Documents\Visual Studio 2015\Projects\PassiveBot_Rev1\WowInteraction\Offsets2.h",'w')
+#path=os.path.join("D:\"Bot\Projects\PassiveBot\WowInteraction")
+#print(path)
+#output=open(path,'w')
+output=open("D:\Bot\Projects\PassiveBot\WowInteraction\Offsets2.h",'w')
 
 
 enums=""

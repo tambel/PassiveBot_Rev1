@@ -54,6 +54,11 @@ void MapState::createScene01(void)
 	TutorialGameState::createScene01();
 }
 
+void MapState::AddNavMesh(vector<rcPolyMesh*>& meshes)
+{
+	navigation_rends.push_back(new NavMeshRenderable(meshes));
+}
+
 void MapState::UpdateScene()
 {
 	vector<Renderable> er;
@@ -132,9 +137,9 @@ void MapState::UpdateScene()
 	material_name = "Doodad";
 	for (auto &doodad : area->GetDoodads())
 		add_if_not_exist(&*doodad, world_static_rends, mSceneMgr, material_name, color);
-
+	material_name = "NavMesh";
 	for (auto &rend : navigation_rends)
 	{
-		//rend->CreateScene(mSceneMgr->getRootSceneNode());
+		rend->CreateScene(mSceneMgr->getRootSceneNode(), material_name, color);
 	}
 }

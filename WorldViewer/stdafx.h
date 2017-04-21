@@ -9,6 +9,7 @@
 
 #define SDL_MAIN_HANDLED
 #include "NetworkCommuniñation\NetworkCommunicatorClient.h"
+#include "PathGenerator\GlobalNavMesh.h"
 
 
 #include "Recast.h"

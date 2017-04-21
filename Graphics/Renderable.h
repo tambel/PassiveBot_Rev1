@@ -48,7 +48,7 @@ class NavMeshRenderable : public Renderable
 public:
 	NavMeshRenderable(NavMeshRenderable && other);
 	NavMeshRenderable(vector<rcPolyMesh*> & meshes);
-	void CreateScene(Ogre::SceneNode * parent, Ogre::ColourValue & color = Ogre::ColourValue(1, 1, 0, 1));
+	void CreateScene(Ogre::SceneNode * parent, string & material, Ogre::ColourValue & color = Ogre::ColourValue(1, 1, 0, 1));
 };
 
 

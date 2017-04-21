@@ -7,7 +7,7 @@ using namespace std;
 
 class WorldViewer
 {
-
+	MapState * state;
 	MapFrame * frame;
 	thread frame_thread;
 	mutex area_mutex;
@@ -22,6 +22,8 @@ public:
 	void Update(Vector3 & position);
 	WorldViewer & operator=(WorldViewer && other);
 	inline MapFrame * GetFrame() { return frame; }
+	inline MapState * GetState() { return state; }
+
 	//inline MutableArea & GetArea() { return area; }
 
 };

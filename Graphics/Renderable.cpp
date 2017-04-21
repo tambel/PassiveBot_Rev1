@@ -187,7 +187,7 @@ NavMeshRenderable::NavMeshRenderable(vector<rcPolyMesh*> &  meshes)
 	this->meshes = &meshes;
 }
 
-void NavMeshRenderable::CreateScene(Ogre::SceneNode * parent, Ogre::ColourValue & color)
+void NavMeshRenderable::CreateScene(Ogre::SceneNode * parent, string & material, Ogre::ColourValue & color)
 {
 	int count = 0;
 	scene = parent->createChildSceneNode();
@@ -208,8 +208,8 @@ void NavMeshRenderable::CreateScene(Ogre::SceneNode * parent, Ogre::ColourValue 
 		if (m_nAreaCount)
 		{
 			// start defining the manualObject
-			Ogre::ManualObject *m_pRecastMOWalk = scene->getCreator()->createManualObject();
-			m_pRecastMOWalk->begin("BaseWhiteNoLighting", Ogre::v1::RenderOperation::OT_TRIANGLE_LIST);
+			Ogre::ManualObject *manual_object = scene->getCreator()->createManualObject();
+			manual_object->begin(material, Ogre::v1::RenderOperation::OT_TRIANGLE_LIST);
 			for (int i = 0; i < mesh.npolys; ++i) // go through all polygons
 												  //if (mesh.areas[i] == 0)
 			{
@@ -229,23 +229,25 @@ void NavMeshRenderable::CreateScene(Ogre::SceneNode * parent, Ogre::ColourValue 
 						const float y = orig[1] + (v[1] + 1)*ch;
 						const float z = orig[2] + v[2] * cs;
 
-						m_pRecastMOWalk->position(x, y, -z);
+						manual_object->position(x, y, -z);
+						Ogre::Vector3 vec = Ogre::Vector3(i % 10, i % 12, i % 15);
+						manual_object->normal(vec.normalisedCopy());
 						if (mesh.areas[i] == 0)
-							m_pRecastMOWalk->colour(1, 0.5, 0, 1);
+							manual_object->colour(1, 0.5, 0, 1);
 						else
-							m_pRecastMOWalk->colour(1, 1, 1, 0);
+							manual_object->colour(1, 1, 1, 0);
 
 					}
-					m_pRecastMOWalk->index(nIndex + 2);
-					m_pRecastMOWalk->index(nIndex + 1);
-					m_pRecastMOWalk->index(nIndex);
+					manual_object->index(nIndex + 2);
+					manual_object->index(nIndex + 1);
+					manual_object->index(nIndex);
 					nIndex += 3;
 				}
 			}
-			m_pRecastMOWalk->end();
+			manual_object->end();
 
 
-			scene->attachObject(m_pRecastMOWalk);
+			scene->attachObject(manual_object);
 
 		}
 	}

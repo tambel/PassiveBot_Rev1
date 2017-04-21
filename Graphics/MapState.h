@@ -16,6 +16,8 @@ public:
 	virtual void createScene01(void);
 	void SetArea(Area * area) { this->area = area; }
 	//virtual void update(float timeSinceLast);
+	
+	void AddNavMesh(vector<rcPolyMesh*> & meshes);
 
 };
 
