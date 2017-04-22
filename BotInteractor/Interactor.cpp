@@ -8,13 +8,9 @@ NavArea BotInteractor::area;
 working_func BotInteractor::func;
 bool BotInteractor::FindPath(Vector3 & start, Vector3 & end)
 {
-	Vector3 coords = start;
-	coords = Vector3(Metrics::MapMidPoint - start.y, -(Metrics::MapMidPoint - start.x), start.z);
-	Vector3 ucoords = end;
-	ucoords = Vector3(Metrics::MapMidPoint - end.y, -(Metrics::MapMidPoint - end.x), end.z);
-	//int r = area.FindPath(Vector3(coords.x, coords.z, coords.y), Vector3(ucoords.x, ucoords.z, ucoords.y), 0);
-
-	if (area.FindPath(Vector3(coords.x, coords.z, coords.y), Vector3(ucoords.x, ucoords.z, ucoords.y), 0) < 0)
+	Vector3 coords = Vector3(Metrics::MapMidPoint - start.x, start.z, Metrics::MapMidPoint - start.y);
+	Vector3 ucoords = Vector3(Metrics::MapMidPoint - end.x, end.z, Metrics::MapMidPoint - end.y);
+	if (area.FindPath(coords, ucoords, 0) < 0)
 	{
 		return false;
 	}
@@ -87,7 +83,8 @@ void BotInteractor::GoThroughPath()
 	Sleep(100);
 	for (int i = 0; i < area.m_nsmoothPath * 3; i += 3)
 	{
-		point = Vector3(Metrics::MapMidPoint + area.m_smoothPath[i + 2], Metrics::MapMidPoint - area.m_smoothPath[i], area.m_smoothPath[i + 1]);
+		point = Vector3(Metrics::MapMidPoint - area.m_smoothPath[i], Metrics::MapMidPoint - area.m_smoothPath[i+2], area.m_smoothPath[i + 1]);
+
 		//if (GameManager::GetPlayerDistanceToPoint(point) < 2.5) continue;
 		//GameManager::RotatePlayerTest(point);
 		//while (GameManager::GetPlayerDistanceToPoint(point)>3.0f)

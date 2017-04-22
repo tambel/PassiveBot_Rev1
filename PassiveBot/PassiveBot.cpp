@@ -17,6 +17,14 @@ int bot_activity()
 	shared_ptr<ViewerCommunication> viewer = make_shared<ViewerCommunication>();
 	remote_control->Start();
 	viewer->Start();
+	for (auto u : ObjectManager::GetUnitsList())
+	{
+
+		u->DumpPosition();
+		wcout << u->GetName() << endl;
+		Sleep(5000);
+		BotInteractor::GoToPoint(*u);
+	}
 	while (1)
 	{
 		Unit * p = reinterpret_cast<Unit*>(ObjectManager::GetTargetObject());
@@ -28,14 +36,7 @@ int bot_activity()
 		Sleep(1);
 	}
 
-	for (auto u:ObjectManager::GetUnitsList())
-	{
-		
-		u->DumpPosition();
-		wcout << u->GetName() <<endl;
-		Sleep(5000);
-		BotInteractor::GoToPoint(*u);
-	}
+	
 }
 
 
