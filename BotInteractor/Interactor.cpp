@@ -55,13 +55,13 @@ int BotInteractor::_Start()
 
 	Player * player = ObjectManager::GetPlayer();
 	Sleep(5000);
-	/*
+	
 	if (!AddonInteractor::Inject())
 	{
-		GameInteractor::ManualLogout();
+		GameInteractor::ManualLogout();	
 		return ExitCode::LoggedOut;
 	}
-	*/
+	
 	Sleep(1000);
 	//init navigation
 	if (Configuration::IsNavigationEnabled())

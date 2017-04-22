@@ -448,6 +448,17 @@ namespace Tools
 		error = GetLastError();
 		return found;
 	}
+	void Process::InjectDLL(string dll_path)
+	{
+		LPVOID LoadLibrary = (LPVOID)GetProcAddress(GetModuleHandle("kernel32.dll"), "LoadLibraryA");
+		LPVOID Memory = (LPVOID)VirtualAllocEx(process, NULL, dll_path.length() + 1, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+		if (!WriteProcessMemory(process, (LPVOID)Memory, dll_path.c_str(), dll_path.length() + 1, NULL))
+		{
+			//TODO Handle this
+		}
+		CreateRemoteThread(process, NULL, NULL, (LPTHREAD_START_ROUTINE)LoadLibrary, (LPVOID)Memory, NULL, NULL);
+
+	}
 #endif
 
 }

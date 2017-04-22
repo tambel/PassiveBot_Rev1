@@ -2,20 +2,20 @@ from collections import OrderedDict
 import os
 names=OrderedDict()
 names["Client"]=['Connecting','LoggedIn','InWorld','CharSelecting','CharacterNumber','CharacterOffset']
-names["FrameManager2"]=['FrameBase','ScreenWidth','ScreenHeight','GetRegionType_FontString', 'CurrentKeyBoardFocusFrame',
+names["FrameManager2"]=['FrameBase','ScreenWidth','ScreenHeight','UIObject__GetObjectType__FontString', 'CurrentKeyBoardFocusFrame',
                        ('FrameName',0x14, 'Frame__GetName'),
-                       ('FirstFrame', 1728,'(P)Script_EnumerateFrames+12'),
-                       ('NextFrame',312,'(P)Script_EnumerateFrames+29'),
+                       ('FirstFrame', 1720,'(P)Script_EnumerateFrames+11'),
+                       ('NextFrame',316,'(P)Script_EnumerateFrames+29'),
                        ('FrameBottom', 0x4C,'(P)Script__Frame_GetBottom+13 :+ (P)GetFrameSize+10'),
                        ('FrameLeft',0x50,'(P)Script__Frame_GetLeft+13 :+ (P)GetFrameSize+11'),
                        ('FrameTop',0x54,'(P)Script__Frame_GetTop+13 :+ (P)GetFrameSize+13'),
                        ('FrameRight',0x58,'(P)Script__Frame_GetRight+13 :+ (P)GetFrameSize+14'),
                        ('FrameId',0x94,'Script__Frame_GetID+016'),
                        ('FrameParent', 0x84, 'Frame__GetParent'),
-                       ('FirstRegion', 280, '(P)GetFrameRegions+17'),
-                       ('NextRegion', 272, '(P)GetFrameRegions+23'),
-                       ('FontStringRegionText', 228, '(P)GetRegionText+7'),
-                       ('GetRegionTypeVTableOffset', 24, '(P)GetRegionType+9'),
+                       ('FirstRegion', 284, '(P)GetFrameRegions+17'),
+                       ('NextRegion', 276, '(P)GetFrameRegions+23'),
+                       ('FontStringRegionText', 232, '(P)GetRegionText+7'),
+                       ('GetRegionTypeVTableOffset', 28, '(P)GetRegionType+9'),
                        ('FrameIsShown', 128,''),
                        ]
 names["ObjectManager2"]=['ObjectManager','ActivePlayer',

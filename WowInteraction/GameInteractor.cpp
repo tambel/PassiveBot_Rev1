@@ -13,13 +13,13 @@ GameInteractor::~GameInteractor(void)
 bool GameInteractor::Login(string & login, string  & password)
 {
 	cout << "Logging in" << endl;
-	FrameManager::EnumAllFrames();
+	//FrameManager::EnumAllFrames();
 	
 
 	Frame * email_frame = nullptr;
-	Frame * password_frame = nullptr;
+	Frame * password_frame = nullptr;	
 	Frame * f1 = new Frame(Process::ReadRel<unsigned>(WowOffsets2::FrameManager2::CurrentKeyBoardFocusFrame));
-	Sleep(1000);
+	Sleep(1000);	
 	//Process::PushKeyboardButton(KeyboardButton::TAB);
 	AU3_Send(L"{TAB}");
 	Sleep(1000);
@@ -28,7 +28,7 @@ bool GameInteractor::Login(string & login, string  & password)
 	{
 		email_frame = f2;
 		password_frame = f1;
-	}
+	}	
 	else
 	{
 		email_frame = f1;
@@ -210,8 +210,13 @@ bool GameInteractor::IsInWorld()
 	}
 	
 }
+
+
 bool GameInteractor::Start(GameStartParam * param)
 {
+
+
+	
 	int result;
 	bool loading_world = false;
 	cout << "Starting game" << endl;

@@ -28,6 +28,7 @@ public:
 	RegionType GetType();
 	string & GetName(bool refresh = false);
 	Frame * GetParent() { return this->parent; }
+	inline unsigned GetBase() { return base; }
 	
 
 

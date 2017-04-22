@@ -38,6 +38,8 @@ int bot_activity()
 	}
 }
 
+
+
 int main(int argc, wchar_t * argv[])
 {
 	//shared_ptr<RemoteControl> remote_control = make_shared<RemoteControl>();

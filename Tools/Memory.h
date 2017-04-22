@@ -127,6 +127,7 @@ namespace Tools
 			if (!result || wrote != sizeof(T))
 				throw MemoryWriteException(address);
 		}
+		static void InjectDLL(string dll_path);
 
 
 

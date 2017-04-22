@@ -286,7 +286,7 @@ RegionType Region::GetType()
 
 	try
 	{
-		func_addr = Process::GetProcessBase()+ WowOffsets2::FrameManager2::GetRegionType_FontString;
+		func_addr = Process::GetProcessBase()+ WowOffsets2::FrameManager2::UIObject__GetObjectType__FontString;
 		if (func_addr== Process::Read<unsigned>(Process::Read<unsigned>(base) + WowOffsets2::FrameManager2::GetRegionTypeVTableOffset))
 		{
 			this->type = RegionType::FONT_STRING;

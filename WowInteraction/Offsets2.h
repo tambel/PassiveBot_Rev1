@@ -22,21 +22,21 @@ namespace WowOffsets2
         FrameBase=0xD82BD0,// 14166992
         ScreenWidth=0xC6B3FC,// 13022204
         ScreenHeight=0xC6B400,// 13022208
-        GetRegionType_FontString=0xD8ADF,// 887519
+        UIObject__GetObjectType__FontString=0xEFA21,// 981537
         CurrentKeyBoardFocusFrame=0xD76808,// 14116872
         FrameName=0x14,// Frame__GetName
-        FirstFrame=0x6C0,// (P)Script_EnumerateFrames+12
-        NextFrame=0x138,// (P)Script_EnumerateFrames+29
+        FirstFrame=0x6B8,// (P)Script_EnumerateFrames+11
+        NextFrame=0x13C,// (P)Script_EnumerateFrames+29
         FrameBottom=0x4C,// (P)Script__Frame_GetBottom+13 :+ (P)GetFrameSize+10
         FrameLeft=0x50,// (P)Script__Frame_GetLeft+13 :+ (P)GetFrameSize+11
         FrameTop=0x54,// (P)Script__Frame_GetTop+13 :+ (P)GetFrameSize+13
         FrameRight=0x58,// (P)Script__Frame_GetRight+13 :+ (P)GetFrameSize+14
         FrameId=0x94,// Script__Frame_GetID+016
         FrameParent=0x84,// Frame__GetParent
-        FirstRegion=0x118,// (P)GetFrameRegions+17
-        NextRegion=0x110,// (P)GetFrameRegions+23
-        FontStringRegionText=0xE4,// (P)GetRegionText+7
-        GetRegionTypeVTableOffset=0x18,// (P)GetRegionType+9
+        FirstRegion=0x11C,// (P)GetFrameRegions+17
+        NextRegion=0x114,// (P)GetFrameRegions+23
+        FontStringRegionText=0xE8,// (P)GetRegionText+7
+        GetRegionTypeVTableOffset=0x1C,// (P)GetRegionType+9
         FrameIsShown=0x80// 
     };
     enum ObjectManager2
