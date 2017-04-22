@@ -14,6 +14,12 @@ class Requests(object):
 '''
 
 
+
+
+
+
+
+
 class Packet(object):
     def __init__(self, structure, packet_type=0, data=None):
         self.size = 0

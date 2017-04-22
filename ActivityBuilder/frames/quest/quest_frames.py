@@ -28,7 +28,9 @@ class SelectQuestGiverFrame(BaseDialog):
     def background_communication(self):
         packet = RequestPacket(2)
         self.com.send(packet)
-        self.current_target = TargetObjectInfo(self.com.receive())
+       # d,d2=self.com.receive()
+        #self.current_target = TargetObjectInfo(self.com.receive())
+        self.current_target = self.com.receive(packet_structure=TargetObjectInfo)
         self.target_label.SetLabelText(u"Name: {}\nGUID: {}\nType: {}\nPosition: {}".format(
             *(self.current_target.fields[f] for f in "name,guid,type,position".split(','))))
 
