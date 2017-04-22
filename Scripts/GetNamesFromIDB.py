@@ -22,7 +22,7 @@ names["ObjectManager2"]=['ObjectManager','ActivePlayer',
                         ('FirstObject',0xD8, '(P)ClntObjMgrEnumVisibleObjectsPtr+11'),
                         ('NextObject', 0xD0, '(P)ClntObjMgrEnumVisibleObjectsPtr+17'),
                         ('MouseGuid', 0xEAC500, "Search by hand"),
-                        ('TargetGuid', 0xF09C00, "Search by hand"),
+                        ('TargetGuid', 0xF9C3E8, "Search by hand"),
                         ('IsResting' ,0x0, 'Script_IsResting'),
                         ]
 names["Unit2"]=[

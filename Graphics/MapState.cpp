@@ -142,4 +142,10 @@ void MapState::UpdateScene()
 	{
 		rend->CreateScene(mSceneMgr->getRootSceneNode(), material_name, color);
 	}
+
+
+	for (auto & nr : navigation_rends)
+	{
+		nr->CreateScene(mSceneMgr->getRootSceneNode(), material_name, color);
+	}
 }

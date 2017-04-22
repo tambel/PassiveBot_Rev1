@@ -6,7 +6,7 @@ using namespace std;
 using namespace Utils;
 using namespace Tools;
 
-
+#define BOTDEV
 
 int bot_activity()
 {
@@ -22,7 +22,7 @@ int bot_activity()
 		Unit * p = reinterpret_cast<Unit*>(ObjectManager::GetTargetObject());
 		//if (p)
 			//wcout<<p->GetName()<<endl;
-		//BotInteractor::GoToPoint(*p);
+		BotInteractor::GoToPoint(*p);
 		remote_control->ProcessRequest();
 		viewer->ProcessRequest();
 		Sleep(1);
