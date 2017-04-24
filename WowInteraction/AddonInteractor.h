@@ -54,6 +54,13 @@ struct GossipQuestInfo
 {
 	unsigned id;
 	wstring title;
+	
+};
+
+struct  TargerQuestGiverInteractionResult
+{
+	vector<GossipQuestInfo> infos;
+	bool quest_detail_triggered = false;
 };
 
 struct SelectedGossipQuestInfo
@@ -79,7 +86,7 @@ class AddonInteractor
 public:
 	AddonInteractor();
 	~AddonInteractor();
-	static bool Inject();
+	static bool Inject(bool manual_confirm=false);
 	static bool Logout();
 	static wstring GetPlayerName();
 	static vector<wstring> WaitForEvents(vector<wstring> & event_names, bool infinite=false);
@@ -90,7 +97,7 @@ public:
 
 	static void GetCurrentInteractionQuestInfo();
 
-	static vector<GossipQuestInfo> GetCurrentInteractionQuests();
+	static TargerQuestGiverInteractionResult GetCurrentInteractionQuests();
 	static SelectedGossipQuestInfo GetSelectedQuest();
 
 

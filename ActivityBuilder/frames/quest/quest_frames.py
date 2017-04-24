@@ -26,11 +26,9 @@ class SelectQuestGiverFrame(BaseDialog):
                                           pos=(10, 0), size=(100, 50))
 
     def background_communication(self):
-        packet = RequestPacket(2)
+        packet = RequestPacket(request_type=TargetObjectInfo)
         self.com.send(packet)
-       # d,d2=self.com.receive()
-        #self.current_target = TargetObjectInfo(self.com.receive())
-        self.current_target = self.com.receive(packet_structure=TargetObjectInfo)
+        self.current_target = TargetObjectInfo().unpack(*self.com.receive())
         self.target_label.SetLabelText(u"Name: {}\nGUID: {}\nType: {}\nPosition: {}".format(
             *(self.current_target.fields[f] for f in "name,guid,type,position".split(','))))
 
@@ -67,27 +65,39 @@ class SelectQuestDialog(BaseDialog):
 
     def get_available_quest_list(self):
         self.quest_list_box.Clear()
-        packet = RequestPacket(Requests.TargetQuestGiverQuestList)
+        packet = RequestPacket(request_type=TargetQuestGiverQuestList)
         self.com.send(packet)
-        self.quest_list = TargetQuestGiverQuestList(self.com.receive())
+        self.quest_list = TargetQuestGiverQuestList().unpack(*self.com.receive())
+        if self.quest_list.fields["quest_detail_triggered"]:
+            self.quest_info=SelectFromQuestList()
+            self.quest_info.fields["id"]=self.quest_list.fields["id"]
+            self.quest_info.fields["title"]=self.quest_list.fields["name0"]
+            return True
+
         for i in range(0, self.quest_list.fields["count"].value):
             self.quest_list_box.Append(self.quest_list.fields["name{}".format(i)].text)
+        return False
 
     def select_quest(self):
-        packet = RequestPacket(Requests.SelectQuestFromList)
+        packet = RequestPacket(request_type="SelectQuestFromList")
         self.com.send(packet)
-        self.quest_info = SelectFromQuestList(self.com.receive())
-        self.quest_list_box.Hide()
+        self.quest_info = SelectFromQuestList().unpack(*self.com.receive())
 
-        self.select_quest_label.SetLabelText(
-            u"Quest ID: {}\nQuest title: {}".format(self.quest_info.fields['id'].value,
-                                                    self.quest_info.fields['title'].text))
-        self.selected_quest_label.Show()
+
+
+
 
     def background_communication(self):
         if self.getting_list:
-            self.get_available_quest_list()
-            self.select_quest()
+            triggered=self.get_available_quest_list()
+            if not triggered:
+                self.select_quest()
+            self.quest_list_box.Hide()
+            self.select_quest_label.SetLabelText(
+                u"Quest ID: {}\nQuest title: {}".format(self.quest_info.fields['id'].value,
+                                                        self.quest_info.fields['title'].text))
+            self.selected_quest_label.Show()
+
             self.stop_bg_communication()
 
 

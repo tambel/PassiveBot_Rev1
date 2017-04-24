@@ -212,6 +212,8 @@ bool GameInteractor::IsInWorld()
 }
 
 
+
+
 bool GameInteractor::Start(GameStartParam * param)
 {
 
@@ -223,6 +225,28 @@ bool GameInteractor::Start(GameStartParam * param)
 	StartClient();
 	int c = 0;
 	bool no_login_error_messages = true;
+
+	auto f = []()
+	{
+		FrameManager::EnumAllFrames();
+		Frame *fr = FrameManager::FindFrameByName("WorldMapButton");
+		fr->RefreshSize();
+		float b = fr->GetBottomProp() / 65536.0f;
+		float t = fr->GetTopProp() / 65536.0f;
+		float l = fr->GetLeftProp() / 65536.0f;
+		float r = fr->GetRightProp() / 65536.0f;
+
+		auto children = fr->GetChildren();
+		fr->MoveMouseToFrame();
+		for (auto cf : children)
+		{
+			cf->GetName();
+		}
+		int a;
+		a = 10;
+	};
+	f();
+
 	while (1)
 	{
 		if (!Process::ReadRel<bool>(WowOffsets2::Client::Connecting) && !Process::ReadRel<bool>(WowOffsets2::Client::CharSelecting))

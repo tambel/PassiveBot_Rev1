@@ -51,7 +51,7 @@ namespace WowOffsets2
     };
     enum Unit2
     {
-        UnitCache=0xC80,// (P)CGUnit_C__GetUnitName+203
+        UnitCache=0xC68,// (P)CGUnit_C__GetUnitName+203
         UnitCacheName=0x80,// (P)CGUnit_C__GetUnitNameAux+9
         Position=0x124,// (P)CGUnit_C__GetPosition+2
         Coordinates=0x18,// (P)CGUnit_C__GetPosition+2

@@ -74,11 +74,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\Bot\Dependencies\FreeImage;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Bot\Dependencies\FreeImage;C:\dev\CGAL-4.9.1\include;$(BOOST);C:\dev\CGAL-4.9.1\build\include;C:\dev\CGAL-4.9.1\auxiliary\gmp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>D:\Bot\Dependencies\FreeImage\x32</AdditionalLibraryDirectories>
-      <AdditionalDependencies>FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Bot\Dependencies\FreeImage\x32;C:\dev\CGAL-4.9.1\build\lib\$(Configuration);C:\dev\CGAL-4.9.1\auxiliary\gmp\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>FreeImage.lib;libgmp-10.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -95,13 +95,13 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\Bot\Dependencies\FreeImage;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Bot\Dependencies\FreeImage;C:\dev\CGAL-4.9.1\include;$(BOOST);C:\dev\CGAL-4.9.1\build\include;C:\dev\CGAL-4.9.1\auxiliary\gmp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>D:\Bot\Dependencies\FreeImage\x32</AdditionalLibraryDirectories>
-      <AdditionalDependencies>FreeImage.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Bot\Dependencies\FreeImage\x32;C:\dev\CGAL-4.9.1\build\lib\$(Configuration);C:\dev\CGAL-4.9.1\auxiliary\gmp\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>FreeImage.lib;libgmp-10.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

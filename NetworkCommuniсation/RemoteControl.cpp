@@ -114,14 +114,19 @@ char * RemoteControl::ProcessRequest(char * packet)
 	{
 		TargerQuestGiverQuestListReply * rp = new TargerQuestGiverQuestListReply;
 		rp->header.size = sizeof(*rp);
-		vector<GossipQuestInfo> infos= AddonInteractor::GetCurrentInteractionQuests();
-		rp->count = infos.size();
+		TargerQuestGiverInteractionResult result= AddonInteractor::GetCurrentInteractionQuests();
+		rp->count = result.infos.size();
 		if (rp->count)
 		{
-			for (int i = 0; i < infos.size(); i++)
+			for (int i = 0; i < result.infos.size(); i++)
 			{
-				rp->list[i].name.length = infos[i].title.size() * 2;
-				memcpy(rp->list[i].name.str, infos[i].title.c_str(), (infos[i].title.size() + 1) * 2);
+				rp->list[i].name.length = result.infos[i].title.size() * 2;
+				memcpy(rp->list[i].name.str, result.infos[i].title.c_str(), (result.infos[i].title.size() + 1) * 2);
+			}
+			if (result.quest_detail_triggered)
+			{
+				rp->quest_detail_triggered = 1;
+				rp->id = result.infos[0].id;
 			}
 		}
 		reply = reinterpret_cast<char*>(rp);

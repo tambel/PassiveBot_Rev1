@@ -1,5 +1,5 @@
 from collections import OrderedDict
-import os
+import os	
 names=OrderedDict()
 names["Client"]=['Connecting','LoggedIn','InWorld','CharSelecting','CharacterNumber','CharacterOffset']
 names["FrameManager2"]=['FrameBase','ScreenWidth','ScreenHeight','UIObject__GetObjectType__FontString', 'CurrentKeyBoardFocusFrame',
@@ -26,7 +26,7 @@ names["ObjectManager2"]=['ObjectManager','ActivePlayer',
                         ('IsResting' ,0x0, 'Script_IsResting'),
                         ]
 names["Unit2"]=[
-                ('UnitCache', 0xC80,'(P)CGUnit_C__GetUnitName+203'),
+                ('UnitCache', 0xC68,'(P)CGUnit_C__GetUnitName+203'),
                 ('UnitCacheName', 0x80, '(P)CGUnit_C__GetUnitNameAux+9'),
                 ('Position',0x124, '(P)CGUnit_C__GetPosition+2'),
                 ('Coordinates',0x18, '(P)CGUnit_C__GetPosition+2'),

@@ -83,6 +83,8 @@ struct BoolRequestResult:BasePacket
 struct TargerQuestGiverQuestListReply :BasePacket
 {
 	unsigned count;
+	char quest_detail_triggered = 0;
+	unsigned id;
 	struct {
 		SmallStringField name;
 	}list[20];

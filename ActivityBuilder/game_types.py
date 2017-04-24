@@ -31,14 +31,12 @@ class Simple(object):
 
 class Char(Simple):
     TYPE = ("B",)
+    size=1
 
 
 class Unsigned(Simple):
     TYPE = ("I",)
-
-
-class Unsigned(Simple):
-    TYPE = ("I",)
+    size=4
 
 
 def gen_filler(size):
@@ -56,6 +54,7 @@ class Filler(object):
 
 class Vector3(object):
     TYPE = ("12s",)
+    size=12
 
     def __init__(self, data=None, x=0, y=0, z=0):
         if data is not None:
@@ -76,6 +75,7 @@ class Vector3(object):
 
 class Position(object):
     TYPE = ("24s",)
+    size=24
 
     def __init__(self, data=None, p=None, r=None):
         if data is not None:
@@ -91,6 +91,7 @@ class Position(object):
 
 class GUID(object):
     TYPE = ("16s",)
+    size=16
 
     def __init__(self, data):
         self.high, self.low = unpack("QQ", data)
@@ -101,6 +102,7 @@ class GUID(object):
 
 class SmallString(object):
     TYPE = ("260s",)
+    size=260
 
     def __init__(self, data):
         self.length, data = unpack("I256s", data)

@@ -2,6 +2,9 @@
 #include "Frame.h"
 #include "Tools\Memory.h"
 
+
+int Frame::const_screen_width = 65536;
+int Frame::const_screen_height = 65536;
 Frame::Frame()
 {
 }
@@ -84,6 +87,33 @@ float Frame::GetRight(bool refresh)
 	}
 	return right;
 }
+void Frame::RefreshSize()
+{
+	float fm_sw = FrameManager::GetScreenWidth();
+	float fm_sh= FrameManager::GetScreenHeigth();
+	bottom_prop = GetBottom()*const_screen_height / fm_sh;
+	top_prop = GetTop()*const_screen_height / fm_sh;
+	left_prop = GetLeft()*const_screen_width / fm_sw;
+	right_prop = GetRight()*const_screen_width / fm_sw;
+	width = right_prop - left_prop;
+	height = top_prop - bottom_prop;
+}
+float Frame::GetBottomProp()
+{
+	return bottom_prop;
+}
+float Frame::GetTopProp()
+{
+	return top_prop;
+}
+float Frame::GetLeftProp()
+{
+	return left_prop;
+}
+float Frame::GetRightProp()
+{
+	return right_prop;
+}
 inline Frame * Frame::GetParent()
 {
 	if (!parent)
@@ -103,18 +133,9 @@ inline Frame * Frame::GetParent()
 }
 void Frame::MoveMouseToFrame()
 {
-	int sw = 65536;
-	int sh = 65536;
-	float ssh = FrameManager::GetScreenHeigth();
-	float ssw = FrameManager::GetScreenWidth();
-	float b = GetBottom()*sh / FrameManager::GetScreenHeigth();
-	float t = GetTop()*sh / FrameManager::GetScreenHeigth();
-	float l = GetLeft()*sw / FrameManager::GetScreenWidth();
-	float r = GetRight()*sw / FrameManager::GetScreenWidth();
-	float w = r - l;
-	float h = t - b;
-	float x = l + w / 2;
-	float y = sh - t + h / 2;
+	RefreshSize();
+	float x = left_prop + width / 2;
+	float y = const_screen_height - top_prop + height / 2;
 	Process::MoveMouse((unsigned)x, (unsigned)y);
 }
 bool Frame::MoveMouseToFrameAndClick(unsigned delay, MouseButton button)

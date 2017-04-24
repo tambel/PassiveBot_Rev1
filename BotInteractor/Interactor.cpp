@@ -52,7 +52,7 @@ int BotInteractor::_Start()
 	Player * player = ObjectManager::GetPlayer();
 	Sleep(5000);
 	
-	if (!AddonInteractor::Inject())
+	if (!AddonInteractor::Inject(true))
 	{
 		GameInteractor::ManualLogout();	
 		return ExitCode::LoggedOut;

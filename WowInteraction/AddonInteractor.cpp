@@ -114,7 +114,7 @@ AddonInteractor::~AddonInteractor()
 {
 }
 
-bool AddonInteractor::Inject()
+bool AddonInteractor::Inject(bool manual_confirm)
 {
 	status_address = 0;
 	result_address = 0;
@@ -129,8 +129,10 @@ bool AddonInteractor::Inject()
 	}
 	if (!button)
 		return false;
-	button->MoveMouseToFrameAndClick(100);
-
+	if (!manual_confirm)
+		button->MoveMouseToFrameAndClick(100);
+	else
+		cout << "Waiting for manual confirm" << endl;
 
 	attempts = 3;
 	while (attempts && (!status_address || !result_address || !command_address || !event_address))
@@ -156,7 +158,8 @@ bool AddonInteractor::Inject()
 			}
 
 		}
-		attempts--;
+		if (!manual_confirm)
+			attempts--;
 	}
 
 	if (status_address && result_address && command_address && event_address)
@@ -301,10 +304,11 @@ void print_what(const std::runtime_error& e) {
 		print_what(nested);
 	}
 }
-vector<GossipQuestInfo> AddonInteractor::GetCurrentInteractionQuests()
+TargerQuestGiverInteractionResult AddonInteractor::GetCurrentInteractionQuests()
 {
 	wstring_list ev = wstring_list();
-	vector<GossipQuestInfo> result = vector<GossipQuestInfo>();
+	//vector<GossipQuestInfo> result = vector<GossipQuestInfo>();
+	TargerQuestGiverInteractionResult result;
 	try
 	{
 		
@@ -323,16 +327,17 @@ vector<GossipQuestInfo> AddonInteractor::GetCurrentInteractionQuests()
 		{
 			GossipQuestInfo info = GossipQuestInfo();
 			info.title = vres[i];
-			result.push_back(info);
+			result.infos.push_back(info);
 		}
 
 	}
 	else if (ev[0] == L"QUEST_DETAIL")
 	{
 		GossipQuestInfo info = GossipQuestInfo();
-		info.id = stoi(vres[1]);
-		info.title = vres[2];
-		result.push_back(info);
+		info.id = stoi(vres[0]);
+		info.title = vres[1];
+		result.infos.push_back(info);
+		result.quest_detail_triggered = true;
 	}
 	return result;
 }
@@ -340,7 +345,6 @@ vector<GossipQuestInfo> AddonInteractor::GetCurrentInteractionQuests()
 SelectedGossipQuestInfo AddonInteractor::GetSelectedQuest()
 {
 	wstring_list ev = wstring_list();
-	vector<GossipQuestInfo> result = vector<GossipQuestInfo>();
 	try
 	{
 		ev = WaitForEvents(wstring_list({L"QUEST_DETAIL" }), true);

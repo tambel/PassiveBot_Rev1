@@ -1,5 +1,28 @@
 #include "ClustersDetector.h"
 
+template <class OutputIterator>
+void alpha_edges(const Alpha_shape_2&  A,
+	OutputIterator out)
+{
+	for (Alpha_shape_edges_iterator it = A.alpha_shape_edges_begin();
+		it != A.alpha_shape_edges_end();
+		++it) {
+		*out++ = A.segment(*it);
+	}
+}
+
+vector<point> SimplfyBorder(Polygon_2 & polygon)
+{
+	Polygon_2 result;
+	std::cin >> polygon;
+	Cost cost;
+	result = PS::simplify(polygon, cost, Stop(0.5));
+
+	std::cout.precision(12);
+	std::cout << polygon << std::endl;
+	return vector<point>();
+	
+}
 
 
 
@@ -108,16 +131,6 @@ void ClustersDetector::GenerateClusterMap()
 		memset(cluster_map.map[i], 0, height * 4);
 
 	}
-	struct pixel
-	{
-		pixel(int x, int y)
-		{
-			this->x = x;
-			this->y = y;
-		}
-		int x;
-		int y;
-	};
 	vector<pixel> neighbour_pixels;
 	vector<pixel> next_neighbour_pixels;
 	cluster_map.cluster_count= 1;
@@ -174,7 +187,141 @@ void ClustersDetector::GenerateClusterMap()
 			}
 		}
 	}
-	//cluster_map.GetImage().Save(FIF_PNG, "C:\\Users\\laptop\\PycharmProjects\\untitled\\test.png", PNG_Z_NO_COMPRESSION);
+}
+
+void ClustersDetector::RemoveSmallClusters()
+{
+
+	for (int i = 0; i < cluster_map.width; i++)
+	{
+		for (int j = 0; j < cluster_map.height; j++)
+		{
+			if (cluster_map.map[i][j] == 0)
+			{
+
+			}
+		}
+	}
+}
+
+void ClustersDetector::GenerateClusters()
+{
+	for (int i = 1; i < cluster_map.cluster_count;i++)
+	{
+		Cluster c = Cluster(i, cluster_map);
+		if (c.GetPointsCount() >= 100)
+		{
+			clusters.push_back(c);
+		}
+
+	}
+}
+
+void ClustersDetector::_ClustersToImage()
+{
+	FIBITMAP * bm;
+	bm = FreeImage_Allocate(cluster_map.width, cluster_map.height,32);
+	WrappedImage img = WrappedImage(bm);
+	RGBQUAD color;
+	color.rgbBlue = 0;
+	color.rgbGreen = 255;
+	color.rgbRed = 0;
+	color.rgbReserved = 255;
+	for (auto & c:clusters)
+	{
+		int counter = 0;
+		color.rgbBlue = 0;
+		for (auto & p : c.GetSBorderPolygon()->container())
+		{
+			if (counter % 2 == 0)
+			{
+				color.rgbBlue = 0;
+			}
+			else
+				color.rgbBlue = 255;
+			FreeImage_SetPixelColor(bm, p.x(), p.y(), &color);
+			counter++;
+
+		}
+	}
+	img.Save(FIF_PNG, "C:\\Users\\laptop\\PycharmProjects\\untitled\\clusters.png");
+}
+
+void ClustersDetector::CalculateClusterAverageColor(int cluster_id)
+{
+	int width = cluster_map.width;
+	int height = cluster_map.height;
+	auto bm = with_added.GetBitMap();
+	auto bm2 = diff_result.GetBitMap();
+	RGBQUAD color;
+	unsigned pixel_count = 0;
+	unsigned ar=0;
+	unsigned ag = 0;
+	unsigned ab = 0;
+
+	for (int i = 0; i < width; i++)
+	{
+		for (int j = 0; j < height; j++)
+		{
+			if (cluster_map.map[i][j] == cluster_id)
+			{
+				FreeImage_GetPixelColor(bm, i, j, &color);
+				ar += color.rgbRed;
+				ag += color.rgbGreen;
+				ab += color.rgbBlue;
+				pixel_count++;
+			}
+		}
+	}
+	ar /= pixel_count;
+	ag /= pixel_count;
+	ab /= pixel_count;
+
+	color.rgbBlue = ab;
+	color.rgbGreen = ag;
+	color.rgbRed = ar;
+	color.rgbReserved = 255;
+	for (int i = 0; i < width; i++)
+	{
+		for (int j = 0; j < height; j++)
+		{
+			if (cluster_map.map[i][j] == cluster_id)
+			{
+				FreeImage_SetPixelColor(bm2, i, j, &color);
+			}
+		}
+	}
+
+
+}
+
+void ClustersDetector::CalculateAllClustersAverageColor()
+{
+	for (int i = 1; i < cluster_map.cluster_count; i++)
+	{
+		CalculateClusterAverageColor(i);
+	}
+}
+
+void ClustersDetector::test()
+{
+	int width = cluster_map.width;
+	int height = cluster_map.height;
+	auto bm = with_added.GetBitMap();
+	auto bm2 = diff_result.GetBitMap();
+	RGBQUAD color;
+	for (int i = 0; i < width; i++)
+	{
+		for (int j = 0; j < height; j++)
+		{
+			if (cluster_map.map[i][j] > 1)
+			{
+				FreeImage_GetPixelColor(bm, i, j, &color);
+				FreeImage_SetPixelColor(bm2, i, j, &color);
+			}
+		}
+	}
+	
 }
 
 WrappedImage ClusterMap::GetImage()
@@ -211,4 +358,89 @@ WrappedImage ClusterMap::GetImage()
 		}
 	}
 	return WrappedImage(bm);
+}
+
+Cluster::Cluster(int id,ClusterMap & map)
+{
+
+	if (id >= map.cluster_count)
+	{
+		throw(runtime_error("invalid cluster id"));
+	}
+	this->map = &map;
+	this->id = id;
+	minx = map.width;
+	miny = map.height;
+	maxx =0;
+	maxy = 0;
+	point_count = 0;
+	for (int i = 0; i < map.width; i++)
+	{
+		for (int j = 0; j < map.height; j++)
+		{
+			if (map.map[i][j] ==id)
+			{
+				minx = i < minx ? i:minx;
+				miny = j < miny ? j : miny;
+				maxx = i > maxx ? i : maxx;
+				maxy = j > maxy ? j : maxy;
+				point_count++;
+
+			}
+		}
+	}
+
+	center_x = minx+(maxx - minx) / 2;
+	center_y = miny+(maxy - miny) / 2;
+	maxx = maxx;
+	CalculateBounds();
+	SimplfyBorder();
+
+}
+
+void Cluster::CalculateBounds()
+{
+	int w = map->width;
+	int h = map->height;
+	std::list<Point> points;
+	for (int i = 0; i < w; i++)
+	{
+		for (int j = 0; j < h; j++)
+		{
+			if (map->map[i][j] == id)
+			{
+				points.push_back(Point(i, j));
+			}
+		}
+	}
+	Alpha_shape_2 A(points.begin(), points.end(),
+		FT(20),
+		Alpha_shape_2::GENERAL);
+	std::vector<Segment> segments;
+	alpha_edges(A, std::back_inserter(segments));
+
+	Segment * start = &segments[0];
+	Segment * s1 = start;
+	Segment * s2 = nullptr;;
+	border_polygon.push_back(Point(start->start().x(), start->start().y()));
+	do
+	{
+		for (auto & seg : segments)
+		{
+			if (s1->target() == seg.source())
+			{
+				s1 = &seg;
+				border_polygon.push_back(Point(s1->start().x(), s1->start().y()));
+				break;
+			}
+		}
+	} while (start->source() != s1->target());
+}
+
+Polygon_2 Cluster::SimplfyBorder()
+{
+	Cost cost;
+	simplified_border_polygon = PS::simplify(border_polygon, cost, Stop(0.5));
+
+	return simplified_border_polygon;
 }

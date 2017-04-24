@@ -16,10 +16,33 @@ class Requests(object):
 
 
 
+class Packet(object):
+    field_types=collections.OrderedDict()
+
+    def __init__(self):
+        self.size=0
+        self.type=0
+        self.fields={}
+        #self.type, payload = unpack('I' + "{}s".format(size - 8), data)
+
+
+    def pack(self):
+        self.size = 8 + sum([ft.size for ft in self.field_types.values()])
+        return pack("II", self.size,self.type)
+
+    def unpack(self, size, data):
+        self.type, payload=struct.unpack("I"+ "{}s".format(size - 8), data)
+        payload_format=''.join([f.TYPE[0] for f in self.field_types.values()])
+        for k, v in zip(self.field_types.keys(), unpack(payload_format, payload)):
+            self.fields[k]=self.field_types[k](v)
+        return self
 
 
 
 
+
+
+'''
 class Packet(object):
     def __init__(self, structure, packet_type=0, data=None):
         self.size = 0
@@ -42,13 +65,8 @@ class Packet(object):
         for k, v in zip(Structures[self.structure].keys(), unpack(pformat, payload)):
             # self.fields[k] = self.fields[k](v)
             setattr(self, k, Structures[self.structure][k](v))
-        '''
-        other_data_size=len(data)-8
-        self.size,self.type,payload= unpack('II'+"{}s".format(other_data_size),data)
-        pformat=''.join([f.TYPE[0] for f in self.fields.values()])
-        for k,v in zip(self.fields.keys(),unpack(pformat,payload)):
-            self.fields[k]=self.fields[k](v)
-        '''
+'''
+
 
 
 class PacketStructure(collections.OrderedDict):
@@ -58,7 +76,8 @@ class PacketStructure(collections.OrderedDict):
 
 class RequestPacket(Packet):
     def __init__(self, request_type):
-        Packet.__init__(self, structure={}, packet_type=request_type)
+        Packet.__init__(self)
+        self.type=request_type if type(request_type) is int else Requests[request_type]
 
 
 class PlayerPosition(PacketStructure):
@@ -68,29 +87,24 @@ class PlayerPosition(PacketStructure):
         self['rotation'] = Vector3
 
 
-class TargetObjectInfo(PacketStructure):
-    def __init__(self):
-        PacketStructure.__init__(self)
-        self['guid'] = GUID
-        self['entity_id'] = Unsigned
-        self['type'] = Char
-        self['position'] = Position
-        self['name'] = SmallString
+class TargetObjectInfo(Packet):
+    field_types=collections.OrderedDict([('guid', GUID), ('entity_id', Unsigned),('type', Char), ('position', Position),('name', SmallString)])
 
 
-class TargetQuestGiverQuestList(PacketStructure):
-    def __init__(self):
-        PacketStructure.__init__(self)
-        self['count'] = Unsigned
-        for i in range(0, 20):
-            self['name{}'.format(i)] = SmallString
+class TargetQuestGiverQuestList(Packet):
+    field_types = collections.OrderedDict()
+    field_types["count"]=Unsigned
+    field_types["quest_detail_triggered"]=Char
+    field_types["id"]=Unsigned
+    for i in range(0, 20):
+        field_types['name{}'.format(i)] = SmallString
 
 
-class SelectFromQuestList(PacketStructure):
-    def __init__(self):
-        PacketStructure.__init__(self)
-        self['id'] = Unsigned
-        self['title'] = SmallString
+class SelectFromQuestList(Packet):
+    field_types = collections.OrderedDict()
+    field_types['id'] = Unsigned
+    field_types['title'] = SmallString
+
 
 
 class TargetEntityId(PacketStructure):
@@ -107,9 +121,3 @@ Requests = {
     "SelectQuestFromList": 5,
     "TargetEntityID": 6
 }
-
-Structures = {k: k() if type(k) != str else None for k in Requests.keys()}
-for k in Structures.keys():
-    if Structures[k] is None:
-        Structures.pop(k)
-

@@ -1,7 +1,7 @@
 import socket
 import time
 import struct
-from packets import RequestPacket, Packet, Requests, Structures
+
 
 
 class NetworkCommunicator(object):
@@ -36,15 +36,12 @@ class NetworkCommunicator(object):
                 self.connected = False
                 self.start()
 
-    def receive(self , packet_structure=None):
+    def receive(self ):
         if self.connected:
             try:
                 size, = struct.unpack("I", self.sock.recv(4))
                 data = self.sock.recv(size - 4)
-                if packet_structure is not None:
-                    return Packet(packet_structure, data=(size,data))
-                else:
-                    return size, data
+                return size, data
             except:
                 self.connected = False
                 self.start()

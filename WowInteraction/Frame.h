@@ -36,6 +36,8 @@ public:
 
 class Frame
 {
+	static int const_screen_width;
+	static int const_screen_height;
 	unsigned base=0;
 	string name;
 	string label_text;
@@ -44,6 +46,13 @@ class Frame
 	float top;
 	float left;
 	float right;
+
+	float bottom_prop;
+	float top_prop;
+	float left_prop;
+	float right_prop;
+	float width;
+	float height;
 	unsigned id;
 	vector<Frame*> children;
 	vector<shared_ptr<Region>> regions;
@@ -60,6 +69,11 @@ public:
 	float GetTop(bool refresh = false);
 	float GetLeft(bool refresh = false);
 	float GetRight(bool refresh = false);
+	void RefreshSize();
+	float GetBottomProp();
+	float GetTopProp();
+	float GetLeftProp();
+	float GetRightProp();
 	inline Frame * GetParent();
 	void MoveMouseToFrame();
 	bool MoveMouseToFrameAndClick(unsigned delay = 0, MouseButton button=MouseButton::LEFT);
