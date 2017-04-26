@@ -229,24 +229,26 @@ bool GameInteractor::Start(GameStartParam * param)
 	auto f = []()
 	{
 		FrameManager::EnumAllFrames();
-		Frame *fr = FrameManager::FindFrameByName("WorldMapButton");
-		fr->RefreshSize();
-		float b = fr->GetBottomProp() / 65536.0f;
-		float t = fr->GetTopProp() / 65536.0f;
-		float l = fr->GetLeftProp() / 65536.0f;
-		float r = fr->GetRightProp() / 65536.0f;
-
-		auto children = fr->GetChildren();
-		fr->MoveMouseToFrame();
-		for (auto cf : children)
+		Frame *f = FrameManager::FindFrameByName("TestAddon_MainFrame");
+		auto regions = f->GetRegions();
+		for (auto region : regions)
 		{
-			cf->GetName();
+			if (region->GetType() == RegionType::FONT_STRING && region->GetName()=="MagickString")
+			{
+				string name = region->GetText();
+				unsigned address = Process::Read<unsigned>(region->GetBase() + WowOffsets2::FrameManager2::FontStringRegionText);
+				string rn = Process::ReadASCII(address, 1024);
+				char * wb = new char[1024];
+				memset(wb, 'F', 1024);
+				wb[0] = 'G';
+				wb[1023] = 'G';
+				Process::WriteRaw(wb, 1024, address);
+				name = name;
+			}
 		}
-		int a;
-		a = 10;
+		
 	};
 	f();
-
 	while (1)
 	{
 		if (!Process::ReadRel<bool>(WowOffsets2::Client::Connecting) && !Process::ReadRel<bool>(WowOffsets2::Client::CharSelecting))

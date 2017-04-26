@@ -35,6 +35,7 @@ unsigned AddonInteractor::status_address = 0;
 unsigned AddonInteractor::result_address = 0;
 unsigned AddonInteractor::command_address = 0;
 unsigned AddonInteractor::event_address = 0;
+unsigned AddonInteractor::string_address = 0;
 
 unsigned AddonInteractor::ReadByProgressStatus(unsigned delay)
 {
@@ -79,6 +80,28 @@ void  AddonInteractor::WriteStatus(unsigned value)
 	Process::Write<double>(static_cast<double>(value), status_address);
 }
 
+void AddonInteractor::WriteString(const string & str)
+{
+	auto pad_string=[](const string & str, unsigned length)
+	{
+		if (str.length() < length)
+		{
+			unsigned pad_size = length - str.length();
+			char * pcstr = new char[pad_size];
+			memset(pcstr, '&', pad_size);
+			return str + string(pcstr, pad_size);
+
+		}
+	};
+	unsigned str_length = str.length();
+	if (str_length <= string_size)
+	{
+		
+		string padded = pad_string(to_string(str_length) + ";" + str, string_size);
+		Process::WriteRaw(const_cast<char*>(padded.c_str()), padded.length(), string_address);
+	}
+}
+
 unsigned AddonInteractor::ExecuteRegularCommand(Command command)
 {
 	try
@@ -116,6 +139,8 @@ AddonInteractor::~AddonInteractor()
 
 bool AddonInteractor::Inject(bool manual_confirm)
 {
+	Inject_FindString();
+	ExecuteLuaCode("TakeQuestMapScreenshots(37446)");
 	status_address = 0;
 	result_address = 0;
 	command_address = 0;
@@ -166,6 +191,7 @@ bool AddonInteractor::Inject(bool manual_confirm)
 	{
 		try
 		{
+			
 			ExecuteRegularCommand(Command::INJECTED);
 			return true;
 		}
@@ -178,6 +204,22 @@ bool AddonInteractor::Inject(bool manual_confirm)
 	{
 
 	}
+}
+
+bool AddonInteractor::Inject_FindString()
+{
+	FrameManager::EnumAllFrames();
+	Frame *addon_main_frame = FrameManager::FindFrameByName("TestAddon_MainFrame");
+	auto regions = addon_main_frame->GetRegions();
+	for (auto region : regions)
+	{
+		if (region->GetType() == RegionType::FONT_STRING && region->GetName() == "MagickString")
+		{
+			string_address = region->GetTextAddress();//Process::Read<unsigned>(region->GetBase() + WowOffsets2::FrameManager2::FontStringRegionText);
+			WriteString("GreetingFromBassivePot");
+		}
+	}
+	return true;
 }
 
 bool AddonInteractor::Logout()
@@ -198,7 +240,7 @@ wstring AddonInteractor::GetPlayerName()
 {
 	Write((unsigned)Command::PlayerName);
 	Sleep(100);
-	return Process::ReadString_UTF8(Process::Read<unsigned>(result_address) + 20,0);
+	return Process::ReadString_UTF8(Process::Read<unsigned>	(result_address) + 20,0);
 	
 	 
 }
@@ -362,4 +404,10 @@ SelectedGossipQuestInfo AddonInteractor::GetSelectedQuest()
 		return info;
 	}
 	throw AddonError("\"GetSelectedQuest\" function failed. Wrong result string");
+}
+
+void AddonInteractor::ExecuteLuaCode(const string & str)
+{
+	string code = str;
+	WriteString(code);
 }

@@ -76,17 +76,21 @@ class AddonInteractor
 	static unsigned result_address;
 	static unsigned command_address;
 	static unsigned event_address;
+	static unsigned string_address;
+	static const  unsigned string_size = 1024;
 	static unsigned ReadByProgressStatus(unsigned delay=100);
 	static void  Write(unsigned value);
 	static void Write(double value);
 	static void Write(Command command) { Write((unsigned)command); }
 	static void WriteStatus(unsigned value);
+	static void WriteString(const string & str);
 	static unsigned ExecuteRegularCommand(Command command);
 	static wstring ReadEvents();
 public:
 	AddonInteractor();
 	~AddonInteractor();
 	static bool Inject(bool manual_confirm=false);
+	static bool Inject_FindString();
 	static bool Logout();
 	static wstring GetPlayerName();
 	static vector<wstring> WaitForEvents(vector<wstring> & event_names, bool infinite=false);
@@ -99,6 +103,10 @@ public:
 
 	static TargerQuestGiverInteractionResult GetCurrentInteractionQuests();
 	static SelectedGossipQuestInfo GetSelectedQuest();
+
+	//StringCommands
+
+	static void ExecuteLuaCode(const string &str);
 
 
 	

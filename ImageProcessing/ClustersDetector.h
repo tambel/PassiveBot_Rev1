@@ -31,6 +31,8 @@ typedef CGAL::Alpha_shape_2<Triangulation_2>  Alpha_shape_2;
 typedef Alpha_shape_2::Alpha_shape_edges_iterator Alpha_shape_edges_iterator;
 using namespace std;
 
+#define MIN_CLUSTER_POINT_COUNT 100 
+
 struct point
 {
 	point(int x, int y)
@@ -94,11 +96,15 @@ public:
 	ClusterMap * GetClusterMap() { return &cluster_map; }
 	inline WrappedImage * GetDiffResult() { return &diff_result; }
 	void LoadImages(string fn1, string fn2, float l, float t, float r, float b);
-	void DiffImages();
+	void DiffImages(int impatience);
+	void ShrinkClusters(int iterations_count);
+
+
 	void GenerateClusterMap();
 	void RemoveSmallClusters();
 	void GenerateClusters();
-	void _ClustersToImage();
+	void _ClustersImageToFile();
+	void WholeBorder();
 
 
 

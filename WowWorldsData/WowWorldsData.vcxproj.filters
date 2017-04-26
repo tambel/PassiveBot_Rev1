@@ -25,6 +25,12 @@
     <Filter Include="Файлы исходного кода\Navigation">
       <UniqueIdentifier>{d6821a91-2669-401f-a06e-be4e14178262}</UniqueIdentifier>
     </Filter>
+    <Filter Include="db2">
+      <UniqueIdentifier>{83c4920f-8588-47eb-ba98-3da2b7796700}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="db2\WBD">
+      <UniqueIdentifier>{b9a66d92-91ed-4e4c-90c8-71a87c04bb2b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -125,6 +131,9 @@
     </ClInclude>
     <ClInclude Include="NavMesh.h">
       <Filter>Заголовочные файлы\Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="headers.h">
+      <Filter>db2\WBD</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

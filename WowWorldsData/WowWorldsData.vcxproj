@@ -145,6 +145,7 @@
     <ClInclude Include="ClientDB.h" />
     <ClInclude Include="Doodad.h" />
     <ClInclude Include="Exceptions.h" />
+    <ClInclude Include="headers.h" />
     <ClInclude Include="LocalAreaNavMesh.h" />
     <ClInclude Include="M2.h" />
     <ClInclude Include="M2Cache.h" />

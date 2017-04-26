@@ -175,6 +175,57 @@ namespace Tools
 	}
 	string Process::ReadASCII(unsigned address, unsigned long length)
 	{
+		unsigned buffer_size = 10;
+		SIZE_T byte_read;
+		MEMORY_BASIC_INFORMATION bi = { 0 };
+		VirtualQueryEx(process, (void*)address, &bi, sizeof(bi));
+		char * buffer;
+		string result = "";
+		
+		if (length)
+		{
+			buffer = new char[length];
+			BOOL read_result = ReadProcessMemory(process, (void*)address, buffer, length, &byte_read);
+			result = string(buffer, byte_read);
+		}
+		else
+		{
+			unsigned current_address = address;
+			unsigned current_length = 0;
+			buffer= new char[buffer_size];
+			int part_length;
+			bool end = false;
+			while ((unsigned)bi.BaseAddress + bi.RegionSize > current_address && !end)
+			{
+				BOOL read_result = ReadProcessMemory(process, (void*)current_address, buffer, buffer_size, &byte_read);
+				if (!read_result || !byte_read)
+				{
+					break;
+				}
+				for (part_length = 0; part_length < byte_read; part_length++)
+				{
+					if (buffer[part_length] == 0)
+					{
+						end = true;
+						//part_length++;
+						break;
+					}
+				}
+				current_address += byte_read;
+				string part = string(buffer, part_length);
+				result = result + part;
+
+			}
+		}
+		delete[] buffer;
+		if (result[0] == 'M' && result[1] == 'a' && result[2] == 'g'  && result[3] == 'i')
+		{
+			buffer = buffer;
+		}
+		return result;
+	}
+	string Process::ReadASCII2(unsigned address, unsigned long length)
+	{
 		unique_ptr<char> tmp_result;
 		unique_ptr<char> result;
 		MEMORY_BASIC_INFORMATION bi={0};
@@ -198,8 +249,12 @@ namespace Tools
 		tmp_result = unique_ptr<char>(new char[real_length]);
 		bool r_res=ReadProcessMemory(process, (void*)address, tmp_result.get(), real_length, &byte_read)!=0;
 		res_length=strlen(tmp_result.get());
-		result = unique_ptr<char>(new char[res_length + 1]);
-		strcpy_s(result.get(), res_length + 1, tmp_result.get());
+		if (res_length > real_length)
+		{
+			res_length = real_length;
+		}
+		result = unique_ptr<char>(new char[res_length]);
+		strcpy_s(result.get(), res_length, tmp_result.get());
 		//strcpy(result.get(),tmp_result.get());
 		if (!r_res || !result.get())
 		{
@@ -447,6 +502,11 @@ namespace Tools
 		} while (result);
 		error = GetLastError();
 		return found;
+	}
+	void Process::WriteRaw(char * buffer, unsigned size, unsigned address)
+	{
+		SIZE_T written = 0;
+		WriteProcessMemory(process, (LPVOID)address, buffer, size, &written);
 	}
 	void Process::InjectDLL(string dll_path)
 	{

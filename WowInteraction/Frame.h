@@ -23,6 +23,7 @@ class Region
 	Frame * parent;
 public:
 	Region(unsigned base, Frame * parent);
+	inline unsigned GetTextAddress();
 	wstring & GetWText(bool refresh=false);
 	string & GetText(bool refresh = false);
 	RegionType GetType();

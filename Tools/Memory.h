@@ -101,6 +101,7 @@ namespace Tools
 		static void MouseDown(MouseButton button);
 		static bool ReadRaw(unsigned address, void * buffer, unsigned long length);
 		static bool ReadRelRaw(unsigned offest, void * buffer, unsigned long length);
+		static string ReadASCII2(unsigned address, unsigned long length);
 		static string ReadASCII(unsigned address, unsigned long length);
 
 		static void MoveMouse(unsigned x, unsigned y,bool b=false, unsigned long time = 50);
@@ -127,6 +128,7 @@ namespace Tools
 			if (!result || wrote != sizeof(T))
 				throw MemoryWriteException(address);
 		}
+		static void WriteRaw(char * buffer, unsigned size, unsigned address);
 		static void InjectDLL(string dll_path);
 
 
