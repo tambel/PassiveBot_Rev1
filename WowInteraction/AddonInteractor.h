@@ -1,6 +1,7 @@
 #pragma once
 #include "Tools\Tools.h"
 #include "FrameManager.h"
+#include "GameManager.h"
 
 
 
@@ -76,20 +77,25 @@ class AddonInteractor
 	static unsigned result_address;
 	static unsigned command_address;
 	static unsigned event_address;
-	static unsigned string_address;
-	static const  unsigned string_size = 1024;
+	static unsigned command_string_address;
+	static const  unsigned command_string_size = 1024;
+	static unsigned result_string_address;
+
+	unsigned Read(unsigned delay);
 	static unsigned ReadByProgressStatus(unsigned delay=100);
 	static void  Write(unsigned value);
 	static void Write(double value);
 	static void Write(Command command) { Write((unsigned)command); }
 	static void WriteStatus(unsigned value);
-	static void WriteString(const string & str);
+	static void WriteCommandString(const string & str);
+	static string ReadResultString();
 	static unsigned ExecuteRegularCommand(Command command);
 	static wstring ReadEvents();
 public:
 	AddonInteractor();
 	~AddonInteractor();
-	static bool Inject(bool manual_confirm=false);
+	static bool Inject2(bool manual_confirm=false);
+	static bool Inject(bool manual_confirm = false);
 	static bool Inject_FindString();
 	static bool Logout();
 	static wstring GetPlayerName();
@@ -106,7 +112,12 @@ public:
 
 	//StringCommands
 
+	static string ExecuteCommand(const string & cmd, bool manual_confirm=false);
+	static void ConfirmCommandExecution();
+	static string WaitForResult(int attempts_count = 10, int delay = 500);
+
 	static void ExecuteLuaCode(const string &str);
+	static void WriteCommand(const string & cmd);
 
 
 	

@@ -102,6 +102,11 @@ void GameManager::GoToPoint(Vector3 & point)
 	RotatePlayer(point);
 	GoStraighToPoint(point);
 }
+void GameManager::UseHotKey(wstring & key, int mode)
+{
+
+	AU3_Send(key.c_str(),mode);
+}
 Camera * GameManager::GetCamera()
 {
 	return new Camera(Process::Read<unsigned>(Process::ReadRel<unsigned>(WowOffsets::Camera::CameraPointer) + WowOffsets::Camera::CameraOffset));

@@ -26,6 +26,8 @@ public:
 	inline static float GetPlayerDistanceToPoint(WowObject & object);
 	static void RotatePlayer(Vector3 & point);
 	static void GoToPoint(Vector3 & point);
+	static void UseHotKey(wstring & key, int mode=0);
+
 
 
 };

@@ -34,98 +34,114 @@ vector<wstring> parse_string(wstring & str)
 unsigned AddonInteractor::status_address = 0;
 unsigned AddonInteractor::result_address = 0;
 unsigned AddonInteractor::command_address = 0;
-unsigned AddonInteractor::event_address = 0;
-unsigned AddonInteractor::string_address = 0;
+unsigned AddonInteractor::command_string_address = 0;
+unsigned AddonInteractor::result_string_address = 0;
 
-unsigned AddonInteractor::ReadByProgressStatus(unsigned delay)
+
+unsigned AddonInteractor::Read(unsigned delay)
 {
 	unsigned result;
 	unsigned status;
-	unsigned attempts = 50;
-	try
+	char attempts = 3;
+	do
 	{
-		do
+		Sleep(delay);
+		status = Process::Read<double>(status_address);
+		if (status)
 		{
-			Sleep(delay);
-			status = Process::Read<double>(status_address);
-			if (status)
-			{
-				result = Process::Read<double>(result_address);
-			}
-			attempts--;
-		} while (status == Status::IN_PROCESS && attempts);
-	}
-	catch (MemoryReadException & e)
-	{
-		throw_with_nested(AddonError("ReadByProgressStatus failed. Cant read memory"));
-	}
-	if (!status || !attempts)
-		throw AddonError("ReadByProgressStatus failed. Status not changing");
+			result=Process::Read<double>(result_address);
+		}
+		attempts--;
+	} while (!status && attempts);
+
+	if (!status)
+		throw AddonError("Addon not responding");
+
 	return result;
+}
+
+unsigned AddonInteractor::ReadByProgressStatus(unsigned delay)
+{
+	return 0;
 }
 
 void AddonInteractor::Write(unsigned value)
 {
-	return Write(static_cast<double>(value));
 }
 
 void AddonInteractor::Write(double value)
 {
-		Process::Write<double>(value, command_address);
-		Sleep(100);
 }
 
-void  AddonInteractor::WriteStatus(unsigned value)
+
+void AddonInteractor::WriteStatus(unsigned value)
 {
-	Process::Write<double>(static_cast<double>(value), status_address);
 }
 
-void AddonInteractor::WriteString(const string & str)
+void AddonInteractor::WriteCommandString(const string & str)
 {
-	auto pad_string=[](const string & str, unsigned length)
-	{
+	auto pad_string = [](const string & str, unsigned length)
+	 {
 		if (str.length() < length)
-		{
+			 {
 			unsigned pad_size = length - str.length();
 			char * pcstr = new char[pad_size];
 			memset(pcstr, '&', pad_size);
 			return str + string(pcstr, pad_size);
 
-		}
-	};
+			}
+		};
 	unsigned str_length = str.length();
-	if (str_length <= string_size)
-	{
+	if (str_length <= command_string_size )
+		 {
 		
-		string padded = pad_string(to_string(str_length) + ";" + str, string_size);
-		Process::WriteRaw(const_cast<char*>(padded.c_str()), padded.length(), string_address);
-	}
+			string padded = pad_string(to_string(str_length) + ";" + str+"[!]", command_string_size);
+		Process::WriteRaw(const_cast<char*>(padded.c_str()), padded.length(), command_string_size);
+		}
+
+}
+
+string AddonInteractor::ReadResultString()
+{
+	
+	auto read_com_string = [](string & str)
+	{
+		unsigned length = str.length();
+		int i = 0;
+		string ns1="",ns2 = "";
+		int n1, n2;
+		while (str[i] != ';' && str[length - i - 1] != ';' && i<length)
+		{
+			ns1 = ns1 + str[i];
+			ns2 = str[length - i - 1] + ns2;
+			i++;
+		}
+		n1 = stoi(ns1);
+		n2 = stoi(ns2);
+		if (n1 == n2)
+		{
+			string result = str.substr(i, n1);
+			if (result.length() == n1)
+			{
+				return result;
+			}
+		}
+		return string("WrongStringFromAddon");
+	};
+	string raw_result_string = move(Process::ReadASCII(result_string_address, 0));
+	string result=move(read_com_string(raw_result_string));
+	return result;
+
 }
 
 unsigned AddonInteractor::ExecuteRegularCommand(Command command)
 {
-	try
-	{
-		WriteStatus(Status::IN_PROCESS);
-		Write(command);
-		return ReadByProgressStatus();
-	}
-	catch (runtime_error & e)
-	{
-		throw_with_nested(AddonError("ExecuteRegularCommand function failed"));
-	}
+	return 0;
 }
 
 wstring AddonInteractor::ReadEvents()
 {
-	try
-	{
-		return Process::ReadString_UTF8(Process::Read<unsigned>(event_address) + 20, 0);
-	}
-	catch (MemoryReadException & e)
-	{
-		throw_with_nested(AddonError("\"ReadEvents\" function failed. Cant read string"));
-	}
+	return wstring();
 }
 
 AddonInteractor::AddonInteractor()
@@ -136,17 +152,11 @@ AddonInteractor::AddonInteractor()
 AddonInteractor::~AddonInteractor()
 {
 }
-
-bool AddonInteractor::Inject(bool manual_confirm)
+bool AddonInteractor::Inject2(bool manual_confirm)
 {
-	Inject_FindString();
-	ExecuteLuaCode("TakeQuestMapScreenshots(37446)");
-	status_address = 0;
-	result_address = 0;
-	command_address = 0;
-	vector<unsigned> found = Process::FindInMemory(LINK_ADDRESS);
-	Frame * button = nullptr;
-	unsigned char attempts = 3;
+	/*
+ int attempts = 3;
+ Frame * button;
 	while (attempts && !button)
 	{
 		button = FrameManager::FindFrameByName("MagickButton", true);
@@ -204,6 +214,18 @@ bool AddonInteractor::Inject(bool manual_confirm)
 	{
 
 	}
+	*/
+	return false;
+}
+
+bool AddonInteractor::Inject(bool manual_confirm)
+{
+	if (!Inject_FindString())
+	{
+		return false;
+	}
+	Sleep(500);
+	return true;
 }
 
 bool AddonInteractor::Inject_FindString()
@@ -211,15 +233,34 @@ bool AddonInteractor::Inject_FindString()
 	FrameManager::EnumAllFrames();
 	Frame *addon_main_frame = FrameManager::FindFrameByName("TestAddon_MainFrame");
 	auto regions = addon_main_frame->GetRegions();
+	bool command_string_found = false;
+	bool result_string_found = false;
 	for (auto region : regions)
 	{
-		if (region->GetType() == RegionType::FONT_STRING && region->GetName() == "MagickString")
+		if (region->GetType() == RegionType::FONT_STRING && region->GetName() == "MagickString" && !command_string_found)
 		{
-			string_address = region->GetTextAddress();//Process::Read<unsigned>(region->GetBase() + WowOffsets2::FrameManager2::FontStringRegionText);
-			WriteString("GreetingFromBassivePot");
+			command_string_address = region->GetTextAddress();//Process::Read<unsigned>(region->GetBase() + WowOffsets2::FrameManager2::FontStringRegionText);
+			if (command_string_address)
+			{
+				string str = Process::ReadASCII(command_string_address, 0);
+				if (str.length() == command_string_size)
+				{
+					command_string_found = true;
+				}
+			}
+			
+		}
+		if (region->GetType() == RegionType::FONT_STRING && region->GetName() == "ResultString" &&  !result_string_found)
+		{
+			result_string_address = region->GetTextAddress();//Process::Read<unsigned>(region->GetBase() + WowOffsets2::FrameManager2::FontStringRegionText);
+			if (result_string_address)
+			{
+				result_string_found = true;
+			}
+
 		}
 	}
-	return true;
+	return (result_string_found && command_string_found);
 }
 
 bool AddonInteractor::Logout()
@@ -406,8 +447,46 @@ SelectedGossipQuestInfo AddonInteractor::GetSelectedQuest()
 	throw AddonError("\"GetSelectedQuest\" function failed. Wrong result string");
 }
 
+string AddonInteractor::ExecuteCommand(const string & cmd, bool manual_confirm)
+{
+	string result;
+	WriteCommand(cmd);
+	if (!manual_confirm)
+		ConfirmCommandExecution();
+	if (manual_confirm)
+		result = move(WaitForResult(-1));
+	else
+		result = move(WaitForResult());
+	return result;
+}
+
+void AddonInteractor::ConfirmCommandExecution()
+{
+	GameManager::UseHotKey(wstring(L"{!1}"));
+}
+
+string AddonInteractor::WaitForResult(int attempts_count, int delay)
+{
+	
+	string result= ReadResultString();
+	while (result == "InProcess" || result == "NoTasks" && attempts_count)
+	{
+		result = ReadResultString();
+		if (attempts_count!=-1)
+			attempts_count--;
+		Sleep(delay);
+
+	}
+	return result;
+}
+
 void AddonInteractor::ExecuteLuaCode(const string & str)
 {
 	string code = str;
-	WriteString(code);
+	WriteCommandString(code);
+}
+
+void AddonInteractor::WriteCommand(const string & cmd)
+{
+	WriteCommandString(cmd);
 }
