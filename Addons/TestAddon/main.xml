@@ -1,0 +1,120 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+    ..\..\FrameXML\UI.xsd">
+  <Script File="lua/cli.lua"/>
+  <Script File="lua/main.lua"/>
+    
+  <Frame name="TestAddon_MainFrame"
+         parent="UIParent"
+         hidden="false"
+         enableMouse="true"
+         movable="true">
+
+    <Size x="300" y="200"/>
+    <Anchors>
+      <Anchor point="TOPLEFT">
+        <Offset x="20" y="-90"/>
+      </Anchor>
+    </Anchors>
+
+    <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background"
+              edgeFile="Interface\Tooltips\UI-Tooltip-Border"
+              tile="true">
+      <TileSize>
+        <AbsValue val="16"/>
+      </TileSize>
+      <EdgeSize>
+        <AbsValue val="16"/>
+      </EdgeSize>
+      <BackgroundInsets>
+        <AbsInset left="4" right="3" top="4" bottom="3"/>
+      </BackgroundInsets>
+      <Color r="0.2" g="0.2" b="0.2" a="0.7"/>
+    </Backdrop>
+
+    <Frames>
+	 <Button name="MagickButton" inherits="UIPanelButtonTemplate" text="Click me!">
+      <Size x="120" y="21"/>
+      <Anchors>
+        <Anchor point="BOTTOM"/>
+      </Anchors>
+     <Scripts>
+      <OnClick function="onclick"/>
+    </Scripts>
+    </Button>
+    <Button name="$parentButton" inherits="UIPanelButtonTemplate" text="Click me!">
+      <Size x="120" y="21"/>
+      <Anchors>
+        <Anchor point="TOP"/>
+      </Anchors>
+     <Scripts>
+      <OnClick function="onclick2"/>
+    </Scripts>
+    </Button>
+    </Frames>
+
+    <Layers>
+      <Layer>
+        <FontString name="$parent_xCoorNum"
+                    inherits="SystemFont_Small"
+                    text="0.0"
+                    justifyV="TOP"
+                    justifyH="CENTER">
+
+          <Size x="0" y="10"/>
+          <Anchors>
+            <Anchor point="TOPLEFT"
+                    relativeTo="$parent_xString"
+                    relativePoint="TOPRIGHT">
+              <Offset x="0" y="0"/>
+            </Anchor>
+          </Anchors>
+          <Color r="1" g="1" b="0" a="1"/>
+        </FontString>
+		<FontString name="MagickString"
+                    inherits="SystemFont_Small"
+                    text="0.0"
+                    justifyV="BOTTOM"
+                    justifyH="RIGHT">
+
+          <Size x="0" y="10"/>
+          <Anchors>
+            <Anchor point="TOPLEFT"
+                    relativeTo="$parent_xString"
+                    relativePoint="TOPRIGHT">
+              <Offset x="0" y="0"/>
+            </Anchor>
+          </Anchors>
+          <Color r="1" g="1" b="0" a="1"/>
+        </FontString>
+		<FontString name="ResultString"
+                    inherits="SystemFont_Small"
+                    text="0.0"
+                    justifyV="BOTTOM"
+                    justifyH="RIGHT">
+
+          <Size x="0" y="10"/>
+          <Anchors>
+            <Anchor point="TOPLEFT"
+                    relativeTo="$parent_xString"
+                    relativePoint="TOPRIGHT">
+              <Offset x="0" y="0"/>
+            </Anchor>
+          </Anchors>
+          <Color r="1" g="1" b="0" a="1"/>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnLoad function="onload"/>
+      <OnUpdate function="onupdate"/>
+      <OnMouseDown>
+        TestAddon_MainFrame:StartMoving();
+      </OnMouseDown>
+      <OnMouseUp>
+        TestAddon_MainFrame:StopMovingOrSizing();
+      </OnMouseUp>
+    </Scripts>
+
+  </Frame>
+</Ui>
