@@ -81,23 +81,23 @@ void AddonInteractor::WriteStatus(unsigned value)
 void AddonInteractor::WriteCommandString(const string & str)
 {
 	auto pad_string = [](const string & str, unsigned length)
-	 {
+	{
 		if (str.length() < length)
-			 {
+		{
 			unsigned pad_size = length - str.length();
 			char * pcstr = new char[pad_size];
 			memset(pcstr, '&', pad_size);
 			return str + string(pcstr, pad_size);
 
-			}
-		};
-	unsigned str_length = str.length();
-	if (str_length <= command_string_size )
-		 {
-		
-			string padded = pad_string(to_string(str_length) + ";" + str+"[!]", command_string_size);
-		Process::WriteRaw(const_cast<char*>(padded.c_str()), padded.length(), command_string_size);
 		}
+	};
+	unsigned str_length = str.length();
+	if (str_length <= command_string_size)
+	{
+
+		string padded = pad_string(to_string(str_length) + ";" + str + "[!]", command_string_size);
+		Process::WriteRaw(const_cast<char*>(padded.c_str()), padded.length(), command_string_address);
+	}
 
 }
 
@@ -120,7 +120,7 @@ string AddonInteractor::ReadResultString()
 		n2 = stoi(ns2);
 		if (n1 == n2)
 		{
-			string result = str.substr(i, n1);
+			string result = str.substr(i+1, n1);
 			if (result.length() == n1)
 			{
 				return result;

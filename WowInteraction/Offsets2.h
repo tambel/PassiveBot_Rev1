@@ -22,7 +22,7 @@ namespace WowOffsets2
         FrameBase=0xD82BD0,// 14166992
         ScreenWidth=0xC6B3FC,// 13022204
         ScreenHeight=0xC6B400,// 13022208
-        UIObject__GetObjectType__FontString=0xEFA21,// 981537
+        UIObject__GetObjectType__FontString=0xEFED1,// 982737
         CurrentKeyBoardFocusFrame=0xD76808,// 14116872
         FrameName=0x14,// Frame__GetName
         FirstFrame=0x6B8,// (P)Script_EnumerateFrames+11

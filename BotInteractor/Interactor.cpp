@@ -57,7 +57,7 @@ int BotInteractor::_Start()
 		GameInteractor::ManualLogout();	
 		return ExitCode::LoggedOut;
 	}
-	AddonInteractor::ExecuteCommand("TakeQuestMapScreenshots 14456");
+	AddonInteractor::ExecuteCommand("TakeQuestMapScreenshots 14456",true);
 	//AddonInteractor::ExecuteCommand("test 'tambel' 12", true);
 	Sleep(1000);
 	//init navigation

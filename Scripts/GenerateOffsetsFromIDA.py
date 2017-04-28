@@ -7,9 +7,11 @@ idaq_exe_path=os.path.join(ida_path,"idaq.exe")
 
 ida_script_path="D:\Bot\Projects\PassiveBot\Scripts\GetNamesFromIDB.py"
 
-ida_database_path="D:\Bot\IDB_archive\\7.2.0\wow.idb"
+ida_database_path="D:\Bot\World of Warcraft\wow.idb"
 
-command_string="{} -A -S\"{}\" \"{}\"".format(idaq_exe_path, ida_script_path, ida_database_path)
+command_string="\"{}\" -A -S\"{}\" \"{}\"".format(idaq_exe_path, ida_script_path, ida_database_path)
+
+print(command_string)
 
 os.system(command_string)
 
