@@ -22,6 +22,7 @@ status_list={}
 status_list["string_injected"]=false
 status_list["new_command"]=false
 status_list["active_waitings"]=false
+status_list["deferred_result"]=nil
 
 waitings={}
 
@@ -67,7 +68,7 @@ function InitStrings()
 	end
 	buffer=buffer_start..buffer
 	MagickString:Hide()
-	ResultString:Hide()
+	--ResultString:Hide()
 	MagickString:SetText(buffer)
 	SetResult__NoTasks()
 end
@@ -129,13 +130,18 @@ function ProcessCommand(self)
     end
 	
 	if status_list["new_command"]==true then
-		print("new command")
 		StartHandleCommand()
 		status_list["new_command"]=false
 	end
 	
 	if status_list["active_waitings"]==true and #waitings==0 then
-		SetResult__Done()
+		if status_list["deferred_result"]~=nil then
+			
+			SetResult(ResultToString(status_list["deferred_result"]))
+			status_list["deferred_result"]=nil
+			status_list["active_waitings"]=false
+			
+		end
 	end
 end
 
@@ -183,6 +189,7 @@ end
 function StartHandleCommand()
 	SetResult__InProcess()
 	HandleStringCommand(ReadComString())
+	print("StartHandleCommand stop")
 end
 
 function ExecuteCommand(cmd_str)
@@ -200,12 +207,25 @@ function ExecuteCommand(cmd_str)
 	--return result
 	return _G[cmd](unpack(params))
 end
+
+function ResultToString(result)
+	local rs=""
+	if result~=nil then
+		for k,v in pairs(result) do
+			--print(v)
+			rs=rs.." "..tostring(v)
+		end
+	end
+	print("totringgg")
+	return rs
+end
+
 function HandleStringCommand(cmd)
-	status, description =ExecuteCommand(cmd)
-	result_string=tostring(status)..":" ..tostring(description)
-	print("results: "..result_string)
-	SetResult(result_string)
-	print(ResultString:GetText())
+	result=ExecuteCommand(cmd)
+	if result~="deferred" then
+		result_string=ResultToString(result)
+		SetResult(result_string)
+	end
 end
 
 function test(name, id)
@@ -359,6 +379,11 @@ function CloseFrameIfOpened(frame)
 	end
 end
 
+function ReturnDeferred(result)
+	status_list["deferred_result"]=result
+	return "deferred"
+end
+
 function TakeQuestMapScreenshots(quest_info)
 
 	CheckAndOpenFrame(WorldMapFrame)
@@ -394,8 +419,9 @@ function TakeQuestMapScreenshots(quest_info)
 		Screenshot()
 		wait_with_info(1,CallObjectHandler,"wait1",quest_button, "OnEnter")
 		wait_with_info(2,Screenshot, "wait2")	
-		wait_with_info(2.5,CloseFrameIfOpened, "wait3", WorldMapFrame)	
-		return true, "OHUENNO"
+		wait_with_info(2.5,CloseFrameIfOpened, "wait3", WorldMapFrame)
+		
+		return ReturnDeferred({true, "OHUENNO"})
 	end
 end
 

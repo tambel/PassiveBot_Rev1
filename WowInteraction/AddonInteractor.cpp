@@ -36,6 +36,7 @@ unsigned AddonInteractor::result_address = 0;
 unsigned AddonInteractor::command_address = 0;
 unsigned AddonInteractor::command_string_address = 0;
 unsigned AddonInteractor::result_string_address = 0;
+Region * AddonInteractor::result__fontstring = nullptr;
 
 
 unsigned AddonInteractor::Read(unsigned delay)
@@ -128,7 +129,8 @@ string AddonInteractor::ReadResultString()
 		}
 		return string("WrongStringFromAddon");
 	};
-	string raw_result_string = move(Process::ReadASCII(result_string_address, 0));
+	string raw_result_string =result__fontstring->GetText(true);
+	//string raw_result_string = move(Process::ReadASCII(result_string_address, 0));
 	string result=move(read_com_string(raw_result_string));
 	return result;
 
@@ -252,6 +254,7 @@ bool AddonInteractor::Inject_FindString()
 		}
 		if (region->GetType() == RegionType::FONT_STRING && region->GetName() == "ResultString" &&  !result_string_found)
 		{
+			result__fontstring = region.get();
 			result_string_address = region->GetTextAddress();//Process::Read<unsigned>(region->GetBase() + WowOffsets2::FrameManager2::FontStringRegionText);
 			if (result_string_address)
 			{
@@ -469,7 +472,7 @@ string AddonInteractor::WaitForResult(int attempts_count, int delay)
 {
 	
 	string result= ReadResultString();
-	while (result == "InProcess" || result == "NoTasks" && attempts_count)
+	while ((result == "InProcess" || result == "NoTasks" || result =="WrongStringFromAddon") && attempts_count)
 	{
 		result = ReadResultString();
 		if (attempts_count!=-1)

@@ -80,6 +80,7 @@ class AddonInteractor
 	static unsigned command_string_address;
 	static const  unsigned command_string_size = 1024;
 	static unsigned result_string_address;
+	static Region * result__fontstring;
 
 	unsigned Read(unsigned delay);
 	static unsigned ReadByProgressStatus(unsigned delay=100);
