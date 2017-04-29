@@ -161,6 +161,8 @@ end
 --------------------------------
 
 function onload(self)
+
+	
 	SetResult__NoTasks()
 	TestAddon_MainFrame.command_string=OutComString.Create("qwqwe",MagickString, 1024)
 	TestAddon_MainFrame.flads_string=OutComString.Create("qwqwe",MagickString, 1024)
