@@ -76,12 +76,15 @@ end
 
 
 ---OutComString---------------------------------
-function OutComString:Create(fontstring,length)
+function OutComString:Create(fontstring,length, fill_char)
 
 	local obj = {}  
+	if fill_char==nil then
+		fill_char="B"
+	end
 	initial_str=""
 	for i=1,length do 
-		initial_str=initial_str.."B" 
+		initial_str=initial_str..fill_char 
 	end
 	setmetatable(obj,OutComString)   
 	obj.fontstring=fontstring
@@ -162,7 +165,8 @@ end
 
 function onload(self)
 
-	
+	f=Flags.Create(nil,ResultString,{confirm=1, clear=2})
+	print(f:GetFlag("clear"))
 	SetResult__NoTasks()
 	TestAddon_MainFrame.command_string=OutComString.Create("qwqwe",MagickString, 1024)
 	TestAddon_MainFrame.flads_string=OutComString.Create("qwqwe",MagickString, 1024)
