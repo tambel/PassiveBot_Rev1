@@ -3,6 +3,7 @@
 #include "FrameManager.h"
 #include "GameManager.h"
 #include "OutComString.h"
+#include "Flags.h"
 #include <map>
 
 
@@ -84,9 +85,9 @@ class AddonInteractor
 	static const unsigned flags_count = 2;
 	static unsigned result_string_address;
 	static Region * result__fontstring;
-	static map<string, unsigned> flags;
+	static map<string,shared_ptr<Flag>> flags;
+
 	static OutComString command_string;
-	static OutComString flags_string;
 
 	unsigned Read(unsigned delay);
 	static unsigned ReadByProgressStatus(unsigned delay=100);
@@ -119,9 +120,10 @@ public:
 
 	//StringCommands
 
-	static string ExecuteCommand(const string & cmd, bool manual_confirm=false);
+	static string ExecuteCommand(const string & cmd);
 	static void ConfirmCommandExecution();
-	static string WaitForResult(int attempts_count = 10, int delay = 500);
+	static void ClearResult();
+	static string WaitForResult(int attempts_count = 1000, int delay = 500);
 
 	
 	static void WriteCommand(const string & cmd);
@@ -129,8 +131,8 @@ public:
 	static void ExecuteLuaCode(const string &str);
 
 	
-	static void SetFlag(string name);
-	static void UnsetFlags(string name);
+	static bool SetFlag(string & name);
+	static void UnsetFlags(string & name);
 
 
 	//high level tasks

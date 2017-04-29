@@ -8,7 +8,7 @@ Flag.__index = Flag
 function Flag:Create(name)
 	local obj={}
 	setmetatable(obj,Flag)
-	local fs=TestAddon_MainFrame:CreateFontString(name.."flag_string","OVERLAY");
+	local fs=TestAddon_MainFrame:CreateFontString(name.."_flag_string","OVERLAY");
 	fs:Hide()
 	fs:SetFont("Fonts\\FRIZQT__.TTF", 15)
 	fs:SetText("0")
@@ -18,7 +18,7 @@ function Flag:Create(name)
 end
 
 function Flag:IsSet()
-	return  self.fs:GetText()=="0"
+	return  self.fs:GetText()=="1"
 end
 
 function Flag:Unset()

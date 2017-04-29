@@ -121,6 +121,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DBCReader.h" />
     <ClInclude Include="Exceptions.h" />
+    <ClInclude Include="Flags.h" />
     <ClInclude Include="Frame.h" />
     <ClInclude Include="FrameManager.h" />
     <ClInclude Include="GameInteractor.h" />
@@ -146,6 +147,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DBCReader.cpp" />
     <ClCompile Include="Exceptions.cpp" />
+    <ClCompile Include="Flags.cpp" />
     <ClCompile Include="Frame.cpp" />
     <ClCompile Include="FrameManager.cpp" />
     <ClCompile Include="GameInteractor.cpp" />

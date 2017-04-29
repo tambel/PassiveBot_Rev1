@@ -166,7 +166,8 @@ end
 
 function onload(self)
 
-	TestAddon_MainFrame.confirm_flag=Flag.Create("confirm")
+	TestAddon_MainFrame.confirm_flag=Flag.Create(nil,"confirm")
+	TestAddon_MainFrame.clear_flag=Flag.Create(nil,"clear")
 	SetResult__NoTasks()
 	TestAddon_MainFrame.command_string=OutComString.Create("qwqwe",MagickString, 1024)
 	--TestAddon_MainFrame.flads_string=OutComString.Create("qwqwe",MagickString, 1024)
@@ -209,21 +210,27 @@ function ProcessCommand(self)
 	
     end
 	
+	if TestAddon_MainFrame.clear_flag:IsSet()==true then
+		TestAddon_MainFrame.clear_flag:Unset()
+		SetResult__NoTasks()
+		--ConfirmNewCommand()
+	
+	end
+	print("waitings: "..tostring(table_len(waitings)))
 	if TestAddon_MainFrame.confirm_flag:IsSet()==true then
 		TestAddon_MainFrame.confirm_flag:Unset()
-		if status_list["deferred_result"]==nil
+		if status_list["active_waitings"]==false and table_len(waitings)==0 then 
 			StartHandleCommand()
 		end
 		--ConfirmNewCommand()
+		
 	end
 	
-	if status_list["active_waitings"]==true and #waitings==0 then
+	if status_list["active_waitings"]==true and table_len(waitings)==0 then
 		if status_list["deferred_result"]~=nil then
-			
 			SetResult(ResultToString(status_list["deferred_result"]))
 			status_list["deferred_result"]=nil
 			status_list["active_waitings"]=false
-			status_list["new_command"]=false
 			
 		end
 	end
@@ -339,6 +346,14 @@ function onclick(self, elapsed)
     --print(WorldMapButton:GetName())
     --GetChildFrames(self,WorldMapButton)
     --print(WorldMapButton:GetName())
+end
+
+function table_len(t)
+	local size=0
+	for k,v in pairs(t) do
+		size=size+1
+	end
+	return size
 end
 
 
@@ -516,9 +531,10 @@ function TakeQuestMapScreenshots(quest_info)
 		end
 		ClickOnButtonFrame(quest_button)
 		Screenshot()
-		wait_with_info(1,CallObjectHandler,"wait1",quest_button, "OnEnter")
-		wait_with_info(2,Screenshot, "wait2")	
-		wait_with_info(2.5,CloseFrameIfOpened, "wait3", WorldMapFrame)
+		local wait_name="wait_"..tostring(quest_id)
+		wait_with_info(1,CallObjectHandler,wait_name.."_CallObjectHandler_"..tostring(GetTime()),quest_button, "OnEnter")
+		wait_with_info(2,Screenshot,wait_name.."Screenshot_"..tostring(GetTime()))	
+		wait_with_info(2.5,CloseFrameIfOpened, wait_name.."CloseFrameIfOpened_"..tostring(GetTime()), WorldMapFrame)
 		
 		return ReturnDeferred(ReturnSuccess())
 	end
@@ -526,6 +542,7 @@ end
 
 
 function wait_with_info(delay, func,wait_name,...)
+	print(wait_name)
 	waitings[wait_name]=wait_name
 	status_list["active_waitings"]=true
 	wait(delay,wait_function,func,wait_name, ...)
@@ -616,15 +633,6 @@ end
 function onupdate(self, elapsed)
     --print(command)
     ProcessCommand(self)
-	--if TestAddon_MainFrame.flags~=nil then
-	--print(TestAddon_MainFrame:GetLeft())
-	--print(TestAddon_MainFrame.flags.com_string.fontstring:GetText())
-	for k,v in pairs(waitings) do
-		--print(k)
-	end
-    --print(TestAddon_MainFrame.waitings)
-    --GetChildFrames(self,frm)
-    --TestAddon_MainFrame_xCoorNum:SetText()
     
 end
 

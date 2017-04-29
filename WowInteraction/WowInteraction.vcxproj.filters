@@ -102,6 +102,9 @@
     <ClInclude Include="OutComString.h">
       <Filter>Заголовочные файлы\AddonInteraction</Filter>
     </ClInclude>
+    <ClInclude Include="Flags.h">
+      <Filter>Заголовочные файлы\AddonInteraction</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -159,6 +162,9 @@
       <Filter>Файлы исходного кода\AddonInteraction</Filter>
     </ClCompile>
     <ClCompile Include="OutComString.cpp">
+      <Filter>Файлы исходного кода\AddonInteraction</Filter>
+    </ClCompile>
+    <ClCompile Include="Flags.cpp">
       <Filter>Файлы исходного кода\AddonInteraction</Filter>
     </ClCompile>
   </ItemGroup>

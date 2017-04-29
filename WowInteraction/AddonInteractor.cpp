@@ -39,8 +39,7 @@ unsigned AddonInteractor::result_string_address = 0;
 Region * AddonInteractor::result__fontstring = nullptr;
 
 OutComString AddonInteractor::command_string;
-OutComString AddonInteractor::flags_string;
-map<string, unsigned> AddonInteractor::flags;
+map<string,shared_ptr<Flag>> AddonInteractor::flags;
 
 
 unsigned AddonInteractor::Read(unsigned delay)
@@ -161,7 +160,7 @@ AddonInteractor::~AddonInteractor()
 
 bool AddonInteractor::InitCommunication()
 {
-	return (FindCommunicationComponents() && InitFlags());
+	return (FindCommunicationComponents());
 }
 
 bool AddonInteractor::FindCommunicationComponents()
@@ -171,8 +170,17 @@ bool AddonInteractor::FindCommunicationComponents()
 	auto regions = addon_main_frame->GetRegions();
 	bool command_string_found = false;
 	bool result_string_found = false;
-
-
+	try
+	{
+		for (auto & n : vector<string>({ "confirm", "clear" }))
+		{
+			flags.insert(pair<string, shared_ptr<Flag>>(n, make_shared<Flag>(n, regions)));
+		}
+	}
+	catch (FlagError & e)
+	{
+		throw_with_nested(AddonError("Cant init flags"));
+	}
 	try
 	{
 		for (auto region : regions)
@@ -183,10 +191,6 @@ bool AddonInteractor::FindCommunicationComponents()
 				if (region->GetName() == "MagickString")
 				{
 					command_string = OutComString(&*region, 1024);
-				}
-				if (region->GetName() == "FlagsString")
-				{
-					flags_string = OutComString(&*region, 2);
 				}
 
 				if (region->GetName() == "ResultString")
@@ -395,22 +399,25 @@ SelectedGossipQuestInfo AddonInteractor::GetSelectedQuest()
 	throw AddonError("\"GetSelectedQuest\" function failed. Wrong result string");
 }
 
-string AddonInteractor::ExecuteCommand(const string & cmd, bool manual_confirm)
+string AddonInteractor::ExecuteCommand(const string & cmd)
 {
 	string result;
 	WriteCommand(cmd);
-	if (!manual_confirm)
-		ConfirmCommandExecution();
-	if (manual_confirm)
-		result = move(WaitForResult(-1));
-	else
-		result = move(WaitForResult());
+	ConfirmCommandExecution();
+	result = move(WaitForResult());
+	ClearResult();
 	return result;
 }
 
 void AddonInteractor::ConfirmCommandExecution()
 {
-	GameManager::UseHotKey(wstring(L"!1"));
+	//GameManager::UseHotKey(wstring(L"!1"));
+	SetFlag(string("confirm"));
+}
+
+void AddonInteractor::ClearResult()
+{
+	SetFlag(string("clear"));
 }
 
 string AddonInteractor::WaitForResult(int attempts_count, int delay)
@@ -425,6 +432,7 @@ string AddonInteractor::WaitForResult(int attempts_count, int delay)
 		Sleep(delay);
 
 	}
+	cout << attempts_count << endl;
 	return result;
 }
 
@@ -434,26 +442,39 @@ void AddonInteractor::ExecuteLuaCode(const string & str)
 	WriteCommandString(code);
 }
 
-void AddonInteractor::SetFlag(string name)
+bool AddonInteractor::SetFlag(string & name)
 {
-	flags_string.WriteByte('1', flags[name]);
+
+	Flag * flag;
+	try
+	{
+		flag = &*flags.at(name);
+		flag->SetAndWaitUnset();
+	}
+	catch (out_of_range & e)
+	{ 
+		throw_with_nested(AddonError("SetFlag function: Wrong flag name"));
+	}
+	catch (FlagError & e)
+	{
+		throw_with_nested(AddonError("SetFlag function: reached wait limit"));
+	}
 }
 
-void AddonInteractor::UnsetFlags(string name)
+void AddonInteractor::UnsetFlags(string & name)
 {
-	flags_string.WriteByte('0', flags[name]);
+	//flags_string.WriteByte('0', flags[name]);
 }
 
 bool AddonInteractor::InitFlags()
 {
-	flags.insert(pair<string, unsigned>("confirm", 0));
-	flags.insert(pair<string, unsigned>("clear", 1));
-	return true;
+	return false;
+	
 }
 
 bool AddonInteractor::TakeQuestMapScreenshots(int quest_id)
 {
-	string result=move(AddonInteractor::ExecuteCommand("TakeQuestMapScreenshots "+to_string(quest_id),true));
+	string result=move(AddonInteractor::ExecuteCommand("TakeQuestMapScreenshots "+to_string(quest_id)));
 	return false;
 }
 
