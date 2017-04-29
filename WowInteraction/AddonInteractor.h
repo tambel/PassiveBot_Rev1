@@ -82,6 +82,7 @@ class AddonInteractor
 	static const unsigned flags_count = 2;
 	static unsigned result_string_address;
 	static Region * result__fontstring;
+	static map<string, char> flags;
 
 	unsigned Read(unsigned delay);
 	static unsigned ReadByProgressStatus(unsigned delay=100);
@@ -97,8 +98,8 @@ public:
 	AddonInteractor();
 	~AddonInteractor();
 	static bool Inject2(bool manual_confirm=false);
-	static bool Inject(bool manual_confirm = false);
-	static bool Inject_FindString();
+	static bool Inject3(bool manual_confirm = false);
+	static bool InitCommunication();
 	static bool Logout();
 	static wstring GetPlayerName();
 	static vector<wstring> WaitForEvents(vector<wstring> & event_names, bool infinite=false);
@@ -122,6 +123,9 @@ public:
 	static void WriteCommand(const string & cmd);
 
 	static void ExecuteLuaCode(const string &str);
+
+	static void InitFlags();
+	static void SetFlag();
 
 
 	//high level tasks

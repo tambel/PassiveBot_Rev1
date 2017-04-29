@@ -220,17 +220,12 @@ bool AddonInteractor::Inject2(bool manual_confirm)
 	return false;
 }
 
-bool AddonInteractor::Inject(bool manual_confirm)
+bool AddonInteractor::Inject3(bool manual_confirm)
 {
-	if (!Inject_FindString())
-	{
-		return false;
-	}
-	Sleep(500);
-	return true;
+	
 }
 
-bool AddonInteractor::Inject_FindString()
+bool AddonInteractor::InitCommunication()
 {
 	FrameManager::EnumAllFrames();
 	Frame *addon_main_frame = FrameManager::FindFrameByName("TestAddon_MainFrame");
@@ -265,7 +260,12 @@ bool AddonInteractor::Inject_FindString()
 
 		}
 	}
+
+	InitFlags();
 	return (result_string_found && command_string_found);
+
+
+	
 }
 
 bool AddonInteractor::Logout()
@@ -489,6 +489,13 @@ void AddonInteractor::ExecuteLuaCode(const string & str)
 {
 	string code = str;
 	WriteCommandString(code);
+}
+
+void AddonInteractor::InitFlags()
+{
+	map<string, char> flags;
+	flags.insert(pair<string, char>("confirm", 0));
+	flags.insert(pair<string, char>("clear", 1));
 }
 
 bool AddonInteractor::TakeQuestMapScreenshots(int quest_id)
