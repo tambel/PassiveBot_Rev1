@@ -166,7 +166,6 @@ end
 function onload(self)
 
 	TestAddon_MainFrame.flags=Flags.Create(nil,nil,{confirm=1, clear=2})
-	print(TestAddon_MainFrame.flags:GetFlag("clear"))
 	SetResult__NoTasks()
 	TestAddon_MainFrame.command_string=OutComString.Create("qwqwe",MagickString, 1024)
 	--TestAddon_MainFrame.flads_string=OutComString.Create("qwqwe",MagickString, 1024)
@@ -223,6 +222,18 @@ function ProcessCommand(self)
 			
 		end
 	end
+	
+	local flags=TestAddon_MainFrame.flags:Check()
+	if flags~= nil then
+		if #flags~=1 then
+			SetResult("MoreThanOneFlag")
+		end
+		for k,v in pairs(flags) do
+			print(v)
+		end
+		print(TestAddon_MainFrame.flags.com_string.fontstring:GetText())
+	end
+	
 end
 
 --------------
@@ -612,9 +623,8 @@ function onupdate(self, elapsed)
     --print(command)
     ProcessCommand(self)
 	--if TestAddon_MainFrame.flags~=nil then
-		print(TestAddon_MainFrame.flags.com_string.fontstring:GetText())
-	--end
 	--print(TestAddon_MainFrame:GetLeft())
+	--print(TestAddon_MainFrame.flags.com_string.fontstring:GetText())
 	for k,v in pairs(waitings) do
 		--print(k)
 	end

@@ -14,6 +14,7 @@ class OutComString
 	unsigned address;
 	unsigned size;
 	bool unformatted;
+	Region * region;
 public:
 	OutComString();
 	OutComString(Region * region, unsigned size,bool unformatted=false);

@@ -58,11 +58,14 @@ int BotInteractor::_Start()
 		GameInteractor::ManualLogout();	
 		return ExitCode::LoggedOut;
 	}
-	//AddonInteractor::SetFlag("confirm");
+	AddonInteractor::SetFlag("confirm");
 	AddonInteractor::SetFlag("clear");
-	Sleep(10000);
-	//AddonInteractor::UnsetFlags("confirm");
-	AddonInteractor::UnsetFlags("clear");
+	Sleep(10);
+	AddonInteractor::SetFlag("confirm");
+	AddonInteractor::SetFlag("clear");
+	Sleep(10);
+	AddonInteractor::SetFlag("confirm");
+	AddonInteractor::SetFlag("clear");
 	Sleep(10000);
 	//AddonInteractor::TakeQuestMapScreenshots(14456);
 	//AddonInteractor::ExecuteCommand("test 'tambel' 12", true);

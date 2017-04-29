@@ -8,6 +8,7 @@ OutComString::OutComString()
 
 OutComString::OutComString(Region * region, unsigned size, bool unformatted)
 {
+	this->region = region;
 	this->unformatted = unformatted;
 	address = region->GetTextAddress();//Process::Read<unsigned>(region->GetBase() + WowOffsets2::FrameManager2::FontStringRegionText);
 	this->size = size;
@@ -35,6 +36,7 @@ OutComString::~OutComString()
 
 void OutComString::Write(const string & str)
 {
+	address = region->GetTextAddress();//Process::Read<unsigned>(region->GetBase() + WowOffsets2::FrameManager2::FontStringRegionText);
 	if (unformatted)
 	{
 		if (str.length()<=size)
@@ -65,6 +67,7 @@ void OutComString::Write(const string & str)
 
 void OutComString::WriteByte(char value,unsigned index)
 {
+	address = region->GetTextAddress();
 	if (index < size)
 	{
 		Process::Write<char>(value, address + index);
