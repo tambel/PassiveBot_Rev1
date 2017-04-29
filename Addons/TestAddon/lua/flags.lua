@@ -1,8 +1,32 @@
 Flags = {}
 Flags.__index = Flags
 
+Flag = {}
+Flag.__index = Flag
 
-function Flags:Create(fontstring, flags)
+
+function Flag:Create(name)
+	local obj={}
+	setmetatable(obj,Flag)
+	local fs=TestAddon_MainFrame:CreateFontString(name.."flag_string","OVERLAY");
+	fs:Hide()
+	fs:SetFont("Fonts\\FRIZQT__.TTF", 15)
+	fs:SetText("0")
+	obj.name=name
+	obj.fs=fs
+	return obj
+end
+
+function Flag:IsSet()
+	return  self.fs:GetText()=="0"
+end
+
+function Flag:Unset()
+	self.fs:SetText("0")
+end
+
+
+function Flags:Create(flags)
 	if fontstring==nil then
 		fontstring=TestAddon_MainFrame:CreateFontString("FlagsString","OVERLAY");
 		fontstring:SetFont("Fonts\\FRIZQT__.TTF", 15)

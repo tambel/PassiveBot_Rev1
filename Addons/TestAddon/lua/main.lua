@@ -28,6 +28,7 @@ FlagsString.__index = FlagsString
 
 status_list={}
 status_list["string_injected"]=false
+status_list["in_process"]=false
 status_list["new_command"]=false
 status_list["active_waitings"]=false
 status_list["deferred_result"]=nil
@@ -165,7 +166,7 @@ end
 
 function onload(self)
 
-	TestAddon_MainFrame.flags=Flags.Create(nil,nil,{confirm=1, clear=2})
+	TestAddon_MainFrame.confirm_flag=Flag.Create("confirm")
 	SetResult__NoTasks()
 	TestAddon_MainFrame.command_string=OutComString.Create("qwqwe",MagickString, 1024)
 	--TestAddon_MainFrame.flads_string=OutComString.Create("qwqwe",MagickString, 1024)
@@ -208,9 +209,12 @@ function ProcessCommand(self)
 	
     end
 	
-	if status_list["new_command"]==true then
-		StartHandleCommand()
-		status_list["new_command"]=false
+	if TestAddon_MainFrame.confirm_flag:IsSet()==true then
+		TestAddon_MainFrame.confirm_flag:Unset()
+		if status_list["deferred_result"]==nil
+			StartHandleCommand()
+		end
+		--ConfirmNewCommand()
 	end
 	
 	if status_list["active_waitings"]==true and #waitings==0 then
@@ -219,19 +223,9 @@ function ProcessCommand(self)
 			SetResult(ResultToString(status_list["deferred_result"]))
 			status_list["deferred_result"]=nil
 			status_list["active_waitings"]=false
+			status_list["new_command"]=false
 			
 		end
-	end
-	
-	local flags=TestAddon_MainFrame.flags:Check()
-	if flags~= nil then
-		if #flags~=1 then
-			SetResult("MoreThanOneFlag")
-		end
-		for k,v in pairs(flags) do
-			print(v)
-		end
-		print(TestAddon_MainFrame.flags.com_string.fontstring:GetText())
 	end
 	
 end
