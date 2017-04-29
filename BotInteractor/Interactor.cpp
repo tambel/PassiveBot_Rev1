@@ -51,13 +51,14 @@ int BotInteractor::_Start()
 
 	Player * player = ObjectManager::GetPlayer();
 	Sleep(5000);
-	
+
+
 	if (!AddonInteractor::Inject(true))
 	{
 		GameInteractor::ManualLogout();	
 		return ExitCode::LoggedOut;
 	}
-	AddonInteractor::ExecuteCommand("TakeQuestMapScreenshots 14456",true);
+	AddonInteractor::TakeQuestMapScreenshots(14456);
 	//AddonInteractor::ExecuteCommand("test 'tambel' 12", true);
 	Sleep(1000);
 	//init navigation

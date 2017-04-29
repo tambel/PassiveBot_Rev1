@@ -462,7 +462,7 @@ string AddonInteractor::ExecuteCommand(const string & cmd, bool manual_confirm)
 
 void AddonInteractor::ConfirmCommandExecution()
 {
-	GameManager::UseHotKey(wstring(L"{!1}"));
+	GameManager::UseHotKey(wstring(L"!1"));
 }
 
 string AddonInteractor::WaitForResult(int attempts_count, int delay)
@@ -484,6 +484,12 @@ void AddonInteractor::ExecuteLuaCode(const string & str)
 {
 	string code = str;
 	WriteCommandString(code);
+}
+
+bool AddonInteractor::TakeQuestMapScreenshots(int quest_id)
+{
+	string result=move(AddonInteractor::ExecuteCommand("TakeQuestMapScreenshots "+to_string(quest_id),true));
+	return false;
 }
 
 void AddonInteractor::WriteCommand(const string & cmd)

@@ -196,14 +196,14 @@ function ExecuteCommand(cmd_str)
 			params[k]=v:sub(2,plen-1)
 		end
 	end
-	result=_G[cmd](unpack(params))
-	return result
+	--result=_G[cmd](unpack(params))
+	--return result
+	return {_G[cmd](unpack(params))}
 end
 function HandleStringCommand(cmd)
-	result=ExecuteCommand(cmd)
-	if result~=nil then
-		SetResult(result)
-	end
+	status, description =ExecuteCommand(cmd)
+	result_string=tostring(status).." " ..tostring(description)
+	SetResult(result_string)
 end
 
 function test(name, id)
@@ -344,7 +344,22 @@ function wait(delay, func, ...)
 end
 
 
+function CheckAndOpenFrame(frame)
+	if frame:IsShown() ~=true then
+		frame:Show()
+	end
+end
+
+
+function CloseFrameIfOpened(frame)
+	if frame:IsShown() ==true then
+		frame:Hide()
+	end
+end
+
 function TakeQuestMapScreenshots(quest_info)
+
+	CheckAndOpenFrame(WorldMapFrame)
 	function get_quest_button_by_id(id)
 		for key, val in pairs(QuestScrollFrame.Contents.Titles) do
 			if val.questID==id then
@@ -356,6 +371,9 @@ function TakeQuestMapScreenshots(quest_info)
 	if type(quest_info)=="number" then
 		quest_id=quest_info
 		questLogIndex = GetQuestLogIndexByID(quest_id);
+		if questLogIndex==0 then
+			return false, "NoQuestInLog"
+		end
 		quest_button=get_quest_button_by_id(quest_id)
 		if quest_button==nil then
 			min_diff=99999
@@ -370,10 +388,12 @@ function TakeQuestMapScreenshots(quest_info)
 			ClickOnButtonFrame(closest_header)
 			quest_button=get_quest_button_by_id(quest_id)
 		end
+		if que
 		ClickOnButtonFrame(quest_button)
 		Screenshot()
 		wait_with_info(1,CallObjectHandler,"wait1",quest_button, "OnEnter")
 		wait_with_info(2,Screenshot, "wait2")	
+		wait_with_info(2.5,CloseFrameIfOpened, "wait3", WorldMapFrame)	
 	end
 end
 

@@ -116,8 +116,14 @@ public:
 	static void ConfirmCommandExecution();
 	static string WaitForResult(int attempts_count = 10, int delay = 500);
 
-	static void ExecuteLuaCode(const string &str);
+	
 	static void WriteCommand(const string & cmd);
+
+	static void ExecuteLuaCode(const string &str);
+
+
+	//high level tasks
+	static bool TakeQuestMapScreenshots(int quest_id);
 
 
 	

@@ -1,6 +1,7 @@
 import os
 import shutil
 
+
 source_dir="D:\Bot\Projects\PassiveBot\Addons"
 
 destination_dir="D:\Bot\World of Warcraft\Interface\AddOns"
