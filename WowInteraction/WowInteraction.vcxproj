@@ -131,6 +131,7 @@
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Offsets.h" />
     <ClInclude Include="Offsets2.h" />
+    <ClInclude Include="OutComString.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Quest.h" />
     <ClInclude Include="QuestManager.h" />
@@ -153,6 +154,7 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ObjectiveArea.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
+    <ClCompile Include="OutComString.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Quest.cpp" />
     <ClCompile Include="QuestManager.cpp" />

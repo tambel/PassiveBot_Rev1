@@ -53,12 +53,18 @@ int BotInteractor::_Start()
 	Sleep(5000);
 
 
-	if (!AddonInteractor::Inject(true))
+	if (!AddonInteractor::InitCommunication())
 	{
 		GameInteractor::ManualLogout();	
 		return ExitCode::LoggedOut;
 	}
-	AddonInteractor::TakeQuestMapScreenshots(14456);
+	//AddonInteractor::SetFlag("confirm");
+	AddonInteractor::SetFlag("clear");
+	Sleep(10000);
+	//AddonInteractor::UnsetFlags("confirm");
+	AddonInteractor::UnsetFlags("clear");
+	Sleep(10000);
+	//AddonInteractor::TakeQuestMapScreenshots(14456);
 	//AddonInteractor::ExecuteCommand("test 'tambel' 12", true);
 	Sleep(1000);
 	//init navigation

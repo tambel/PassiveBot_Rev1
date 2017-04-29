@@ -22,6 +22,12 @@
     <Filter Include="Файлы исходного кода\Quest">
       <UniqueIdentifier>{f356a694-9895-46da-b73e-28f730de0089}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Заголовочные файлы\AddonInteraction">
+      <UniqueIdentifier>{64e55b9f-ef00-48da-81b8-b0f15b876390}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\AddonInteraction">
+      <UniqueIdentifier>{950133f1-de6d-4629-aa35-88678ec62e99}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -91,7 +97,10 @@
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="AddonInteractor.h">
-      <Filter>Заголовочные файлы</Filter>
+      <Filter>Заголовочные файлы\AddonInteraction</Filter>
+    </ClInclude>
+    <ClInclude Include="OutComString.h">
+      <Filter>Заголовочные файлы\AddonInteraction</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -147,7 +156,10 @@
       <Filter>Файлы исходного кода\Quest</Filter>
     </ClCompile>
     <ClCompile Include="AddonInteractor.cpp">
-      <Filter>Файлы исходного кода</Filter>
+      <Filter>Файлы исходного кода\AddonInteraction</Filter>
+    </ClCompile>
+    <ClCompile Include="OutComString.cpp">
+      <Filter>Файлы исходного кода\AddonInteraction</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

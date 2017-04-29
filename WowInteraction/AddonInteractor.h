@@ -2,6 +2,8 @@
 #include "Tools\Tools.h"
 #include "FrameManager.h"
 #include "GameManager.h"
+#include "OutComString.h"
+#include <map>
 
 
 
@@ -82,7 +84,9 @@ class AddonInteractor
 	static const unsigned flags_count = 2;
 	static unsigned result_string_address;
 	static Region * result__fontstring;
-	static map<string, char> flags;
+	static map<string, unsigned> flags;
+	static OutComString command_string;
+	static OutComString flags_string;
 
 	unsigned Read(unsigned delay);
 	static unsigned ReadByProgressStatus(unsigned delay=100);
@@ -97,9 +101,9 @@ class AddonInteractor
 public:
 	AddonInteractor();
 	~AddonInteractor();
-	static bool Inject2(bool manual_confirm=false);
-	static bool Inject3(bool manual_confirm = false);
 	static bool InitCommunication();
+	static bool FindCommunicationComponents();
+	static bool InitFlags();
 	static bool Logout();
 	static wstring GetPlayerName();
 	static vector<wstring> WaitForEvents(vector<wstring> & event_names, bool infinite=false);
@@ -124,8 +128,9 @@ public:
 
 	static void ExecuteLuaCode(const string &str);
 
-	static void InitFlags();
-	static void SetFlag();
+	
+	static void SetFlag(string name);
+	static void UnsetFlags(string name);
 
 
 	//high level tasks

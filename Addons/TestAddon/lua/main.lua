@@ -611,6 +611,9 @@ end
 function onupdate(self, elapsed)
     --print(command)
     ProcessCommand(self)
+	if TestAddon_MainFrame.flags~=nil then
+		print(TestAddon_MainFrame.flags.com_string.fontstring:GetText())
+	end
 	--print(TestAddon_MainFrame:GetLeft())
 	for k,v in pairs(waitings) do
 		--print(k)

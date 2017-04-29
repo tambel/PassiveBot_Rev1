@@ -38,6 +38,10 @@ unsigned AddonInteractor::command_string_address = 0;
 unsigned AddonInteractor::result_string_address = 0;
 Region * AddonInteractor::result__fontstring = nullptr;
 
+OutComString AddonInteractor::command_string;
+OutComString AddonInteractor::flags_string;
+map<string, unsigned> AddonInteractor::flags;
+
 
 unsigned AddonInteractor::Read(unsigned delay)
 {
@@ -154,78 +158,13 @@ AddonInteractor::AddonInteractor()
 AddonInteractor::~AddonInteractor()
 {
 }
-bool AddonInteractor::Inject2(bool manual_confirm)
-{
-	/*
- int attempts = 3;
- Frame * button;
-	while (attempts && !button)
-	{
-		button = FrameManager::FindFrameByName("MagickButton", true);
-		attempts--;
-	}
-	if (!button)
-		return false;
-	if (!manual_confirm)
-		button->MoveMouseToFrameAndClick(100);
-	else
-		cout << "Waiting for manual confirm" << endl;
-
-	attempts = 3;
-	while (attempts && (!status_address || !result_address || !command_address || !event_address))
-	{
-		Sleep(1000);
-		for (auto f : found)
-		{
-			if (Process::Read<double>(f) == STATUS_LINK_ADDRESS && !status_address)
-			{
-				status_address = f;
-			}
-			if (Process::Read<double>(f) == RESULT_LINK_ADDRESS && !result_address)
-			{
-				result_address = f;
-			}
-			if (Process::Read<double>(f) == COMMAND_LINK_ADDRESS && !command_address)
-			{
-				command_address = f;
-			}
-			if (Process::Read<double>(f) == EVENT_LINK_ADDRESS && !event_address)
-			{
-				event_address = f;
-			}
-
-		}
-		if (!manual_confirm)
-			attempts--;
-	}
-
-	if (status_address && result_address && command_address && event_address)
-	{
-		try
-		{
-			
-			ExecuteRegularCommand(Command::INJECTED);
-			return true;
-		}
-		catch (AddonError & e)
-		{
-			throw_with_nested(AddonError("Cant inject to addon. \"INJECTED\" command execution failed."));
-		}
-	}
-	else
-	{
-
-	}
-	*/
-	return false;
-}
-
-bool AddonInteractor::Inject3(bool manual_confirm)
-{
-	
-}
 
 bool AddonInteractor::InitCommunication()
+{
+	return (FindCommunicationComponents() && InitFlags());
+}
+
+bool AddonInteractor::FindCommunicationComponents()
 {
 	FrameManager::EnumAllFrames();
 	Frame *addon_main_frame = FrameManager::FindFrameByName("TestAddon_MainFrame");
@@ -233,39 +172,43 @@ bool AddonInteractor::InitCommunication()
 	bool command_string_found = false;
 	bool result_string_found = false;
 
-	for (auto region : regions)
+
+	try
 	{
-		if (region->GetType() == RegionType::FONT_STRING && region->GetName() == "MagickString" && !command_string_found)
+		for (auto region : regions)
 		{
-			command_string_address = region->GetTextAddress();//Process::Read<unsigned>(region->GetBase() + WowOffsets2::FrameManager2::FontStringRegionText);
-			if (command_string_address)
+
+			if (region->GetType() == RegionType::FONT_STRING)
 			{
-				string str = Process::ReadASCII(command_string_address, 0);
-				if (str.length() == command_string_size)
+				if (region->GetName() == "MagickString")
 				{
-					command_string_found = true;
+					command_string = OutComString(&*region, 1024);
+				}
+				if (region->GetName() == "FlagsString")
+				{
+					flags_string = OutComString(&*region, 2);
+				}
+
+				if (region->GetName() == "ResultString")
+				{
+
+					result__fontstring = region.get();
+					//result_string_address = region->GetTextAddress();//Process::Read<unsigned>(region->GetBase() + WowOffsets2::FrameManager2::FontStringRegionText);
+					if (result__fontstring)
+					{
+						result_string_found = true;
+					}
+
 				}
 			}
-			
-		}
-		if (region->GetType() == RegionType::FONT_STRING && region->GetName() == "ResultString" &&  !result_string_found)
-		{
-			
-			result__fontstring = region.get();
-			//result_string_address = region->GetTextAddress();//Process::Read<unsigned>(region->GetBase() + WowOffsets2::FrameManager2::FontStringRegionText);
-			if (result__fontstring)
-			{
-				result_string_found = true;
-			}
-
 		}
 	}
-
-	InitFlags();
-	return (result_string_found && command_string_found);
-
-
+	catch (ComStringInitError & e)
+	{
+		throw_with_nested(AddonError("\"FindCommunicationComponents\" function failed. Cant initialize some fontstrings"));
+	}
 	
+	return true;
 }
 
 bool AddonInteractor::Logout()
@@ -491,11 +434,21 @@ void AddonInteractor::ExecuteLuaCode(const string & str)
 	WriteCommandString(code);
 }
 
-void AddonInteractor::InitFlags()
+void AddonInteractor::SetFlag(string name)
 {
-	map<string, char> flags;
-	flags.insert(pair<string, char>("confirm", 0));
-	flags.insert(pair<string, char>("clear", 1));
+	flags_string.WriteByte('1', flags[name]);
+}
+
+void AddonInteractor::UnsetFlags(string name)
+{
+	flags_string.WriteByte('0', flags[name]);
+}
+
+bool AddonInteractor::InitFlags()
+{
+	flags.insert(pair<string, unsigned>("confirm", 0));
+	flags.insert(pair<string, unsigned>("clear", 1));
+	return true;
 }
 
 bool AddonInteractor::TakeQuestMapScreenshots(int quest_id)
@@ -506,5 +459,6 @@ bool AddonInteractor::TakeQuestMapScreenshots(int quest_id)
 
 void AddonInteractor::WriteCommand(const string & cmd)
 {
-	WriteCommandString(cmd);
+	//WriteCommandString(cmd);
+	command_string.Write(cmd);
 }
