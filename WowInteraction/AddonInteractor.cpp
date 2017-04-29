@@ -237,6 +237,7 @@ bool AddonInteractor::Inject_FindString()
 	auto regions = addon_main_frame->GetRegions();
 	bool command_string_found = false;
 	bool result_string_found = false;
+
 	for (auto region : regions)
 	{
 		if (region->GetType() == RegionType::FONT_STRING && region->GetName() == "MagickString" && !command_string_found)
@@ -254,9 +255,10 @@ bool AddonInteractor::Inject_FindString()
 		}
 		if (region->GetType() == RegionType::FONT_STRING && region->GetName() == "ResultString" &&  !result_string_found)
 		{
+			
 			result__fontstring = region.get();
-			result_string_address = region->GetTextAddress();//Process::Read<unsigned>(region->GetBase() + WowOffsets2::FrameManager2::FontStringRegionText);
-			if (result_string_address)
+			//result_string_address = region->GetTextAddress();//Process::Read<unsigned>(region->GetBase() + WowOffsets2::FrameManager2::FontStringRegionText);
+			if (result__fontstring)
 			{
 				result_string_found = true;
 			}

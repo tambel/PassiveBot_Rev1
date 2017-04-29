@@ -3,5 +3,4 @@
 ## Notes: Show coordinates, azimyth and pitch
 ## Version: 0.1
 main.xml
-lua/cli.lua
 lua/main.lua

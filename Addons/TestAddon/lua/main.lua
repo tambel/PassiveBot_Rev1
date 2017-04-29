@@ -15,8 +15,16 @@ CLEAR_TRIGGERED_EVENTS=100
 EVENTS_FOUND=101
 WaitingForEvent_GOSSIP_SHOW =100
 WaitingForEvent_QUEST_DETAIL = 102
-
 local buffer=""
+
+
+---Class names declaration----
+OutComString = {}
+OutComString.__index = OutComString
+
+FlagsString = {}
+FlagsString.__index = FlagsString
+------------------------------
 
 status_list={}
 status_list["string_injected"]=false
@@ -61,6 +69,73 @@ end
 
 -----initialization-------------
 
+function Init()
+	--OutComString = {}
+	--OutComString.__index = OutComString
+end
+
+
+---OutComString---------------------------------
+function OutComString:Create(fontstring,length)
+
+	local obj = {}  
+	initial_str=""
+	for i=1,length do 
+		initial_str=initial_str.."B" 
+	end
+	setmetatable(obj,OutComString)   
+	obj.fontstring=fontstring
+	obj.fontstring:SetText(initial_str) 
+	obj.fontstring:Hide()
+	obj.length=length
+	return obj
+end
+
+function OutComString:Read()
+	local function _Read ()
+		local str=self.fontstring:GetText()
+		if str:len()~=self.length then
+			return nil
+		end
+		local i=1
+		while (str:sub(i,i)~=";" and i<=self.length) do
+			i=i+1
+		end
+		local string_start=i
+		if i>self.length then
+			return nil
+		end
+		local string_length=tonumber(str:sub(1,string_start-1))
+		if string_length==nil then
+			return nil
+		end
+		local string_end=string_start+string_length
+		if string_end>self.length then
+			return nil
+		end
+		if string_end+3>self.length then
+			return nil
+		end
+		local string_terminator=str:sub(string_end+1,string_end+3)
+		if string_terminator~="[!]" then
+			return nil
+		end
+		local real_string=str:sub(string_start+1,string_end)
+		if real_string:len() ~=string_length then
+			return nil
+		end
+		return real_string
+	end
+	local result=_Read()
+	if result==nil then 
+		return "WrongStringFromOutside"
+	end
+	return result
+		
+end
+-----------------------------------------------
+
+
 function InitStrings()
 	buffer_start="BASSIVEPOTBUFFERSTART"
 	for i=1,command_string_max_length-buffer_start:len() do 
@@ -86,10 +161,9 @@ end
 --------------------------------
 
 function onload(self)
-	
-	InitStrings()
-
-	
+	SetResult__NoTasks()
+	TestAddon_MainFrame.command_string=OutComString.Create("qwqwe",MagickString, 1024)
+	TestAddon_MainFrame.flads_string=OutComString.Create("qwqwe",MagickString, 1024)
     print(GetAddOnMetadata("TestAddon", "Title") .. " v" .. GetAddOnMetadata("TestAddon", "Version") .. " loaded");
     TestAddon_MainFrame:RegisterEvent("GOSSIP_SHOW")
     TestAddon_MainFrame:RegisterEvent("QUEST_DETAIL")
@@ -188,7 +262,12 @@ end
 
 function StartHandleCommand()
 	SetResult__InProcess()
-	HandleStringCommand(ReadComString())
+	local raw_string=TestAddon_MainFrame.command_string:Read()
+	if raw_string~="WrongStringFromOutside" then
+		HandleStringCommand(raw_string)
+	else
+		SetResult(raw_string)
+	end
 end
 
 function ExecuteCommand(cmd_str)
@@ -526,7 +605,7 @@ end
 function onupdate(self, elapsed)
     --print(command)
     ProcessCommand(self)
-	
+	--print(TestAddon_MainFrame:GetLeft())
 	for k,v in pairs(waitings) do
 		--print(k)
 	end
