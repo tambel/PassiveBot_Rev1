@@ -189,7 +189,6 @@ end
 function StartHandleCommand()
 	SetResult__InProcess()
 	HandleStringCommand(ReadComString())
-	print("StartHandleCommand stop")
 end
 
 function ExecuteCommand(cmd_str)
@@ -203,8 +202,6 @@ function ExecuteCommand(cmd_str)
 			params[k]=v:sub(2,plen-1)
 		end
 	end
-	--result=_G[cmd](unpack(params))
-	--return result
 	return _G[cmd](unpack(params))
 end
 
@@ -212,11 +209,9 @@ function ResultToString(result)
 	local rs=""
 	if result~=nil then
 		for k,v in pairs(result) do
-			--print(v)
 			rs=rs.." "..tostring(v)
 		end
 	end
-	print("totringgg")
 	return rs
 end
 
@@ -379,10 +374,21 @@ function CloseFrameIfOpened(frame)
 	end
 end
 
+
+function ReturnFailure(description)
+	return {0, description}
+end
+
+function ReturnSuccess(description)
+	return {1, description}
+end
+
 function ReturnDeferred(result)
 	status_list["deferred_result"]=result
 	return "deferred"
 end
+
+
 
 function TakeQuestMapScreenshots(quest_info)
 
@@ -399,7 +405,7 @@ function TakeQuestMapScreenshots(quest_info)
 		quest_id=quest_info
 		questLogIndex = GetQuestLogIndexByID(quest_id);
 		if questLogIndex==0 then
-			return false, "NoQuestInLog"
+			return ReturnFailure("NoQuestInLog")
 		end
 		quest_button=get_quest_button_by_id(quest_id)
 		if quest_button==nil then
@@ -415,13 +421,16 @@ function TakeQuestMapScreenshots(quest_info)
 			ClickOnButtonFrame(closest_header)
 			quest_button=get_quest_button_by_id(quest_id)
 		end
+		if quest_button==nil then
+			return ReturnFailure("Unknown")
+		end
 		ClickOnButtonFrame(quest_button)
 		Screenshot()
 		wait_with_info(1,CallObjectHandler,"wait1",quest_button, "OnEnter")
 		wait_with_info(2,Screenshot, "wait2")	
 		wait_with_info(2.5,CloseFrameIfOpened, "wait3", WorldMapFrame)
 		
-		return ReturnDeferred({true, "OHUENNO"})
+		return ReturnDeferred(ReturnSuccess())
 	end
 end
 
