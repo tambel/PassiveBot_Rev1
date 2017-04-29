@@ -198,12 +198,14 @@ function ExecuteCommand(cmd_str)
 	end
 	--result=_G[cmd](unpack(params))
 	--return result
-	return {_G[cmd](unpack(params))}
+	return _G[cmd](unpack(params))
 end
 function HandleStringCommand(cmd)
 	status, description =ExecuteCommand(cmd)
-	result_string=tostring(status).." " ..tostring(description)
+	result_string=tostring(status)..":" ..tostring(description)
+	print("results: "..result_string)
 	SetResult(result_string)
+	print(ResultString:GetText())
 end
 
 function test(name, id)
@@ -388,12 +390,12 @@ function TakeQuestMapScreenshots(quest_info)
 			ClickOnButtonFrame(closest_header)
 			quest_button=get_quest_button_by_id(quest_id)
 		end
-		if que
 		ClickOnButtonFrame(quest_button)
 		Screenshot()
 		wait_with_info(1,CallObjectHandler,"wait1",quest_button, "OnEnter")
 		wait_with_info(2,Screenshot, "wait2")	
 		wait_with_info(2.5,CloseFrameIfOpened, "wait3", WorldMapFrame)	
+		return true, "OHUENNO"
 	end
 end
 
@@ -491,7 +493,7 @@ function onupdate(self, elapsed)
     ProcessCommand(self)
 	
 	for k,v in pairs(waitings) do
-		print(k)
+		--print(k)
 	end
     --print(TestAddon_MainFrame.waitings)
     --GetChildFrames(self,frm)
