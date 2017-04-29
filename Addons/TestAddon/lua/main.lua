@@ -165,11 +165,11 @@ end
 
 function onload(self)
 
-	f=Flags.Create(nil,ResultString,{confirm=1, clear=2})
-	print(f:GetFlag("clear"))
+	TestAddon_MainFrame.flags=Flags.Create(nil,nil,{confirm=1, clear=2})
+	print(TestAddon_MainFrame.flags:GetFlag("clear"))
 	SetResult__NoTasks()
 	TestAddon_MainFrame.command_string=OutComString.Create("qwqwe",MagickString, 1024)
-	TestAddon_MainFrame.flads_string=OutComString.Create("qwqwe",MagickString, 1024)
+	--TestAddon_MainFrame.flads_string=OutComString.Create("qwqwe",MagickString, 1024)
     print(GetAddOnMetadata("TestAddon", "Title") .. " v" .. GetAddOnMetadata("TestAddon", "Version") .. " loaded");
     TestAddon_MainFrame:RegisterEvent("GOSSIP_SHOW")
     TestAddon_MainFrame:RegisterEvent("QUEST_DETAIL")

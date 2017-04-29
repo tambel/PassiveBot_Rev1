@@ -79,6 +79,7 @@ class AddonInteractor
 	static unsigned event_address;
 	static unsigned command_string_address;
 	static const  unsigned command_string_size = 1024;
+	static const unsigned flags_count = 2;
 	static unsigned result_string_address;
 	static Region * result__fontstring;
 
