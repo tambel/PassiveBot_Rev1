@@ -216,7 +216,6 @@ function ProcessCommand(self)
 		--ConfirmNewCommand()
 	
 	end
-	print("waitings: "..tostring(table_len(waitings)))
 	if TestAddon_MainFrame.confirm_flag:IsSet()==true then
 		TestAddon_MainFrame.confirm_flag:Unset()
 		if status_list["active_waitings"]==false and table_len(waitings)==0 then 
@@ -480,6 +479,7 @@ function CloseFrameIfOpened(frame)
 end
 
 
+
 function ReturnFailure(description)
 	return {0, description}
 end
@@ -531,10 +531,10 @@ function TakeQuestMapScreenshots(quest_info)
 		end
 		ClickOnButtonFrame(quest_button)
 		Screenshot()
-		local wait_name="wait_"..tostring(quest_id)
+		local wait_name=tostring(quest_id)
 		wait_with_info(1,CallObjectHandler,wait_name.."_CallObjectHandler_"..tostring(GetTime()),quest_button, "OnEnter")
-		wait_with_info(2,Screenshot,wait_name.."Screenshot_"..tostring(GetTime()))	
-		wait_with_info(2.5,CloseFrameIfOpened, wait_name.."CloseFrameIfOpened_"..tostring(GetTime()), WorldMapFrame)
+		wait_with_info(2,Screenshot,wait_name.."_Screenshot_"..tostring(GetTime()))	
+		wait_with_info(2.5,CloseFrameIfOpened, wait_name.."_CloseFrameIfOpened_"..tostring(GetTime()), WorldMapFrame)
 		
 		return ReturnDeferred(ReturnSuccess())
 	end
@@ -542,7 +542,6 @@ end
 
 
 function wait_with_info(delay, func,wait_name,...)
-	print(wait_name)
 	waitings[wait_name]=wait_name
 	status_list["active_waitings"]=true
 	wait(delay,wait_function,func,wait_name, ...)

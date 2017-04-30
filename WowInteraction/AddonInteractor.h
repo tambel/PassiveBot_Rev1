@@ -123,7 +123,7 @@ public:
 	static string ExecuteCommand(const string & cmd);
 	static void ConfirmCommandExecution();
 	static void ClearResult();
-	static string WaitForResult(int attempts_count = 1000, int delay = 500);
+	static string WaitForResult(int attempts_count = 15, int delay = 500);
 
 	
 	static void WriteCommand(const string & cmd);
