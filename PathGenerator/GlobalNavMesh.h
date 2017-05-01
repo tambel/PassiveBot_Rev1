@@ -1,6 +1,8 @@
 #pragma once
 #include "WowWorldsData\WowWorldsData.h" 
 
+static const int NAVMESHSET_MAGIC = 'M' << 24 | 'S' << 16 | 'E' << 8 | 'T'; //'MSET';
+static const int NAVMESHSET_VERSION = 1;
 
 class CTX2 :public rcContext
 {
@@ -10,6 +12,20 @@ public:
 	{
 		cout << msg << endl;
 	}
+};
+
+struct NavMeshTileHeader
+{
+	dtTileRef tileRef;
+	int dataSize;
+};
+
+struct NavMeshSetHeader
+{
+	int magic;
+	int version;
+	int numTiles;
+	dtNavMeshParams params;
 };
 
 
@@ -42,7 +58,9 @@ public:
 	void InitConfig();
 	void Start(int x, int y);
 	void AddTile(Point2D<int> coordinates);
-	inline dtNavMesh * GetNavMesh() { return nav_mesh; }
+    dtNavMesh * GetNavMesh() { return nav_mesh; }
 	inline vector<rcPolyMesh*> & GetPolyMeshes() { return poly_meshes; }
+	bool Save();
+	bool Load();
 };
 

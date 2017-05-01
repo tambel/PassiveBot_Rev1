@@ -118,7 +118,14 @@ void GlobalNavMesh::AddTile(Point2D<int> coordinates)
 	m_tileBmax[0] = bmin[0] + (coordinates.X + 1)*tcs;
 	m_tileBmax[2] = bmin[2] + (coordinates.Y + 1)*tcs;
 	int dataSize = 0;
-	area->UpdateArea(LocationBase::Get("Kalimdor"),AbsPositionToBlockCoords(*reinterpret_cast<Vector3*>(m_tileBmin)), Point2DI(0, 0));
+	try
+	{
+		area->UpdateArea(LocationBase::Get("Kalimdor"), AbsPositionToBlockCoords(*reinterpret_cast<Vector3*>(m_tileBmin)), Point2DI(0, 0));
+	}
+	catch (EmptyAreaException & e)
+	{
+		return;
+	}
 	m_tileBmin[1] = bmin[1] + area->GetBoundingBox().up.y;
 	m_tileBmax[1] = bmax[1] + area->GetBoundingBox().down.y;
 
@@ -135,6 +142,111 @@ void GlobalNavMesh::AddTile(Point2D<int> coordinates)
 	}
 	
 }
+bool GlobalNavMesh::Save()
+{
+	const dtNavMesh * mesh =nav_mesh;
+	if (!mesh) return true;
+
+	FILE* fp = fopen("saved.bin", "wb");
+	if (!fp)
+		return true;
+
+	// Store header.
+	NavMeshSetHeader header;
+	header.magic = NAVMESHSET_MAGIC;
+	header.version = NAVMESHSET_VERSION;
+	header.numTiles = 0;
+	for (int i = 0; i < mesh->getMaxTiles(); ++i)
+	{
+		const dtMeshTile* tile = mesh->getTile(i);
+		if (!tile || !tile->header || !tile->dataSize) continue;
+		header.numTiles++;
+	}
+	memcpy(&header.params, nav_mesh->getParams(), sizeof(dtNavMeshParams));
+	fwrite(&header, sizeof(NavMeshSetHeader), 1, fp);
+
+	// Store tiles.
+	for (int i = 0; i < nav_mesh->getMaxTiles(); ++i)
+	{
+		const dtMeshTile* tile = mesh->getTile(i);
+		if (!tile || !tile->header || !tile->dataSize) continue;
+
+		NavMeshTileHeader tileHeader;
+		tileHeader.tileRef = nav_mesh->getTileRef(tile);
+		tileHeader.dataSize = tile->dataSize;
+		fwrite(&tileHeader, sizeof(tileHeader), 1, fp);
+
+		fwrite(tile->data, tile->dataSize, 1, fp);
+	}
+
+	fclose(fp);
+	return false;
+}
+
+bool GlobalNavMesh::Load()
+{
+	FILE* fp = fopen("saved.bin", "rb");
+	if (!fp) return 0;
+
+	// Read header.
+	NavMeshSetHeader header;
+	size_t readLen = fread(&header, sizeof(NavMeshSetHeader), 1, fp);
+	if (readLen != 1)
+	{
+		fclose(fp);
+		return 0;
+	}
+	if (header.magic != NAVMESHSET_MAGIC)
+	{
+		fclose(fp);
+		return 0;
+	}
+	if (header.version != NAVMESHSET_VERSION)
+	{
+		fclose(fp);
+		return 0;
+	}
+
+	nav_mesh = dtAllocNavMesh();
+	dtNavMesh* mesh = nav_mesh;// dtAllocNavMesh();
+	if (!mesh)
+	{
+		fclose(fp);
+		return 0;
+	}
+	dtStatus status = mesh->init(&header.params);
+	if (dtStatusFailed(status))
+	{
+		fclose(fp);
+		return 0;
+	}
+
+	// Read tiles.
+	for (int i = 0; i < header.numTiles; ++i)
+	{
+		NavMeshTileHeader tileHeader;
+		readLen = fread(&tileHeader, sizeof(tileHeader), 1, fp);
+		if (readLen != 1)
+			return 0;
+
+		if (!tileHeader.tileRef || !tileHeader.dataSize)
+			break;
+
+		unsigned char* data = (unsigned char*)dtAlloc(tileHeader.dataSize, DT_ALLOC_PERM);
+		if (!data) break;
+		memset(data, 0, tileHeader.dataSize);
+		readLen = fread(data, tileHeader.dataSize, 1, fp);
+		if (readLen != 1)
+			return 0;
+
+		mesh->addTile(data, tileHeader.dataSize, DT_TILE_FREE_DATA, tileHeader.tileRef, 0);
+	}
+
+	fclose(fp);
+	return true;
+}
+	
+
 void GlobalNavMesh::Cleanup()
 {
 	delete[] m_triareas;

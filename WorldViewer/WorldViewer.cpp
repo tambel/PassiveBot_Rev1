@@ -21,18 +21,44 @@ int main()
 
 	GlobalNavMesh gnm = GlobalNavMesh();
 	gnm.Start(0, 0);
-	gnm.AddTile(Point2DI(0, 1));
-	gnm.AddTile(Point2DI(1, 1));
-	gnm.AddTile(Point2DI(1, 3));
-	gnm.AddTile(Point2DI(2, 0));
-	gnm.AddTile(Point2DI(2, 1));
-	gnm.AddTile(Point2DI(2, 2));
-	gnm.AddTile(Point2DI(2, 3));
-	gnm.AddTile(Point2DI(36, 36));
-	gnm.AddTile(Point2DI(37, 36));
-	gnm.AddTile(Point2DI(38, 36));
-	gnm.AddTile(Point2DI(37, 37));
-	gnm.AddTile(Point2DI(38, 37));
+	for (int i = 35; i < 40;i++)
+		for (int j = 30; j < 38; j++)
+		{
+			cout << i << ": " << j << endl;
+			//gnm.AddTile(Point2DI(i, j));
+			
+		}
+
+	
+	
+	
+	gnm.AddTile(Point2DI(35, 31));
+	gnm.AddTile(Point2DI(35, 32));
+	gnm.AddTile(Point2DI(35, 33));
+	gnm.AddTile(Point2DI(35, 34));
+	gnm.AddTile(Point2DI(35, 35));
+	gnm.AddTile(Point2DI(36, 26));
+
+	
+	gnm.AddTile(Point2DI(36, 31));
+	gnm.AddTile(Point2DI(36, 32));
+	gnm.AddTile(Point2DI(36, 33));
+	gnm.AddTile(Point2DI(36, 34));
+	gnm.AddTile(Point2DI(36, 35));
+	
+	gnm.AddTile(Point2DI(37, 31));
+	gnm.AddTile(Point2DI(37, 32));
+	gnm.AddTile(Point2DI(37, 33));
+	gnm.AddTile(Point2DI(37, 34));
+	gnm.AddTile(Point2DI(37, 35));
+
+	gnm.AddTile(Point2DI(38, 31));
+	gnm.AddTile(Point2DI(38, 32));
+	gnm.AddTile(Point2DI(38, 33));
+	gnm.AddTile(Point2DI(38, 34));
+	gnm.AddTile(Point2DI(38, 35));
+
+	gnm.Load();
 
 	//LocalAreaNavMesh nm = LocalAreaNavMesh(LocationBase::Get("Kalimdor"), Point2DI(36, 34), Point2DI(7, 9));
 	//nm.Build();
@@ -43,6 +69,8 @@ int main()
 
 	//WorldViewer viewer = WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(0, 0), Point2DI(7, 9), 1);
 
+
+	
 	WorldViewer viewer = WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(35, 33), Point2DI(7, 9), 3);
 	
 	viewer.GetState()->AddNavMesh(gnm.GetPolyMeshes());

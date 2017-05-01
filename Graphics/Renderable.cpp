@@ -124,6 +124,7 @@ void Renderable::CreateScene(Ogre::SceneNode * parent, string & material, Ogre::
 	
 
 	manual_object->end();
+
 	parent->attachObject(manual_object);
 
 

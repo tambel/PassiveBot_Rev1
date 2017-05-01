@@ -1,7 +1,6 @@
 #pragma once
 #include "Renderable.h"
 
-
 using namespace Demo;
 
 class MapState : public TutorialGameState

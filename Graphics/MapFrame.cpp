@@ -5,6 +5,7 @@
 #include "OgreConfigFile.h"
 Ogre::CompositorWorkspace * MapFrame::setupCompositor()
 {
+	
 	Ogre::CompositorManager2 *compositorManager = mRoot->getCompositorManager2();
 	return compositorManager->addWorkspace(mSceneManager, mRenderWindow, mCamera,
 		"ShadowMapDebuggingWorkspace", true);

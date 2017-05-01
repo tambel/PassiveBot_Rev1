@@ -43,7 +43,7 @@ Area::~Area(void)
 
 void Area::Update(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {
-	format = AreaFormat::fChunk;
+	format = AreaFormat::fBlock;
 	ADTWorker::Clear();
 	this->location = location;
 	this->block_coordinates = block_coordinates;

@@ -14,7 +14,6 @@
 #include "GraphicsSystem.h"
 #include "CameraController.h"
 
-
 #include "MapFrame.h"
 #include "MapState.h"
 #include "Renderable.h"

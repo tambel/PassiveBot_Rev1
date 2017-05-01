@@ -23,15 +23,9 @@ void MapState::createScene01(void)
 {
 	//area->data_mutex.lock();
 	UpdateScene();
-	//AddPlayer(Doodad("D:\\Bot\\Extracted\\Character\\Tauren\\Male\\TaurenMale.M2", 0, Position(), 1024));
+	//CreateSceneTest();
+	//MeshRenderable().createStaticMesh(false,mGraphicsSystem->getRoot(), mGraphicsSystem->getSceneManager());
 
-	//createRecastPathLine(0);
-	//mCamera->setPosition(Vector3ToOgreVector(area->GetChunks()[0]->GetRealPosition()));
-	//Vector3 & pos = area->GetChunks()[0]->GetRealPosition();
-	//mCamera->setPosition(Ogre::Vector3(pos.x, pos.z, -pos.y));
-	//mCamera->setOrientation(Ogre::Quaternion(Ogre::Vector3(0, 0, 0), Ogre::Vector3(0, 0, 0), Ogre::Vector3(0, 0, 1)));
-	//mCamera->rotate(Ogre::Vector3(0, 0, 1), Ogre::Radian(Ogre::Degree(90)));
-	//area->data_mutex.unlock();
 	mCameraController = new CameraController(mGraphicsSystem, false);
 	
 	Ogre::Light *light = mGraphicsSystem->getSceneManager()->createLight();
@@ -49,8 +43,10 @@ void MapState::createScene01(void)
 	v = Ogre::Vector3(v.x, v.z, -v.y);
 
 	mGraphicsSystem->getCamera()->setPosition(v);
-	
-	
+	mGraphicsSystem->getCamera()->setFarClipDistance(0);
+	mGraphicsSystem->getCamera()->setCastShadows(false);
+	//mGraphicsSystem->getRoot()->getHlmsManager()->getDatablock("Terrain")->mShadowConstantBias=25.0;
+
 	TutorialGameState::createScene01();
 }
 
