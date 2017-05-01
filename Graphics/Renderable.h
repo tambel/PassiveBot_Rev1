@@ -1,6 +1,24 @@
 #pragma once
 #include "Utils.h"
 
+enum DrawNavMeshFlags
+{
+	DU_DRAWNAVMESH_OFFMESHCONS = 0x01,
+	DU_DRAWNAVMESH_CLOSEDLIST = 0x02,
+	DU_DRAWNAVMESH_COLOR_TILES = 0x04,
+};
+/*
+enum dtPolyTypes
+{
+	/// The polygon is a standard convex polygon that is part of the surface of the mesh.
+	DT_POLYTYPE_GROUND = 0,
+	/// The polygon is an off-mesh connection consisting of two vertices.
+	DT_POLYTYPE_OFFMESH_CONNECTION = 1,
+};
+*/
+
+
+
 class Renderable
 {
 protected:
@@ -45,10 +63,13 @@ public:
 class NavMeshRenderable : public Renderable
 {
 	vector<rcPolyMesh*> * meshes;
+	dtNavMesh * mesh;
 public:
 	NavMeshRenderable(NavMeshRenderable && other);
 	NavMeshRenderable(vector<rcPolyMesh*> & meshes);
+	NavMeshRenderable(dtNavMesh * mesh);
 	void CreateScene(Ogre::SceneNode * parent, string & material, Ogre::ColourValue & color = Ogre::ColourValue(1, 1, 0, 1));
+	void CreateScene2(Ogre::SceneNode * parent, string & material, Ogre::ColourValue & color = Ogre::ColourValue(1, 1, 0, 1));
 };
 
 
