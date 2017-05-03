@@ -55,8 +55,24 @@ void MapState::AddNavMesh(vector<rcPolyMesh*>& meshes)
 	navigation_rends.push_back(new NavMeshRenderable(meshes));
 }
 
+void MapState::AddNavMesh(dtNavMesh * mesh)
+{
+	navigation_rends.push_back(new NavMeshRenderable(mesh));
+}
+
+void MapState::AddLineStrip(vector<Vector3>& points)
+{
+	line_strip_rends.push_back(new LineStripRenderable(points));
+}
+
+
+
 void MapState::UpdateScene()
 {
+	Ogre::ColourValue color;
+	string material_name;
+	Ogre::SceneManager * mSceneMgr = mGraphicsSystem->getSceneManager();
+	
 	vector<Renderable> er;
 	int area_size = area->GetSize();
 	bool exist = 0;
@@ -112,9 +128,9 @@ void MapState::UpdateScene()
 		rends.back().CreateScene(mngr->getRootSceneNode(), material, color);
 	};
 
-	Ogre::SceneManager * mSceneMgr = mGraphicsSystem->getSceneManager();
-	Ogre::ColourValue color = Ogre::ColourValue(1, 1, 0, 1);
-	string material_name = "Terrain";
+	
+	 color = Ogre::ColourValue(1, 1, 0, 1);
+	 material_name = "Terrain";
 	for (auto &chunk : area->GetChunks())
 	{
 		if (chunk->GetCoordinates() == Point2DI(0, 0))
@@ -133,15 +149,17 @@ void MapState::UpdateScene()
 	material_name = "Doodad";
 	for (auto &doodad : area->GetDoodads())
 		add_if_not_exist(&*doodad, world_static_rends, mSceneMgr, material_name, color);
+	
 	material_name = "NavMesh";
+	
 	for (auto &rend : navigation_rends)
 	{
 		rend->CreateScene(mSceneMgr->getRootSceneNode(), material_name, color);
 	}
 
 
-	for (auto & nr : navigation_rends)
+	for (auto & sr : line_strip_rends)
 	{
-		nr->CreateScene(mSceneMgr->getRootSceneNode(), material_name, color);
+		sr->CreateScene(mSceneMgr->getRootSceneNode(), string("Strip"), color);
 	}
 }

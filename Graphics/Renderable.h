@@ -52,11 +52,14 @@ public:
 class LineStripRenderable : public Renderable
 {
 	Vector3 * points = nullptr;
+	vector<Vector3> * vpoints;
 	unsigned size = 0;
 public:
 	LineStripRenderable(LineStripRenderable && other);
 	LineStripRenderable(Vector3 * points, unsigned size);
-	virtual void CreateScene(Ogre::SceneNode * parent);
+	LineStripRenderable(vector<Vector3> & points);
+	virtual void CreateScene2(Ogre::SceneNode * parent);
+	void CreateScene(Ogre::SceneNode * parent, string & material, Ogre::ColourValue & color);
 };
 
 
@@ -68,6 +71,8 @@ public:
 	NavMeshRenderable(NavMeshRenderable && other);
 	NavMeshRenderable(vector<rcPolyMesh*> & meshes);
 	NavMeshRenderable(dtNavMesh * mesh);
+	void DrawNavMesh(const dtNavMesh& mesh, const dtNavMeshQuery* query, unsigned char flags, string & material);
+	void drawMeshTile(const dtNavMesh& mesh, const dtNavMeshQuery* query, const dtMeshTile* tile, unsigned char flags, string & material);
 	void CreateScene(Ogre::SceneNode * parent, string & material, Ogre::ColourValue & color = Ogre::ColourValue(1, 1, 0, 1));
 	void CreateScene2(Ogre::SceneNode * parent, string & material, Ogre::ColourValue & color = Ogre::ColourValue(1, 1, 0, 1));
 };

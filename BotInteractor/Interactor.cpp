@@ -60,7 +60,7 @@ int BotInteractor::_Start()
 	}
 	for (int i = 0; i < 10; i++)
 	{
-		AddonInteractor::TakeQuestMapScreenshots(14456);
+		//AddonInteractor::TakeQuestMapScreenshots(14456);
 		//Sleep(1000);
 	}
 	//AddonInteractor::ExecuteCommand("test 'tambel' 12", true);

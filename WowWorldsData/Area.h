@@ -109,8 +109,10 @@ public:
 	void InitMapObjects();
 	Vector3 GetCenter();
 
-#ifdef BOTDEV
+
 	void ToMesh();
+#ifdef BOTDEV
+	
 	void Rotate();
 	void Rotate90();
 #endif

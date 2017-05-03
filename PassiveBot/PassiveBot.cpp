@@ -20,7 +20,9 @@ int bot_activity()
 	
 	while (1)
 	{
-		Unit * p = reinterpret_cast<Unit*>(ObjectManager::GetTargetObject());
+		player->DumpPosition();
+		Sleep(100);
+		//Unit * p = reinterpret_cast<Unit*>(ObjectManager::GetTargetObject());
 		//if (p)
 			//wcout<<p->GetName()<<endl;
 		//BotInteractor::GoToPoint(*p);

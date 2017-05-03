@@ -23,6 +23,7 @@ public:
 	WorldViewer & operator=(WorldViewer && other);
 	inline MapFrame * GetFrame() { return frame; }
 	inline MapState * GetState() { return state; }
+	inline Area & GetArea() { return area; }
 
 	//inline MutableArea & GetArea() { return area; }
 

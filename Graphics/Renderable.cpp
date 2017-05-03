@@ -151,6 +151,7 @@ void Renderable::CreateScene(Ogre::SceneNode * parent, string & material, Ogre::
 
 LineStripRenderable::LineStripRenderable(LineStripRenderable && other)
 {
+	this->vpoints = other.vpoints;
 	this->points = other.points;
 	this->size = other.size;
 }
@@ -161,7 +162,12 @@ LineStripRenderable::LineStripRenderable(Vector3 * points, unsigned size)
 	this->size = size;
 }
 
-void LineStripRenderable::CreateScene(Ogre::SceneNode * parent)
+LineStripRenderable::LineStripRenderable(vector<Vector3>& points)
+{
+	vpoints = &points;
+}
+
+void LineStripRenderable::CreateScene2(Ogre::SceneNode * parent)
 {
 	//string name = to_string(GetID());
 	Ogre::SceneNode * scene = parent->createChildSceneNode();
@@ -177,10 +183,35 @@ void LineStripRenderable::CreateScene(Ogre::SceneNode * parent)
 	scene->attachObject(m_pRecastMOPath);
 }
 
+void LineStripRenderable::CreateScene(Ogre::SceneNode * parent, string & material, Ogre::ColourValue & color)
+{
+	vector<Vector3> & points = *vpoints;
+	//string name = to_string(GetID());
+	Ogre::SceneNode * scene = parent->createChildSceneNode();
+	Ogre::ManualObject* m_pRecastMOPath = scene->getCreator()->createManualObject();
+	m_pRecastMOPath->begin(material, Ogre::v1::RenderOperation::OT_LINE_STRIP);
+	//for (int i = 0; i < size; i++)
+	int count = 0;
+	for (int i = 0; i < vpoints->size()-1; i+=2)
+	{
+
+		m_pRecastMOPath->position(points[i].x, points[i].y+5, -points[i].z);
+		m_pRecastMOPath->colour(0,0,0,255);
+		m_pRecastMOPath->position(points[i + 1].x, points[i + 1].y + 5, -points[i + 1].z);
+		m_pRecastMOPath->colour(0, 0, 0, 255);
+		m_pRecastMOPath->index(i);
+		m_pRecastMOPath->index(i+1);
+	}
+	m_pRecastMOPath->end();
+	scene->attachObject(m_pRecastMOPath);
+}
+
 NavMeshRenderable::NavMeshRenderable(NavMeshRenderable && other)
 {
 	meshes = other.meshes;
 	other.meshes = nullptr;
+	mesh = other.mesh;
+	other.mesh = nullptr;
 }
 
 NavMeshRenderable::NavMeshRenderable(vector<rcPolyMesh*> &  meshes)
@@ -193,7 +224,7 @@ NavMeshRenderable::NavMeshRenderable(dtNavMesh * mesh)
 	this -> mesh = mesh;
 }
 
-void NavMeshRenderable::CreateScene(Ogre::SceneNode * parent, string & material, Ogre::ColourValue & color)
+void NavMeshRenderable::CreateScene2(Ogre::SceneNode * parent, string & material, Ogre::ColourValue & color)
 {
 	int count = 0;
 	scene = parent->createChildSceneNode();
@@ -261,16 +292,18 @@ void NavMeshRenderable::CreateScene(Ogre::SceneNode * parent, string & material,
 
 
 
-void drawMeshTile(duDebugDraw* dd, const dtNavMesh& mesh, const dtNavMeshQuery* query,
-	const dtMeshTile* tile, unsigned char flags)
+void NavMeshRenderable::drawMeshTile(const dtNavMesh& mesh, const dtNavMeshQuery* query,
+	const dtMeshTile* tile, unsigned char flags, string & material)
 {
+	Ogre::ManualObject *man = scene->getCreator()->createManualObject();
+	unsigned index_count = 0;
 	dtPolyRef base = mesh.getPolyRefBase(tile);
 
 	int tileNum = mesh.decodePolyIdTile(base);
 
-	dd->depthMask(false);
+	//dd->depthMask(false);
 
-	dd->begin(DU_DRAW_TRIS);
+	man->begin(material,Ogre::v1::RenderOperation::OT_TRIANGLE_LIST);
 	for (int i = 0; i < tile->header->polyCount; ++i)
 	{
 		const dtPoly* p = &tile->polys[i];
@@ -279,47 +312,70 @@ void drawMeshTile(duDebugDraw* dd, const dtNavMesh& mesh, const dtNavMeshQuery* 
 
 		const dtPolyDetail* pd = &tile->detailMeshes[i];
 
-		unsigned int col;
+		//unsigned int col;
+		Ogre::ColourValue col;
 		if (query && query->isInClosedList(base | (dtPolyRef)i))
-			col = duRGBA(255, 196, 0, 64);
+			col = Ogre::ColourValue(255, 196, 0, 64);
 		else
 		{
 			if (flags & DU_DRAWNAVMESH_COLOR_TILES)
 			{
-				col = duIntToCol(tileNum, 128);
+				col = Ogre::ColourValue(tileNum,0,0, 128);
 			}
 			else
 			{
 				if (p->getArea() == 0) // Treat zero area type as default.
-					col = duRGBA(0, 192, 255, 64);
+					col = Ogre::ColourValue(0, 192, 255, 64);
 				else
-					col = duIntToCol(p->getArea(), 64);
+					col = Ogre::ColourValue((p->getArea(), 64));
 			}
 		}
 
 		for (int j = 0; j < pd->triCount; ++j)
 		{
 			const unsigned char* t = &tile->detailTris[(pd->triBase + j) * 4];
+			Vector3 * pos;
 			for (int k = 0; k < 3; ++k)
 			{
 				if (t[k] < p->vertCount)
-					dd->vertex(&tile->verts[p->verts[t[k]] * 3], col);
+				{
+					pos = reinterpret_cast<Vector3*>(&tile->verts[p->verts[t[k]] * 3]);
+					
+					//dd->vertex(&tile->verts[p->verts[t[k]] * 3], col);
+				}
+
+					
 				else
-					dd->vertex(&tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3], col);
+				{
+					pos = reinterpret_cast<Vector3*>(&tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3]);
+
+					//dd->vertex(&tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3], col);
+				}
+				man->position(pos->x, pos->y+2, -pos->z);
+				//cout << pos->x<<" "<<pos->y<<" "<<pos->z << endl;
+				man->colour(col);
 			}
+			man->index(index_count + 2);
+			man->index(index_count + 1);
+			man->index(index_count);
+			index_count += 3;
 		}
 	}
-	dd->end();
+	man->end();
+	scene->attachObject(man);
+	
 
+	/*
 	// Draw inter poly boundaries
 	//drawPolyBoundaries(dd, tile, duRGBA(0, 48, 64, 32), 1.5f, true);
 
 	// Draw outer poly boundaries
 	//drawPolyBoundaries(dd, tile, duRGBA(0, 48, 64, 220), 2.5f, false);
 
+
 	if (flags & DU_DRAWNAVMESH_OFFMESHCONS)
 	{
-		dd->begin(DU_DRAW_LINES, 2.0f);
+		man->begin(DU_DRAW_LINES, 2.0f);
 		for (int i = 0; i < tile->header->polyCount; ++i)
 		{
 			const dtPoly* p = &tile->polys[i];
@@ -382,20 +438,23 @@ void drawMeshTile(duDebugDraw* dd, const dtNavMesh& mesh, const dtNavMeshQuery* 
 	dd->end();
 
 	dd->depthMask(true);
+	*/
 }
 
-void duDebugDrawNavMeshWithClosedList(struct duDebugDraw* dd, const dtNavMesh& mesh, const dtNavMeshQuery& query, unsigned char flags)
+void NavMeshRenderable::DrawNavMesh(const dtNavMesh& mesh, const dtNavMeshQuery* query, unsigned char flags, string & material)
 {
-	if (!dd) return;
-
+	int indices = 0;
 	for (int i = 0; i < mesh.getMaxTiles(); ++i)
 	{
 		const dtMeshTile* tile = mesh.getTile(i);
 		if (!tile->header) continue;
-		drawMeshTile(dd, mesh, 0, tile, flags);
+		drawMeshTile(mesh, 0, tile, flags,material);
 	}
 }
 
-void NavMeshRenderable::CreateScene2(Ogre::SceneNode * parent, string & material, Ogre::ColourValue & color)
+void NavMeshRenderable::CreateScene(Ogre::SceneNode * parent, string & material, Ogre::ColourValue & color)
 {
+	scene = parent->createChildSceneNode();
+	DrawNavMesh(*mesh, nullptr, 0, material);
+
 }

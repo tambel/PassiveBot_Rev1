@@ -12,6 +12,7 @@ WorldViewer::WorldViewer(Location & location, Point2D<int> block_coordinates, Po
 {
 	state = new MapState("STATE");
 	area = Area(location, block_coordinates, coordinates, radius);
+
 	state->SetArea(&area);
 
 	frame = new MapFrame(state);

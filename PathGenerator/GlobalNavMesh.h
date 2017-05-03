@@ -35,6 +35,7 @@ class GlobalNavMesh
 	BoundingBox bbox;
 	NavConfig config;
 	dtNavMesh * nav_mesh;
+	dtNavMeshQuery * m_navQuery;
 
 	unsigned char* m_triareas=nullptr;
 	rcHeightfield* m_solid=nullptr;
@@ -45,7 +46,7 @@ class GlobalNavMesh
 	rcConfig m_cfg;
 	CTX2 * m_ctx = nullptr;
 	vector<rcPolyMesh*> poly_meshes;
-
+	vector<Vector3> last_path_points;
 	Area * area;
 
 
@@ -59,7 +60,9 @@ public:
 	void Start(int x, int y);
 	void AddTile(Point2D<int> coordinates);
     dtNavMesh * GetNavMesh() { return nav_mesh; }
+	inline vector<Vector3> & GetLastPath() { return last_path_points; }
 	inline vector<rcPolyMesh*> & GetPolyMeshes() { return poly_meshes; }
+	bool FindPath(Vector3 & start, Vector3 & end, bool tf=true);
 	bool Save();
 	bool Load();
 };

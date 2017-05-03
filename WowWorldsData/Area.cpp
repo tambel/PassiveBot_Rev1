@@ -312,7 +312,7 @@ void Area::InitAreaBoundingBox()
 	}
 
 }
-#ifdef BOTDEV
+
 void Area::ToMesh()
 {
 	ofstream file("area.obj");
@@ -364,7 +364,7 @@ void Area::ToMesh()
 	}
 	file.close();
 }
-
+#ifdef BOTDEV
 void Area::Rotate()
 {
 	int axis = 0;

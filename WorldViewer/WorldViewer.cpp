@@ -18,47 +18,55 @@ static void init_static()
 int main()
 {
 	init_static();
-
+	int tc = 0;
 	GlobalNavMesh gnm = GlobalNavMesh();
-	gnm.Start(0, 0);
-	for (int i = 35; i < 40;i++)
-		for (int j = 30; j < 38; j++)
+	//gnm.Start(0, 0);
+	int si = 224;
+	int sj = 210;
+	for (int i = si; i < si+30;i++)
+		for (int j = sj; j < sj+30; j++)
 		{
 			cout << i << ": " << j << endl;
+			tc++;
 			//gnm.AddTile(Point2DI(i, j));
 			
 		}
+	//gnm.Save();
+	cout << tc<<endl;
+	gnm.Load();
+	
 
+	//gnm.FindPath(Vector3(-2334, -369.355, -8.50156), Vector3(-1337.96, 174.69, 58.2956));
+
+	//gnm.FindPath(Vector3(-2334, -369.355, -8.50156), Vector3(-2223.09,-386.793, -9.42134));
 	
+	//gnm.FindPath(Vector3(-2334, -369.355, -8.50156), Vector3(-2339, -375.355, -8.50156));
+	int i = 35;
+	int j = 32;
 	
+	/*
+	gnm.AddTile(Point2DI(i, j));
 	
-	gnm.AddTile(Point2DI(35, 31));
-	gnm.AddTile(Point2DI(35, 32));
 	gnm.AddTile(Point2DI(35, 33));
 	gnm.AddTile(Point2DI(35, 34));
+	gnm.AddTile(Point2DI(34, 35));
 	gnm.AddTile(Point2DI(35, 35));
-	gnm.AddTile(Point2DI(36, 26));
-
-	
-	gnm.AddTile(Point2DI(36, 31));
-	gnm.AddTile(Point2DI(36, 32));
-	gnm.AddTile(Point2DI(36, 33));
-	gnm.AddTile(Point2DI(36, 34));
 	gnm.AddTile(Point2DI(36, 35));
-	
-	gnm.AddTile(Point2DI(37, 31));
-	gnm.AddTile(Point2DI(37, 32));
-	gnm.AddTile(Point2DI(37, 33));
-	gnm.AddTile(Point2DI(37, 34));
+
+	gnm.AddTile(Point2DI(36, 34));
+	gnm.AddTile(Point2DI(36, 33));
+	gnm.AddTile(Point2DI(36, 32));
 	gnm.AddTile(Point2DI(37, 35));
 
-	gnm.AddTile(Point2DI(38, 31));
-	gnm.AddTile(Point2DI(38, 32));
-	gnm.AddTile(Point2DI(38, 33));
-	gnm.AddTile(Point2DI(38, 34));
-	gnm.AddTile(Point2DI(38, 35));
+	gnm.AddTile(Point2DI(37, 34));
+	gnm.AddTile(Point2DI(37, 33));
+	gnm.AddTile(Point2DI(37, 32));
+	*/
 
-	gnm.Load();
+	
+	
+	//gnm.Save();
+	//
 
 	//LocalAreaNavMesh nm = LocalAreaNavMesh(LocationBase::Get("Kalimdor"), Point2DI(36, 34), Point2DI(7, 9));
 	//nm.Build();
@@ -72,8 +80,19 @@ int main()
 
 	
 	WorldViewer viewer = WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(35, 33), Point2DI(7, 9), 3);
+	//viewer.GetArea().ToMesh();
 	
-	viewer.GetState()->AddNavMesh(gnm.GetPolyMeshes());
+
+	
+	gnm.FindPath(Vector3(-2435.32, -530.151,-8.99781), Vector3(-1344.39,195.327,61.0569));
+
+
+	auto v1 = gnm.GetLastPath();
+	viewer.GetState()->AddLineStrip(v1);
+
+
+	//viewer.GetState()->AddNavMesh(gnm.GetNavMesh());
+	
 	
 	//viewer.GetFrame()->AddNavMesh(gnm.GetPolyMeshes());
 	viewer.ShowMap();
