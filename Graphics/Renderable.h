@@ -52,12 +52,13 @@ public:
 class LineStripRenderable : public Renderable
 {
 	Vector3 * points = nullptr;
-	vector<Vector3> * vpoints;
+	vector<Vector3> vpoints;
 	unsigned size = 0;
 public:
 	LineStripRenderable(LineStripRenderable && other);
 	LineStripRenderable(Vector3 * points, unsigned size);
 	LineStripRenderable(vector<Vector3> & points);
+	~LineStripRenderable() {};
 	virtual void CreateScene2(Ogre::SceneNode * parent);
 	void CreateScene(Ogre::SceneNode * parent, string & material, Ogre::ColourValue & color);
 };

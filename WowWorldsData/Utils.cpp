@@ -79,10 +79,7 @@ namespace Utils
 	}
 	namespace Graphics
 	{
-		bool BoundingBox::IsInside2D(Vector3 point)
-		{
-			return ((up.x<=point.x && up.y<=point.y) && (down.x>=point.x && down.y>=point.y));
-		}
+		
 	};
 	namespace Geometry
 	{
@@ -140,5 +137,22 @@ namespace Utils
 
 			}
 		}
+		 bool BoundingBox::IsInside2D(Vector3 point)
+		 {
+			 return ((up.x <= point.x && up.y <= point.y) && (down.x >= point.x && down.y >= point.y));
+		 }
 	};
+}
+
+Vector3 Utils::Metrics::ConvertFromGameCoords(Vector3 point)
+{
+	return  Vector3(Metrics::MapMidPoint - point.x, point.z, Metrics::MapMidPoint - point.y);
+}
+
+Geometry::BoundingBox Utils::Metrics::ConvertFromGameCoords(Geometry::BoundingBox & bb)
+{
+	Geometry::BoundingBox rbb;
+	rbb.up = ConvertFromGameCoords(bb.up);
+	rbb.down = ConvertFromGameCoords(bb.down);
+	return rbb;
 }

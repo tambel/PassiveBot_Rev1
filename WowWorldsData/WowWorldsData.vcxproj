@@ -143,9 +143,10 @@
     <ClInclude Include="ChunkCache.h" />
     <ClInclude Include="ChunkedData.h" />
     <ClInclude Include="ClientDB.h" />
+    <ClInclude Include="DB2Reader.h" />
     <ClInclude Include="Doodad.h" />
     <ClInclude Include="Exceptions.h" />
-    <ClInclude Include="headers.h" />
+    <ClInclude Include="wdb_headers.h" />
     <ClInclude Include="LocalAreaNavMesh.h" />
     <ClInclude Include="M2.h" />
     <ClInclude Include="M2Cache.h" />
@@ -165,6 +166,8 @@
     <ClInclude Include="WMOPart.h" />
     <ClInclude Include="WMORoot.h" />
     <ClInclude Include="WMOStructs.h" />
+    <ClInclude Include="WorldMapArea.h" />
+    <ClInclude Include="WowTables.h" />
     <ClInclude Include="WowWorldsData.h" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +178,8 @@
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="ChunkCache.cpp" />
     <ClCompile Include="ChunkedData.cpp" />
+    <ClCompile Include="ClientDB.cpp" />
+    <ClCompile Include="DB2Reader.cpp" />
     <ClCompile Include="Doodad.cpp" />
     <ClCompile Include="Exceptions.cpp" />
     <ClCompile Include="LocalAreaNavMesh.cpp" />
@@ -196,6 +201,7 @@
     <ClCompile Include="WMOGroup.cpp" />
     <ClCompile Include="WMOPart.cpp" />
     <ClCompile Include="WMORoot.cpp" />
+    <ClCompile Include="WorldMapArea.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

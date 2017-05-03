@@ -56,7 +56,7 @@ struct QuestPOIPointRec {
 	unsigned m_Y;
 	unsigned m_QuestPOIBlobID;
 };
-struct WorldMapAreaRec {
+struct WWorldMapAreaRec {
 	unsigned m_ID;
 	unsigned m_mapID;
 	unsigned m_areaID;

@@ -20,6 +20,7 @@ public:
 	void AddNavMesh(vector<rcPolyMesh*> & meshes);
 	void AddNavMesh(dtNavMesh * mesh);
 	void AddLineStrip(vector<Vector3> & points);
+	void AddBoundingBox2D(BoundingBox & bb);
 
 };
 

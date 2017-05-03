@@ -19,3 +19,5 @@
 #include "WMO.h"
 #include "WMOPart.h"
 #include "WMOStructs.h"
+#include "DB2Reader.h"
+#include "ClientDB.h"

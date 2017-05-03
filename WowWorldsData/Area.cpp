@@ -275,7 +275,7 @@ void Area::UpdateCetralizedChunkScale(Location & location, Point2D<int> block_co
 void Area::InitAreaBoundingBox()
 {
 	vector<float> points = vector<float>();
-	auto add_point = [&points](Utils::Graphics::BoundingBox & bb)
+	auto add_point = [&points](Utils::Geometry::BoundingBox & bb)
 	{
 		points.push_back(bb.up.x);
 		points.push_back(bb.up.y);
@@ -303,7 +303,7 @@ void Area::InitAreaBoundingBox()
 	//add_point(points, chunk->GetBoundingBox());
 
 
-	Utils::Graphics::BoundingBox bb;
+	Utils::Geometry::BoundingBox bb;
 	if (points.size() > 0)
 	{
 		rcCalcBounds(&points[0], points.size() / 3, bb.GetArrayMin(), bb.GetArrayMax());

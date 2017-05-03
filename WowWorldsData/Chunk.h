@@ -106,8 +106,8 @@ private:
 	void LoadMcvt();
 	void LoadMcrd(unsigned long size);
 	void LoadMcrw(unsigned long size);
-	Utils::Graphics::BoundingBox terrain_bounding_box;
-	Utils::Graphics::BoundingBox full_bounding_box;
+	Utils::Geometry::BoundingBox terrain_bounding_box;
+	Utils::Geometry::BoundingBox full_bounding_box;
 	
 
 
@@ -147,8 +147,8 @@ public:
 	void  SetRealPosition(Vector3 pos) {real_position=pos;}
 	vector<Doodad*> & GetDoodads() { return doodads; }
 	vector<WMO*> & GetWMOs() { return wmos; }
-	inline Utils::Graphics::BoundingBox & GetTerrainBoundingBox() { return terrain_bounding_box; }
-	inline Utils::Graphics::BoundingBox & GetFullBoundingBox() { return full_bounding_box; }
+	inline Utils::Geometry::BoundingBox & GetTerrainBoundingBox() { return terrain_bounding_box; }
+	inline Utils::Geometry::BoundingBox & GetFullBoundingBox() { return full_bounding_box; }
 	inline Area * GetArea() { return area; }
 	Chunk & operator=(Chunk &&);
 	inline vector<WMOInfo>  & GetWMOInfos() { return wmo_infos; }

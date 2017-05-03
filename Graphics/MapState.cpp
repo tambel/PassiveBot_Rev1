@@ -65,6 +65,22 @@ void MapState::AddLineStrip(vector<Vector3>& points)
 	line_strip_rends.push_back(new LineStripRenderable(points));
 }
 
+void MapState::AddBoundingBox2D(BoundingBox & bb)
+{
+	vector<Vector3> points;
+	points.push_back(bb.up);
+	points.push_back(Vector3(bb.down.x, bb.up.y, bb.up.z));
+	points.push_back(Vector3(bb.down.x, bb.up.y, bb.up.z));
+	points.push_back(bb.down);
+	points.push_back(Vector3(bb.up.x, bb.up.y, bb.down.z));
+	points.push_back(Vector3(bb.up.x, bb.up.y, bb.down.z));
+	points.push_back(bb.up);
+	points.push_back(bb.up);
+	
+	//points.push_back(bb.up);
+	AddLineStrip(points);
+}
+
 
 
 void MapState::UpdateScene()

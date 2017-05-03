@@ -17,7 +17,11 @@ static void init_static()
 }
 int main()
 {
+
+
 	init_static();
+
+	
 	int tc = 0;
 	GlobalNavMesh gnm = GlobalNavMesh();
 	//gnm.Start(0, 0);
@@ -34,34 +38,6 @@ int main()
 	//gnm.Save();
 	cout << tc<<endl;
 	gnm.Load();
-	
-
-	//gnm.FindPath(Vector3(-2334, -369.355, -8.50156), Vector3(-1337.96, 174.69, 58.2956));
-
-	//gnm.FindPath(Vector3(-2334, -369.355, -8.50156), Vector3(-2223.09,-386.793, -9.42134));
-	
-	//gnm.FindPath(Vector3(-2334, -369.355, -8.50156), Vector3(-2339, -375.355, -8.50156));
-	int i = 35;
-	int j = 32;
-	
-	/*
-	gnm.AddTile(Point2DI(i, j));
-	
-	gnm.AddTile(Point2DI(35, 33));
-	gnm.AddTile(Point2DI(35, 34));
-	gnm.AddTile(Point2DI(34, 35));
-	gnm.AddTile(Point2DI(35, 35));
-	gnm.AddTile(Point2DI(36, 35));
-
-	gnm.AddTile(Point2DI(36, 34));
-	gnm.AddTile(Point2DI(36, 33));
-	gnm.AddTile(Point2DI(36, 32));
-	gnm.AddTile(Point2DI(37, 35));
-
-	gnm.AddTile(Point2DI(37, 34));
-	gnm.AddTile(Point2DI(37, 33));
-	gnm.AddTile(Point2DI(37, 32));
-	*/
 
 	
 	
@@ -82,13 +58,55 @@ int main()
 	WorldViewer viewer = WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(35, 33), Point2DI(7, 9), 3);
 	//viewer.GetArea().ToMesh();
 	
+	auto areas = ClientDB::ReadWorldMapAreas();
+
+	auto mulgore = *find_if(areas.begin(), areas.end(), [](auto & a) {return a.name == "Mulgore"; });
+	auto durotar  = *find_if(areas.begin(), areas.end(), [](auto & a) {return a.name == "Durotar"; });
+	auto barrens = *find_if(areas.begin(), areas.end(), [](auto & a) {return a.name == "Barrens"; });
+	auto bb = mulgore.GetBoundingBox();
+
+	auto is_intersect = [](BoundingBox & b1, BoundingBox & b2)
+	{
+		if (b1.IsInside2D(b2.up) || b1.IsInside2D(Vector3(b2.up.x, b2.down.y, 0)) || (b1.IsInside2D(b2.down)) || b1.IsInside2D(Vector3(b2.down.x, b2.up.y, 0)))
+		{
+			return true;
+		}
+		return false;
+	};
+	vector<WorldMapArea> neigh;
+	for (auto & a : areas)
+	{
+		if (a.name != mulgore.name)
+		{
+			if (is_intersect(mulgore.GetBoundingBox(), a.GetBoundingBox()))
+			{
+				neigh.push_back(a);
+			}
+		}
+	}
+
+
 
 	
+	
 	gnm.FindPath(Vector3(-2435.32, -530.151,-8.99781), Vector3(-1344.39,195.327,61.0569));
-
-
 	auto v1 = gnm.GetLastPath();
 	viewer.GetState()->AddLineStrip(v1);
+
+	float w = abs(mulgore.right-mulgore.left)/256;
+	float h = abs(mulgore.bottom - mulgore.top)/256;
+	cout << w << " " << h << endl;
+	double sq = w*h;
+	cout << sq << endl;
+
+	for (auto & a : areas)
+	{
+		//viewer.GetState()->AddBoundingBox2D(Utils::Metrics::ConvertFromGameCoords(a.GetBoundingBox()));
+	}
+
+	viewer.GetState()->AddBoundingBox2D(Utils::Metrics::ConvertFromGameCoords(bb));
+	//viewer.GetState()->AddBoundingBox2D(Utils::Metrics::ConvertFromGameCoords(durotar.GetBoundingBox()));
+	//viewer.GetState()->AddBoundingBox2D(Utils::Metrics::ConvertFromGameCoords(barrens.GetBoundingBox()));
 
 
 	//viewer.GetState()->AddNavMesh(gnm.GetNavMesh());

@@ -25,10 +25,19 @@
     <Filter Include="Файлы исходного кода\Navigation">
       <UniqueIdentifier>{d6821a91-2669-401f-a06e-be4e14178262}</UniqueIdentifier>
     </Filter>
-    <Filter Include="db2">
+    <Filter Include="Файлы исходного кода\client_db">
+      <UniqueIdentifier>{4880f339-db67-4e49-a168-90f9a928988e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\client_db\db2">
+      <UniqueIdentifier>{94743bb3-8516-4352-a4ac-895b6111c721}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\client_db">
+      <UniqueIdentifier>{ca9ab16b-cf1c-4443-be19-43b70102f011}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\client_db\db2">
       <UniqueIdentifier>{83c4920f-8588-47eb-ba98-3da2b7796700}</UniqueIdentifier>
     </Filter>
-    <Filter Include="db2\WBD">
+    <Filter Include="Заголовочные файлы\client_db\db2\WBD">
       <UniqueIdentifier>{b9a66d92-91ed-4e4c-90c8-71a87c04bb2b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -123,17 +132,26 @@
     <ClInclude Include="WowWorldsData.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="ClientDB.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="LocalAreaNavMesh.h">
       <Filter>Заголовочные файлы\Navigation</Filter>
     </ClInclude>
     <ClInclude Include="NavMesh.h">
       <Filter>Заголовочные файлы\Navigation</Filter>
     </ClInclude>
-    <ClInclude Include="headers.h">
-      <Filter>db2\WBD</Filter>
+    <ClInclude Include="WowTables.h">
+      <Filter>Заголовочные файлы\client_db\db2</Filter>
+    </ClInclude>
+    <ClInclude Include="DB2Reader.h">
+      <Filter>Заголовочные файлы\client_db\db2</Filter>
+    </ClInclude>
+    <ClInclude Include="wdb_headers.h">
+      <Filter>Заголовочные файлы\client_db\db2\WBD</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientDB.h">
+      <Filter>Заголовочные файлы\client_db</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldMapArea.h">
+      <Filter>Заголовочные файлы\client_db</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -208,6 +226,15 @@
     </ClCompile>
     <ClCompile Include="NavMesh.cpp">
       <Filter>Файлы исходного кода\Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="DB2Reader.cpp">
+      <Filter>Файлы исходного кода\client_db\db2</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientDB.cpp">
+      <Filter>Файлы исходного кода\client_db</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldMapArea.cpp">
+      <Filter>Файлы исходного кода\client_db</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

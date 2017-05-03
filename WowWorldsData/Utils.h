@@ -62,6 +62,14 @@ namespace Utils
 			static void SetRotationAngle(Axis axis, float angle);
 
 		};
+		struct BoundingBox
+		{
+			Vector3 up;
+			Vector3 down;
+			bool IsInside2D(Vector3 point);
+			inline float * GetArrayMin() { return reinterpret_cast<float*>(&up); }
+			inline float * GetArrayMax() { return reinterpret_cast<float*>(&down); }
+		};
 	};
 	namespace Game
 	{
@@ -137,6 +145,9 @@ namespace Utils
 		const float UnitSize = ChunkSize / 8.0f;
 		const float MapSize=BlockSize*64.0f;
 		const float MapMidPoint = 32.0f * BlockSize;
+
+		Vector3 ConvertFromGameCoords(Vector3 point);
+		Geometry::BoundingBox ConvertFromGameCoords(Geometry::BoundingBox & bb);
 
 
 
@@ -216,13 +227,6 @@ namespace Utils
 			Vertex(){};
 			Vertex(Vector3 pos,Color color): position(pos), color(color){}
 		};
-		struct BoundingBox
-		{
-			Vector3 up;
-			Vector3 down;
-			bool IsInside2D(Vector3 point);
-			inline float * GetArrayMin() { return reinterpret_cast<float*>(&up); }
-			inline float * GetArrayMax() { return reinterpret_cast<float*>(&down); }
-		};
+		
 	}
 }

@@ -75,7 +75,7 @@ protected:
 	Location  location;
 	Point2D<int> block_coordinates;
 	Point2D<int> coordinates;
-	Utils::Graphics::BoundingBox bounding_box;
+	Utils::Geometry::BoundingBox bounding_box;
 	virtual void Update(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	void UpdateCetralizedChunkScale(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	void UpdateCetralizedBlockScale(Location & location, Point2D<int> block_coordinates);
@@ -100,7 +100,7 @@ public:
 	//void Update(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	inline int GetRadius() {return radius;}
 	inline int GetSize() { return area_size; }
-	inline Utils::Graphics::BoundingBox & GetBoundingBox() { return bounding_box; }
+	inline Utils::Geometry::BoundingBox & GetBoundingBox() { return bounding_box; }
 	inline vector<unique_ptr<WMO>> & GetWMOs() { return wmos; }
 	inline vector<unique_ptr<Doodad>> & GetDoodads() { return doodads; }
 	inline Location & GetLocation() { return location; }

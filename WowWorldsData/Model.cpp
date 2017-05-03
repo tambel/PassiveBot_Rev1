@@ -107,7 +107,7 @@ Model::Model()
 	indices = nullptr;
 }
 
-Model::Model(Utils::Graphics::BoundingBox bounding_box):
+Model::Model(Utils::Geometry::BoundingBox bounding_box):
 	bounding_box(bounding_box)
 {
 }

@@ -151,7 +151,7 @@ void Renderable::CreateScene(Ogre::SceneNode * parent, string & material, Ogre::
 
 LineStripRenderable::LineStripRenderable(LineStripRenderable && other)
 {
-	this->vpoints = other.vpoints;
+	this->vpoints = move(other.vpoints);
 	this->points = other.points;
 	this->size = other.size;
 }
@@ -164,7 +164,7 @@ LineStripRenderable::LineStripRenderable(Vector3 * points, unsigned size)
 
 LineStripRenderable::LineStripRenderable(vector<Vector3>& points)
 {
-	vpoints = &points;
+	vpoints = points;
 }
 
 void LineStripRenderable::CreateScene2(Ogre::SceneNode * parent)
@@ -185,14 +185,14 @@ void LineStripRenderable::CreateScene2(Ogre::SceneNode * parent)
 
 void LineStripRenderable::CreateScene(Ogre::SceneNode * parent, string & material, Ogre::ColourValue & color)
 {
-	vector<Vector3> & points = *vpoints;
+	vector<Vector3> & points = vpoints;
 	//string name = to_string(GetID());
 	Ogre::SceneNode * scene = parent->createChildSceneNode();
 	Ogre::ManualObject* m_pRecastMOPath = scene->getCreator()->createManualObject();
 	m_pRecastMOPath->begin(material, Ogre::v1::RenderOperation::OT_LINE_STRIP);
 	//for (int i = 0; i < size; i++)
 	int count = 0;
-	for (int i = 0; i < vpoints->size()-1; i+=2)
+	for (int i = 0; i < vpoints.size()-1; i+=2)
 	{
 
 		m_pRecastMOPath->position(points[i].x, points[i].y+5, -points[i].z);

@@ -1,7 +1,7 @@
 #pragma once
 #include "Utils.h"
 using namespace Utils;
-using namespace Utils::Graphics;
+using namespace Utils::Geometry;
 
 //class ModelVertBase
 //{
@@ -87,14 +87,14 @@ public:
 	virtual unsigned long GetIndexCount() { return index_count; }
 	BoundingBox bounding_box;
 	Model();
-	Model(Utils::Graphics::BoundingBox bounding_box);
+	Model(Utils::Geometry::BoundingBox bounding_box);
 	~Model();
 	Model(Model&) = delete;
 	Model & operator=(Model &) = delete;
 	void Rotate(float angle);
 
 	Model & operator=(Model && right);
-	inline Utils::Graphics::BoundingBox & GetBoundingBox() {return bounding_box;}
+	inline Utils::Geometry::BoundingBox & GetBoundingBox() {return bounding_box;}
 };
 
 

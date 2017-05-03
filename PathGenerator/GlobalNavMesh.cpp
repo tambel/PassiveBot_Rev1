@@ -692,7 +692,7 @@ unsigned char * GlobalNavMesh::BuildTileMesh(int x, int y, const float* bmin, co
 		tbmax[1] = m_cfg.bmax[2];
 		unique_ptr<unsigned char>m_triareas_ptr;
 		unsigned char * m_triareas;
-		Utils::Graphics::BoundingBox & bbox = model->GetBoundingBox();
+		Utils::Geometry::BoundingBox & bbox = model->GetBoundingBox();
 		bool overlap = true;
 		overlap = (tbmin[0] > bbox.down.x || tbmax[0] < bbox.up.x) ? false : overlap;
 		overlap = (tbmin[1] > bbox.down.z || tbmax[1] < bbox.up.z) ? false : overlap;

@@ -1,6 +1,7 @@
 // PassiveBot.cpp: определяет точку входа для консольного приложения.
 //
 #include "stdafx.h"
+#include "WowWorldsData\WowWorldsData.h"
 
 using namespace std;
 using namespace Utils;
@@ -42,26 +43,21 @@ int bot_activity()
 	
 }
 
+void test_db()
+{
+	auto areas=move(ClientDB::ReadWorldMapAreas());
+
+	areas = areas;
+
+}
+
 
 
 int main(int argc, wchar_t * argv[])
 {
-	//shared_ptr<RemoteControl> remote_control = make_shared<RemoteControl>();
-	//remote_control->Start();
-	//while (1)
-
-
-
-
-
-	//{
-
-	//	remote_control->ProcessRequest();
-	//	//cout <<"WAIT"<< endl;
-	//	Sleep(1);
-	//}
 	Sleep(5000);
-	BotInteractor::StartGame("arttambel@gmail.com", "archi911", L"Testintauenr", bot_activity);
+	test_db();
+	//BotInteractor::StartGame("arttambel@gmail.com", "archi911", L"Testintauenr", bot_activity);
 	return 0;
 
 }
