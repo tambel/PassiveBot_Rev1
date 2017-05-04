@@ -29,7 +29,7 @@ inline unsigned int nextPow2(unsigned int v)
 GlobalNavMesh::GlobalNavMesh()
 {
 	poly_meshes = vector<rcPolyMesh*>();
-	area = new Area(2, AreaFormat::fChunk);
+	area = new Area(3, AreaFormat::fChunk);
 	bbox.up = Vector3(0.0, 0.0, 0.0);
 	bbox.down = Vector3(Metrics::MapSize, 0.0, Metrics::MapSize);
 	InitConfig();
@@ -179,9 +179,9 @@ void GlobalNavMesh::AddArea(Point2D<float> start, Point2D<float> end)
 	int count = 0;
 	Point2D<float> offset;
 	//this->nav_mesh_offset = Vector3(start.X, 0, start.Y);
-	for (int i = 0, ri=sx; ri < sx+10/*ex*/; i++,ri++)
+	for (int i = 0, ri=sx; ri < ex; i++,ri++)
 	{
-		for (int j = 0, rj = sy; rj < sy+10/*ey*/; j++, rj++)
+		for (int j = 0, rj = sy; rj <ey; j++, rj++)
 		{
 			
 			tx = ri*tcs;
@@ -213,6 +213,7 @@ void GlobalNavMesh::AddArea(Point2D<float> start, Point2D<float> end)
 			}
 			auto model = area->GetWholeModel(Vector3(offset.X, 0, offset.Y));
 
+			//model->bounding_box.up = model->bounding_box.up + Vector3(10, 0, 10);
 			m_tileBmin[1] = model->GetBoundingBox().up.y;
 			m_tileBmax[1] = model->GetBoundingBox().down.y;
 			unsigned char* data = BuildTileMesh(&*model, i, j, m_tileBmin, m_tileBmax, dataSize);

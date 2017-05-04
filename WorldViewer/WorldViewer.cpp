@@ -32,18 +32,20 @@ int main()
 
 
 	auto cbb = Metrics::ConvertFromGameCoords(bb);
-	gnm.Start(0, 0);
+	//gnm.Start(0, 0);
 
-	gnm.AddArea(Point2D<float>(cbb.up.x, cbb.up.z), Point2D<float>(cbb.down.x, cbb.down.z));
-	gnm.Save();
+	//gnm.AddArea(Point2D<float>(cbb.up.x, cbb.up.z), Point2D<float>(cbb.down.x, cbb.down.z));
 
-	//gnm.Load();
 
 	auto c1 = Metrics::ConvertFromGameCoords(Vector3(-2435.32, -530.151, -8.99781));
 	auto c2 = Metrics::ConvertFromGameCoords(Vector3(-1344.39, 195.327, 61.0569));
 
 	//gnm.AddArea(Point2D<float>(c1.x,c1.z), Point2D<float>(c2.x,c2.z));
-	//gnm.AddArea(Point2D<float>(400, 400), Point2D<float>(1000, 1000));
+	//gnm.AddArea(Point2D<float>(0, 0), Point2D<float>(3000, 3000));
+
+	//gnm.Save();
+
+	gnm.Load();
 
 	WorldViewer viewer = WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(35, 32), Point2DI(7, 9), 3);
 	//viewer.GetArea().ToMesh();
