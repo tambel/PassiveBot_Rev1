@@ -18,7 +18,7 @@ public:
 	//virtual void update(float timeSinceLast);
 	
 	void AddNavMesh(vector<rcPolyMesh*> & meshes);
-	void AddNavMesh(dtNavMesh * mesh);
+	void AddNavMesh(dtNavMesh * mesh, Vector3 offset=Vector3(0,0,0));
 	void AddLineStrip(vector<Vector3> & points);
 	void AddBoundingBox2D(BoundingBox & bb);
 

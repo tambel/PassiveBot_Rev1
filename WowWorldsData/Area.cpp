@@ -43,7 +43,6 @@ Area::~Area(void)
 
 void Area::Update(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates)
 {
-	format = AreaFormat::fBlock;
 	ADTWorker::Clear();
 	this->location = location;
 	this->block_coordinates = block_coordinates;
@@ -73,8 +72,8 @@ void Area::Update(Location & location, Point2D<int> block_coordinates, Point2D<i
 
 	InitMapObjects();
 	InitAreaBoundingBox();
-	TranslateToZero();
-	InitAreaBoundingBox();
+	//TranslateToZero();
+	//InitAreaBoundingBox();
 	//ToMesh();
 	
 }
@@ -206,6 +205,64 @@ void Area::InitMapObjects()
 Vector3 Area::GetCenter()
 {
 	return Vector3(bounding_box.up.x + (bounding_box.down.x - bounding_box.up.x) / 2, bounding_box.up.y + (bounding_box.down.y - bounding_box.up.y) / 2, bounding_box.up.z + (bounding_box.down.z - bounding_box.up.z) / 2);
+}
+
+shared_ptr<Model> Area::GetWholeModel(Vector3 & toffset)
+{
+	Model * rmodel = new Model();
+	int * indices;
+	unsigned index_count=0;
+	float * vertices;
+	unsigned vertex_count=0;
+	vector<Model*> models;
+	unsigned vcount = 0;
+	for (auto & chunk : chunks) models.push_back(&*chunk);
+	for (auto & doodad : doodads) models.push_back(&*doodad);
+	for (auto & wmo : wmos) models.push_back(&*wmo);
+
+	for (auto model : models)
+	{
+		if (model->GetVertexCount() && model->GetVertices())
+		{
+			vertex_count += model->GetVertexCount();
+			index_count += model->GetIndexCount();
+		}
+	}
+	indices = new int[index_count];
+	vertices = new float[vertex_count * 3];
+	unsigned offset = 0;
+	unsigned ind_ind = 0;
+	unsigned vert_ind = 0;
+	for (auto model : models)
+	{
+		if (model->GetVertexCount() && model->GetVertices())
+		{
+			vcount = model->GetVertexCount();
+			//memcpy(vertices+offset*3, model->GetVertices(), vcount*12);
+			for (unsigned i = 0; i < model->GetVertexCount()*3; i+=3)
+			{
+				vertices[vert_ind] = model->GetVertices()[i]+toffset.x;
+				vertices[vert_ind+1] = model->GetVertices()[i+1] + toffset.y;
+				vertices[vert_ind+2] = model->GetVertices()[i+2] + toffset.z;
+				vert_ind+=3;
+			}
+			for (unsigned i = 0; i < model->GetIndexCount(); i++)
+			{
+				indices[ind_ind] = model->GetIndices()[i] + offset;
+				ind_ind++;
+			}
+			offset += vcount;
+			
+		}
+	}
+	rmodel->vertices = vertices;
+	rmodel->indices = indices;
+	rmodel->vertex_count = vertex_count;
+	rmodel->index_count = index_count;
+	rmodel->bounding_box.up = bounding_box.up + toffset;
+	rmodel->bounding_box.down = bounding_box.down + toffset;
+	//rmodel->CalcBounds();
+	return shared_ptr<Model>(rmodel);
 }
 
 void Area::UpdateCetralizedBlockScale(Location & location, Point2D<int> block_coordinates)

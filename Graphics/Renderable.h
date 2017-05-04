@@ -68,10 +68,11 @@ class NavMeshRenderable : public Renderable
 {
 	vector<rcPolyMesh*> * meshes;
 	dtNavMesh * mesh;
+	Vector3 offset;
 public:
 	NavMeshRenderable(NavMeshRenderable && other);
 	NavMeshRenderable(vector<rcPolyMesh*> & meshes);
-	NavMeshRenderable(dtNavMesh * mesh);
+	NavMeshRenderable(dtNavMesh * mesh, Vector3 offset = Vector3(0, 0, 0));
 	void DrawNavMesh(const dtNavMesh& mesh, const dtNavMeshQuery* query, unsigned char flags, string & material);
 	void drawMeshTile(const dtNavMesh& mesh, const dtNavMeshQuery* query, const dtMeshTile* tile, unsigned char flags, string & material);
 	void CreateScene(Ogre::SceneNode * parent, string & material, Ogre::ColourValue & color = Ogre::ColourValue(1, 1, 0, 1));

@@ -109,6 +109,7 @@ public:
 	bool IsOutOfBounds(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates);
 	void InitMapObjects();
 	Vector3 GetCenter();
+	shared_ptr<Model> GetWholeModel(Vector3 & toffset);
 
 
 	void ToMesh();

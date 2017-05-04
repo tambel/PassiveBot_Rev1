@@ -219,9 +219,10 @@ NavMeshRenderable::NavMeshRenderable(vector<rcPolyMesh*> &  meshes)
 	this->meshes = &meshes;
 }
 
-NavMeshRenderable::NavMeshRenderable(dtNavMesh * mesh)
+NavMeshRenderable::NavMeshRenderable(dtNavMesh * mesh, Vector3 offset)
 {
 	this -> mesh = mesh;
+	this->offset = offset;
 }
 
 void NavMeshRenderable::CreateScene2(Ogre::SceneNode * parent, string & material, Ogre::ColourValue & color)
@@ -334,12 +335,12 @@ void NavMeshRenderable::drawMeshTile(const dtNavMesh& mesh, const dtNavMeshQuery
 		for (int j = 0; j < pd->triCount; ++j)
 		{
 			const unsigned char* t = &tile->detailTris[(pd->triBase + j) * 4];
-			Vector3 * pos;
+			Vector3 pos;
 			for (int k = 0; k < 3; ++k)
 			{
 				if (t[k] < p->vertCount)
 				{
-					pos = reinterpret_cast<Vector3*>(&tile->verts[p->verts[t[k]] * 3]);
+					pos = *reinterpret_cast<Vector3*>(&tile->verts[p->verts[t[k]] * 3]);
 					
 					//dd->vertex(&tile->verts[p->verts[t[k]] * 3], col);
 				}
@@ -347,11 +348,13 @@ void NavMeshRenderable::drawMeshTile(const dtNavMesh& mesh, const dtNavMeshQuery
 					
 				else
 				{
-					pos = reinterpret_cast<Vector3*>(&tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3]);
+					pos = *reinterpret_cast<Vector3*>(&tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3]);
+
 
 					//dd->vertex(&tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3], col);
 				}
-				man->position(pos->x, pos->y+2, -pos->z);
+				pos = pos + offset;
+				man->position(pos.x, pos.y+2, -pos.z);
 				//cout << pos->x<<" "<<pos->y<<" "<<pos->z << endl;
 				man->colour(col);
 			}

@@ -36,6 +36,7 @@ class GlobalNavMesh
 	NavConfig config;
 	dtNavMesh * nav_mesh;
 	dtNavMeshQuery * m_navQuery;
+	Vector3 nav_mesh_offset;
 
 	unsigned char* m_triareas=nullptr;
 	rcHeightfield* m_solid=nullptr;
@@ -51,6 +52,7 @@ class GlobalNavMesh
 
 
 	unsigned char * BuildTileMesh(int x, int y, const float* bmin, const float* bmax, int & dataSize);
+	unsigned char * BuildTileMesh(Model * model, int x, int y, const float* bmin, const float* bmax, int & dataSize);
 	void Cleanup();
 
 public:
@@ -58,11 +60,13 @@ public:
 	~GlobalNavMesh();
 	void InitConfig();
 	void Start(int x, int y);
-	void AddTile(Point2D<int> coordinates);
+	void AddTile(Point2D<int> coordinates, Point2D<int> block_coordinates);
+	void AddArea(Point2D<float> start, Point2D<float> end);
     dtNavMesh * GetNavMesh() { return nav_mesh; }
 	inline vector<Vector3> & GetLastPath() { return last_path_points; }
 	inline vector<rcPolyMesh*> & GetPolyMeshes() { return poly_meshes; }
 	bool FindPath(Vector3 & start, Vector3 & end, bool tf=true);
+	inline Vector3 GetNavMeshOffset() { return nav_mesh_offset; }
 	bool Save();
 	bool Load();
 };

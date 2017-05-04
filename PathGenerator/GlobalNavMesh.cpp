@@ -29,7 +29,7 @@ inline unsigned int nextPow2(unsigned int v)
 GlobalNavMesh::GlobalNavMesh()
 {
 	poly_meshes = vector<rcPolyMesh*>();
-	area = new Area(2, AreaFormat::fBlock);
+	area = new Area(2, AreaFormat::fChunk);
 	bbox.up = Vector3(0.0, 0.0, 0.0);
 	bbox.down = Vector3(Metrics::MapSize, 0.0, Metrics::MapSize);
 	InitConfig();
@@ -123,7 +123,7 @@ void GlobalNavMesh::Start(int x, int y)
 	//AddTile(Point2DI(x, y));
 }
 
-void GlobalNavMesh::AddTile(Point2D<int> coordinates)
+void GlobalNavMesh::AddTile(Point2D<int> coordinates, Point2D<int> block_coordinates)
 {
 
 	float m_tileBmin[3];
@@ -139,7 +139,9 @@ void GlobalNavMesh::AddTile(Point2D<int> coordinates)
 	int dataSize = 0;
 	try
 	{
-		area->UpdateArea(LocationBase::Get("Kalimdor"), AbsPositionToBlockCoords(*reinterpret_cast<Vector3*>(m_tileBmin)), Point2DI(0, 0));
+		area->UpdateArea(LocationBase::Get("Kalimdor"), block_coordinates, Point2DI(0, 0));
+
+		//area->UpdateArea(LocationBase::Get("Kalimdor"), AbsPositionToBlockCoords(*reinterpret_cast<Vector3*>(m_tileBmin)), Point2DI(0, 0));
 	}
 	catch (EmptyAreaException & e)
 	{
@@ -160,6 +162,96 @@ void GlobalNavMesh::AddTile(Point2D<int> coordinates)
 			dtFree(data);
 	}
 	
+}
+
+void GlobalNavMesh::AddArea(Point2D<float> start, Point2D<float> end)
+{
+	int dataSize = 0;
+	const float tcs = config.m_tileSize*config.m_cellSize;
+	float m_tileBmin[3];
+	float m_tileBmax[3];
+	int sx = floor(start.X / tcs);
+	int sy = floor(start.Y / tcs);
+	int ex = floor(end.X / tcs)+1;
+	int ey = floor(end.Y / tcs)+1;
+	float tx;
+	float ty;
+	int count = 0;
+	Point2D<float> offset;
+	//this->nav_mesh_offset = Vector3(start.X, 0, start.Y);
+	for (int i = 0, ri=sx; i <  30; i++,ri++)
+	{
+		for (int j = 0, rj = sy; j < 30; j++, rj++)
+		{
+			
+			tx = ri*tcs;
+			ty = rj*tcs;
+			m_tileBmin[0] = i*tcs;
+			m_tileBmin[2] = j*tcs;
+
+			m_tileBmax[0] = (i + 1)*tcs;
+			m_tileBmax[2] =(j + 1)*tcs;
+			Point2D<int> bc = AbsPositionToBlockCoords(Vector3(tx, 0, ty));
+			Point2D<int> cc = Point2D<int>((tx - bc.X*Metrics::BlockSize) / Metrics::ChunkSize, (ty - bc.Y*Metrics::BlockSize) / Metrics::ChunkSize);
+			Point2D<float> rc = Point2D<float>(bc.X*Metrics::BlockSize + cc.X*Metrics::ChunkSize, bc.Y*Metrics::BlockSize + cc.Y*Metrics::ChunkSize);
+			if (count == 0)
+			{
+				offset = -rc;
+				this->nav_mesh_offset = Vector3(start.X, 0, start.Y) -Vector3(tx - rc.X, 0, ty - rc.Y)- Vector3(start.X - tx, 0, start.Y - ty);
+			}
+			count++;
+			cout << count << endl;
+			try
+			{
+				area->UpdateArea(LocationBase::Get("Kalimdor"), bc, cc);
+				
+			}
+			catch (EmptyAreaException & e)
+			{
+				continue;
+			}
+			auto model = area->GetWholeModel(Vector3(offset.X, 0, offset.Y));
+
+			m_tileBmin[1] = model->GetBoundingBox().up.y;
+			m_tileBmax[1] = model->GetBoundingBox().down.y;
+			unsigned char* data = BuildTileMesh(&*model, i, j, m_tileBmin, m_tileBmax, dataSize);
+			if (data)
+			{
+				// Remove any previous data (navmesh owns and deletes the data).
+				nav_mesh->removeTile(nav_mesh->getTileRefAt(i, j, 0), 0, 0);
+				// Let the navmesh own the data.
+				dtStatus status = nav_mesh->addTile(data, dataSize, DT_TILE_FREE_DATA, 0, 0);
+				if (dtStatusFailed(status))
+					dtFree(data);
+			}
+			
+
+			
+
+
+
+		}
+	}
+	/*
+	const float tcs = config.m_tileSize*config.m_cellSize;
+	int sx = floor(start.X / tcs);
+	int sy = floor(start.Y / tcs);
+	int ex= floor(end.X / tcs);
+	int ey = floor(end.Y / tcs);
+	//ex = ex - sx;
+	//ey = ey - sy;
+	//sx = sy = 0;
+	for (int i = sx; i < sx+10; i++)
+	{
+		for (int j = sy; j < sy+10; j++)
+		{
+			Point2D<int> bc = AbsPositionToBlockCoords(Vector3(i*tcs, 0, j*tcs));
+			AddTile(Point2D<int>(i-sx, j-sy), bc);
+			cout << i << " " << j << endl;
+		}
+	}
+	//Point2D<int> bc = AbsPositionToBlockCoords(Vector3())
+	*/
 }
 
 bool inRange(const float* v1, const float* v2, const float r, const float h)
@@ -505,6 +597,8 @@ bool GlobalNavMesh::Save()
 	if (!fp)
 		return true;
 
+	fwrite(reinterpret_cast<char*>(&nav_mesh_offset), sizeof(Vector3), 1, fp);
+
 	// Store header.
 	NavMeshSetHeader header;
 	header.magic = NAVMESHSET_MAGIC;
@@ -544,6 +638,8 @@ bool GlobalNavMesh::Load()
 
 	// Read header.
 	NavMeshSetHeader header;
+	fread(reinterpret_cast<char*>(&nav_mesh_offset), sizeof(Vector3), 1, fp);
+
 	size_t readLen = fread(&header, sizeof(NavMeshSetHeader), 1, fp);
 	if (readLen != 1)
 	{
@@ -829,6 +925,219 @@ unsigned char * GlobalNavMesh::BuildTileMesh(int x, int y, const float* bmin, co
 		{
 			// The vertex indices are ushorts, and cannot point to more than 0xffff vertices.
 			//m_ctx->log(RC_LOG_ERROR, "Too many vertices per tile %d (max: %d).", m_pmesh->nverts, 0xffff);
+			return 0;
+		}
+
+		// Update poly flags from areas.
+		for (int i = 0; i < m_pmesh->npolys; ++i)
+		{
+			if (m_pmesh->areas[i] == RC_WALKABLE_AREA)
+				m_pmesh->areas[i] = SAMPLE_POLYAREA_GROUND;
+
+			if (m_pmesh->areas[i] == SAMPLE_POLYAREA_GROUND ||
+				m_pmesh->areas[i] == SAMPLE_POLYAREA_GRASS ||
+				m_pmesh->areas[i] == SAMPLE_POLYAREA_ROAD)
+			{
+				m_pmesh->flags[i] = SAMPLE_POLYFLAGS_WALK;
+			}
+			else if (m_pmesh->areas[i] == SAMPLE_POLYAREA_WATER)
+			{
+				m_pmesh->flags[i] = SAMPLE_POLYFLAGS_SWIM;
+			}
+			else if (m_pmesh->areas[i] == SAMPLE_POLYAREA_DOOR)
+			{
+				m_pmesh->flags[i] = SAMPLE_POLYFLAGS_WALK | SAMPLE_POLYFLAGS_DOOR;
+			}
+		}
+
+		dtNavMeshCreateParams params;
+		std::memset(&params, 0, sizeof(params));
+		params.verts = m_pmesh->verts;
+		params.vertCount = m_pmesh->nverts;
+		params.polys = m_pmesh->polys;
+		params.polyAreas = m_pmesh->areas;
+		params.polyFlags = m_pmesh->flags;
+		params.polyCount = m_pmesh->npolys;
+		params.nvp = m_pmesh->nvp;
+		params.detailMeshes = m_dmesh->meshes;
+		params.detailVerts = m_dmesh->verts;
+		params.detailVertsCount = m_dmesh->nverts;
+		params.detailTris = m_dmesh->tris;
+		params.detailTriCount = m_dmesh->ntris;
+		params.offMeshConVerts = 0;
+		params.offMeshConRad = 0;
+		params.offMeshConDir = 0;
+		params.offMeshConAreas = 0;
+		params.offMeshConFlags = 0;
+		params.offMeshConUserID = 0;
+		params.offMeshConCount = 0;
+		params.walkableHeight = config.m_agentHeight;
+		params.walkableRadius = config.m_agentRadius;
+		params.walkableClimb = config.m_agentMaxClimb;
+		params.tileX = x;
+		params.tileY = y;
+		params.tileLayer = 0;
+		rcVcopy(params.bmin, m_pmesh->bmin);
+		rcVcopy(params.bmax, m_pmesh->bmax);
+		params.cs = m_cfg.cs;
+		params.ch = m_cfg.ch;
+		params.buildBvTree = true;
+
+		if (!dtCreateNavMeshData(&params, &navData, &navDataSize))
+		{
+			//m_ctx->log(RC_LOG_ERROR, "Could not build Detour navmesh.");
+			delete[] navData;
+			return 0;
+		}
+	}
+	//m_dmesh_ptr.release();
+	dataSize = navDataSize;
+	return navData;
+}
+
+unsigned char * GlobalNavMesh::BuildTileMesh(Model * model, int x, int y, const float * bmin, const float * bmax, int & dataSize)
+{
+	Cleanup();
+	rcConfig m_cfg;
+	std::memset(&m_cfg, 0, sizeof(m_cfg));
+	m_cfg.cs = config.m_cellSize;
+	m_cfg.ch = config.m_cellHeight;
+	m_cfg.walkableSlopeAngle = config.m_agentMaxSlope;
+	m_cfg.walkableHeight = (int)ceilf(config.m_agentHeight / m_cfg.ch);
+	m_cfg.walkableClimb = (int)floorf(config.m_agentMaxClimb / m_cfg.ch);
+	m_cfg.walkableRadius = (int)ceilf(config.m_agentRadius / m_cfg.cs);
+	m_cfg.maxEdgeLen = (int)(config.m_edgeMaxLen / config.m_cellSize);
+	m_cfg.maxSimplificationError = config.m_edgeMaxError;
+	m_cfg.minRegionArea = (int)rcSqr(config.m_regionMinSize);		// Note: area = size*size
+	m_cfg.mergeRegionArea = (int)rcSqr(config.m_regionMergeSize);	// Note: area = size*size
+	m_cfg.maxVertsPerPoly = (int)config.m_vertsPerPoly;
+	m_cfg.tileSize = (int)config.m_tileSize;
+	m_cfg.borderSize = m_cfg.walkableRadius + 3; // Reserve enough padding.
+	m_cfg.width = m_cfg.tileSize + m_cfg.borderSize * 2;
+	m_cfg.height = m_cfg.tileSize + m_cfg.borderSize * 2;
+	m_cfg.detailSampleDist = config.m_detailSampleDist < 0.9f ? 0 : config.m_cellSize * config.m_detailSampleDist;
+	m_cfg.detailSampleMaxError = config.m_cellHeight * config.m_detailSampleMaxError;
+
+	rcVcopy(m_cfg.bmin, bmin);
+	rcVcopy(m_cfg.bmax, bmax);
+	m_cfg.bmin[0] -= m_cfg.borderSize*m_cfg.cs;
+	m_cfg.bmin[2] -= m_cfg.borderSize*m_cfg.cs;
+	m_cfg.bmax[0] += m_cfg.borderSize*m_cfg.cs;
+	m_cfg.bmax[2] += m_cfg.borderSize*m_cfg.cs;
+
+	m_solid = rcAllocHeightfield();
+
+	if (!m_solid)
+	{
+		return 0;
+	}
+	if (!rcCreateHeightfield(m_ctx, *m_solid, m_cfg.width, m_cfg.height, m_cfg.bmin, m_cfg.bmax, m_cfg.cs, m_cfg.ch))
+	{
+		return 0;
+	}
+	int m_tileTriCount = 0;
+	auto  RasterizeModel = [](Model * model, rcConfig & m_cfg, rcContext * m_ctx, rcHeightfield * m_solid, int & m_tileTriCount)
+	{
+		float tbmin[2], tbmax[2];
+		tbmin[0] = m_cfg.bmin[0];
+		tbmin[1] = m_cfg.bmin[2];
+		tbmax[0] = m_cfg.bmax[0];
+		tbmax[1] = m_cfg.bmax[2];
+		unique_ptr<unsigned char>m_triareas_ptr;
+		unsigned char * m_triareas;
+		Utils::Geometry::BoundingBox & bbox = model->GetBoundingBox();
+		bool overlap = true;
+		overlap = (tbmin[0] > bbox.down.x || tbmax[0] < bbox.up.x) ? false : overlap;
+		overlap = (tbmin[1] > bbox.down.z || tbmax[1] < bbox.up.z) ? false : overlap;
+		overlap = true;
+		if (overlap)
+		{
+			float * verts = model->vertices;
+			const int* ctris = model->GetIndices();
+			const int nctris = model->GetIndexCount() / 3;
+			m_tileTriCount += nctris;
+			m_triareas = new unsigned char[nctris];
+			rcMarkWalkableTriangles(m_ctx, m_cfg.walkableSlopeAngle, verts, model->GetVertexCount(), ctris, nctris, m_triareas);
+			if (!rcRasterizeTriangles(m_ctx, verts, model->GetVertexCount(), ctris, m_triareas, nctris, *m_solid, m_cfg.walkableClimb))
+				return;
+			delete[] m_triareas;
+			m_triareas = 0;
+		}
+	};
+
+	RasterizeModel(model, m_cfg, m_ctx, m_solid, m_tileTriCount);
+
+	rcFilterLowHangingWalkableObstacles(m_ctx, m_cfg.walkableClimb, *m_solid);
+	rcFilterLedgeSpans(m_ctx, m_cfg.walkableHeight, m_cfg.walkableClimb, *m_solid);
+	rcFilterWalkableLowHeightSpans(m_ctx, m_cfg.walkableHeight, *m_solid);
+
+	m_chf = rcAllocCompactHeightfield();
+
+	if (!m_chf)
+	{
+		return 0;
+	}
+	if (!rcBuildCompactHeightfield(m_ctx, m_cfg.walkableHeight, m_cfg.walkableClimb, *m_solid, *m_chf))
+	{
+		return 0;
+	}
+
+	if (!rcErodeWalkableArea(m_ctx, m_cfg.walkableRadius, *m_chf))
+	{
+		return 0;
+	}
+
+	if (config.m_partitionType == SAMPLE_PARTITION_WATERSHED)
+	{
+		if (!rcBuildDistanceField(m_ctx, *m_chf))
+		{
+			return false;
+		}
+		if (!rcBuildRegions(m_ctx, *m_chf, m_cfg.borderSize, m_cfg.minRegionArea, m_cfg.mergeRegionArea))
+		{
+			return false;
+		}
+	}
+	m_cset = rcAllocContourSet();
+	if (!m_cset)
+	{
+		return 0;
+	}
+	if (!rcBuildContours(m_ctx, *m_chf, m_cfg.maxSimplificationError, m_cfg.maxEdgeLen, *m_cset))
+	{
+		return 0;
+	}
+	if (m_cset->nconts == 0)
+	{
+		return 0;
+	}
+	m_pmesh = rcAllocPolyMesh();
+	if (!m_pmesh)
+	{
+		return 0;
+	}
+	poly_meshes.push_back(m_pmesh);
+	if (!rcBuildPolyMesh(m_ctx, *m_cset, m_cfg.maxVertsPerPoly, *m_pmesh))
+	{
+		return 0;
+	}
+	m_dmesh = rcAllocPolyMeshDetail();
+	if (!m_dmesh)
+	{
+		return 0;
+	}
+
+	if (!rcBuildPolyMeshDetail(m_ctx, *m_pmesh, *m_chf, m_cfg.detailSampleDist, m_cfg.detailSampleMaxError, *m_dmesh))
+	{
+		return 0;
+	}
+
+	unsigned char* navData = 0;
+	int navDataSize = 0;
+	if (m_cfg.maxVertsPerPoly <= DT_VERTS_PER_POLYGON)
+	{
+		if (m_pmesh->nverts >= 0xffff)
+		{
 			return 0;
 		}
 

@@ -18,6 +18,10 @@ namespace Utils
 		{
 			return (this->X != right.X || this->Y != right.Y);
 		}
+		Point2D operator-()
+		{
+			return Point2D(-this->X, -this->Y);
+		}
 		Point2D operator -(const Point2D & right)
 		{
 			return Point2D(this->X - right.X, this->Y - right.Y);
