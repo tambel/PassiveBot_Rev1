@@ -130,6 +130,12 @@ Model & Model::operator=(Model && right)
 	return *this;
 }
 
+void Model::CalcBounds()
+{
+	rcCalcBounds(vertices, vertex_count, reinterpret_cast<float*>(&bounding_box.up), reinterpret_cast<float*>(&bounding_box.down));
+
+}
+
 void Model::Rotate()
 {
 	/*float angle_x = position.rotation.x *Utils::PI / 180.0f;

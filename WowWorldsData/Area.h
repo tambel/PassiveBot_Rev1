@@ -82,6 +82,7 @@ protected:
 	void _move(Area & other);
 	void AddChunk(Location & location, Point2D<int> & block_coordinates, Point2D<int> & coordinates);
 	void InitAreaBoundingBox();
+	void TranslateToZero();
 	MMM a;
 public:
 	

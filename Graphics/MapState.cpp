@@ -39,8 +39,9 @@ void MapState::createScene01(void)
 	light->setType(Ogre::Light::LT_DIRECTIONAL);
 	light->setDirection(Ogre::Vector3(0, -1,-1).normalisedCopy());
 	light->setAttenuation(1100, 1, 100, 1);
-	v = Vector3ToOgreVector( area->GetChunks()[0]->GetRealPosition());
-	v = Ogre::Vector3(v.x, v.z, -v.y);
+	//v = Vector3ToOgreVector( area->GetChunks()[0]->GetRealPosition());
+	v = Vector3ToOgreVector(area->GetBoundingBox().up);
+	//v = Ogre::Vector3(v.x, v.z, -v.y);
 
 	mGraphicsSystem->getCamera()->setPosition(v);
 	mGraphicsSystem->getCamera()->setFarClipDistance(0);

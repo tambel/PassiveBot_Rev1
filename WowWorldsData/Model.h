@@ -95,6 +95,7 @@ public:
 
 	Model & operator=(Model && right);
 	inline Utils::Geometry::BoundingBox & GetBoundingBox() {return bounding_box;}
+	void CalcBounds();
 };
 
 

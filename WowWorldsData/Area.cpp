@@ -73,6 +73,8 @@ void Area::Update(Location & location, Point2D<int> block_coordinates, Point2D<i
 
 	InitMapObjects();
 	InitAreaBoundingBox();
+	TranslateToZero();
+	InitAreaBoundingBox();
 	//ToMesh();
 	
 }
@@ -311,6 +313,59 @@ void Area::InitAreaBoundingBox()
 		bounding_box.down.y = bb.down.y<bounding_box.down.y? bounding_box.down.y: bb.down.y;
 	}
 
+}
+
+void Area::TranslateToZero()
+{
+	auto translate_model = [this](Model * model)
+	{
+		for (int i = 0; i < model->GetVertexCount() * 3; i+=3)
+		{
+			model->GetVertices()[i] -= bounding_box.up.x;
+			model->GetVertices()[i+2] -= bounding_box.up.z;
+
+		}
+	};
+
+	vector<Model*> models;
+	for (auto &chunk : chunks)
+	{
+		models.push_back(chunk.get());
+	}
+	for (auto &doodad : doodads)
+	{
+		models.push_back(doodad.get());
+	}
+	for (auto &wmo : wmos)
+	{
+		models.push_back(wmo.get());
+	}
+
+	for (auto model : models)
+	{
+		if (model->GetVertexCount() && model->GetVertices())
+		{
+			translate_model(model);
+			model->CalcBounds();
+		}
+	}
+	/*
+	for (auto &chunk : chunks)
+	{
+		translate_model(&*chunk);
+		chunk->CalcBounds();
+	}
+	for (auto &doodad : doodads)
+	{
+		translate_model(&*doodad);
+		doodad->CalcBounds();
+	}
+	for (auto &wmo : wmos)
+	{
+		translate_model(&*wmo);
+		wmo->CalcBounds();
+	}
+	*/
 }
 
 void Area::ToMesh()
