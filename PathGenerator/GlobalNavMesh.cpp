@@ -179,9 +179,9 @@ void GlobalNavMesh::AddArea(Point2D<float> start, Point2D<float> end)
 	int count = 0;
 	Point2D<float> offset;
 	//this->nav_mesh_offset = Vector3(start.X, 0, start.Y);
-	for (int i = 0, ri=sx; i <  30; i++,ri++)
+	for (int i = 0, ri=sx; ri < sx+10/*ex*/; i++,ri++)
 	{
-		for (int j = 0, rj = sy; j < 30; j++, rj++)
+		for (int j = 0, rj = sy; rj < sy+10/*ey*/; j++, rj++)
 		{
 			
 			tx = ri*tcs;
@@ -194,6 +194,7 @@ void GlobalNavMesh::AddArea(Point2D<float> start, Point2D<float> end)
 			Point2D<int> bc = AbsPositionToBlockCoords(Vector3(tx, 0, ty));
 			Point2D<int> cc = Point2D<int>((tx - bc.X*Metrics::BlockSize) / Metrics::ChunkSize, (ty - bc.Y*Metrics::BlockSize) / Metrics::ChunkSize);
 			Point2D<float> rc = Point2D<float>(bc.X*Metrics::BlockSize + cc.X*Metrics::ChunkSize, bc.Y*Metrics::BlockSize + cc.Y*Metrics::ChunkSize);
+			//rc = rc + Point2D<float>(70, 70);
 			if (count == 0)
 			{
 				offset = -rc;

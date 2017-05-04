@@ -37,6 +37,8 @@ int main()
 	gnm.AddArea(Point2D<float>(cbb.up.x, cbb.up.z), Point2D<float>(cbb.down.x, cbb.down.z));
 	gnm.Save();
 
+	//gnm.Load();
+
 	auto c1 = Metrics::ConvertFromGameCoords(Vector3(-2435.32, -530.151, -8.99781));
 	auto c2 = Metrics::ConvertFromGameCoords(Vector3(-1344.39, 195.327, 61.0569));
 

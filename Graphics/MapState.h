@@ -21,6 +21,7 @@ public:
 	void AddNavMesh(dtNavMesh * mesh, Vector3 offset=Vector3(0,0,0));
 	void AddLineStrip(vector<Vector3> & points);
 	void AddBoundingBox2D(BoundingBox & bb);
+	void AddMap();
 
 };
 
