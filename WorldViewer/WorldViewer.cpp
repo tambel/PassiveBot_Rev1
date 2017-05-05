@@ -8,6 +8,9 @@
 
 using namespace std;
 
+class CLI
+{
+};
 
 static void init_static()
 {
@@ -75,12 +78,35 @@ int main()
 
 	//viewer.GetState()->AddNavMesh(gnm.GetNavMesh(),gnm.GetNavMeshOffset());
 	
-	
+	ViewerClient client= ViewerClient();
+	client.Connect();
 	//viewer.GetFrame()->AddNavMesh(gnm.GetPolyMeshes());
 	viewer.ShowMap();
+	string command;
+	Vector3 start, end;
+
 	while (1)
 	{
-		Sleep(100);
+		cin >> command;
+		if (command=="start")
+			start= client.GetPlayerPosition().coords;
+
+		if (command == "end")
+		{
+			start = client.GetPlayerPosition().coords;
+		}
+		if (command == "commit")
+		{
+			cout << "commit" << endl;
+			viewer.GetState()->AddNavMesh(gnm.GetNavMesh(), gnm.GetNavMeshOffset());
+			//gnm.FindPath(start, end);
+
+		}
+		//cout << "send Request" << endl;
+
+		//auto pos = client.GetPlayerPosition();
+		//cout << pos.coords.x << " : " << pos.coords.y << " : " << pos.coords.z << endl;
+		//Sleep(100);
 	}
 	return 0;
 }

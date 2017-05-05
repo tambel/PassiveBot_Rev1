@@ -58,7 +58,14 @@ void MapState::AddNavMesh(vector<rcPolyMesh*>& meshes)
 
 void MapState::AddNavMesh(dtNavMesh * mesh, Vector3 offset)
 {
+	Ogre::ColourValue color;
+	string material_name;
+	Ogre::SceneManager * mSceneMgr = mGraphicsSystem->getSceneManager();
 	navigation_rends.push_back(new NavMeshRenderable(mesh, offset));
+	for (auto &rend : navigation_rends)
+	{
+		rend->CreateScene(mSceneMgr->getRootSceneNode(), material_name, color);
+	}
 }
 
 void MapState::AddLineStrip(vector<Vector3>& points)
@@ -174,13 +181,14 @@ void MapState::UpdateScene()
 	Ogre::ColourValue color;
 	string material_name;
 	Ogre::SceneManager * mSceneMgr = mGraphicsSystem->getSceneManager();
-	AddMap();
+	//AddMap();
 	material_name = "NavMesh";
-	
+	/*
 	for (auto &rend : navigation_rends)
 	{
 		rend->CreateScene(mSceneMgr->getRootSceneNode(), material_name, color);
 	}
+	*/
 
 
 	for (auto & sr : line_strip_rends)

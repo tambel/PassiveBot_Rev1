@@ -14,9 +14,9 @@ int bot_activity()
 
 	ObjectManager::EnumAllVisibleObjects();
 	Player * player = ObjectManager::GetPlayer();
-	shared_ptr<RemoteControl> remote_control= make_shared<RemoteControl>();
+	//shared_ptr<RemoteControl> remote_control= make_shared<RemoteControl>();
 	shared_ptr<ViewerCommunication> viewer = make_shared<ViewerCommunication>();
-	remote_control->Start();
+	//remote_control->Start();
 	viewer->Start();
 	
 	while (1)
@@ -27,7 +27,7 @@ int bot_activity()
 		//if (p)
 			//wcout<<p->GetName()<<endl;
 		//BotInteractor::GoToPoint(*p);
-		remote_control->ProcessRequest();
+		//remote_control->ProcessRequest();
 		viewer->ProcessRequest();
 		Sleep(1);
 
@@ -56,8 +56,8 @@ void test_db()
 int main(int argc, wchar_t * argv[])
 {
 	Sleep(5000);
-	test_db();
-	//BotInteractor::StartGame("arttambel@gmail.com", "archi911", L"Testintauenr", bot_activity);
+	//test_db();
+	BotInteractor::StartGame("arttambel@gmail.com", "archi911", L"Testintauenr", bot_activity);
 	return 0;
 
 }

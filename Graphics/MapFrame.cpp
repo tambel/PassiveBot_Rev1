@@ -74,6 +74,7 @@ int MapFrame::go()
 		if (!renderWindow->isVisible())
 		{
 			//Don't burn CPU cycles unnecessary when we're minimized.
+			
 			Ogre::Threads::Sleep(500);
 		}
 
