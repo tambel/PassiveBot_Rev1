@@ -98,7 +98,9 @@ int main()
 		if (command == "commit")
 		{
 			cout << "commit" << endl;
-			viewer.GetState()->AddNavMesh2(gnm.GetNavMesh(), gnm.GetNavMeshOffset());
+			viewer.GetState()->AddMap();
+			//viewer.GetState()->AddNavMesh2(gnm.GetNavMesh(), gnm.GetNavMeshOffset());
+			
 			//gnm.FindPath(start, end);
 
 		}

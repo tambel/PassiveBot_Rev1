@@ -3,7 +3,6 @@
 unsigned long Renderable::counter = 0;
 void Renderable::_move(Renderable & other)
 {
-	model = other.model;
 	id = other.id;
 	other.id = 0;
 	scene = other.scene;
@@ -17,14 +16,11 @@ Renderable::Renderable()
 	id = counter;
 	counter++;
 }
-Renderable::Renderable(Model * model) :Renderable()
+
+Renderable::Renderable(string & material): Renderable()
 {
-	this->model = model;
+	this->material = material;
 }
-
-
-
-
 
 Renderable::Renderable(Renderable && other)
 {
@@ -63,6 +59,7 @@ Renderable::~Renderable()
 }
 void Renderable::CreateScene(Ogre::SceneNode * parent, string & material, Ogre::ColourValue & color)
 {
+	/*
 	if (model->GetVertexCount() == 0)
 	{
 		return;
@@ -149,6 +146,7 @@ void Renderable::CreateScene(Ogre::SceneNode * parent, string & material, Ogre::
 	scene->attachObject(entity);
 	scene->getCreator()->destroyManualObject(manual);
 	return true;*/
+
 }
 
 LineStripRenderable::LineStripRenderable(LineStripRenderable && other)
@@ -469,5 +467,58 @@ void NavMeshRenderable::CreateScene(Ogre::SceneNode * parent, string & material,
 {
 	scene = parent->createChildSceneNode();
 	DrawNavMesh(*mesh, nullptr, 0, material);
+
+}
+
+WowModelRenderable::WowModelRenderable(Model * model, string & material):Renderable(material)
+{
+	this->model = model;
+}
+
+WowModelRenderable::WowModelRenderable(WowModelRenderable && other)
+{
+	Renderable::_move(other);
+	model = other.model;
+	other.model = nullptr;
+
+}
+
+void WowModelRenderable::NewCreateScene(Ogre::SceneNode * parent)
+{
+	if (model->GetVertexCount() == 0)
+	{
+		return;
+	}
+	scene = parent->createChildSceneNode();
+	////Ogre::ManualObject * manual = scene->getCreator()->createManualObject();
+	manual_object = scene->getCreator()->createManualObject();
+	manual_object->begin(material, Ogre::v1::RenderOperation::OT_TRIANGLE_LIST);
+	Vector3 * vertices = reinterpret_cast<Vector3*>(model->GetVertices());
+	for (unsigned vi = 0; vi < model->GetVertexCount(); vi++)
+	{
+		manual_object->position(vertices[vi].x, vertices[vi].y, -vertices[vi].z);
+		//Ogre::Vector3 v = Ogre::Vector3(vi % 10, vi % 12, vi % 15);
+		Ogre::Vector3 v = Ogre::Vector3(vi % 10, vi % 12, vi % 15);
+		manual_object->normal(v.normalisedCopy());
+		if (vi % 9 == 0)
+			manual_object->colour(1, 1, 1, 1);
+		else if (vi % 6 == 0)
+			manual_object->colour(0, 0, 0, 0);
+		else
+			manual_object->colour(color);
+
+	}
+
+	for (unsigned ii = 0; ii < model->GetIndexCount(); ii += 3)
+	{
+		manual_object->index(model->GetIndices()[ii + 2]);
+		manual_object->index(model->GetIndices()[ii + 1]);
+		manual_object->index(model->GetIndices()[ii]);
+	}
+
+
+	manual_object->end();
+
+	scene->attachObject(manual_object);
 
 }

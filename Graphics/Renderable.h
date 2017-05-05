@@ -20,7 +20,7 @@ enum dtPolyTypes
 class Renderable
 {
 protected:
-	Model * model = nullptr;
+	
 	static unsigned long counter;
 	unsigned long id;
 	Ogre::SceneNode * scene = nullptr;
@@ -33,10 +33,7 @@ protected:
 public:
 	bool to_kill;
 	Renderable();
-	Renderable(Model * model);
-
-
-
+	Renderable(string & material);
 	Renderable(const Renderable &) = default;
 	Renderable(Renderable &&);
 	Renderable & operator=(const Renderable &) = default;
@@ -48,8 +45,20 @@ public:
 
 	unsigned long GetID() { return id; }
 	Ogre::SceneNode * GetScene() { return scene; }
-	Model * GetModel() { return model; }
+	
+};
 
+class WowModelRenderable :public Renderable
+{
+	Model * model = nullptr;
+public:
+	//WowModelRenderable();
+	WowModelRenderable(Model * model, string & material);
+	WowModelRenderable(const WowModelRenderable &) = default;
+	WowModelRenderable(WowModelRenderable && other);
+	~WowModelRenderable() {};
+	Model * GetModel() { return model; }
+	void NewCreateScene(Ogre::SceneNode * parent);
 };
 
 class LineStripRenderable : public Renderable

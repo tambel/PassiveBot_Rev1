@@ -22,12 +22,12 @@ public:
 	void SetArea(Area * area) { this->area = area; }
 	//virtual void update(float timeSinceLast);
 	
-	void AddNavMesh(vector<rcPolyMesh*> & meshes);
-	void AddNavMesh(dtNavMesh * mesh, Vector3 offset=Vector3(0,0,0));
-	void AddLineStrip(vector<Vector3> & points);
-	void AddBoundingBox2D(BoundingBox & bb);
-	void AddMap();
-	vector<Renderable*> AddNavMesh2(dtNavMesh * mesh, Vector3 offset = Vector3(0, 0, 0));
+	void OldAddNavMesh(vector<rcPolyMesh*> & meshes);
+	void OldAddNavMesh(dtNavMesh * mesh, Vector3 offset=Vector3(0,0,0));
+	vector<Renderable*> AddLineStrip(vector<Vector3> & points);
+	vector<Renderable*> AddBoundingBox2D(BoundingBox & bb);
+	vector<Renderable*> AddMap();
+	vector<Renderable*> AddNavMesh(dtNavMesh * mesh, Vector3 offset = Vector3(0, 0, 0));
 	void SetNewRends();
 	void CheckAndAddNewRends();
 

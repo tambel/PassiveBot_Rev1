@@ -265,6 +265,15 @@ shared_ptr<Model> Area::GetWholeModel(Vector3 & toffset)
 	return shared_ptr<Model>(rmodel);
 }
 
+vector<Model*> Area::GetAllModelsPtrs()
+{
+	vector<Model*> models;
+	for (auto & chunk : chunks) models.push_back(&*chunk);
+	for (auto & doodad : doodads) models.push_back(&*doodad);
+	for (auto & wmo : wmos) models.push_back(&*wmo);
+	return models;
+}
+
 void Area::UpdateCetralizedBlockScale(Location & location, Point2D<int> block_coordinates)
 {
 	for (int x = block_coordinates.X - radius; x <= block_coordinates.X + radius; x++)

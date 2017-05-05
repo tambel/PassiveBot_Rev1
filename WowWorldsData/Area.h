@@ -110,6 +110,7 @@ public:
 	void InitMapObjects();
 	Vector3 GetCenter();
 	shared_ptr<Model> GetWholeModel(Vector3 & toffset);
+	vector<Model*> GetAllModelsPtrs();
 
 
 	void ToMesh();
