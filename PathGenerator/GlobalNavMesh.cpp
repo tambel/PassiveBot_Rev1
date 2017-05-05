@@ -65,7 +65,7 @@ void GlobalNavMesh::InitConfig()
 	config.m_cellHeight = 0.2f;
 	config.m_agentHeight = 2.0f;
 	config.m_agentRadius = 1.0f;//0.800000024;
-	config.m_agentMaxClimb = 0.899999976f;
+	config.m_agentMaxClimb = 1.25;
 	config.m_agentMaxSlope = 45.0000000f;
 	config.m_regionMinSize = 8.00000000f;
 	config.m_regionMergeSize = 20.0000000f;
@@ -408,13 +408,15 @@ bool GlobalNavMesh::FindPath(Vector3 start, Vector3 end, bool tf)
 	float m_smoothPath[25000];
 	unsigned m_nsmoothPath = 0;
 	m_navQuery = dtAllocNavMeshQuery();
-	dtStatus status = m_navQuery->init(nav_mesh, 2048*4);
+	dtStatus status = m_navQuery->init(nav_mesh, 2048*2);
 	if (tf)
 	{
 
 		start = Vector3(Metrics::MapMidPoint - start.x, start.z, Metrics::MapMidPoint - start.y);
 		end = Vector3(Metrics::MapMidPoint - end.x, end.z, Metrics::MapMidPoint - end.y);
 	}
+	Vector3 s2 = start;
+	Vector3 e2 = end;
 	Vector3 d = end - start;
 	start = start - nav_mesh_offset;
 	end = end - nav_mesh_offset;
@@ -474,7 +476,7 @@ bool GlobalNavMesh::FindPath(Vector3 start, Vector3 end, bool tf)
 
 			dtVcopy(&m_smoothPath[m_nsmoothPath * 3], iterPos);
 			m_nsmoothPath++;
-			int MAX_SMOOTH =2048*4;
+			int MAX_SMOOTH = 2048*3;
 			int c = 0;
 			while (npolys && m_nsmoothPath < MAX_SMOOTH)
 			{
