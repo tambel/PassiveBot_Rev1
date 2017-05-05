@@ -58,14 +58,41 @@ void MapState::AddNavMesh(vector<rcPolyMesh*>& meshes)
 
 void MapState::AddNavMesh(dtNavMesh * mesh, Vector3 offset)
 {
-	Ogre::ColourValue color;
-	string material_name;
-	Ogre::SceneManager * mSceneMgr = mGraphicsSystem->getSceneManager();
 	navigation_rends.push_back(new NavMeshRenderable(mesh, offset));
-	for (auto &rend : navigation_rends)
+}
+
+vector<Renderable*> MapState::AddNavMesh2(dtNavMesh * mesh, Vector3 offset)
+{
+	NavMeshRenderable * rend = new NavMeshRenderable(mesh, offset);
+	//NavMeshRenderable r = move(NavMeshRenderable(mesh, offset));
+	new_rends.push_back(rend);
+	SetNewRends();
+	return vector<Renderable*>({ rend });
+	
+}
+
+inline void MapState::SetNewRends()
+{
+	state_mutex.lock();
+	is_new_rends_set = true;
+	state_mutex.unlock();
+}
+
+void MapState::CheckAndAddNewRends()
+{
+	auto root_scene = mGraphicsSystem->getSceneManager()->getRootSceneNode();
+	state_mutex.lock();
+	if (is_new_rends_set)
 	{
-		rend->CreateScene(mSceneMgr->getRootSceneNode(), material_name, color);
+		for (auto rend : new_rends)
+		{
+			rend->NewCreateScene(root_scene);
+		}
+		rends.insert(rends.end(), new_rends.begin(), new_rends.end());
+		new_rends.clear();
+		is_new_rends_set = false;
 	}
+	state_mutex.unlock();
 }
 
 void MapState::AddLineStrip(vector<Vector3>& points)
@@ -175,6 +202,8 @@ void MapState::AddMap()
 
 
 
+
+
 void MapState::UpdateScene()
 {
 	
@@ -189,7 +218,10 @@ void MapState::UpdateScene()
 		rend->CreateScene(mSceneMgr->getRootSceneNode(), material_name, color);
 	}
 	*/
-
+	for (auto &rend : navigation_rends)
+	{
+		rend->CreateScene(mSceneMgr->getRootSceneNode(), material_name, color);
+	}
 
 	for (auto & sr : line_strip_rends)
 	{

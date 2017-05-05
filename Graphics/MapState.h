@@ -1,6 +1,6 @@
 #pragma once
 #include "Renderable.h"
-
+#include <mutex>
 using namespace Demo;
 
 class MapState : public TutorialGameState
@@ -9,7 +9,12 @@ class MapState : public TutorialGameState
 	vector<Renderable> world_static_rends;
 	vector<Renderable*> navigation_rends;
 	vector<Renderable*> line_strip_rends;
+	vector<Renderable*> rends;
+	vector<Renderable*> new_rends;
 	void UpdateScene();
+	mutex state_mutex;
+	bool is_new_rends_set = false;
+
 public:
 	MapState(const Ogre::String &helpDescription);
 	~MapState();
@@ -22,6 +27,9 @@ public:
 	void AddLineStrip(vector<Vector3> & points);
 	void AddBoundingBox2D(BoundingBox & bb);
 	void AddMap();
+	vector<Renderable*> AddNavMesh2(dtNavMesh * mesh, Vector3 offset = Vector3(0, 0, 0));
+	void SetNewRends();
+	void CheckAndAddNewRends();
 
 };
 

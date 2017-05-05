@@ -18,12 +18,12 @@ using namespace Demo;
 
 class MapFrame : public GraphicsSystem
 {
-	GameState * game_state;
+	MapState * game_state;
 	virtual Ogre::CompositorWorkspace* setupCompositor();
 	virtual void setupResources(void);
 
 public:
-	MapFrame(GameState *gameState);
+	MapFrame(MapState *gameState);
 	int go();
 
 };

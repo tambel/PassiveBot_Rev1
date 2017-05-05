@@ -17,8 +17,6 @@ enum dtPolyTypes
 };
 */
 
-
-
 class Renderable
 {
 protected:
@@ -28,6 +26,10 @@ protected:
 	Ogre::SceneNode * scene = nullptr;
 	void _move(Renderable & other);
 	Ogre::ManualObject * manual_object = nullptr;
+	Ogre::SceneNode * parent;
+	string material;
+	Ogre::ColourValue color;
+	
 public:
 	bool to_kill;
 	Renderable();
@@ -42,6 +44,7 @@ public:
 
 	~Renderable();
 	virtual void CreateScene(Ogre::SceneNode * parent, string & material, Ogre::ColourValue & color = Ogre::ColourValue(1, 1, 0, 1));
+	virtual void NewCreateScene(Ogre::SceneNode * parent) {};
 
 	unsigned long GetID() { return id; }
 	Ogre::SceneNode * GetScene() { return scene; }
@@ -77,6 +80,7 @@ public:
 	void drawMeshTile(const dtNavMesh& mesh, const dtNavMeshQuery* query, const dtMeshTile* tile, unsigned char flags, string & material);
 	void CreateScene(Ogre::SceneNode * parent, string & material, Ogre::ColourValue & color = Ogre::ColourValue(1, 1, 0, 1));
 	void CreateScene2(Ogre::SceneNode * parent, string & material, Ogre::ColourValue & color = Ogre::ColourValue(1, 1, 0, 1));
+	void NewCreateScene(Ogre::SceneNode * parent);
 };
 
 

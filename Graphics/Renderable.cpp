@@ -8,16 +8,18 @@ void Renderable::_move(Renderable & other)
 	other.id = 0;
 	scene = other.scene;
 	other.scene = nullptr;
+	material = other.material;
+	color = other.color;
 }
 Renderable::Renderable()
-{
-
-}
-Renderable::Renderable(Model * model) :model(model)
 {
 	to_kill = false;
 	id = counter;
 	counter++;
+}
+Renderable::Renderable(Model * model) :Renderable()
+{
+	this->model = model;
 }
 
 
@@ -208,6 +210,7 @@ void LineStripRenderable::CreateScene(Ogre::SceneNode * parent, string & materia
 
 NavMeshRenderable::NavMeshRenderable(NavMeshRenderable && other)
 {
+	Renderable::_move(other);
 	meshes = other.meshes;
 	other.meshes = nullptr;
 	mesh = other.mesh;
@@ -223,6 +226,7 @@ NavMeshRenderable::NavMeshRenderable(dtNavMesh * mesh, Vector3 offset)
 {
 	this -> mesh = mesh;
 	this->offset = offset;
+	material = "NavMesh";
 }
 
 void NavMeshRenderable::CreateScene2(Ogre::SceneNode * parent, string & material, Ogre::ColourValue & color)
@@ -289,6 +293,12 @@ void NavMeshRenderable::CreateScene2(Ogre::SceneNode * parent, string & material
 
 		}
 	}
+}
+
+void NavMeshRenderable::NewCreateScene(Ogre::SceneNode * parent)
+{
+	scene = parent->createChildSceneNode();
+	DrawNavMesh(*mesh, nullptr,0, material);
 }
 
 

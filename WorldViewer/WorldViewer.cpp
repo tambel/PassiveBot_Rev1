@@ -71,9 +71,9 @@ int main()
 	WorldViewer viewer = WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(35, 32), Point2DI(7, 9), 3);
 
 	auto v1 = gnm.GetLastPath();
-	viewer.GetState()->AddLineStrip(v1);
+	//viewer.GetState()->AddLineStrip(v1);
 
-	viewer.GetState()->AddBoundingBox2D(Utils::Metrics::ConvertFromGameCoords(bb));
+	//viewer.GetState()->AddBoundingBox2D(Utils::Metrics::ConvertFromGameCoords(bb));
 
 
 	//viewer.GetState()->AddNavMesh(gnm.GetNavMesh(),gnm.GetNavMeshOffset());
@@ -98,7 +98,7 @@ int main()
 		if (command == "commit")
 		{
 			cout << "commit" << endl;
-			viewer.GetState()->AddNavMesh(gnm.GetNavMesh(), gnm.GetNavMeshOffset());
+			viewer.GetState()->AddNavMesh2(gnm.GetNavMesh(), gnm.GetNavMeshOffset());
 			//gnm.FindPath(start, end);
 
 		}

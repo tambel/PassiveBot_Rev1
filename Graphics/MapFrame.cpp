@@ -11,7 +11,7 @@ Ogre::CompositorWorkspace * MapFrame::setupCompositor()
 		"ShadowMapDebuggingWorkspace", true);
 }
 
-MapFrame::MapFrame(GameState * gameState):
+MapFrame::MapFrame(MapState * gameState):
 	GraphicsSystem(gameState)
 {
 	game_state = gameState;
@@ -68,6 +68,7 @@ int MapFrame::go()
 	{
 		beginFrameParallel();
 		update(static_cast<float>(timeSinceLast));
+		game_state->CheckAndAddNewRends();
 		finishFrameParallel();
 		finishFrame();
 
