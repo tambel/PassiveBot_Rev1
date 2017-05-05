@@ -11,7 +11,7 @@ void thread_func(MapFrame * frame)
 WorldViewer::WorldViewer(Location & location, Point2D<int> block_coordinates, Point2D<int> coordinates, int radius)
 {
 	state = new MapState("STATE");
-	area = Area(radius, AreaFormat::fChunk);
+	area = Area(radius, AreaFormat::fBlock);
 	area.UpdateArea(location, block_coordinates, coordinates);
 
 	state->SetArea(&area);

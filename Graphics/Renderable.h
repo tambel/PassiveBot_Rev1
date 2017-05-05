@@ -7,15 +7,6 @@ enum DrawNavMeshFlags
 	DU_DRAWNAVMESH_CLOSEDLIST = 0x02,
 	DU_DRAWNAVMESH_COLOR_TILES = 0x04,
 };
-/*
-enum dtPolyTypes
-{
-	/// The polygon is a standard convex polygon that is part of the surface of the mesh.
-	DT_POLYTYPE_GROUND = 0,
-	/// The polygon is an off-mesh connection consisting of two vertices.
-	DT_POLYTYPE_OFFMESH_CONNECTION = 1,
-};
-*/
 
 class Renderable
 {
@@ -40,7 +31,6 @@ public:
 	Renderable & operator=(Renderable &&);
 
 	~Renderable();
-	virtual void CreateScene(Ogre::SceneNode * parent, string & material, Ogre::ColourValue & color = Ogre::ColourValue(1, 1, 0, 1));
 	virtual void NewCreateScene(Ogre::SceneNode * parent) {};
 
 	unsigned long GetID() { return id; }
@@ -71,8 +61,7 @@ public:
 	LineStripRenderable(Vector3 * points, unsigned size);
 	LineStripRenderable(vector<Vector3> & points);
 	~LineStripRenderable() {};
-	virtual void CreateScene2(Ogre::SceneNode * parent);
-	void CreateScene(Ogre::SceneNode * parent, string & material, Ogre::ColourValue & color);
+	void NewCreateScene(Ogre::SceneNode * parent);
 };
 
 
@@ -87,8 +76,6 @@ public:
 	NavMeshRenderable(dtNavMesh * mesh, Vector3 offset = Vector3(0, 0, 0));
 	void DrawNavMesh(const dtNavMesh& mesh, const dtNavMeshQuery* query, unsigned char flags, string & material);
 	void drawMeshTile(const dtNavMesh& mesh, const dtNavMeshQuery* query, const dtMeshTile* tile, unsigned char flags, string & material);
-	void CreateScene(Ogre::SceneNode * parent, string & material, Ogre::ColourValue & color = Ogre::ColourValue(1, 1, 0, 1));
-	void CreateScene2(Ogre::SceneNode * parent, string & material, Ogre::ColourValue & color = Ogre::ColourValue(1, 1, 0, 1));
 	void NewCreateScene(Ogre::SceneNode * parent);
 };
 

@@ -21,11 +21,7 @@ MapState::~MapState()
 
 void MapState::createScene01(void)
 {
-	//area->data_mutex.lock();
-	UpdateScene();
-	//CreateSceneTest();
-	//MeshRenderable().createStaticMesh(false,mGraphicsSystem->getRoot(), mGraphicsSystem->getSceneManager());
-
+	AddMap();
 	mCameraController = new CameraController(mGraphicsSystem, false);
 	
 	Ogre::Light *light = mGraphicsSystem->getSceneManager()->createLight();
@@ -150,24 +146,4 @@ vector<Renderable*> MapState::AddMap()
 void MapState::UpdateScene()
 {
 	
-	Ogre::ColourValue color;
-	string material_name;
-	Ogre::SceneManager * mSceneMgr = mGraphicsSystem->getSceneManager();
-	//AddMap();
-	material_name = "NavMesh";
-	/*
-	for (auto &rend : navigation_rends)
-	{
-		rend->CreateScene(mSceneMgr->getRootSceneNode(), material_name, color);
-	}
-	*/
-	for (auto &rend : navigation_rends)
-	{
-		rend->CreateScene(mSceneMgr->getRootSceneNode(), material_name, color);
-	}
-
-	for (auto & sr : line_strip_rends)
-	{
-		sr->CreateScene(mSceneMgr->getRootSceneNode(), string("Strip"), color);
-	}
 }
