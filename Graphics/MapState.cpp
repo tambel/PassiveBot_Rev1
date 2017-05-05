@@ -21,7 +21,7 @@ MapState::~MapState()
 
 void MapState::createScene01(void)
 {
-	AddMap();
+	//AddMap();
 	mCameraController = new CameraController(mGraphicsSystem, false);
 	
 	Ogre::Light *light = mGraphicsSystem->getSceneManager()->createLight();
@@ -91,10 +91,31 @@ void MapState::CheckAndAddNewRends()
 	state_mutex.unlock();
 }
 
+void MapState::RemoveRends(vector<Renderable*>& drends)
+{
+	//for (auto rend : drends)
+	for (auto it=drends.begin();it!=drends.end();)
+	{
+		Renderable * r1 = *it;
+		Renderable * r2 = rends[0];
+		auto fr = find(rends.begin(), rends.end(), *it);
+		if (fr !=rends.end())
+		{
+			delete *fr;
+			it = drends.erase(it);
+			rends.erase(fr);
+		}
+		else
+		{
+			++it;
+		}
+	}
+}
+
 vector<Renderable*> MapState::AddLineStrip(vector<Vector3>& points)
 {
 	Renderable * rend = new LineStripRenderable(points);
-	new_rends.push_back(new LineStripRenderable(points));
+	new_rends.push_back(rend);
 	SetNewRends();
 	return vector<Renderable*>({ rend });
 }

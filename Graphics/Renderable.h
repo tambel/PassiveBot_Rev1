@@ -29,12 +29,11 @@ public:
 	Renderable(Renderable &&);
 	Renderable & operator=(const Renderable &) = default;
 	Renderable & operator=(Renderable &&);
-
 	~Renderable();
 	virtual void NewCreateScene(Ogre::SceneNode * parent) {};
-
 	unsigned long GetID() { return id; }
 	Ogre::SceneNode * GetScene() { return scene; }
+	void DestroySceneAndChildren();
 	
 };
 

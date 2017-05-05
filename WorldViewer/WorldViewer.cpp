@@ -85,6 +85,8 @@ int main()
 	string command;
 	Vector3 start, end;
 
+
+	vector<Renderable*> rends;
 	while (1)
 	{
 		cin >> command;
@@ -99,9 +101,19 @@ int main()
 		{
 			cout << "commit" << endl;
 			//viewer.GetState()->AddMap();
-			viewer.GetState()->AddBoundingBox2D(Utils::Metrics::ConvertFromGameCoords(bb));
+			rends=viewer.GetState()->AddBoundingBox2D(Utils::Metrics::ConvertFromGameCoords(bb));
 			//viewer.GetState()->AddNavMesh2(gnm.GetNavMesh(), gnm.GetNavMeshOffset());
 			
+			//gnm.FindPath(start, end);
+
+		}
+		if (command == "delete")
+		{
+			cout << "delete" << endl;
+			//viewer.GetState()->AddMap();
+			viewer.GetState()->RemoveRends(rends);
+			//viewer.GetState()->AddNavMesh2(gnm.GetNavMesh(), gnm.GetNavMeshOffset());
+
 			//gnm.FindPath(start, end);
 
 		}

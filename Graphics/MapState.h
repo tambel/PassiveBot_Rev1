@@ -30,6 +30,7 @@ public:
 	vector<Renderable*> AddNavMesh(dtNavMesh * mesh, Vector3 offset = Vector3(0, 0, 0));
 	void SetNewRends();
 	void CheckAndAddNewRends();
+	void RemoveRends(vector<Renderable*> & rends);
 
 };
 

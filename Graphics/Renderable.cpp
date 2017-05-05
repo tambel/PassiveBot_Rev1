@@ -39,12 +39,15 @@ Renderable & Renderable::operator=(Renderable && other)
 
 Renderable::~Renderable()
 {
+	DestroySceneAndChildren();
+
+
 	if (scene)
 	{
 
 		/*if (manual_object)
 		scene->getCreator()->destroyManualObject(manual_object);*/
-		((Ogre::SceneNode*) scene->getParent())->detachAllObjects();
+		//((Ogre::SceneNode*) scene->getParent())->detachAllObjects();
 		//scene->getCreator()->getRootSceneNode()->removeAndDestroyChild(to_string(id));
 
 		/*Ogre::SceneNode::ObjectIterator itObject = scene->getAttachedObjectIterator();
@@ -56,6 +59,12 @@ Renderable::~Renderable()
 		}*/
 
 	}
+}
+
+void Renderable::DestroySceneAndChildren()
+{
+	scene->removeAndDestroyAllChildren();
+	scene->getCreator()->destroySceneNode(scene);
 }
 
 LineStripRenderable::LineStripRenderable(LineStripRenderable && other)
