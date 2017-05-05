@@ -29,7 +29,7 @@ inline unsigned int nextPow2(unsigned int v)
 GlobalNavMesh::GlobalNavMesh()
 {
 	poly_meshes = vector<rcPolyMesh*>();
-	area = new Area(3, AreaFormat::fChunk);
+	area = new Area(4, AreaFormat::fChunk);
 	bbox.up = Vector3(0.0, 0.0, 0.0);
 	bbox.down = Vector3(Metrics::MapSize, 0.0, Metrics::MapSize);
 	InitConfig();
@@ -403,30 +403,27 @@ int fixupCorridor(dtPolyRef* path, const int npath, const int maxPath,
 	return req + size;
 }
 
-bool GlobalNavMesh::FindPath(Vector3 & start, Vector3 & end, bool tf)
+bool GlobalNavMesh::FindPath(Vector3 start, Vector3 end, bool tf)
 {
-	float m_smoothPath[7000];
+	float m_smoothPath[25000];
 	unsigned m_nsmoothPath = 0;
 	m_navQuery = dtAllocNavMeshQuery();
-	dtStatus status = m_navQuery->init(nav_mesh, 2048*2);
-	Vector3 coords;
-	Vector3 ucoords;
+	dtStatus status = m_navQuery->init(nav_mesh, 2048*4);
 	if (tf)
 	{
 
-		 coords = Vector3(Metrics::MapMidPoint - start.x, start.z, Metrics::MapMidPoint - start.y);
-		 ucoords = Vector3(Metrics::MapMidPoint - end.x, end.z, Metrics::MapMidPoint - end.y);
+		start = Vector3(Metrics::MapMidPoint - start.x, start.z, Metrics::MapMidPoint - start.y);
+		end = Vector3(Metrics::MapMidPoint - end.x, end.z, Metrics::MapMidPoint - end.y);
 	}
-	else
-	{
-		coords = start;
-		ucoords = end;
-	}
+	Vector3 d = end - start;
+	start = start - nav_mesh_offset;
+	end = end - nav_mesh_offset;
+	Vector3 d2 = end - start;
 	//float m_smoothPath[MAX_SMOOTH * 3];
-	const int MAX_POLYS = 256*2;
+	const int MAX_POLYS = 256*10;
 	//int m_nsmoothPath = 0;
-	float * m_spos = (float*)&coords;
-	float * m_epos = (float*)&ucoords;
+	float * m_spos = (float*)&start;
+	float * m_epos = (float*)&end;
 	float pExtents[3] = { 2.0f, 4.0f, 2.0f }; // size of box around start/end points to look for nav polygons
 	dtPolyRef m_startRef;
 	//float StartNearest[3];
@@ -445,12 +442,12 @@ bool GlobalNavMesh::FindPath(Vector3 & start, Vector3 & end, bool tf)
 	m_filter.setAreaCost(SAMPLE_POLYAREA_GROUND, 1.0f);
 
 	// find the start polygon
-	status = m_navQuery->findNearestPoly((float*)&coords, pExtents, &m_filter, &m_startRef, 0);
+	status = m_navQuery->findNearestPoly((float*)&start, pExtents, &m_filter, &m_startRef, 0);
 	if ((status&DT_FAILURE) || (status&DT_STATUS_DETAIL_MASK))
 		return -1; // couldn't find a polygon
 
 				   // find the end polygon
-	status = m_navQuery->findNearestPoly((float*)&ucoords, pExtents, &m_filter, &m_endRef, 0);
+	status = m_navQuery->findNearestPoly((float*)&end, pExtents, &m_filter, &m_endRef, 0);
 	if ((status&DT_FAILURE) || (status&DT_STATUS_DETAIL_MASK))
 		return -2; // couldn't find a polygon
 
@@ -477,9 +474,15 @@ bool GlobalNavMesh::FindPath(Vector3 & start, Vector3 & end, bool tf)
 
 			dtVcopy(&m_smoothPath[m_nsmoothPath * 3], iterPos);
 			m_nsmoothPath++;
-			int MAX_SMOOTH = 2048*2;
+			int MAX_SMOOTH =2048*4;
+			int c = 0;
 			while (npolys && m_nsmoothPath < MAX_SMOOTH)
 			{
+				c++;
+				if (c == 2335)
+				{
+					c = c;
+				}
 				// Find location to steer towards.
 				float steerPos[3];
 				unsigned char steerPosFlag;
@@ -586,7 +589,8 @@ bool GlobalNavMesh::FindPath(Vector3 & start, Vector3 & end, bool tf)
 	last_path_points.clear();
 	for (unsigned i = 0; i < m_nsmoothPath * 3; i += 3)
 	{
-		last_path_points.push_back(Vector3(m_smoothPath[i], m_smoothPath[i + 1], m_smoothPath[i + 2]));
+		Vector3 p = Vector3(m_smoothPath[i], m_smoothPath[i + 1], m_smoothPath[i + 2]) + nav_mesh_offset;
+		last_path_points.push_back(p);
 	}
 	return true;
 }

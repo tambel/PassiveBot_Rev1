@@ -22,6 +22,14 @@ int main()
 	
 	auto areas = ClientDB::ReadWorldMapAreas();
 
+	for (auto a : areas)
+	{
+		if (a.id == 4796)
+		{
+			cout << a.name << endl;
+		}
+	}
+
 	auto mulgore = *find_if(areas.begin(), areas.end(), [](auto & a) {return a.name == "Mulgore"; });
 	auto durotar = *find_if(areas.begin(), areas.end(), [](auto & a) {return a.name == "Durotar"; });
 	auto barrens = *find_if(areas.begin(), areas.end(), [](auto & a) {return a.name == "Barrens"; });
@@ -47,28 +55,25 @@ int main()
 
 	gnm.Load();
 
-	WorldViewer viewer = WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(35, 32), Point2DI(7, 9), 3);
+	
 	//viewer.GetArea().ToMesh();
 	
 	
 
 	
-	//gnm.FindPath(Vector3(-2435.32, -530.151,-8.99781), Vector3(-1344.39,195.327,61.0569));
-	//auto v1 = gnm.GetLastPath();
-	//viewer.GetState()->AddLineStrip(v1);
+	gnm.FindPath(Vector3(-2435.32, -530.151,-8.99781), Vector3(-1344.39,195.327,61.0569));
+	
 
 
-	for (auto & a : areas)
-	{
-		//viewer.GetState()->AddBoundingBox2D(Utils::Metrics::ConvertFromGameCoords(a.GetBoundingBox()));
-	}
+	WorldViewer viewer = WorldViewer(LocationBase::Get("Kalimdor"), Point2DI(35, 32), Point2DI(7, 9), 3);
+
+	auto v1 = gnm.GetLastPath();
+	viewer.GetState()->AddLineStrip(v1);
 
 	viewer.GetState()->AddBoundingBox2D(Utils::Metrics::ConvertFromGameCoords(bb));
-	//viewer.GetState()->AddBoundingBox2D(Utils::Metrics::ConvertFromGameCoords(durotar.GetBoundingBox()));
-	//viewer.GetState()->AddBoundingBox2D(Utils::Metrics::ConvertFromGameCoords(barrens.GetBoundingBox()));
 
 
-	viewer.GetState()->AddNavMesh(gnm.GetNavMesh(),gnm.GetNavMeshOffset());
+	//viewer.GetState()->AddNavMesh(gnm.GetNavMesh(),gnm.GetNavMeshOffset());
 	
 	
 	//viewer.GetFrame()->AddNavMesh(gnm.GetPolyMeshes());

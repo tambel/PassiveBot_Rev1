@@ -65,7 +65,7 @@ public:
     dtNavMesh * GetNavMesh() { return nav_mesh; }
 	inline vector<Vector3> & GetLastPath() { return last_path_points; }
 	inline vector<rcPolyMesh*> & GetPolyMeshes() { return poly_meshes; }
-	bool FindPath(Vector3 & start, Vector3 & end, bool tf=true);
+	bool FindPath(Vector3 start, Vector3 end, bool tf=true);
 	inline Vector3 GetNavMeshOffset() { return nav_mesh_offset; }
 	bool Save();
 	bool Load();

@@ -174,7 +174,7 @@ void MapState::UpdateScene()
 	Ogre::ColourValue color;
 	string material_name;
 	Ogre::SceneManager * mSceneMgr = mGraphicsSystem->getSceneManager();
-	//AddMap();
+	AddMap();
 	material_name = "NavMesh";
 	
 	for (auto &rend : navigation_rends)
